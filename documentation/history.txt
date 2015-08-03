@@ -1,1 +1,2 @@
 Project arhitektúra létrehozva. - megfelelõ maven függõségek beállítása még hátra van
+Pap Dávid 2015.08.03 : #4 Maven riportok bekötése. A külsõ pom-ba bemásoltam a reportokhoz szükséges pluginokat. Új checkstyle.xml.
