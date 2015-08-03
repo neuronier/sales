@@ -1,0 +1,1 @@
+Project arhitektúra létrehozva. - megfelelõ maven függõségek beállítása még hátra van
