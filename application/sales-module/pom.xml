@@ -4,6 +4,15 @@
   <artifactId>sales-module</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
+  
+  <distributionManagement>
+		<site>
+			<id>http://192.168.1.23/</id>
+			<url>file:\\192.168.1.23\www\Sales</url>
+		</site>
+	</distributionManagement>
+
+	
   <modules>
   	<module>business-api</module>
   	<module>core</module>
