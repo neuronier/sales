@@ -17,6 +17,7 @@
   	<module>business-api</module>
   	<module>core</module>
   	<module>business</module>
+  	<module>web</module>
   </modules>
   
   <build>
