@@ -4,7 +4,7 @@
     <groupId>hu.neuron.java.sales</groupId>
     <artifactId>sales-module</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-	<name>core</name>
   </parent>
   <artifactId>core</artifactId>
+  <name>Core</name>
 </project>
