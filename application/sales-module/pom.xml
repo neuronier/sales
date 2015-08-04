@@ -10,6 +10,8 @@
   	<module>business</module>
   	<module>web</module>
   	<module>ear-web</module>
+  	<module>ear-business</module>
+  	<module>ear-all</module>
   </modules>
   
   <distributionManagement>
