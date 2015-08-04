@@ -15,6 +15,15 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    
+    <dependencies>
+		<dependency>
+			<groupId>hu.neuron.java.sales</groupId>
+			<artifactId>business</artifactId>
+			<type>ejb</type>
+			<version>${version}</version>
+		</dependency>
+	</dependencies>
   
     <build>
         <plugins>

@@ -7,4 +7,5 @@
   </parent>
   <artifactId>business</artifactId>
   <name>Business</name>
+  <packaging>ejb</packaging>
 </project>
