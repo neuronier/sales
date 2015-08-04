@@ -1,3 +1,4 @@
-Miskolczy József 2015.08.03 : Project arhitektúra létrehozva. - megfelelõ maven függõségek beállítása még hátra van
 Pap Dávid 2015.08.03 : #4 Maven riportok bekötése. A külsõ pom-ba bemásoltam a reportokhoz szükséges pluginokat. Új checkstyle.xml.
-Miskolczy József 2015.08.04 : - web module függõségeinek hozzáadása és az eclipses támogatás összehekkelése
+Miskolczy József 2015.08.03 : Project arhitektúra létrehozva. - megfelelõ maven függõségek beállítása még hátra van
+Ráti Roland 2015.08.04 : #9 ear modulok elkészítése. Létrehoztam a ear-all, ear-business valamint az ear-war modulokat
+				átírtam a business packaging-ét jar-ról ejb-re
