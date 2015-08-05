@@ -5,4 +5,5 @@ Ráti Roland 2015.08.04 : #9 ear modulok elkészítése. Létrehoztam a ear-all, ear-
 
 Szabó Bálint 2015.08.05 : #21 Létrehoztam az ajánlat entitást és a hozzá tartozó kapcsolótáblát.
 Szabó Bálint 2015.08.05 : #21 Létrehoztam az ajánlathoz tartozó DAO-t.
-Szabó Bálint 2015.08.05 : #21 Létrehoztam az ajánlat és a rendelés közti kapcsolótáblát. 
+Szabó Bálint 2015.08.05 : #21 Létrehoztam az ajánlat és a rendelés közti kapcsolótáblát.
+Miskolczy József 2015.08.03 : #49 JUnit tesztet megcsináltam
