@@ -30,5 +30,10 @@
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			</dependency>
+		<dependency>
+			<groupId>hu.neuron.java.sales</groupId>
+			<artifactId>core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>
