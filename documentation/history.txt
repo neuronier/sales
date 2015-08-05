@@ -2,4 +2,6 @@ Pap Dávid 2015.08.03 : #4 Maven riportok bekötése. A külsõ pom-ba bemásoltam a r
 Miskolczy József 2015.08.03 : Project arhitektúra létrehozva. - megfelelõ maven függõségek beállítása még hátra van
 Ráti Roland 2015.08.04 : #9 ear modulok elkészítése. Létrehoztam a ear-all, ear-business valamint az ear-war modulokat
 				átírtam a business packaging-ét jar-ról ejb-re
+
 Szabó Bálint 2015.08.05 : #21 Létrehoztam az ajánlat entitást és a hozzá tartozó kapcsolótáblát.
+Szabó Bálint 2015.08.05 : #21 Létrehoztam az ajánlathoz tartozó DAO-t.
