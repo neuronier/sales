@@ -2,8 +2,8 @@ package hu.neuron.java.sales.service.impl;
 
 import hu.neuron.java.core.dao.SalesPointDAO;
 import hu.neuron.java.core.entity.SalesPoint;
+import hu.neuron.java.sales.service.SalesPointServiceRemote;
 import hu.neuron.java.sales.service.converter.SalesPointConverter;
-import hu.neuron.java.sales.service.salepoint.SalesPointServiceRemote;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
 
 import java.io.Serializable;
@@ -57,7 +57,7 @@ public class SalesPointServiceImpl implements SalesPointServiceRemote,
 		Direction dir = sortOrder == 1 ? Sort.Direction.ASC
 				: Sort.Direction.DESC;
 		PageRequest pageRequest = new PageRequest(page, size, new Sort(
-				new org.springframework.data.domain.Sort.Order(dir, sortField)));
+				new Sort.Order(dir, sortField)));
 		Page<SalesPoint> entities;
 
 		if (filter.length() != 0 && filterColumnName.equals("name")) {

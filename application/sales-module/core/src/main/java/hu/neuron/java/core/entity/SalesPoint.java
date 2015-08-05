@@ -11,7 +11,7 @@ public class SalesPoint extends Base {
 
 	private Long salePointId;
 	private Long wareHouseId;
-	private String salePointName;
+	private String name;
 	private String salePointAdress;
 	private String salePointPhoneNumber;
 
@@ -31,12 +31,12 @@ public class SalesPoint extends Base {
 		this.wareHouseId = wareHouseId;
 	}
 
-	public String getSalePointName() {
-		return salePointName;
+	public String getName() {
+		return name;
 	}
 
-	public void setSalePointName(String salesPointName) {
-		this.salePointName = salesPointName;
+	public void setName(String salesPointName) {
+		this.name = salesPointName;
 	}
 
 	public String getSalePointAdress() {
@@ -58,7 +58,7 @@ public class SalesPoint extends Base {
 	@Override
 	public String toString() {
 		return "SalesPoint [salesPointId=" + salePointId + ", wareHouseId="
-				+ wareHouseId + ", salesPointName=" + salePointName
+				+ wareHouseId + ", salesPointName=" + name
 				+ ", salesPointAdress=" + salePointAdress
 				+ ", salesPointPhoneNumber=" + salePointPhoneNumber + "]";
 	}

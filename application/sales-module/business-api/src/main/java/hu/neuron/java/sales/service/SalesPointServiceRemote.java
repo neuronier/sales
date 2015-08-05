@@ -1,4 +1,4 @@
-package hu.neuron.java.sales.service.salepoint;
+package hu.neuron.java.sales.service;
 
 import hu.neuron.java.sales.service.vo.SalesPointVO;
 

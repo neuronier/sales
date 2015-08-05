@@ -14,7 +14,7 @@ public class OfferEntity extends Base {
 	
 	private long offerPrice;
 	
-	private String offerName;
+	private String name;
 
 	public long getOfferId() {
 		return offerId;
@@ -32,18 +32,18 @@ public class OfferEntity extends Base {
 		this.offerPrice = offerPrice;
 	}
 
-	public String getOfferName() {
-		return offerName;
+	public String getName() {
+		return name;
 	}
 
-	public void setOfferName(String offerName) {
-		this.offerName = offerName;
+	public void setName(String offerName) {
+		this.name = offerName;
 	}
 
 	@Override
 	public String toString() {
 		return "OfferEntity [offerId=" + offerId + ", offerPrice=" + offerPrice
-				+ ", offerName=" + offerName + "]";
+				+ ", offerName=" + name + "]";
 	}
 
 }
