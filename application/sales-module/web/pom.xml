@@ -13,14 +13,6 @@
 	<packaging>war</packaging>
 	<url>http://maven.apache.org</url>
 
-	<repositories>
-		<repository>
-			<id>prime-repo</id>
-			<name>PrimeFaces Maven Repository</name>
-			<url>http://repository.primefaces.org</url>
-			<layout>default</layout>
-		</repository>
-	</repositories>
 
 
 	<dependencies>
@@ -39,16 +31,6 @@
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.primefaces.themes</groupId>
-			<artifactId>humanity</artifactId>
 		</dependency>
 
 		<dependency>
@@ -113,7 +95,7 @@
 
 	</dependencies>
 	<build>
-		<finalName>Sales</finalName>
+		<finalName>web</finalName>
 	</build>
 
 </project>
