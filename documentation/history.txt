@@ -10,3 +10,4 @@ Miskolczy József 2015.08.03 : #49 JUnit tesztet megcsináltam
 Ráti Roland 2015.08.06 :  #18 Létrehoztam az értékesítési pont entitását
 Ráti Roland 2015.08.06 :  #18 Létrehoztam az értékesítési ponthoz szükséges DAO-t
 Ráti Roland 2015.08.06 :  #18 Elkészítettem a tábla létrehozásához szükséges SQL scriptet
+Szabó Bálint 2015.08.06 : #21 Elkészítettem az ajánlat és a hozzá tartozó táblák SQL script-jét.
