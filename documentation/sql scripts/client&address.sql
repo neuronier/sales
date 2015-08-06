@@ -66,7 +66,7 @@ DEFAULT CHARACTER SET = latin1;
 -- -----------------------------------------------------
 -- Table `salespoint`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sales`.`salespoint` (
+CREATE TABLE IF NOT EXISTS `salespoint` (
   `Id` BIGINT(20) NOT NULL COMMENT '',
   `salePointName` VARCHAR(255) NULL COMMENT '',
   `salePointAdress` VARCHAR(255) NULL COMMENT '',
