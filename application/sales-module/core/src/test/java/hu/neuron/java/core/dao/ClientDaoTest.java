@@ -1,4 +1,4 @@
-package core;
+package hu.neuron.java.core.dao;
 
 import hu.neuron.java.core.dao.AddressDAO;
 import hu.neuron.java.core.dao.ClientDAO;

@@ -1,4 +1,4 @@
-package core;
+package hu.neuron.java.core.dao;
 
 import hu.neuron.java.core.dao.SalesPointDAO;
 import hu.neuron.java.core.entity.SalesPoint;

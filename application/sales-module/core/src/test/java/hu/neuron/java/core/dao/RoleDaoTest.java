@@ -1,4 +1,4 @@
-package core;
+package hu.neuron.java.core.dao;
 
 import java.util.List;
 
