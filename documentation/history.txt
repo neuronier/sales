@@ -7,3 +7,6 @@ Szabó Bálint 2015.08.05 : #21 Létrehoztam az ajánlat entitást és a hozzá tartozó
 Szabó Bálint 2015.08.05 : #21 Létrehoztam az ajánlathoz tartozó DAO-t.
 Szabó Bálint 2015.08.05 : #21 Létrehoztam az ajánlat és a rendelés közti kapcsolótáblát.
 Miskolczy József 2015.08.03 : #49 JUnit tesztet megcsináltam
+Ráti Roland 2015.08.06 :  #18 Létrehoztam az értékesítési pont entitását
+Ráti Roland 2015.08.06 :  #18 Létrehoztam az értékesítési ponthoz szükséges DAO-t
+Ráti Roland 2015.08.06 :  #18 Elkészítettem a tábla létrehozásához szükséges SQL scriptet

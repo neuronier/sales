@@ -62,3 +62,20 @@ CREATE TABLE IF NOT EXISTS `client_address_delivery` (
     REFERENCES `address` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
+
+-- -----------------------------------------------------
+-- Table `salespoint`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sales`.`salespoint` (
+  `Id` BIGINT(20) NOT NULL COMMENT '',
+  `salePointName` VARCHAR(255) NULL COMMENT '',
+  `salePointAdress` VARCHAR(255) NULL COMMENT '',
+  `salePointPhoneNumber` VARCHAR(255) NULL COMMENT '',
+  `salePointId` BIGINT(20) NULL COMMENT '',
+  `wareHouseId` BIGINT(20) NULL COMMENT '',
+  PRIMARY KEY (`Id`)  COMMENT '')
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+
