@@ -9,8 +9,11 @@
 
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>hu.neuron.java.sales.database</jta-data-source>
+		<class>hu.neuron.java.core.entity.Address</class>
 		<class>hu.neuron.java.core.entity.Base</class>
+		<class>hu.neuron.java.core.entity.Client</class>
 		<class>hu.neuron.java.core.entity.OfferEntity</class>
+		<class>hu.neuron.java.core.entity.OfferOrderEntity</class>
 		<class>hu.neuron.java.core.entity.OfferProductTypeEntity</class>
 		<class>hu.neuron.java.core.entity.SalesPoint</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
@@ -28,5 +31,8 @@
 				value="EntityManagerJNDI" />
 
 		</properties>
+		
+		
+
 	</persistence-unit>
 </persistence>

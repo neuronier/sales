@@ -12,7 +12,7 @@ public class OfferOrderEntity extends Base {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = OfferEntity.class)
 	@JoinTable(name = "Offer")
 	private long offerId;
 	
