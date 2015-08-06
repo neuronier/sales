@@ -23,41 +23,37 @@ import org.springframework.data.domain.Sort.Direction;
 @Stateless(mappedName = "SalesPointService", name = "SalesPointService")
 @Remote(SalesPointServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class SalesPointServiceImpl implements SalesPointServiceRemote,
-		Serializable {
+public class SalesPointServiceImpl implements SalesPointServiceRemote, Serializable {
 
 	private static final long serialVersionUID = -541159372291863297L;
-	
+
 	@EJB
 	SalesPointDAO salesDao;
-	
+
 	@EJB
 	SalesPointConverter spConverter;
 
 	@Override
 	public void saveSalePoint(SalesPointVO salePoint) {
-		salesDao.save(spConverter.toEntity(salePoint));	
+		salesDao.save(spConverter.toEntity(salePoint));
 	}
 
 	@Override
 	public void updateSalePoint(SalesPointVO salePoint) {
-		salesDao.save(spConverter.toEntity(salePoint));	
-		
+		salesDao.save(spConverter.toEntity(salePoint));
+
 	}
 
 	@Override
 	public void removeSalePoint(SalesPointVO salePoint) {
 		salesDao.delete(spConverter.toEntity(salePoint));
-		
+
 	}
 
 	@Override
-	public List<SalesPointVO> getSalePoints(int page, int size, String sortField,
-			int sortOrder, String filter, String filterColumnName) {
-		Direction dir = sortOrder == 1 ? Sort.Direction.ASC
-				: Sort.Direction.DESC;
-		PageRequest pageRequest = new PageRequest(page, size, new Sort(
-				new Sort.Order(dir, sortField)));
+	public List<SalesPointVO> getSalePoints(int page, int size, String sortField, int sortOrder, String filter, String filterColumnName) {
+		Direction dir = sortOrder == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
+		PageRequest pageRequest = new PageRequest(page, size, new Sort(new Sort.Order(dir, sortField)));
 		Page<SalesPoint> entities;
 
 		if (filter.length() != 0 && filterColumnName.equals("name")) {
