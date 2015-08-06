@@ -15,7 +15,9 @@
 		<class>hu.neuron.java.core.entity.OfferEntity</class>
 		<class>hu.neuron.java.core.entity.OfferOrderEntity</class>
 		<class>hu.neuron.java.core.entity.OfferProductTypeEntity</class>
+		<class>hu.neuron.java.core.entity.Role</class>
 		<class>hu.neuron.java.core.entity.SalesPoint</class>
+		<class>hu.neuron.java.core.entity.User</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 
