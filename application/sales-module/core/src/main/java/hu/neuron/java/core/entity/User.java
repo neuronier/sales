@@ -1,13 +1,20 @@
-package hu.neuron.java.sales.service.vo;
+package hu.neuron.java.core.entity;
 
-import java.io.Serializable;
 import java.util.Collection;
 
-public class UserVO implements Serializable {
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
-	private static final long serialVersionUID = -1465616249735667174L;
+@Entity
+@Table(name = "User")
+@NamedQuery(name = "User.findUserByName", query = "SELECT u FROM User u  WHERE u.userName = :userName")
+public class User extends Base {
 
-	private Long id;
+	private static final long serialVersionUID = 1L;
 
 	private String name;
 
@@ -21,15 +28,9 @@ public class UserVO implements Serializable {
 
 	private String phoneNumber;
 
-	private Collection<RoleVO> roles;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "user_role_sw")
+	private Collection<Role> roles;
 
 	public String getName() {
 		return name;
@@ -79,17 +80,17 @@ public class UserVO implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Collection<RoleVO> getRoles() {
+	public Collection<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Collection<RoleVO> roles) {
+	public void setRoles(Collection<Role> roles) {
 		this.roles = roles;
 	}
 
 	@Override
 	public String toString() {
-		return "UserVO [name=" + name + ", userName=" + userName + ", email=" + email + "]";
+		return "User [userName=" + userName + ", password=" + password + ", getId()=" + getId() + "]";
 	}
 
 }

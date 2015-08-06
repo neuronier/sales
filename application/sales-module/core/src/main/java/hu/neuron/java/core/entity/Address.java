@@ -25,7 +25,7 @@ public class Address extends Base {
 	private String sreet;
 
 	/**
-	 * Házszám
+	 * Házszám.
 	 */
 	private String houseNumber;
 
