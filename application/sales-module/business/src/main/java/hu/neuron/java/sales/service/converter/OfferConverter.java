@@ -3,6 +3,8 @@ package hu.neuron.java.sales.service.converter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.Singleton;
+
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,7 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import hu.neuron.java.core.entity.OfferEntity;
 import hu.neuron.java.sales.service.vo.OfferVO;
 
-
+@Singleton
 public class OfferConverter {
 
 	@Autowired
