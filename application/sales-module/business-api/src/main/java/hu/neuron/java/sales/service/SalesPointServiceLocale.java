@@ -4,7 +4,7 @@ import hu.neuron.java.sales.service.vo.SalesPointVO;
 
 import java.util.List;
 
-public interface SalesPointServiceRemote {
+public interface SalesPointServiceLocale {
 	
 	public void saveSalePoint(SalesPointVO salePoint);
 	

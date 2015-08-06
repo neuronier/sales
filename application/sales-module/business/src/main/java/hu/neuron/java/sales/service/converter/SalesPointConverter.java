@@ -1,10 +1,10 @@
 package hu.neuron.java.sales.service.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import hu.neuron.java.core.entity.SalesPoint;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Singleton;
 
