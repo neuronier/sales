@@ -50,6 +50,21 @@
 				<configuration>
 					<version>6</version>
 					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<generateApplicationXml>true</generateApplicationXml>
+                <applicationName>Gen</applicationName>
+                <modules>
+                    <ejbModule>
+                        <artifactId>business</artifactId>
+                        <groupId>hu.neuron.java.sales</groupId>
+                        <bundleFileName>ejb.jar</bundleFileName>
+                    </ejbModule>
+                    <webModule>
+                        <artifactId>web</artifactId>
+                        <groupId>hu.neuron.java.sales</groupId>
+                        <bundleFileName>web.war</bundleFileName>
+                        <contextRoot>/sales</contextRoot>                         
+                    </webModule>
+                </modules>
 				</configuration>
 			</plugin>
 		</plugins>

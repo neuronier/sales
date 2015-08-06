@@ -1,9 +1,9 @@
 package hu.neuron.java.sales.service.test;
 
-import javax.interceptor.Interceptors;
-
-import hu.neuron.java.sales.service.SalesPointServiceLocale;
+import hu.neuron.java.sales.service.SalesPointServiceRemote;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
+
+import javax.interceptor.Interceptors;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SalesPointServiceTest {
 	
 	@Autowired
-	SalesPointServiceLocale salesPointService;
+	SalesPointServiceRemote salesPointService;
 	
 	@Test
 	public void test1Create() {

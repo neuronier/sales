@@ -2,7 +2,7 @@ package hu.neuron.java.sales.service.impl;
 
 import hu.neuron.java.core.dao.SalesPointDAO;
 import hu.neuron.java.core.entity.SalesPoint;
-import hu.neuron.java.sales.service.SalesPointServiceLocale;
+import hu.neuron.java.sales.service.SalesPointServiceRemote;
 import hu.neuron.java.sales.service.converter.SalesPointConverter;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
 
@@ -14,20 +14,22 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
 @Stateless(mappedName = "SalesPointService", name = "SalesPointService")
-@Remote(SalesPointServiceLocale.class)
+@Remote(SalesPointServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class SalesPointServiceImpl implements SalesPointServiceLocale,
+public class SalesPointServiceImpl implements SalesPointServiceRemote,
 		Serializable {
 
 	private static final long serialVersionUID = -541159372291863297L;
 
-	@EJB
+	@Autowired
 	SalesPointDAO salesDao;
 
 	@EJB
