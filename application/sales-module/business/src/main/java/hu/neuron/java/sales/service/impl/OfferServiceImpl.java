@@ -5,7 +5,7 @@ import java.util.List;
 
 import hu.neuron.java.core.dao.OfferDAO;
 import hu.neuron.java.core.entity.OfferEntity;
-import hu.neuron.java.sales.service.OfferServiceLocale;
+import hu.neuron.java.sales.service.OfferServiceRemote;
 import hu.neuron.java.sales.service.converter.OfferConverter;
 import hu.neuron.java.sales.service.vo.OfferVO;
 
@@ -15,22 +15,23 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
 @Stateless(mappedName = "OfferService",name = "OfferService")
-@Remote(OfferServiceLocale.class)
+@Remote(OfferServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class OfferServiceImpl implements OfferServiceLocale, Serializable {
+public class OfferServiceImpl implements OfferServiceRemote, Serializable {
  
 	private static final long serialVersionUID = 8870541031617767500L;
 
 	@EJB
 	OfferConverter offerConverter;
 	
-	@EJB
+	@Autowired
 	OfferDAO offerDao;
 	
 	@Override

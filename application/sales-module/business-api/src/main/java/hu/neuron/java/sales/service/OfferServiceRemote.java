@@ -4,7 +4,7 @@ import java.util.List;
 
 import hu.neuron.java.sales.service.vo.OfferVO;
 
-public interface OfferServiceLocale {
+public interface OfferServiceRemote {
 
 	public void saveOffer(OfferVO offer);
 	
