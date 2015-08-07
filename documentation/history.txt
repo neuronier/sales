@@ -12,3 +12,4 @@ Ráti Roland 2015.08.06 :  #18 Létrehoztam az értékesítési ponthoz szükséges DAO-
 Ráti Roland 2015.08.06 :  #18 Elkészítettem a tábla létrehozásához szükséges SQL scriptet
 Szabó Bálint 2015.08.06 : #21 Elkészítettem az ajánlat és a hozzá tartozó táblák SQL script-jét.
 Szabó Bálint 2015.08.06 : #22 Létrehoztam az ajánlatkezeléshez szükséges szolgáltatás interfészét, a hozzá tartozó VO-kat, az ajánlatkonvertálót és az implementációt.
+Ráti Roland 2015.08.07 :  #25 Elkészítettem az ügyfélhez tartozó szolgáltatásokat
