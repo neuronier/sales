@@ -9,6 +9,8 @@ public class SalesPointVO implements Serializable{
 	
 	public SalesPointVO(){}
 	
+	private String name;
+	
 	private Long identifier;
 	
 	private WarehouseVO warehouse;
@@ -47,6 +49,14 @@ public class SalesPointVO implements Serializable{
 
 	public void setWarehouse(WarehouseVO warehouse) {
 		this.warehouse = warehouse;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

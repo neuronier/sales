@@ -69,4 +69,16 @@ public class SalesPointServiceImpl implements SalesPointServiceRemote,
 		return ret;
 	}
 
+	@Override
+	public SalesPointVO findSalePointByName(String name) throws Exception {
+		SalesPointVO rVO = spConverter.toVO(salesDao.findSalesPointByName(name));
+		return rVO;
+	}
+
+	@Override
+	public List<SalesPointVO> findAll() {
+		List<SalesPointVO> rvList = spConverter.toVO(salesDao.findAll());
+		return rvList;
+	}
+
 }

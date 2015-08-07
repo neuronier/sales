@@ -12,7 +12,11 @@ public interface SalesPointServiceRemote {
 	
 	public void removeSalePoint(SalesPointVO salePoint);
 	
+	public SalesPointVO findSalePointByName(String name) throws Exception;
+	
 	public List<SalesPointVO> getSalePoints(int i, int pageSize, String sortField,
 			int dir, String filter, String filterColumnName);
+
+	public List<SalesPointVO> findAll();
 
 }
