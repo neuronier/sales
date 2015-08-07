@@ -9,10 +9,18 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>web</artifactId>
-	<name>Web module</name>
+	<name>Sales Web module</name>
 	<packaging>war</packaging>
 	<url>http://maven.apache.org</url>
 
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>PrimeFaces Maven Repository</name>
+			<url>http://repository.primefaces.org</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 
 
 	<dependencies>
@@ -90,6 +98,16 @@
 		<dependency>
 			<groupId>net.sf.dozer</groupId>
 			<artifactId>dozer</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>humanity</artifactId>
 		</dependency>
 
 
