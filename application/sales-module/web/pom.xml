@@ -113,7 +113,7 @@
 
 	</dependencies>
 	<build>
-		<finalName>web</finalName>
+		<finalName>salesApp</finalName>
 	</build>
 
 </project>

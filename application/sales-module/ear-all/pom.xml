@@ -51,6 +51,13 @@
 					<version>6</version>
 					<defaultLibBundleDir>lib</defaultLibBundleDir>
 					<generateApplicationXml>true</generateApplicationXml>
+					<modules>
+						<webModule>
+							<groupId>hu.neuron.java.sales</groupId>
+							<artifactId>web</artifactId>
+							<contextRoot>/salesApp</contextRoot>
+						</webModule>
+					</modules>
 				</configuration>
 			</plugin>
 		</plugins>
