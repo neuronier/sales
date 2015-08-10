@@ -26,7 +26,7 @@ public class LazySalesPointModel extends LazyDataModel<SalesPointVO> {
 	public SalesPointVO getRowData(String rowkey) {
 		if (visibleSalesPointList != null || rowkey != null) {
 			for (SalesPointVO salesPointVO : visibleSalesPointList) {
-				if (salesPointVO.getIdentifier().toString().equals(rowkey)) {
+				if (salesPointVO.getID().toString().equals(rowkey)) {
 					return salesPointVO;
 				}
 			}
@@ -39,7 +39,7 @@ public class LazySalesPointModel extends LazyDataModel<SalesPointVO> {
 		if (salesPointVO == null) {
 			return null;
 		}
-		return salesPointVO.getIdentifier();
+		return salesPointVO.getID();
 	}
 
 	@Override
