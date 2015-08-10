@@ -1,36 +1,42 @@
 package hu.neuron.java.sales.service.test;
 
 import java.util.List;
+import java.util.Properties;
 
 import hu.neuron.java.sales.service.SalesPointServiceRemote;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
 
-import javax.interceptor.Interceptors;
+import javax.ejb.EJB;
+import javax.ejb.embeddable.EJBContainer;
 
 import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/spring-test-business.xml")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@Transactional
-@TransactionConfiguration(defaultRollback = false)
-@Interceptors(SpringBeanAutowiringInterceptor.class)
 public class SalesPointServiceTest {
 
 	private static final Logger logger = Logger.getLogger(SalesPointServiceTest.class);
 	private static SalesPointVO sp;
+	
+	@Before
+	public void startTheContainer() throws Exception {
+		final Properties p = new Properties();
 
-	@Autowired
+		p.put("hu.neuron.java.jpa.hibernate.hbm2ddl.auto", "update");
+		p.put("hu.neuron.java.jpa.hibernate.dialect",
+				"org.hibernate.dialect.HSQLDialect");
+		p.put("hu.neuron.JpaDataSource", "new://Resource?type=DataSource");
+		p.put("hu.neuron.JpaDataSource.JdbcDriver", "org.hsqldb.jdbcDriver");
+		p.put("hu.neuron.JpaDataSource.JdbcUrl", "jdbc:hsqldb:mem:protected");
+
+		EJBContainer ejbContainer = EJBContainer.createEJBContainer(p);
+		ejbContainer.getContext().bind("inject", this);
+	}
+
+	@EJB(name = "SalesPointService", mappedName = "SalesPointService")
 	SalesPointServiceRemote salesPointService;
 
 	@Test

@@ -19,21 +19,13 @@
 		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 	<context:component-scan base-package="hu.neuron.java.core" />
-	
-	<jpa:repositories base-package="hu.neuron.java.core.dao" />
 
 	<bean id="entityManagerFactory" class="org.hibernate.ejb.EntityManagerFactoryImpl"
 		factory-method="getNamedEntityManagerFactory">
 		<constructor-arg value="EntityManagerJNDI" />
 	</bean>
 
-	<!-- <bean id="entityManagerFactory" -->
-	<!-- class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"> -->
-	<!-- <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" 
-		/> -->
-	<!-- <property name="persistenceUnitName" value="hu.neuron.java.jpa" /> -->
-	<!-- </bean> -->
-	<jpa:repositories base-package="hu.neuron.java.core"
+		<jpa:repositories base-package="hu.neuron.java.core"
 		entity-manager-factory-ref="entityManagerFactory"
 		repository-impl-postfix="Impl" />
 
@@ -43,9 +35,7 @@
 	</bean>
 	<tx:annotation-driven />
 	<tx:jta-transaction-manager></tx:jta-transaction-manager>
-
-	<bean id="myAspect" class="hu.neuron.java.core.LoggerAspect"></bean>
-
+	
 	<aop:aspectj-autoproxy />
 
 </beans>

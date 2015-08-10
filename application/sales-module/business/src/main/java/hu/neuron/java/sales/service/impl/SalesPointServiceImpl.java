@@ -14,16 +14,19 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 @Stateless(mappedName = "SalesPointService", name = "SalesPointService")
 @Remote(SalesPointServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Interceptors(SpringBeanAutowiringInterceptor.class)
 public class SalesPointServiceImpl implements SalesPointServiceRemote,
 		Serializable {
 
@@ -79,6 +82,11 @@ public class SalesPointServiceImpl implements SalesPointServiceRemote,
 	public List<SalesPointVO> findAll() {
 		List<SalesPointVO> rvList = spConverter.toVO(salesDao.findAll());
 		return rvList;
+	}
+	
+	@Override
+	public int getRowNumber() {
+		return (int) salesDao.count();
 	}
 
 }

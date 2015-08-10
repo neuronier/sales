@@ -1,1 +1,0 @@
-Ez csak ezért kell, hogy a git feltegye ezt a mappát a repóba. Ha lesz itt más fájl akkor ez a txt törölhetõ.

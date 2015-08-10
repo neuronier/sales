@@ -46,16 +46,16 @@ public class Client extends Base {
 	/**
 	 * Az ügyfélhez tartozó számlázási címek.
 	 */
-	@ManyToMany
-	@JoinTable(name = "client_address_billing")
-	private List<Address> billingAddress;
-
-	/**
-	 * Az ügyfélhez tartozó szállítási címek.
-	 */
-	@ManyToMany
-	@JoinTable(name = "client_address_delivery")
-	private List<Address> deliveryAddress;
+//	@ManyToMany
+//	@JoinTable(name = "client_address_billing")
+//	private List<Address> billingAddress;
+//
+//	/**
+//	 * Az ügyfélhez tartozó szállítási címek.
+//	 */
+//	@ManyToMany
+//	@JoinTable(name = "client_address_delivery")
+//	private List<Address> deliveryAddress;
 
 	public String getName() {
 		return name;
@@ -105,20 +105,20 @@ public class Client extends Base {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public List<Address> getBillingAddress() {
-		return billingAddress;
-	}
-
-	public void setBillingAddress(List<Address> billingAddress) {
-		this.billingAddress = billingAddress;
-	}
-
-	public List<Address> getDeliveryAddress() {
-		return deliveryAddress;
-	}
-
-	public void setDeliveryAddress(List<Address> deliveryAddress) {
-		this.deliveryAddress = deliveryAddress;
-	}
+//	public List<Address> getBillingAddress() {
+//		return billingAddress;
+//	}
+//
+//	public void setBillingAddress(List<Address> billingAddress) {
+//		this.billingAddress = billingAddress;
+//	}
+//
+//	public List<Address> getDeliveryAddress() {
+//		return deliveryAddress;
+//	}
+//
+//	public void setDeliveryAddress(List<Address> deliveryAddress) {
+//		this.deliveryAddress = deliveryAddress;
+//	}
 
 }

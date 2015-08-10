@@ -19,4 +19,6 @@ public interface SalesPointServiceRemote {
 
 	public List<SalesPointVO> findAll();
 
+	public int getRowNumber();
+
 }

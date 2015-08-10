@@ -11,28 +11,73 @@
 
 
 	<ui:define name="content">
-
-
 		<h:form id="form">
+			<p:dataTable var="salesPoint" value="#{salesPointController.lazySalesPointModel}"
+				paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" selectionMode="single"
+				selection="#{salesPointController.selectedSalesPoint}" id="salesPointTable"
+				lazy="true">
 
-			<p:inputText required="true" value="#{asyncProcess.number}" />
-			<p:commandButton value="Start" update="form"
-				actionListener="#{asyncProcess.start}"
-				oncomplete="PF('pbAjax').start();PF('startButton').disable();"
-				widgetVar="startButton" />
+				<p:ajax event="rowSelect" listener="#{salesPointController.onRowSelect}"
+					update=":form:removeButton,:form:updateButton,:updateSalesPointDialog" />
 
-			<br />
-			
-			<p:progressBar widgetVar="pbAjax" ajax="true"
-				rendered="#{asyncProcess.inProgress}" 
-				value="#{asyncProcess.progress}" labelTemplate="{value}%"
-				styleClass="animated" global="false">
-				<p:ajax event="complete"
-					oncomplete="PF('startButton').enable();" />
-			</p:progressBar>
+				<p:column headerText="Name" sortBy="#{salesPoint.name}"
+					filterBy="#{salesPoint.name}">
+					<h:outputText value="#{salesPoint.name}" />
+				</p:column>
+
+			</p:dataTable>
+
+			<div class="ui-grid ui-grid-responsive">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-3"></div>
+					<div class="ui-grid-col-3">
+						<p:commandButton value="Save" type="button"
+							onclick="PF('createSalesPoint').show();" />
+					</div>
+					<div class="ui-grid-col-3">
+						<p:commandButton value="Update" type="button" id="updateButton"
+							disabled="#{salesPointController.selectedSalesPoint == null}"
+							onclick="PF('updateSalesPoint').show();" />
+					</div>
+					<div class="ui-grid-col-3">
+						<p:commandButton value="Delete" id="removeButton"
+							update="form:salesPointTable,form:removeButton,form:updateButton"
+							disabled="#{salesPointController.selectedSalesPoint == null}"
+							actionListener="#{salesPointController.removeSalesPoint}" />
+					</div>
+				</div>
+			</div>
 
 		</h:form>
+		<p:dialog header="Effects" widgetVar="createSalesPoint" showEffect="explode"
+			hideEffect="bounce" mheight="100" modal="true">
+			<h:form>
+				<h:outputLabel for="salesPointName" value="Name:" style="font-weight:bold" />
+				<p:inputText id="salesPointName" required="true"
+					value="#{salesPointController.newSalesPointName}" />
 
+				<p:commandButton value="Save" id="save"
+					actionListener="#{salesPointController.saveNewSalesPoint}"
+					update=":form:salesPointTable" icon="ui-icon-disk"
+					oncomplete="PF('createSalesPoint').hide();" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Effects" widgetVar="updateSalesPoint" showEffect="explode"
+			id="updateSalesPointDialog" hideEffect="bounce" mheight="100" modal="true">
+			<h:form>
+				<h:outputLabel for="salesPointName" value="Name:" style="font-weight:bold" />
+				<p:inputText id="salesPointName" required="true"
+					value="#{salesPointController.updateSalesPointName}" />
+
+				<p:commandButton value="Update" id="update"
+					actionListener="#{salesPointController.updateSalesPoint}"
+					update=":form:salesPointTable,:form:updateButton,:form:removeButton"
+					icon="ui-icon-disk" oncomplete="PF('updateSalesPoint').hide();" />
+			</h:form>
+		</p:dialog>
 
 	</ui:define>
 </ui:composition>

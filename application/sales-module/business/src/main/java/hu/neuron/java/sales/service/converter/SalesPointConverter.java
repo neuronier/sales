@@ -1,58 +1,81 @@
 package hu.neuron.java.sales.service.converter;
 
 import hu.neuron.java.core.entity.SalesPoint;
+import hu.neuron.java.sales.service.vo.AddressVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
+import hu.neuron.java.sales.service.vo.WarehouseVO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Singleton;
 
-import org.dozer.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
 @Singleton
 public class SalesPointConverter {
-	
-	@Autowired
-	@Qualifier("mapper")
-	Mapper mapper;
-	
-	public SalesPointVO toVO(SalesPoint dto) {
-		if (dto == null) {
+
+	/**
+	 * ÁTMENETI CONVERTER- AZ ENTITÁSOK NORMÁLIS KIALAKÍTÁSA UTÁN MÉG ÁT KELL ÍRNI!!!!
+	 * */
+	public SalesPointVO toVO(SalesPoint entity) {
+		if (entity == null) {
 			return null;
 		}
-		return mapper.map(dto, SalesPointVO.class);
+		SalesPointVO rv = new SalesPointVO();
+		rv.setAddress(new AddressVO(entity.getSalePointAdress()));
+		rv.setIdentifier(entity.getId());
+		rv.setName(entity.getName());
+		//TODO HIÁNYZIK AZ ENTITYBŐL A SALE POINT USEREK TÁROLÁSA
+		rv.setWarehouse(new WarehouseVO(entity.getWareHouseId()));
+		return rv;
 	}
 
+	/**
+	 * ÁTMENETI CONVERTER- AZ ENTITÁSOK NORMÁLIS KIALAKÍTÁSA UTÁN MÉG ÁT KELL ÍRNI!!!!
+	 * */
 	public SalesPoint toEntity(SalesPointVO vo) {
 		if (vo == null) {
 			return null;
 		}
-		return mapper.map(vo, SalesPoint.class);
+		SalesPoint rv = new SalesPoint();
+		if(vo.getAddress()!=null){
+			rv.setSalePointAdress(vo.getAddress().getSalePointAdress());
+		}
+		rv.setName(vo.getName());
+		if(vo.getIdentifier() != null){
+			rv.setSalePointId(vo.getIdentifier());
+		}
+		if(vo.getWarehouse() != null){
+			rv.setWareHouseId(vo.getWarehouse().getWareHouseId());
+		}
+		return rv;
 	}
 
-	public List<SalesPointVO> toVO(List<SalesPoint> dtos) {
-		if (dtos == null) {
+	/**
+	 * ÁTMENETI CONVERTER- AZ ENTITÁSOK NORMÁLIS KIALAKÍTÁSA UTÁN MÉG ÁT KELL ÍRNI!!!!
+	 * */
+	public List<SalesPointVO> toVO(List<SalesPoint> enitites) {
+		if (enitites == null) {
 			return null;
 		}
 		List<SalesPointVO> vos = new ArrayList<SalesPointVO>();
-		for (SalesPoint dto : dtos) {
+		for (SalesPoint dto : enitites) {
 			vos.add(toVO(dto));
 		}
 		return vos;
 	}
 
+	/**
+	 * ÁTMENETI CONVERTER- AZ ENTITÁSOK NORMÁLIS KIALAKÍTÁSA UTÁN MÉG ÁT KELL ÍRNI!!!!
+	 * */
 	public List<SalesPoint> toEntity(List<SalesPointVO> vos) {
 		if (vos == null) {
 			return null;
 		}
-		List<SalesPoint> dtos = new ArrayList<SalesPoint>();
+		List<SalesPoint> enitites = new ArrayList<SalesPoint>();
 		for (SalesPointVO vo : vos) {
-			dtos.add(toEntity(vo));
+			enitites.add(toEntity(vo));
 		}
-		return dtos;
+		return enitites;
 	}
 
 }
