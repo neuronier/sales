@@ -5,6 +5,37 @@
 	<artifactId>sales-module</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+
+	<name>Értékesítés támogató modul</name>
+
+	<developers>
+		<developer>
+			<name>Miskolczy József</name>
+			<email>mjoc87@gmail.com</email>
+		</developer>
+		<developer>
+			<name>Papp Dávid</name>
+			<email></email>
+		</developer>
+		<developer>
+			<name>Ráti Roland</name>
+			<email>rol.rati@gmail.com</email>
+		</developer>
+		<developer>
+			<name>Szabó Bálint István</name>
+			<email></email>
+		</developer>
+	</developers>
+
+	<description>
+	Az Értékesítés támogató modul képes értékesítés pontokat kezelni, azokhoz raktárakat és felhasználókat rendelni.
+	A modul képes egyes termékekhez ajánlatokat létrehozni és azokat értékesíteni ügyfelek számára. A modul képes megjeleníteni 
+	az egyes értékesítési pontokhoz rendelt raktár készletét, valamint képes megrendeléseket készíteni. Képes más moduloknak 
+	információt nyújtani az általa beregisztrált ügyfelekről, valamint azok által vásárolt termékekről. A modul képes más modulban
+	beregisztrált ügyfelek adatait fogadni. A modul képes más moduloknak információt nyújtani a létrehozott ajánlatokról. A modul 
+	lehetőséget ad az ügyfelek adatait módosítani, valamint az értékesítési pontok eladásiról riportot készíteni
+	</description>
+
 	<modules>
 		<module>business-api</module>
 		<module>core</module>
@@ -238,12 +269,12 @@
 				</includes>
 			</resource>
 			<resource>
-            <directory>src/main/resources</directory>
-            <includes>
-                <include>**/*.properties</include>
-                <include>**/*.xml</include>
-            </includes>
-        </resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
 		</resources>
 		<plugins>
 			<plugin>

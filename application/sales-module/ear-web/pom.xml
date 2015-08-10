@@ -12,6 +12,8 @@
 	<packaging>ear</packaging>
 
 	<name>ear-web</name>
+	
+	<description>A web modul telepítéséhez szükséges ear fájl előállítását megvalósító modul</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -11,6 +11,8 @@
 	<artifactId>web</artifactId>
 	<name>Sales Web module</name>
 	<packaging>war</packaging>
+	
+	<description>A szolgáltatások web-es megjelenítését megvalósító modul</description>
 	<url>http://maven.apache.org</url>
 
 	<repositories>

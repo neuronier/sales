@@ -8,7 +8,11 @@
 	</parent>
 	<artifactId>business</artifactId>
 	<name>Business</name>
+	
 	<packaging>ejb</packaging>
+	
+	<description>Az üzleti folyamatok kezelésére szolgáló modul</description>
+	
 	<build>
 		<plugins>
 			<plugin>
