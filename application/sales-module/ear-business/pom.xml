@@ -11,6 +11,8 @@
     <packaging>ear</packaging>
 
     <name>ear-business</name>
+    
+    <description>A business modul telepítéséhez szükséges ear fájl előállítását megvalósító modul</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

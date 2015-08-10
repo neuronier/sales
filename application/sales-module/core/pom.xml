@@ -8,6 +8,7 @@
 	</parent>
 	<artifactId>core</artifactId>
 	<name>Core</name>
+	<description>Az adatbázis műveletek megvalósítását támogató modul</description>
 
 	<dependencies>
 		<dependency>
