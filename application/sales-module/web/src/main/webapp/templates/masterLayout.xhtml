@@ -21,16 +21,26 @@
 	</h:head>
 
 	<h:body>
-		<h:form> 
+		<h:outputStylesheet library="css" name="default.css" />
+		<h:form>
 			<p:growl id="growl" showDetail="true" autoUpdate="true" />
 			<p:menubar>
-				<p:submenu label="Pages" icon="ui-icon-pencil">
-					<p:menuitem value="SalePoint Management" url="/public/demo.xhtml" />
-				</p:submenu>
-	
+				<p:menuitem value="Sale Points" url="/public/demo.xhtml" />
+				<p:menuitem value="Offers" url="/public/demo.xhtml" />
+				<p:menuitem value="Customers" url="/public/demo.xhtml" />
+				<p:menuitem value="Sell" url="/public/demo.xhtml" />
+				<p:menuitem value="Orders" url="/public/demo.xhtml" />
+				<p:menuitem value="Reports" url="/public/demo.xhtml" />
+				<p:menuitem value="User Management" url="/public/demo.xhtml" />
+				<f:facet name="options">
+					<p:inputText style="margin-right:10px" placeholder="Search" />
+					<p:commandButton type="button" value="Logout"
+						icon="ui-icon-extlink" />
+				</f:facet>
+
 			</p:menubar>
-		</h:form> 
-		
+		</h:form>
+
 		<div id="contentDiv">
 			<div class="ui-wrap-content">
 				<div id="content">
