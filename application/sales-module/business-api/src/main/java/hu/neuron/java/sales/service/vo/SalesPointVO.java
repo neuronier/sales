@@ -11,6 +11,8 @@ public class SalesPointVO implements Serializable{
 	
 	private String name;
 	
+	private Long ID;
+	
 	private Long identifier;
 	
 	private WarehouseVO warehouse;
@@ -57,6 +59,14 @@ public class SalesPointVO implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
 	}
 	
 }

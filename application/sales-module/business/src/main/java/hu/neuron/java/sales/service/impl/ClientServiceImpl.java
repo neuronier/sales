@@ -40,7 +40,7 @@ public class ClientServiceImpl implements ClientServiceRemote, Serializable{
 	@Autowired
 	ClientDAO clientDAO;
 	
-	@EJB
+	@Autowired
 	ClientConverter clientConverter;
 	
 	public ClientServiceImpl(){

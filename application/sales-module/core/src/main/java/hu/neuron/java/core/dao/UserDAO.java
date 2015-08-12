@@ -20,9 +20,6 @@ public interface UserDAO extends JpaRepository<User, Long> {
 	
 	User findUserById(@Param("id") Long id) throws Exception;
 	
-//	@Query("select u from User u where u.userName=?1")
-//	User findUserByUserName(String userName) throws Exception;
-	
 	Page<User> findByUserNameStartsWith(String filter,Pageable pageable);
 
 }

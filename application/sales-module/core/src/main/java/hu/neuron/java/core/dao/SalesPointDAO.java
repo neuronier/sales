@@ -17,6 +17,5 @@ public interface SalesPointDAO extends JpaRepository<SalesPoint, Long>{
 	@Query("select sp from SalesPoint sp where sp.name=?1")
 	SalesPoint findSalesPointByName(String name) throws Exception;
 	
-	//Spring Data legyártja? - SalesPointServiceImpl-ben kell ilyen a lapzható lekérdezéshez.
 	Page<SalesPoint> findByNameStartsWith(String filter, Pageable pageRequest);
 }

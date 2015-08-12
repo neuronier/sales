@@ -8,16 +8,14 @@ import hu.neuron.java.sales.service.vo.RoleVO;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
-import javax.interceptor.Interceptors;
 
 import org.apache.log4j.Logger;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
+import org.springframework.stereotype.Component;
 
-@Singleton
-@Interceptors(SpringBeanAutowiringInterceptor.class)
+@Component
 public class RoleConverter {
 	
 	private static final Logger logger = Logger.getLogger(RoleConverter.class);

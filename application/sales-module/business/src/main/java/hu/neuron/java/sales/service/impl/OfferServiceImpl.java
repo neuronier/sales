@@ -14,21 +14,24 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 @Stateless(mappedName = "OfferService",name = "OfferService")
 @Remote(OfferServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Interceptors(SpringBeanAutowiringInterceptor.class)
 public class OfferServiceImpl implements OfferServiceRemote, Serializable {
  
 	private static final long serialVersionUID = 8870541031617767500L;
 
-	@EJB
+	@Autowired
 	OfferConverter offerConverter;
 	
 	@Autowired

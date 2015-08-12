@@ -1,12 +1,13 @@
 package hu.neuron.java.sales.service.impl;
 
 import hu.neuron.java.core.dao.RoleDAO;
-import hu.neuron.java.core.dao.UserRoleDAO;
+import hu.neuron.java.core.dao.UserDAO;
 import hu.neuron.java.core.entity.Role;
 import hu.neuron.java.sales.service.RoleServiceRemote;
 import hu.neuron.java.sales.service.converter.RoleConverter;
 import hu.neuron.java.sales.service.converter.UserConverter;
 import hu.neuron.java.sales.service.vo.RoleVO;
+import hu.neuron.java.sales.service.vo.UserVO;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,6 +21,7 @@ import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,37 +42,24 @@ public class RoleServiceImpl implements RoleServiceRemote, Serializable {
 	private EntityManager entityManager;
 
 	@Autowired
-	RoleDAO roleDao;
-	
-	@Autowired
-	UserRoleDAO userRoleDao;
+	UserDAO userDao;
 
-	@EJB
+	@Autowired
+	RoleDAO roleDao;
+
+	@Autowired
 	RoleConverter roleConverter;
 
-	@EJB
+	@Autowired
 	UserConverter userConverter;
 
 	public RoleServiceImpl() {
 	}
 
-//	@Override
-//	public UserVO setUpRoles(UserVO vo) throws Exception {
-//		logger.debug(entityManager);
-//		List<Role> roles;
-//		try {
-//			roles = roleDao.findRolesByUserId(vo.getId());
-//			vo.setRoles(roleConverter.toVO(roles));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return vo;
-//
-//	}
 
 	@Override
 	public int getRowNumber() {
-		return (int) roleDao.count();
+		return (int) userDao.count();
 	}
 
 	@Override

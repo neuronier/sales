@@ -1,9 +1,9 @@
 package hu.neuron.java.core.dao;
 
-
-import hu.neuron.java.core.entity.OfferEntity;
+import hu.neuron.java.core.entity.ProductTypeEntity;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,11 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional(propagation = Propagation.SUPPORTS)
-public interface OfferDAO extends JpaRepository<OfferEntity, Long> {
+public interface ProductTypeDAO extends JpaRepository<ProductTypeEntity, Long>{
 	
-	OfferEntity findOfferEntityByName(String name) throws Exception;
+	ProductTypeEntity findProductTypeEntityByName(String name) throws Exception;
 	
-	OfferEntity findOfferEntityByOfferId(Long offerId) throws Exception;
+	ProductTypeEntity findProductTypeEntityByProductTypeId(Long productTypeId) throws Exception;
+
+	Page<ProductTypeEntity> findByNameStartsWith(String filter, Pageable pageable);
 	
-	Page<OfferEntity> findByNameStartsWith(String filter, Pageable pageRequest);
 }
+

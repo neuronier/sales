@@ -1,15 +1,17 @@
-package hu.neuron.java.sales.service.vo;
+package hu.neuron.java.core.entity;
 
-public class ProductTypeVO {
-	//TODO
-	/*MISSING CODE*/
-	
-	private Long ID;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ProductType")
+public class ProductTypeEntity extends Base {
+
+	private static final long serialVersionUID = -4534980851713861745L;
 	
 	private String name;
 	
 	private Long productTypeId;
-
 
 	public Long getProductTypeId() {
 		return productTypeId;
@@ -25,13 +27,5 @@ public class ProductTypeVO {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Long getID() {
-		return ID;
-	}
-
-	public void setID(Long iD) {
-		ID = iD;
 	}
 }

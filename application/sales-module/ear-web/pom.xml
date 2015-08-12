@@ -12,7 +12,7 @@
 	<packaging>ear</packaging>
 
 	<name>ear-web</name>
-	
+
 	<description>A web modul telepítéséhez szükséges ear fájl előállítását megvalósító modul</description>
 
 	<properties>
@@ -46,6 +46,7 @@
 				<configuration>
 					<version>6</version>
 					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<generateApplicationXml>true</generateApplicationXml>
 				</configuration>
 			</plugin>
 		</plugins>

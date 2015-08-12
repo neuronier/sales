@@ -10,7 +10,9 @@ import java.util.List;
 
 import javax.ejb.Singleton;
 
-@Singleton
+import org.springframework.stereotype.Component;
+
+@Component
 public class SalesPointConverter {
 
 	/**
@@ -22,7 +24,7 @@ public class SalesPointConverter {
 		}
 		SalesPointVO rv = new SalesPointVO();
 		rv.setAddress(new AddressVO(entity.getSalePointAdress()));
-		rv.setIdentifier(entity.getId());
+		rv.setID(entity.getId());
 		rv.setName(entity.getName());
 		//TODO HIÁNYZIK AZ ENTITYBŐL A SALE POINT USEREK TÁROLÁSA
 		rv.setWarehouse(new WarehouseVO(entity.getWareHouseId()));
@@ -41,12 +43,13 @@ public class SalesPointConverter {
 			rv.setSalePointAdress(vo.getAddress().getSalePointAdress());
 		}
 		rv.setName(vo.getName());
-		if(vo.getIdentifier() != null){
-			rv.setSalePointId(vo.getIdentifier());
+		if(vo.getID() != null){
+			rv.setSalePointId(vo.getID());
 		}
 		if(vo.getWarehouse() != null){
 			rv.setWareHouseId(vo.getWarehouse().getWareHouseId());
 		}
+		rv.setId(vo.getID());;
 		return rv;
 	}
 

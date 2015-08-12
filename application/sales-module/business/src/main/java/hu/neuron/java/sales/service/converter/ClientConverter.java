@@ -13,8 +13,9 @@ import org.apache.log4j.Logger;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
-@Singleton
+@Component
 public class ClientConverter {
 
 	private static final Logger logger = Logger.getLogger(ClientConverter.class);
