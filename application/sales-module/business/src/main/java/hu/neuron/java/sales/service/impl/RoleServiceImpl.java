@@ -45,10 +45,10 @@ public class RoleServiceImpl implements RoleServiceRemote, Serializable {
 	@Autowired
 	RoleDAO roleDao;
 
-	@EJB
+	@Autowired
 	RoleConverter roleConverter;
 
-	@EJB
+	@Autowired
 	UserConverter userConverter;
 
 	public RoleServiceImpl() {

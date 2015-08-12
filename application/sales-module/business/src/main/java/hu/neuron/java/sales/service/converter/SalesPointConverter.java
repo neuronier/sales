@@ -10,7 +10,9 @@ import java.util.List;
 
 import javax.ejb.Singleton;
 
-@Singleton
+import org.springframework.stereotype.Component;
+
+@Component
 public class SalesPointConverter {
 
 	/**

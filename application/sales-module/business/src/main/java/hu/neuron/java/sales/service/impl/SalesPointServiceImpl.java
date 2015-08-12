@@ -35,7 +35,7 @@ public class SalesPointServiceImpl implements SalesPointServiceRemote,
 	@Autowired
 	SalesPointDAO salesDao;
 
-	@EJB
+	@Autowired
 	SalesPointConverter spConverter;
 
 	@Override

@@ -5,7 +5,6 @@ import hu.neuron.java.core.entity.ProductTypeEntity;
 import hu.neuron.java.sales.service.ProductTypeServiceRemote;
 import hu.neuron.java.sales.service.converter.ProductTypeConverter;
 import hu.neuron.java.sales.service.vo.ProductTypeVO;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -34,10 +32,9 @@ public class ProductTypeServiceImpl implements ProductTypeServiceRemote,
 	private static final long serialVersionUID = -541159372291863297L;
 
 	@Autowired
-	@Qualifier("ProductTypeConverter")
 	ProductTypeDAO productTypeDao;
 
-	@EJB
+	@Autowired
 	ProductTypeConverter ptConverter;
 
 	@Override

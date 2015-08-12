@@ -31,7 +31,7 @@ public class OfferServiceImpl implements OfferServiceRemote, Serializable {
  
 	private static final long serialVersionUID = 8870541031617767500L;
 
-	@EJB
+	@Autowired
 	OfferConverter offerConverter;
 	
 	@Autowired

@@ -37,10 +37,10 @@ public class OfferProductTypeFinder implements Serializable{
 	@Autowired
 	private ProductTypeDAO productDao;
 	
-	@EJB
+	@Autowired
 	ProductTypeConverter ptConverter;
 	
-	@EJB
+	@Autowired
 	OfferConverter ofConverter;
 	
 	public OfferProductTypeFinder(){}

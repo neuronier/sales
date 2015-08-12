@@ -47,10 +47,10 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	@Autowired
 	RoleDAO roleDao;
 
-	@EJB
+	@Autowired
 	RoleConverter roleConverter;
 
-	@EJB
+	@Autowired
 	UserConverter userConverter;
 
 	public UserServiceImpl() {
