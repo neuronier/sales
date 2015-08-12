@@ -54,7 +54,7 @@ public class RoleServiceImpl implements RoleServiceRemote, Serializable {
 	public RoleServiceImpl() {
 	}
 
-	@Override
+	/*@Override
 	public UserVO setUpRoles(UserVO vo) throws Exception {
 		logger.debug(entityManager);
 		List<Role> roles;
@@ -66,7 +66,7 @@ public class RoleServiceImpl implements RoleServiceRemote, Serializable {
 		}
 		return vo;
 
-	}
+	}*/
 
 	@Override
 	public int getRowNumber() {

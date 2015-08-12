@@ -1,9 +1,11 @@
 package hu.neuron.java.sales.service.vo;
 
-public class ProductTypeVO {
-	//TODO
-	/*MISSING CODE*/
+import java.io.Serializable;
+
+public class ProductTypeVO implements Serializable{
 	
+	private static final long serialVersionUID = 8890796510788499517L;
+
 	private Long ID;
 	
 	private String name;

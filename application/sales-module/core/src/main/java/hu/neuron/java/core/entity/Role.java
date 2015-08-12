@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Role")
-@NamedQueries({ @NamedQuery(name = "Role.findRolesByUserId", query = "select roles from User u join u.roles roles where u.id=?1") })
+//@NamedQueries({ @NamedQuery(name = "Role.findRolesByUserId", query = "select roles from User u join u.roles roles where u.id=?1") })
 public class Role extends Base {
 
 	private static final long serialVersionUID = 1L;

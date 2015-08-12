@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface RoleDAO extends JpaRepository<Role, Long> {
 
-	List<Role> findRolesByUserId(Long id) throws Exception;
+	//List<Role> findRolesByUserId(Long id) throws Exception;
 
 	@Modifying
 	@Query(value = "insert into user_role_sw (ROLES_ID, USER_ID) VALUES (?1, ?2)", nativeQuery = true)

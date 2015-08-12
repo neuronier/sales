@@ -28,9 +28,9 @@ public class User extends Base {
 
 	private String phoneNumber;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	/*@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_role_sw")
-	private Collection<Role> roles;
+	private Collection<Role> roles;*/
 
 	public String getName() {
 		return name;
@@ -80,13 +80,13 @@ public class User extends Base {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Collection<Role> getRoles() {
+	/*public Collection<Role> getRoles() {
 		return roles;
 	}
 
 	public void setRoles(Collection<Role> roles) {
 		this.roles = roles;
-	}
+	}*/
 
 	@Override
 	public String toString() {

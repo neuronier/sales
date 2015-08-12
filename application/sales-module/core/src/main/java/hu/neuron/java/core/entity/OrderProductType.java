@@ -13,8 +13,8 @@ public class OrderProductType extends Base {
 
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Order.class)
-	@JoinTable(name="order_producttype_sw")
+	/*@ManyToOne(fetch = FetchType.LAZY, targetEntity = Order.class)
+	@JoinTable(name="order_producttype_sw")*/
 	private Long orderId;
 	
 	//TODO

@@ -113,7 +113,7 @@ public class RoleDaoTest {
 		}
 	}
 
-	@Test
+	/*@Test
 	public void test8FindRolesByUserId() {
 		try {
 			List<Role> roles = roleDao.findRolesByUserId(user.getId());
@@ -142,7 +142,7 @@ public class RoleDaoTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	
 }

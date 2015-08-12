@@ -14,12 +14,12 @@ public class OrderUser extends Base {
 
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Order.class)
-	@JoinTable(name="order_user_sw")
+	/*@ManyToOne(fetch = FetchType.LAZY, targetEntity = Order.class)
+	@JoinTable(name="order_user_sw")*/
 	private Long orderId;
 	
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
-	@JoinTable(name="order_user_sw")
+	/*@ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+	@JoinTable(name="order_user_sw")*/
 	private Long userId;
 	
 	private boolean complete;
@@ -40,7 +40,7 @@ public class OrderUser extends Base {
 		this.userId = userId;
 	}
 
-	public boolean isComplete() {
+	public boolean getComplete() {
 		return complete;
 	}
 

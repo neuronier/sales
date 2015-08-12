@@ -7,7 +7,7 @@ import hu.neuron.java.sales.service.vo.UserVO;
 
 public interface RoleServiceRemote {
 
-	public UserVO setUpRoles(UserVO vo) throws Exception;
+	//public UserVO setUpRoles(UserVO vo) throws Exception;
 
 	public int getRowNumber();
 

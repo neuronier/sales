@@ -16,9 +16,6 @@ import hu.neuron.java.sales.service.vo.OfferVO;
 @Component("OfferConverter")
 public class OfferConverter {
 
-	@Autowired
-	@Qualifier("mapper")
-	Mapper mapper;
 	
 	public OfferVO toVO(OfferEntity dto){
 		if (dto == null) {
