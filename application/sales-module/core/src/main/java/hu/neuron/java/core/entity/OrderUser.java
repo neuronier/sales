@@ -1,10 +1,13 @@
 package hu.neuron.java.core.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 
 //Ez az entitás a rendeléshez szükséges Order és User közti kapcsolatot valósítja meg (Roli)
@@ -22,6 +25,8 @@ public class OrderUser extends Base {
 	@JoinTable(name="order_user_sw")*/
 	private Long userId;
 	
+	@Column(nullable = false)
+	@Type(type = "org.hibernate.type.NumericBooleanType")
 	private boolean complete;
 
 	public Long getOrderId() {

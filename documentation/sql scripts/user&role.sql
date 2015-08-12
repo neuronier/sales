@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS `role` (
   `roleId` VARCHAR(255) NULL DEFAULT NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '')
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = latin1;
 
 -- -----------------------------------------------------
@@ -23,7 +22,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   `userName` VARCHAR(255) NULL DEFAULT NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '')
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = latin1;
 
 
@@ -31,15 +29,9 @@ DEFAULT CHARACTER SET = latin1;
 -- Table `user_role_sw`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `user_role_sw` (
-  `User_id` BIGINT(20) NOT NULL COMMENT '',
-  `roles_id` BIGINT(20) NOT NULL COMMENT '',
-  INDEX `FKAD012E599634FD21` (`roles_id` ASC)  COMMENT '',
-  INDEX `FKAD012E599D4748A8` (`User_id` ASC)  COMMENT '',
-  CONSTRAINT `FKAD012E599D4748A8`
-    FOREIGN KEY (`User_id`)
-    REFERENCES `user` (`id`),
-  CONSTRAINT `FKAD012E599634FD21`
-    FOREIGN KEY (`roles_id`)
-    REFERENCES `role` (`id`))
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '',
+  `roleId` BIGINT(20) NULL DEFAULT NULL COMMENT '',
+  `userId` BIGINT(20) NULL DEFAULT NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '')
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;

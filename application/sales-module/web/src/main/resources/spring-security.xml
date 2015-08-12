@@ -1,0 +1,39 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+	<security:http disable-url-rewriting="false"
+		authentication-manager-ref="authenticationManager" use-expressions="true">
+
+
+		<security:csrf disabled="true" />
+
+		<security:headers>
+			<security:cache-control />
+			<security:hsts />
+		</security:headers>
+
+		<security:intercept-url pattern="/secured/admin/**" access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/secured/**" access="isAuthenticated()" />
+
+		<security:form-login login-page="/public/login.xhtml"
+			always-use-default-target="false" authentication-failure-url="/public/login.xhtml?error=1" />
+
+		<security:logout logout-url="/logout"
+			logout-success-url="/public/login.xhtml" invalidate-session="true"
+			delete-cookies="true" />
+
+	</security:http>
+
+	<security:authentication-manager id="authenticationManager">
+
+		<security:authentication-provider
+			user-service-ref="customUserDetailsService">
+			<security:password-encoder hash="bcrypt" />
+		</security:authentication-provider>
+
+	</security:authentication-manager>
+
+</beans>

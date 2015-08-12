@@ -44,8 +44,18 @@
 		<url-pattern>/faces/*</url-pattern>
 	</servlet-mapping>
 	
+	 <!-- Spring Security -->
+   <filter>
+      <filter-name>springSecurityFilterChain</filter-name>
+      <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+   </filter>
+   <filter-mapping>
+      <filter-name>springSecurityFilterChain</filter-name>
+      <url-pattern>/*</url-pattern>
+   </filter-mapping>
+ 
 	<welcome-file-list>
-		<welcome-file>index.xhtml</welcome-file>
+		<welcome-file>secured/index.xhtml</welcome-file>
 	</welcome-file-list>
   
 </web-app>

@@ -2,8 +2,10 @@ package hu.neuron.java.sales.service.impl;
 
 import hu.neuron.java.core.dao.RoleDAO;
 import hu.neuron.java.core.dao.UserDAO;
+import hu.neuron.java.core.dao.UserRoleDAO;
 import hu.neuron.java.core.entity.Role;
 import hu.neuron.java.core.entity.User;
+import hu.neuron.java.core.entity.UserRole;
 import hu.neuron.java.sales.service.UserServiceRemote;
 import hu.neuron.java.sales.service.converter.RoleConverter;
 import hu.neuron.java.sales.service.converter.UserConverter;
@@ -19,6 +21,7 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -28,10 +31,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 @Stateless(mappedName = "UserService", name = "UserService")
 @Remote(UserServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Interceptors(SpringBeanAutowiringInterceptor.class)
 public class UserServiceImpl implements UserServiceRemote, Serializable {
 
 	private static final long serialVersionUID = -2855280432819032935L;
@@ -46,6 +51,9 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 
 	@Autowired
 	RoleDAO roleDao;
+	
+	@Autowired
+	UserRoleDAO userRoleDao;
 
 	@Autowired
 	RoleConverter roleConverter;
@@ -57,7 +65,7 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	}
 
 	@Override
-	public UserVO findUserByName(String name) throws Exception {
+	public UserVO findUserByName(String name) throws Exception{
 		logger.debug(entityManager);
 		UserVO vo = userConverter.toVO(userDao.findUserByName(name));
 		return vo;
@@ -95,16 +103,6 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 		return ret;
 	}
 
-	@Override
-	public RoleVO getRoleByName(String role) {
-		RoleVO vo = null;
-		try {
-			vo = roleConverter.toVO(roleDao.findRoleByName(role));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return vo;
-	}
 
 	@Override
 	public void saveUser(UserVO selectedUser) {
@@ -114,6 +112,61 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	@Override
 	public List<UserVO> getUserList() {
 		return userConverter.toVO(userDao.findAll());
+	}
+
+	@Override
+	public int getUserCount() {
+		return (int) userDao.count();
+	}
+
+	@Override
+	public List<UserVO> findAll() {
+		return userConverter.toVO(userDao.findAll());
+	}
+
+	@Override
+	public void removeUser(UserVO selectedUser) {
+		userDao.delete(selectedUser.getId());
+		
+	}
+	
+	@Override
+	public List<RoleVO> findRolesToUser(UserVO userVo) {
+		List<UserRole> roleIdList = userRoleDao.findUserRolesByUserId(userVo.getId());
+		List<Long> idList = new ArrayList<>();
+		
+		for (UserRole ur : roleIdList) {
+			idList.add(ur.getRoleId());
+		}
+		
+		return roleConverter.toVO(roleDao.findAll(idList));
+	}
+
+	@Override
+	public void addRoleToUser(UserVO user, RoleVO role) {
+		UserRole userRole = new UserRole();
+		userRole.setRoleId(role.getId());
+		userRole.setUserId(user.getId());
+		
+		userRoleDao.save(userRole);
+		
+	}
+
+	@Override
+	public void removeRoleFromUser(UserVO user, RoleVO role) {
+		UserRole userRole = userRoleDao.findUserRoleByUserIdAndRoleId(user.getId(), role.getId());
+		userRoleDao.delete(userRole);
+		
+	}
+
+	@Override
+	public UserVO findUserById(Long id) throws Exception {
+		return userConverter.toVO(userDao.findUserById(id));
+	}
+
+	@Override
+	public UserVO findUserByUserName(String userName) throws Exception {
+		return userConverter.toVO(userDao.findUserByName(userName));
 	}
 
 }

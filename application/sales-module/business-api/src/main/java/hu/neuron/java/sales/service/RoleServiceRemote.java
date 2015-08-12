@@ -1,13 +1,12 @@
 package hu.neuron.java.sales.service;
 
-import java.util.List;
-
 import hu.neuron.java.sales.service.vo.RoleVO;
-import hu.neuron.java.sales.service.vo.UserVO;
+
+import java.util.List;
 
 public interface RoleServiceRemote {
 
-	//public UserVO setUpRoles(UserVO vo) throws Exception;
+//	public UserVO setUpRoles(UserVO vo) throws Exception;
 
 	public int getRowNumber();
 

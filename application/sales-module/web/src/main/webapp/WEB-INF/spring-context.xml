@@ -16,4 +16,5 @@
 	<bean id="mapper" name="mapper" class="org.dozer.DozerBeanMapper">
 	</bean>
 
+	<import resource="classpath:spring-security.xml" />
 </beans>
