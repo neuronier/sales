@@ -30,24 +30,24 @@ public class UserDaoTest {
 	@Autowired
 	UserDAO userDao;
 
-	@Test
-	public void test1Save() {
-		try {
-			user = new User();
-			user.setUserName("test");
-			user.setPassword("test");
-			user.setName("Teszt ELek");
-			user.setPhoneNumber("06504325050");
-			user.setEmail("test@mail.test");
-			user.setUserId("uuid?");
-			user = userDao.save(user);
-			logger.info("user: " + user);
-
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new RuntimeException(e);
-		}
-	}
+//	@Test
+//	public void test1Save() {
+//		try {
+//			user = new User();
+//			user.setUserName("test");
+//			user.setPassword("test");
+//			user.setName("Teszt ELek");
+//			user.setPhoneNumber("06504325050");
+//			user.setEmail("test@mail.test");
+//			user.setUserId("uuid?");
+//			user = userDao.save(user);
+//			logger.info("user: " + user);
+//
+//		} catch (Exception e) {
+//			logger.error(e.getMessage(), e);
+//			throw new RuntimeException(e);
+//		}
+//	}
 
 //	@Test
 //	public void test2Update() {
