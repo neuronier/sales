@@ -5,6 +5,7 @@ import hu.neuron.java.core.entity.ProductTypeEntity;
 import hu.neuron.java.sales.service.ProductTypeServiceRemote;
 import hu.neuron.java.sales.service.converter.ProductTypeConverter;
 import hu.neuron.java.sales.service.vo.ProductTypeVO;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.interceptor.Interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -32,25 +34,26 @@ public class ProductTypeServiceImpl implements ProductTypeServiceRemote,
 	private static final long serialVersionUID = -541159372291863297L;
 
 	@Autowired
-	ProductTypeDAO ptDao;
+	@Qualifier("ProductTypeConverter")
+	ProductTypeDAO productTypeDao;
 
 	@EJB
 	ProductTypeConverter ptConverter;
 
 	@Override
 	public void saveProductType(ProductTypeVO productType) {
-		ptDao.save(ptConverter.toEntity(productType));
+		productTypeDao.save(ptConverter.toEntity(productType));
 	}
 
 	@Override
 	public void updateProductType(ProductTypeVO productType) {
-		ptDao.save(ptConverter.toEntity(productType));
+		productTypeDao.save(ptConverter.toEntity(productType));
 
 	}
 
 	@Override
 	public void removeProductType(ProductTypeVO productType) {
-		ptDao.delete(ptConverter.toEntity(productType));
+		productTypeDao.delete(ptConverter.toEntity(productType));
 
 	}
 
@@ -61,9 +64,9 @@ public class ProductTypeServiceImpl implements ProductTypeServiceRemote,
 		Page<ProductTypeEntity> entities;
 
 		if (filter.length() != 0 && filterColumnName.equals("name")) {
-			entities = ptDao.findByNameStartsWith(filter, pageRequest);
+			entities = productTypeDao.findByNameStartsWith(filter, pageRequest);
 		} else {
-			entities = ptDao.findAll(pageRequest);
+			entities = productTypeDao.findAll(pageRequest);
 		}
 
 		List<ProductTypeVO> ret = ptConverter.toVO(entities.getContent());
@@ -73,19 +76,19 @@ public class ProductTypeServiceImpl implements ProductTypeServiceRemote,
 
 	@Override
 	public ProductTypeVO findProductTypeByName(String name) throws Exception {
-		ProductTypeVO rVO = ptConverter.toVO(ptDao.findProductTypeEntityByName(name));
+		ProductTypeVO rVO = ptConverter.toVO(productTypeDao.findProductTypeEntityByName(name));
 		return rVO;
 	}
 
 	@Override
 	public List<ProductTypeVO> findAll() {
-		List<ProductTypeVO> rvList = ptConverter.toVO(ptDao.findAll());
+		List<ProductTypeVO> rvList = ptConverter.toVO(productTypeDao.findAll());
 		return rvList;
 	}
 	
 	@Override
 	public int getRowNumber() {
-		return (int) ptDao.count();
+		return (int) productTypeDao.count();
 	}
 
 }

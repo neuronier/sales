@@ -4,9 +4,12 @@ public class ProductTypeVO {
 	//TODO
 	/*MISSING CODE*/
 	
-private String name;
+	private Long ID;
+	
+	private String name;
 	
 	private Long productTypeId;
+
 
 	public Long getProductTypeId() {
 		return productTypeId;
@@ -22,5 +25,13 @@ private String name;
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
 	}
 }

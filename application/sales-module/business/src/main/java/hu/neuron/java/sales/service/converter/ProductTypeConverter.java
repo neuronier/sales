@@ -2,12 +2,16 @@ package hu.neuron.java.sales.service.converter;
 
 import hu.neuron.java.core.entity.ProductTypeEntity;
 import hu.neuron.java.sales.service.vo.ProductTypeVO;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Singleton;
 
-@Singleton
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+@Component("ProductTypeConverter")
 public class ProductTypeConverter {
 	
 	/**
@@ -18,6 +22,10 @@ public class ProductTypeConverter {
 			return null;
 		}
 		ProductTypeVO rv = new ProductTypeVO();
+		
+		rv.setID(entity.getId());
+		rv.setProductTypeId(entity.getProductTypeId());
+		rv.setName(entity.getName());
 		
 		return rv;
 	}
@@ -30,6 +38,10 @@ public class ProductTypeConverter {
 			return null;
 		}
 		ProductTypeEntity rv = new ProductTypeEntity();
+		
+		rv.setId(vo.getID());
+		rv.setName(vo.getName());
+		rv.setProductTypeId(vo.getProductTypeId());
 		
 		return rv;
 	}

@@ -9,10 +9,16 @@
 
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>hu.neuron.java.sales.database</jta-data-source>
+		<class>hu.neuron.java.core.entity.Address</class>
 		<class>hu.neuron.java.core.entity.Base</class>
+		<class>hu.neuron.java.core.entity.Client</class>
 		<class>hu.neuron.java.core.entity.OfferEntity</class>
 		<class>hu.neuron.java.core.entity.OfferOrderEntity</class>
 		<class>hu.neuron.java.core.entity.OfferProductTypeEntity</class>
+		<class>hu.neuron.java.core.entity.Order</class>
+		<class>hu.neuron.java.core.entity.OrderProductType</class>
+		<class>hu.neuron.java.core.entity.OrderUser</class>
+		<class>hu.neuron.java.core.entity.ProductTypeEntity</class>
 		<class>hu.neuron.java.core.entity.Role</class>
 		<class>hu.neuron.java.core.entity.SalesPoint</class>
 		<class>hu.neuron.java.core.entity.User</class>

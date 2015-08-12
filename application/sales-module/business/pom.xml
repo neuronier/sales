@@ -8,11 +8,11 @@
 	</parent>
 	<artifactId>business</artifactId>
 	<name>Business</name>
-	
+
 	<packaging>ejb</packaging>
-	
+
 	<description>Az üzleti folyamatok kezelésére szolgáló modul</description>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -61,6 +61,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -79,8 +80,6 @@
 			<groupId>net.sf.dozer</groupId>
 			<artifactId>dozer</artifactId>
 		</dependency>
-
-
-
+		
 	</dependencies>
 </project>

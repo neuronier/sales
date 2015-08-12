@@ -8,11 +8,12 @@ import javax.ejb.Singleton;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import hu.neuron.java.core.entity.OfferEntity;
 import hu.neuron.java.sales.service.vo.OfferVO;
 
-@Singleton
+@Component("OfferConverter")
 public class OfferConverter {
 
 	@Autowired
@@ -23,7 +24,13 @@ public class OfferConverter {
 		if (dto == null) {
 			return null;
 		}
-		return mapper.map(dto, OfferVO.class);
+		OfferVO vo = new OfferVO();
+		vo.setName(dto.getName());
+		vo.setOfferId(dto.getOfferId());
+		vo.setOfferPrice(dto.getOfferPrice());
+		vo.setID(dto.getId());
+		
+		return vo;
 	}
 	
 	public List<OfferVO> toVO(List<OfferEntity> dtos) {
@@ -41,7 +48,14 @@ public class OfferConverter {
 		if (vo == null) {
 			return null; 
 		}
-		return mapper.map(vo, OfferEntity.class);
+		
+		OfferEntity en = new OfferEntity();
+		en.setId(vo.getID());
+		en.setName(vo.getName());
+		en.setOfferId(vo.getOfferId());
+		en.setOfferPrice(vo.getOfferPrice());
+		
+		return en;
 	}
 	
 	public List<OfferEntity> toEntity(List<OfferVO> vos) {

@@ -25,18 +25,18 @@ public class SalesPointServiceTest {
 	public void startTheContainer() throws Exception {
 		final Properties p = new Properties();
 
-		p.put("hu.neuron.java.jpa.hibernate.hbm2ddl.auto", "update");
-		p.put("hu.neuron.java.jpa.hibernate.dialect",
-				"org.hibernate.dialect.HSQLDialect");
-		p.put("hu.neuron.JpaDataSource", "new://Resource?type=DataSource");
-		p.put("hu.neuron.JpaDataSource.JdbcDriver", "org.hsqldb.jdbcDriver");
-		p.put("hu.neuron.JpaDataSource.JdbcUrl", "jdbc:hsqldb:mem:protected");
+		p.put("hu.neuron.java.jpa.hibernate.hbm2ddl.auto", "create");
+		p.put("hu.neuron.java.jpa.hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+		p.put("hu.neuron.TestDataSource", "new://Resource?type=DataSource");
+		p.put("hu.neuron.TestDataSource.JtaManaged", "false");
+		p.put("hu.neuron.TestDataSource.JdbcDriver", "org.hsqldb.jdbcDriver");
+		p.put("hu.neuron.TestDataSource.JdbcUrl", "jdbc:hsqldb:mem:aname");
 
 		EJBContainer ejbContainer = EJBContainer.createEJBContainer(p);
 		ejbContainer.getContext().bind("inject", this);
 	}
 
-	@EJB(name = "SalesPointService", mappedName = "SalesPointService")
+	@EJB(mappedName = "SalesPointService", name = "SalesPointService")
 	SalesPointServiceRemote salesPointService;
 
 	@Test
