@@ -113,36 +113,36 @@ public class RoleDaoTest {
 		}
 	}
 
-	@Test
-	public void test8FindRolesByUserId() {
-		try {
-			List<Role> roles = roleDao.findRolesByUserId(user.getId());
-
-			for (Role userDTO : roles) {
-				logger.info("rv: " + userDTO);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void test9RemoveRoleFromUser() {
-		try {
-			roleDao.removeRoleFromUser(role.getId(), user.getId());
-
-			List<Role> roles = roleDao.findRolesByUserId(user.getId());
-
-			for (Role userDTO : roles) {
-				logger.info("rv: " + userDTO);
-			}
-			
-			roleDao.delete(role.getId());
-			userDao.delete(user.getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	@Test
+//	public void test8FindRolesByUserId() {
+//		try {
+//			List<Role> roles = roleDao.findRolesByUserId(user.getId());
+//
+//			for (Role userDTO : roles) {
+//				logger.info("rv: " + userDTO);
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+//
+//	@Test
+//	public void test9RemoveRoleFromUser() {
+//		try {
+//			roleDao.removeRoleFromUser(role.getId(), user.getId());
+//
+//			List<Role> roles = roleDao.findRolesByUserId(user.getId());
+//
+//			for (Role userDTO : roles) {
+//				logger.info("rv: " + userDTO);
+//			}
+//			
+//			roleDao.delete(role.getId());
+//			userDao.delete(user.getId());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	
 }

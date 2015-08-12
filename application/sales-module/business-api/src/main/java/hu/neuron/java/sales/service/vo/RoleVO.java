@@ -38,7 +38,7 @@ public class RoleVO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "RoleVO [id=" + id + ", name=" + name + ", roleId=" + roleId + "]";
+		return name;
 	}
 	
 }

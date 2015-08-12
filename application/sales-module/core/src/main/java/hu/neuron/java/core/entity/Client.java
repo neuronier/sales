@@ -1,10 +1,6 @@
 package hu.neuron.java.core.entity;
 
-import java.util.List;
-
 import javax.persistence.Entity;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -46,16 +42,6 @@ public class Client extends Base {
 	/**
 	 * Az ügyfélhez tartozó számlázási címek.
 	 */
-//	@ManyToMany
-//	@JoinTable(name = "client_address_billing")
-//	private List<Address> billingAddress;
-//
-//	/**
-//	 * Az ügyfélhez tartozó szállítási címek.
-//	 */
-//	@ManyToMany
-//	@JoinTable(name = "client_address_delivery")
-//	private List<Address> deliveryAddress;
 
 	public String getName() {
 		return name;

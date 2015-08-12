@@ -14,7 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface UserDAO extends JpaRepository<User, Long> {
 
-	User findUserByName(@Param("userName") String name) throws Exception;
+	User findUserByName(@Param("name") String name) throws Exception;
+	
+	User findUserByUserName(@Param("userName") String userName) throws Exception;
+	
+	User findUserById(@Param("id") Long id) throws Exception;
+	
+//	@Query("select u from User u where u.userName=?1")
+//	User findUserByUserName(String userName) throws Exception;
 	
 	Page<User> findByUserNameStartsWith(String filter,Pageable pageable);
 

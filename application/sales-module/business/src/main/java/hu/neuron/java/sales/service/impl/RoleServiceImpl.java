@@ -1,13 +1,12 @@
 package hu.neuron.java.sales.service.impl;
 
 import hu.neuron.java.core.dao.RoleDAO;
-import hu.neuron.java.core.dao.UserDAO;
+import hu.neuron.java.core.dao.UserRoleDAO;
 import hu.neuron.java.core.entity.Role;
 import hu.neuron.java.sales.service.RoleServiceRemote;
 import hu.neuron.java.sales.service.converter.RoleConverter;
 import hu.neuron.java.sales.service.converter.UserConverter;
 import hu.neuron.java.sales.service.vo.RoleVO;
-import hu.neuron.java.sales.service.vo.UserVO;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,33 +16,34 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 
 @Stateless(mappedName = "RoleService", name = "RoleService")
 @Remote(RoleServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Interceptors(SpringBeanAutowiringInterceptor.class)
 public class RoleServiceImpl implements RoleServiceRemote, Serializable {
 
-	private static final Logger logger = Logger.getLogger(RoleServiceImpl.class);
 	private static final long serialVersionUID = 806957209356013823L;
 
 	@PersistenceContext
 	private EntityManager entityManager;
 
 	@Autowired
-	UserDAO userDao;
-
-	@Autowired
 	RoleDAO roleDao;
+	
+	@Autowired
+	UserRoleDAO userRoleDao;
 
 	@EJB
 	RoleConverter roleConverter;
@@ -54,23 +54,23 @@ public class RoleServiceImpl implements RoleServiceRemote, Serializable {
 	public RoleServiceImpl() {
 	}
 
-	@Override
-	public UserVO setUpRoles(UserVO vo) throws Exception {
-		logger.debug(entityManager);
-		List<Role> roles;
-		try {
-			roles = roleDao.findRolesByUserId(vo.getId());
-			vo.setRoles(roleConverter.toVO(roles));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return vo;
-
-	}
+//	@Override
+//	public UserVO setUpRoles(UserVO vo) throws Exception {
+//		logger.debug(entityManager);
+//		List<Role> roles;
+//		try {
+//			roles = roleDao.findRolesByUserId(vo.getId());
+//			vo.setRoles(roleConverter.toVO(roles));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return vo;
+//
+//	}
 
 	@Override
 	public int getRowNumber() {
-		return (int) userDao.count();
+		return (int) roleDao.count();
 	}
 
 	@Override

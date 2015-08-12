@@ -1,17 +1,16 @@
 package hu.neuron.java.core.entity;
 
-import java.util.Collection;
-
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "User")
-@NamedQuery(name = "User.findUserByName", query = "SELECT u FROM User u  WHERE u.userName = :userName")
+@NamedQueries({
+		@NamedQuery(name = "User.findUserByName", query = "SELECT u FROM User u  WHERE u.name = :name"),
+		@NamedQuery(name = "User.findUserByUserName", query = "SELECT u FROM User u  WHERE u.userName = :userName")
+})
 public class User extends Base {
 
 	private static final long serialVersionUID = 1L;
@@ -28,9 +27,6 @@ public class User extends Base {
 
 	private String phoneNumber;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "user_role_sw")
-	private Collection<Role> roles;
 
 	public String getName() {
 		return name;
@@ -80,13 +76,6 @@ public class User extends Base {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Collection<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Collection<Role> roles) {
-		this.roles = roles;
-	}
 
 	@Override
 	public String toString() {

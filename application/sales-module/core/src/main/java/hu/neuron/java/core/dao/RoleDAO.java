@@ -1,7 +1,5 @@
 package hu.neuron.java.core.dao;
 
-import java.util.List;
-
 import hu.neuron.java.core.entity.Role;
 
 import org.springframework.data.domain.Page;
@@ -17,14 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface RoleDAO extends JpaRepository<Role, Long> {
 
-	List<Role> findRolesByUserId(Long id) throws Exception;
-
 	@Modifying
-	@Query(value = "insert into user_role_sw (ROLES_ID, USER_ID) VALUES (?1, ?2)", nativeQuery = true)
+	@Query(value = "insert into user_role_sw (rolesId, userId) VALUES (?1, ?2)", nativeQuery = true)
 	void addRoleToUser(Long roleId, Long userId) throws Exception;
 
 	@Modifying
-	@Query(value = "delete from user_role_sw where ROLES_ID=?1 and USER_ID=?2", nativeQuery = true)
+	@Query(value = "delete from user_role_sw where rolesId=?1 and userId=?2", nativeQuery = true)
 	void removeRoleFromUser(Long roleId, Long userId) throws Exception;
 
 	@Query("select r from Role r where r.name=?1")
