@@ -15,7 +15,7 @@ public class OfferProductTypeEntity extends Base {
 
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = OfferEntity.class)
 	@JoinTable(name = "Offer")
-	private long offerId;
+	private Long offerId;
 	 
 	//TODO
 	/* MISSING ANNOTATIONS !!! */

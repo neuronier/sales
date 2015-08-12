@@ -16,5 +16,7 @@ public interface OfferDAO extends JpaRepository<OfferEntity, Long> {
 	
 	OfferEntity findOfferEntityByName(String name) throws Exception;
 	
+	OfferEntity findOfferEntityByOfferId(Long offerId) throws Exception;
+	
 	Page<OfferEntity> findByNameStartsWith(String filter, Pageable pageRequest);
 }
