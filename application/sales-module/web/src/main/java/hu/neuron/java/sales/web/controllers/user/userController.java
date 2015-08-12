@@ -10,8 +10,10 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.model.DualListModel;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -95,7 +97,10 @@ public class userController {
 				userServiceRemote.addRoleToUser(newUser, role);
 			}
 			
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",	"New user created: " + newUser.getUserName() ));
 		} catch (Exception e) {
+			userServiceRemote.removeUser(newUser);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",	newUser.getUserName() ));
 			newUser = null;
 		}
 
@@ -103,10 +108,12 @@ public class userController {
 
 	public void editUser() {
 		userServiceRemote.saveUser(selectedUser);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",	"Edited: " + selectedUser.getUserName() ));
 	}
 
 	public void removeUser() {
 		userServiceRemote.removeUser(selectedUser);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",	"Removed: " + selectedUser.getUserName() ));
 	}
 
 	public LazyUserModel getLazyUserModel() {

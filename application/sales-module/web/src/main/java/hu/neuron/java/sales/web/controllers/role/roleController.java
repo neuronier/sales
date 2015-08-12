@@ -5,8 +5,10 @@ import hu.neuron.java.sales.service.vo.RoleVO;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 
 @ViewScoped
@@ -37,14 +39,17 @@ public class roleController {
 	
 	public void addNewRole(){
 		roleService.saveRole(newRole);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",	"Created: " + newRole.getName() ));
 	}
 	
 	public void editRole(){
 		roleService.saveRole(selectedRole);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",	"Edited: " + newRole.getName() ));
 	}
 	
-	public void removeUser() {
+	public void removeRole() {
 		roleService.removeRole(selectedRole);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",	"Removed: " + selectedRole.getName() ));
 	}
 
 

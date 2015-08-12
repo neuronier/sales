@@ -32,7 +32,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 		UserVO user;
-		System.out.println("Username: " + username);
 		try {
 			user = userService.findUserByName(username);
 
@@ -40,7 +39,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 				throw new UsernameNotFoundException(username);
 			}
 			
-			System.out.println("AUTHORITIES:");
 			List<GrantedAuthority> authorities = buildUserAuthority(userService.findRolesToUser(user));
 			
 			return buildUserForAuthentication(user, authorities);
@@ -60,7 +58,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
 
 		for (RoleVO userRole : userRoles) {
-			System.out.println(userRole.getName());
 			setAuths.add(new SimpleGrantedAuthority(userRole.getName()));
 		}
 

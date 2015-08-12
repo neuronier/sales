@@ -49,60 +49,60 @@ public class UserDaoTest {
 		}
 	}
 
-	@Test
-	public void test2Update() {
-		try {
-			user.setUserName("Update Elek");
-			userDao.save(user);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Test
-	public void test3Find() {
-		try {
-			User rvDTO = userDao.findOne(user.getId());
-			logger.info("rv: " + rvDTO);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Test
-	public void test4Find() {
-		try {
-			User rvDTO = userDao.findUserByName(user.getUserName());
-			logger.info("rv: " + rvDTO);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Test
-	public void test5FindAll() {
-		try {
-			List<User> users = userDao.findAll();
-			for (User userDTO : users) {
-				logger.info("rv: " + userDTO);
-			}
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Test
-	public void test6Delete() {
-		try {
-			userDao.delete(user.getId());
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			throw new RuntimeException(e);
-		}
-	}
+//	@Test
+//	public void test2Update() {
+//		try {
+//			user.setUserName("Update Elek");
+//			userDao.save(user);
+//		} catch (Exception e) {
+//			logger.error(e.getMessage(), e);
+//			throw new RuntimeException(e);
+//		}
+//	}
+//
+//	@Test
+//	public void test3Find() {
+//		try {
+//			User rvDTO = userDao.findOne(user.getId());
+//			logger.info("rv: " + rvDTO);
+//		} catch (Exception e) {
+//			logger.error(e.getMessage(), e);
+//			throw new RuntimeException(e);
+//		}
+//	}
+//
+//	@Test
+//	public void test4Find() {
+//		try {
+//			User rvDTO = userDao.findUserByName(user.getUserName());
+//			logger.info("rv: " + rvDTO);
+//		} catch (Exception e) {
+//			logger.error(e.getMessage(), e);
+//			throw new RuntimeException(e);
+//		}
+//	}
+//
+//	@Test
+//	public void test5FindAll() {
+//		try {
+//			List<User> users = userDao.findAll();
+//			for (User userDTO : users) {
+//				logger.info("rv: " + userDTO);
+//			}
+//		} catch (Exception e) {
+//			logger.error(e.getMessage(), e);
+//			throw new RuntimeException(e);
+//		}
+//	}
+//
+//	@Test
+//	public void test6Delete() {
+//		try {
+//			userDao.delete(user.getId());
+//		} catch (Exception e) {
+//			logger.error(e.getMessage(), e);
+//			throw new RuntimeException(e);
+//		}
+//	}
 
 }
