@@ -1,9 +1,6 @@
 package hu.neuron.java.core.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 //Ez az entitás a rendeléshez szükséges Order és ProductType (még nem létezik)!!! közti kapcsolatot valósítja meg (Roli)

@@ -8,8 +8,6 @@ import hu.neuron.java.sales.service.vo.WarehouseVO;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Singleton;
-
 import org.springframework.stereotype.Component;
 
 @Component
