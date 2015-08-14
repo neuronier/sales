@@ -47,6 +47,11 @@ public class userController {
 	public void init() {
 		setLazyUserModel(new LazyUserModel(userServiceRemote, roleServiceRemote));
 
+		initRoleList();
+	}
+
+	
+	public void initRoleList(){
 		List<RoleVO> sourceRole = roleServiceRemote.getRoles();
 		List<String> source = new ArrayList<>();
 
@@ -57,13 +62,14 @@ public class userController {
 		List<String> target = new ArrayList<>();
 		roleList = new DualListModel<String>(source, target);
 	}
-
 	
 	public void addNewUserBtnAction() {
+		initRoleList();
 		newUser = new UserVO();
 	}
 	
 	public void editUserBtnAction() {
+		initRoleList();
 		List<RoleVO> sourceRole = roleServiceRemote.getRoles();
 		List<String> source = new ArrayList<>();
 		List<RoleVO> targetRole = userServiceRemote.findRolesToUser(selectedUser);

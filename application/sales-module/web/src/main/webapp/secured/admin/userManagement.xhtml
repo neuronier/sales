@@ -6,20 +6,20 @@
 	<ui:define name="header">#{out.admin_title}</ui:define>
 	<ui:define name="head-extra">
 		<style>
-			.dataTableContainer tr{
-				vertical-align:top;
-			}
-			
-			#userDetailsCell {
-				width: 70%;
-				padding: 40px;
-			}
-			
-			#roleDetailsCell {
-				width: 30%;
-				padding: 40px;
-			}
-		</style>
+.dataTableContainer tr {
+	vertical-align: top;
+}
+
+#userDetailsCell {
+	width: 70%;
+	padding: 40px;
+}
+
+#roleDetailsCell {
+	width: 30%;
+	padding: 40px;
+}
+</style>
 	</ui:define>
 
 	<ui:define name="content">
@@ -29,7 +29,7 @@
 		<table class="dataTableContainer">
 			<tr>
 				<td id="userDetailsCell"><h:form id="userForm">
-				
+
 						<p:dataTable id="userDT" value="#{userController.lazyUserModel}" var="user" selectionMode="single" selection="#{userController.selectedUser}"
 							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 							rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" rows="10" emptyMessage="#{out.empty_message}">
@@ -53,7 +53,7 @@
 							</p:column>
 
 						</p:dataTable>
-						
+
 						<p:panelGrid id="btnPanel" columns="3">
 							<p:commandButton value="Add new" action="#{userController.addNewUserBtnAction}" update=":addNewUserDialogForm"
 								oncomplete="PF('addNewUserDialog').show()" />
@@ -61,9 +61,9 @@
 								disabled="#{userController.selectedUser == null}" />
 							<p:commandButton value="Remove" actionListener="#{userController.removeUser}" update="userDT" disabled="#{userController.selectedUser == null}" />
 						</p:panelGrid>
-						
+
 					</h:form></td>
-					<td id="roleDetailsCell"><h:form id="roleForm">
+				<td id="roleDetailsCell"><h:form id="roleForm">
 
 						<p:dataTable id="roleDT" value="#{roleController.lazyRoleModel}" var="role" selectionMode="single" selection="#{roleController.selectedRole}"
 							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
@@ -106,14 +106,17 @@
 					<p:inputText value="#{userController.newUser.phoneNumber}" />
 
 					<p:outputLabel value="Roles: " />
-					<p:pickList id="pickList" value="#{userController.roleList}" var="role" itemLabel="#{role}" itemValue="#{role}" />
+					<p:pickList id="pickList" value="#{userController.roleList}" var="role" itemLabel="#{role}" itemValue="#{role}">
+						<f:facet name="sourceCaption">Available</f:facet>
+						<f:facet name="targetCaption">Assigned</f:facet>
+					</p:pickList>
 				</p:panelGrid>
 
 				<p:commandButton value="Save" actionListener="#{userController.addNewUser}" update=":userForm:userDT" oncomplete="PF('addNewUserDialog').hide()" />
 			</h:form>
 		</p:dialog>
 
-		<p:dialog widgetVar="editUserDialog" header="Edit user">
+		<p:dialog widgetVar="editUserDialog" header="Edit user" resizable="false">
 			<h:form id="editUserDialogForm">
 				<p:panelGrid columns="2">
 					<p:outputLabel value="Name: " />
@@ -129,7 +132,10 @@
 					<p:inputText value="#{userController.selectedUser.phoneNumber}" />
 
 					<p:outputLabel value="Roles: " />
-					<p:pickList id="pickList" value="#{userController.roleList}" var="roles" itemLabel="#{roles}" itemValue="#{roles}" />
+					<p:pickList id="pickList" value="#{userController.roleList}" var="roles" itemLabel="#{roles}" itemValue="#{roles}">
+						<f:facet name="sourceCaption">Available</f:facet>
+						<f:facet name="targetCaption">Assigned</f:facet>
+					</p:pickList>
 				</p:panelGrid>
 
 				<p:commandButton value="Save" actionListener="#{userController.editUser}" update=":userForm:userDT" oncomplete="PF('editUserDialog').hide()" />
@@ -147,7 +153,7 @@
 			</h:form>
 		</p:dialog>
 
-		<p:dialog widgetVar="editRoleDialog" header="Edit role">
+		<p:dialog widgetVar="editRoleDialog" header="Edit role" resizable="false">
 			<h:form id="editRoleDialogForm">
 				<p:panelGrid columns="2">
 					<p:outputLabel value="Name: " />
