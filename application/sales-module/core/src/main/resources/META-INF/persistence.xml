@@ -12,6 +12,7 @@
 		<class>hu.neuron.java.core.entity.Address</class>
 		<class>hu.neuron.java.core.entity.Base</class>
 		<class>hu.neuron.java.core.entity.Client</class>
+		<class>hu.neuron.java.core.entity.ClientOrder</class>
 		<class>hu.neuron.java.core.entity.OfferEntity</class>
 		<class>hu.neuron.java.core.entity.OfferOrderEntity</class>
 		<class>hu.neuron.java.core.entity.OfferProductTypeEntity</class>
@@ -31,7 +32,7 @@
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.transaction.jta.platform"
 				value="org.hibernate.service.jta.platform.internal.WeblogicJtaPlatform" />
-			<property name="hibernate.hbm2ddl.auto" value="validate" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 
 			<property name="hibernate.session_factory_name" value="SessionFactoryJNDI" />
 			<property name="hibernate.ejb.entitymanager_factory_name"

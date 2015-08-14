@@ -13,7 +13,7 @@ public class SalesPointVO implements Serializable{
 	
 	private Long ID;
 	
-	private Long identifier;
+	private Long salePointId;
 	
 	private WarehouseVO warehouse;
 	
@@ -22,11 +22,11 @@ public class SalesPointVO implements Serializable{
 	private List<UserVO> users;
 	
 	public Long getIdentifier() {
-		return identifier;
+		return salePointId;
 	}
 
 	public void setIdentifier(Long identifier) {
-		this.identifier = identifier;
+		this.salePointId = identifier;
 	}
 
 	public AddressVO getAddress() {

@@ -15,10 +15,10 @@
         </locale-config>
         <resource-bundle>
             <base-name>
-                hu.neuron.java.Messages
+                hu.neuron.java.sales.web.Messages
             </base-name>
             <var>out</var>	
-            </resource-bundle>
+        </resource-bundle>
 	</application>
 	
 </faces-config>
