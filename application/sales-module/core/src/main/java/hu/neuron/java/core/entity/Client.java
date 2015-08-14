@@ -17,7 +17,7 @@ public class Client extends Base {
 	/**
 	 * Az ügyfél azonosítója.
 	 */
-	private String clientId;
+	private Long clientId;
 
 	/**
 	 * Az ügyfél felhasználóneve.
@@ -51,11 +51,11 @@ public class Client extends Base {
 		this.name = name;
 	}
 
-	public String getClientId() {
+	public Long getClientId() {
 		return clientId;
 	}
 
-	public void setClientId(String clientId) {
+	public void setClientId(Long clientId) {
 		this.clientId = clientId;
 	}
 

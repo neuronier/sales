@@ -1,8 +1,13 @@
 package hu.neuron.java.core.dao;
 
+import static org.junit.Assert.*;
+
 import java.util.List;
 
 import hu.neuron.java.core.dao.SalesPointDAO;
+import hu.neuron.java.core.entity.Client;
+import hu.neuron.java.core.entity.ClientOrder;
+import hu.neuron.java.core.entity.Order;
 import hu.neuron.java.core.entity.SalesPoint;
 
 import org.apache.log4j.Logger;
@@ -25,27 +30,43 @@ public class ClientOrderDaoTest {
 	
 	private static final Logger logger = Logger.getLogger(ClientOrderDaoTest.class);
 	
-	private static SalesPoint entity;
+	private static ClientOrder entity;
+	
+	private static Client client;
+	
+	private static Order order;
 	
 	@Autowired
-	SalesPointDAO salesDAO;
+	ClientOrderDAO clientOrderDAO;
+	
+	@Autowired
+	ClientDAO clientDAO;
+	
+	@Autowired
+	OrderDAO orderDAO;
 
 	@Test
 	public void test1Create() {
-		entity = new SalesPoint();
-		entity.setSalePointAdress("NOWHERE");
-		entity.setSalePointId(101L);
-		entity.setName("SALEPOINT");
-		entity.setSalePointPhoneNumber("06303030300");
-		entity.setWareHouseId(303L);
-		salesDAO.save(entity);
+		entity = new ClientOrder();
+		client = new Client();
+		client.setClientId(101L);
+		client.setName("Test Client");
+		order = new Order();
+		order.setOrderId(202L);
+		order.setName("Test Order");
+		entity.setClientId(client.getClientId());
+		entity.setOrderId(order.getOrderId());
+		clientOrderDAO.save(entity);
 	}
 	
 	@Test
 	public void test2Update() {
 		try {
-			entity.setName("UPDATED SALEPOINT");
-			salesDAO.save(entity);
+			client.setClientId(202L);
+			entity.setClientId(client.getClientId());
+			clientOrderDAO.save(entity);
+			ClientOrder res = clientOrderDAO.findClientOrderByClientId(client.getClientId()).get(0);
+			assertEquals(res.getClientId(),client.getClientId());
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new RuntimeException(e);
@@ -53,9 +74,9 @@ public class ClientOrderDaoTest {
 	}
 
 	@Test
-	public void test3Find() {
+	public void test3FindByClientId() {
 		try {
-			SalesPoint resEntity = salesDAO.findOne(entity.getId());
+			ClientOrder resEntity = clientOrderDAO.findClientOrderByClientId(client.getClientId()).get(0);
 			logger.info("res: " + resEntity);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -64,9 +85,9 @@ public class ClientOrderDaoTest {
 	}
 
 	@Test
-	public void test4Find() {
+	public void test4FindByOrderId() {
 		try {
-			SalesPoint resEntity = salesDAO.findSalesPointByName(entity.getName());
+			ClientOrder resEntity = clientOrderDAO.findClientOrderByOrderId(order.getOrderId()).get(0);
 			logger.info("res: " + resEntity);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -75,12 +96,12 @@ public class ClientOrderDaoTest {
 	}
 
 	@Test
-	public void test5FindAll() {
+	public void test5FindByClientIdAndOrderId() {
 		try {
-			List<SalesPoint> salesPoints = salesDAO.findAll();
-			for (SalesPoint salesPoint : salesPoints) {
-				logger.info("rv: " + salesPoint);
-			}
+			ClientOrder clientOrder = 
+					clientOrderDAO.findClientOrderByClientIdAndOrderId(
+							client.getClientId(), order.getOrderId());
+			logger.info("res: " + clientOrder);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new RuntimeException(e);
@@ -90,7 +111,7 @@ public class ClientOrderDaoTest {
 	@Test
 	public void test6Delete() {
 		try {
-			salesDAO.delete(entity.getId());
+			clientOrderDAO.delete(entity);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new RuntimeException(e);
