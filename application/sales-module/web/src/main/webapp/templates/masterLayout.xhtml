@@ -15,23 +15,23 @@
 		<ui:insert name="head-extra" />
 
 		<style>
-			.ui-layout-north {
-/* 				z-index: 100 !important; */
-				overflow: visible;
-			}
-			
-			.ui-layout-north .ui-layout-unit-content {
-				overflow: visible;
-			}
-			
-			.ui-layout-south {
-				font-size: 0.9em;
-			}
-			
-			body{
-				background-color: grey;
-			}
-			</style>
+.ui-layout-north {
+	z-index: 100 !important;
+	overflow: visible;
+}
+
+.ui-layout-north .ui-layout-unit-content {
+	overflow: visible;
+}
+
+.ui-layout-south {
+	font-size: 0.9em;
+}
+
+body {
+	background-color: grey;
+}
+</style>
 	</h:head>
 
 	<h:body>
@@ -49,8 +49,10 @@
 						<p:menuitem value="Orders" url="/secured/demo.xhtml" />
 						<p:menuitem value="Reports" url="/secured/demo.xhtml" />
 						<p:menuitem value="User Management" url="/secured/admin/userManagement.xhtml" />
+
 						<f:facet name="options">
-							<h:outputLabel value="#{out.logged_in_as}: [#{request.userPrincipal.name}]" />
+							<h:outputLabel value="#{out.logged_in_as}:" />
+							[<p:commandLink value="#{request.userPrincipal.name}" action="/secured/userProfile.xhml?faces-redirect=true" />]
 							<p:button href="/logout" value="#{out.logout}" icon="ui-icon-extlink" />
 						</f:facet>
 

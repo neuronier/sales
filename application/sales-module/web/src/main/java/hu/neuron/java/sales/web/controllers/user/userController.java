@@ -16,6 +16,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.model.DualListModel;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @ViewScoped
@@ -116,6 +118,22 @@ public class userController {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",	"Removed: " + selectedUser.getUserName() ));
 	}
 
+	public boolean isDefaultPasswordUsed(){
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		
+		try {
+			UserVO currentUser = userServiceRemote.findUserByUserName(user.getUsername());
+			if(bCryptPasswordEncoder.matches("welcome1", currentUser.getPassword())) {
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public LazyUserModel getLazyUserModel() {
 		return lazyUserModel;
 	}

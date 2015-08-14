@@ -3,6 +3,17 @@
 	xmlns:sec="http://www.springframework.org/security/tags">
 	<ui:define name="pageTitle">Sales Home Page</ui:define>
 	<ui:define name="content">
+		<h:form>
+			<p:remoteCommand autoRun="true" oncomplete="PF('defaultPasswordWarningDialog').show()" rendered="#{userController.isDefaultPasswordUsed()}"/>
+		</h:form>
 		<h2>Welcome in the Sales Module!</h2>
+		
+		<p:dialog header="#{out.default_pw_warning}!" closeOnEscape="true" widgetVar="defaultPasswordWarningDialog" resizable="false">
+			<div style="text-align:center;">
+				<h:outputText value="#{out.default_pw_please_change_your_password}. #{out.default_pw_the_default_password_is_not_safe}." />
+				<br /> <br />
+				<p:commandLink value="#{out.default_pw_change_now}!" action="/secured/userProfile" onclick="PF('defaultPasswordWarningDialog').hide()"/>
+			</div>
+		</p:dialog>
 	</ui:define>
 </ui:composition>

@@ -1,12 +1,12 @@
 package hu.neuron.java.sales.service.converter;
 
-import hu.neuron.java.core.entity.User;
-import hu.neuron.java.sales.service.vo.UserVO;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+
+import hu.neuron.java.core.entity.Order;
+import hu.neuron.java.sales.service.vo.OrderVO;
 
 import org.apache.log4j.Logger;
 import org.dozer.Mapper;
@@ -14,11 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-
 @Component
-public class UserConverter {
-	
-	private static final Logger logger = Logger.getLogger(UserConverter.class);
+public class OrderConverter {
+
+	private static final Logger logger = Logger.getLogger(OrderConverter.class);
 
 	@Autowired
 	@Qualifier("mapper")
@@ -26,44 +25,45 @@ public class UserConverter {
 
 	@PostConstruct
 	void init() {
-
-		logger.debug("UserConverter init");
+		logger.debug("OrderConverter init");
 	}
 
-	public UserVO toVO(User dto) {
-		if (dto == null) {
+	public OrderVO toVO(Order entity) {
+		if (entity == null) {
 			return null;
 		}
-		return mapper.map(dto, UserVO.class);
+		return mapper.map(entity, OrderVO.class);
 	}
 
-	public User toEntity(UserVO vo) {
+	public Order toEntity(OrderVO vo) {
 		if (vo == null) {
 			return null;
 		}
-		return mapper.map(vo, User.class);
+		return mapper.map(vo, Order.class);
 	}
 
-	public List<UserVO> toVO(List<User> dtos) {
+	public List<OrderVO> toVO(List<Order> dtos) {
 		if (dtos == null) {
 			return null;
 		}
-		List<UserVO> vos = new ArrayList<UserVO>();
-		for (User dto : dtos) {
+
+		List<OrderVO> vos = new ArrayList<OrderVO>();
+		for (Order dto : dtos) {
 			vos.add(toVO(dto));
 		}
 		return vos;
 	}
 
-	public List<User> toEntity(List<UserVO> vos) {
+	public List<Order> toEntity(List<OrderVO> vos) {
 		if (vos == null) {
 			return null;
 		}
-		List<User> dtos = new ArrayList<User>();
-		for (UserVO vo : vos) {
+
+		List<Order> dtos = new ArrayList<Order>();
+
+		for (OrderVO vo : vos) {
 			dtos.add(toEntity(vo));
 		}
 		return dtos;
 	}
-
 }
