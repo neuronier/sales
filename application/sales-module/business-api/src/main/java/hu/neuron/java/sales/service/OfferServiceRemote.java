@@ -1,6 +1,7 @@
 package hu.neuron.java.sales.service;
 
 import hu.neuron.java.sales.service.vo.OfferVO;
+import hu.neuron.java.sales.service.vo.ProductTypeVO;
 
 import java.util.List;
 
@@ -20,4 +21,10 @@ public interface OfferServiceRemote {
 	public List<OfferVO> findAll();
 
 	public int getRowNumber();
+	
+	public List<ProductTypeVO> findProductTypesToOffer(OfferVO offerVo) throws Exception;
+	
+	public void addProductTypeToOffer(OfferVO offer, ProductTypeVO productType, int quantity);
+	
+	public void removeProductTypeFromOffer(OfferVO offer, ProductTypeVO productType);
 }
