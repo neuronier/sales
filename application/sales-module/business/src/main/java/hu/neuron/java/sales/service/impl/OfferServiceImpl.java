@@ -1,15 +1,20 @@
 package hu.neuron.java.sales.service.impl;
 
-import java.io.Serializable;
-import java.util.List;
-
 import hu.neuron.java.core.dao.OfferDAO;
+import hu.neuron.java.core.dao.OfferProductTypeDAO;
+import hu.neuron.java.core.dao.ProductTypeDAO;
 import hu.neuron.java.core.entity.OfferEntity;
+import hu.neuron.java.core.entity.OfferProductTypeEntity;
 import hu.neuron.java.sales.service.OfferServiceRemote;
 import hu.neuron.java.sales.service.converter.OfferConverter;
+import hu.neuron.java.sales.service.converter.ProductTypeConverter;
 import hu.neuron.java.sales.service.vo.OfferVO;
+import hu.neuron.java.sales.service.vo.ProductTypeVO;
 
-import javax.ejb.EJB;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -35,7 +40,16 @@ public class OfferServiceImpl implements OfferServiceRemote, Serializable {
 	OfferConverter offerConverter;
 	
 	@Autowired
+	ProductTypeConverter productTypeConverter;
+	
+	@Autowired
 	OfferDAO offerDao;
+	
+	@Autowired
+	OfferProductTypeDAO offerProductTypeDao;
+	
+	@Autowired
+	ProductTypeDAO productTypeDao;
 	
 	@Override
 	public void saveOffer(OfferVO offer) {
@@ -67,5 +81,52 @@ public class OfferServiceImpl implements OfferServiceRemote, Serializable {
 		List<OfferVO> ret = offerConverter.toVO(entities.getContent());
 
 		return ret;	
+	}
+
+	@Override
+	public OfferVO findOfferEntityByName(String name) throws Exception {
+		OfferVO rVO = offerConverter.toVO(offerDao.findOfferEntityByName(name));
+		return rVO;
+	}
+
+	@Override
+	public List<OfferVO> findAll() {
+		List<OfferVO> rvList = offerConverter.toVO(offerDao.findAll());
+		return rvList;
+	}
+
+	@Override
+	public int getRowNumber() {
+		return (int) offerDao.count();
+	}
+
+
+
+	@Override
+	public void addProductTypeToOffer(OfferVO offer, ProductTypeVO productType, int quantity) {
+		OfferProductTypeEntity offerProductType = new OfferProductTypeEntity();
+		offerProductType.setProductTypeId(productType.getProductTypeId());
+		offerProductType.setOfferId(offer.getOfferId());
+		offerProductType.setQuantity(quantity);	
+		offerProductTypeDao.save(offerProductType);
+	}
+
+	@Override
+	public void removeProductTypeFromOffer(OfferVO offer, 
+			ProductTypeVO productType) {
+		OfferProductTypeEntity offerProductType = offerProductTypeDao.findOfferProductTypeEntityByOfferIdAndProductTypeId(offer.getOfferId(), productType.getProductTypeId());
+		offerProductTypeDao.delete(offerProductType);
+	}
+
+	@Override
+	public List<ProductTypeVO> findProductTypesToOffer(OfferVO offerVo) throws Exception {
+		List<OfferProductTypeEntity> offerProductTypeList = offerProductTypeDao.findOfferProductTypeEntityByOfferId(offerVo.getOfferId());
+		List<Long> productTypeIdList = new ArrayList<>();
+		
+		for (OfferProductTypeEntity opt : offerProductTypeList) {
+			productTypeIdList.add(opt.getProductTypeId());
+		}
+		
+		return productTypeConverter.toVO(productTypeDao.findAll(productTypeIdList));
 	}
 }

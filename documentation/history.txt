@@ -13,3 +13,5 @@ Ráti Roland 2015.08.06 :  #18 Elkészítettem a tábla létrehozásához szükséges SQL
 Szabó Bálint 2015.08.06 : #21 Elkészítettem az ajánlat és a hozzá tartozó táblák SQL script-jét.
 Szabó Bálint 2015.08.06 : #22 Létrehoztam az ajánlatkezeléshez szükséges szolgáltatás interfészét, a hozzá tartozó VO-kat, az ajánlatkonvertálót és az implementációt.
 Ráti Roland 2015.08.07 :  #25 Elkészítettem az ügyfélhez tartozó szolgáltatásokat
+Szabó Bálint 2015.08.13 : #23 Elkészítettem az ajánlathoz tartozó felületet, ami még kiegészítésre szorul a terméktípusok hozzáadása lehetõséggel.
+Szabó Bálint 2015.08.14 : #23 Létrehoztam a terméktípusok, ajánlathoz való hozzáadásához szükséges felületet,ami még nincs teljesen kész.
