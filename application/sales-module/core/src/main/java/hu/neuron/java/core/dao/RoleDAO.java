@@ -1,7 +1,5 @@
 package hu.neuron.java.core.dao;
 
-import java.util.List;
-
 import hu.neuron.java.core.entity.Role;
 
 import org.springframework.data.domain.Page;

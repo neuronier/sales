@@ -102,6 +102,10 @@ public class userController {
 
 			for (String roleName : target) {
 				RoleVO role = roleServiceRemote.getRoleByName(roleName);
+				System.out.println(role);
+				if(role != null){
+					System.out.println(role.getId());
+				}
 				userServiceRemote.addRoleToUser(newUser, role);
 			}
 			
