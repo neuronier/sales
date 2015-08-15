@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface OrderProductTypeDAO extends JpaRepository<OrderProductType, Long> {
 
-	List<OrderProductType> findOrderProductTypeByOrderId(@Param("orderId") Long orderId) throws Exception;
+	List<OrderProductType> findOrderProductTypeByOrderId(@Param("orderId") String orderId) throws Exception;
 	
-	List<OrderProductType> findOrderProductTypeByProductTypeId(@Param("productTypeId") Long productTypeId) throws Exception;
+	List<OrderProductType> findOrderProductTypeByProductTypeId(@Param("productTypeId") String productTypeId) throws Exception;
 	
 	@Query("select opt from OrderProductType opt where opt.orderId=?1 and opt.productTypeId=?2")
-	OrderProductType findOrderProductTypeByOrderIdAndProductTypeId(Long orderId, Long productTypeId);
+	OrderProductType findOrderProductTypeByOrderIdAndProductTypeId(String orderId, String productTypeId);
 }

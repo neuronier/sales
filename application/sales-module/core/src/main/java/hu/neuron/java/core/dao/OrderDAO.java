@@ -16,7 +16,7 @@ public interface OrderDAO extends JpaRepository<Order, Long> {
 
 	Order findOrderByName(@Param("orderName") String name) throws Exception;
 	
-	Order findOrderByOrderId(@Param("id") Long id) throws Exception;
+	Order findOrderByOrderId(@Param("orderId") String orderId) throws Exception;
 
 	Page<Order> findByNameStartsWith(String filter, Pageable pageable);
 

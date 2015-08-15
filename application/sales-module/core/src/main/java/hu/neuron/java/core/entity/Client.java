@@ -1,5 +1,7 @@
 package hu.neuron.java.core.entity;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -17,7 +19,7 @@ public class Client extends Base {
 	/**
 	 * Az ügyfél azonosítója.
 	 */
-	private Long clientId;
+	private String clientId;
 
 	/**
 	 * Az ügyfél felhasználóneve.
@@ -43,20 +45,16 @@ public class Client extends Base {
 	 * Az ügyfélhez tartozó számlázási címek.
 	 */
 
+	public Client(){
+		super();
+		setClientId(UUID.randomUUID().toString());
+	}
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Long getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(Long clientId) {
-		this.clientId = clientId;
 	}
 
 	public String getUserName() {
@@ -91,20 +89,28 @@ public class Client extends Base {
 		this.phoneNumber = phoneNumber;
 	}
 
-//	public List<Address> getBillingAddress() {
-//		return billingAddress;
-//	}
-//
-//	public void setBillingAddress(List<Address> billingAddress) {
-//		this.billingAddress = billingAddress;
-//	}
-//
-//	public List<Address> getDeliveryAddress() {
-//		return deliveryAddress;
-//	}
-//
-//	public void setDeliveryAddress(List<Address> deliveryAddress) {
-//		this.deliveryAddress = deliveryAddress;
-//	}
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
+
+	// public List<Address> getBillingAddress() {
+	// return billingAddress;
+	// }
+	//
+	// public void setBillingAddress(List<Address> billingAddress) {
+	// this.billingAddress = billingAddress;
+	// }
+	//
+	// public List<Address> getDeliveryAddress() {
+	// return deliveryAddress;
+	// }
+	//
+	// public void setDeliveryAddress(List<Address> deliveryAddress) {
+	// this.deliveryAddress = deliveryAddress;
+	// }
 
 }

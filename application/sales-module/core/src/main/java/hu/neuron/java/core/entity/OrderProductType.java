@@ -6,30 +6,30 @@ import javax.persistence.Table;
 //Ez az entitás a rendeléshez szükséges Order és ProductType (még nem létezik)!!! közti kapcsolatot valósítja meg (Roli)
 //Mostmár létezik és csináltam ehhez is DAO-t. (Jocó)
 @Entity
-@Table(name="OrderProductType")
+@Table(name = "OrderProductType")
 public class OrderProductType extends Base {
 
 	private static final long serialVersionUID = 1L;
-	
-	private Long orderId;
-	
-	private Long productTypeId;
-	
+
+	private String orderId;
+
+	private String productTypeId;
+
 	private int quantity;
 
-	public Long getOrderId() {
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(Long orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 
-	public Long getProductTypeId() {
+	public String getProductTypeId() {
 		return productTypeId;
 	}
 
-	public void setProductTypeId(Long productTypeId) {
+	public void setProductTypeId(String productTypeId) {
 		this.productTypeId = productTypeId;
 	}
 
@@ -46,5 +46,5 @@ public class OrderProductType extends Base {
 		return "OrderProductType [orderId=" + orderId + ", productTypeId="
 				+ productTypeId + ", quantity=" + quantity + "]";
 	}
-	
+
 }

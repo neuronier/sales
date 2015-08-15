@@ -124,7 +124,7 @@ public class OfferServiceImpl implements OfferServiceRemote, Serializable {
 		List<Long> productTypeIdList = new ArrayList<>();
 		
 		for (OfferProductTypeEntity opt : offerProductTypeList) {
-			productTypeIdList.add(opt.getProductTypeId());
+			productTypeIdList.add(Long.valueOf(opt.getProductTypeId()));
 		}
 		
 		return productTypeConverter.toVO(productTypeDao.findAll(productTypeIdList));

@@ -13,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface ClientOrderDAO extends JpaRepository<ClientOrder, Long>{
 	
-	List<ClientOrder> findClientOrderByClientId(Long clientId)throws Exception;
+	List<ClientOrder> findClientOrderByClientId(String clientId)throws Exception;
 
-	List<ClientOrder> findClientOrderByOrderId(Long orderId) throws Exception;
+	List<ClientOrder> findClientOrderByOrderId(String orderId) throws Exception;
 							
 	@Query("select co from ClientOrder co where co.clientId=?1 and co.orderId=?2")
-	ClientOrder findClientOrderByClientIdAndOrderId(Long clientId, Long orderId);
+	ClientOrder findClientOrderByClientIdAndOrderId(String clientId, String orderId);
 	
 }

@@ -15,7 +15,7 @@ public interface ProductTypeDAO extends JpaRepository<ProductTypeEntity, Long>{
 	
 	ProductTypeEntity findProductTypeEntityByName(String name) throws Exception;
 	
-	ProductTypeEntity findProductTypeEntityByProductTypeId(Long productTypeId) throws Exception;
+	ProductTypeEntity findProductTypeEntityByProductTypeId(String productTypeId) throws Exception;
 
 	Page<ProductTypeEntity> findByNameStartsWith(String filter, Pageable pageable);
 	

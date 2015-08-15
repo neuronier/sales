@@ -18,7 +18,6 @@
 		<class>hu.neuron.java.core.entity.OfferProductTypeEntity</class>
 		<class>hu.neuron.java.core.entity.Order</class>
 		<class>hu.neuron.java.core.entity.OrderProductType</class>
-		<class>hu.neuron.java.core.entity.OrderUser</class>
 		<class>hu.neuron.java.core.entity.ProductTypeEntity</class>
 		<class>hu.neuron.java.core.entity.Role</class>
 		<class>hu.neuron.java.core.entity.SalesPoint</class>

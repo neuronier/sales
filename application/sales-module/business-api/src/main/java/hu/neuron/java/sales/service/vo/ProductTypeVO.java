@@ -1,23 +1,28 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
+import java.util.UUID;
 
-public class ProductTypeVO implements Serializable{
-	
+public class ProductTypeVO implements Serializable {
+
 	private static final long serialVersionUID = 8890796510788499517L;
 
 	private Long ID;
-	
+
 	private String name;
+
+	private String productTypeId;
 	
-	private Long productTypeId;
+	public ProductTypeVO(){
+		super();
+		setProductTypeId(UUID.randomUUID().toString());
+	}
 
-
-	public Long getProductTypeId() {
+	public String getProductTypeId() {
 		return productTypeId;
 	}
 
-	public void setProductTypeId(Long productTypeId) {
+	public void setProductTypeId(String productTypeId) {
 		this.productTypeId = productTypeId;
 	}
 
