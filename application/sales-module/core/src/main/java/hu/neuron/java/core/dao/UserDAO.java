@@ -20,5 +20,7 @@ User findUserByName(@Param("name") String name) throws Exception;
 	
 	User findUserById(@Param("id") Long id) throws Exception;
 	
+	User findUserByUserId(@Param("userId") String userId) throws Exception;
+	
 	Page<User> findByUserNameStartsWith(String filter,Pageable pageable);
 }

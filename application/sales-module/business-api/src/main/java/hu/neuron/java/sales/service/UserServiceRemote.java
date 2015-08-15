@@ -10,10 +10,10 @@ public interface UserServiceRemote {
 	public UserVO findUserByName(String name) throws Exception;
 	
 	public UserVO findUserById(Long id) throws Exception;
+	
+	public UserVO findUserByUserId(String userId) throws Exception;
 
 	public UserVO findUserByUserName(String userName) throws Exception;
-
-	public void registrationUser(UserVO userVO) throws Exception;
 
 	public List<UserVO> getUserList(int i, int pageSize, String sortField, int dir, String filter, String filterColumnName);
 

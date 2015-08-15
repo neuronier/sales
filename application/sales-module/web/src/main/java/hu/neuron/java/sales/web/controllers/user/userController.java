@@ -38,7 +38,7 @@ public class userController {
 	private UserVO newUser;
 
 	private DualListModel<String> roleList;
-	
+
 	public userController() {
 		super();
 	}
@@ -50,8 +50,7 @@ public class userController {
 		initRoleList();
 	}
 
-	
-	public void initRoleList(){
+	public void initRoleList() {
 		List<RoleVO> sourceRole = roleServiceRemote.getRoles();
 		List<String> source = new ArrayList<>();
 
@@ -62,25 +61,25 @@ public class userController {
 		List<String> target = new ArrayList<>();
 		roleList = new DualListModel<String>(source, target);
 	}
-	
+
 	public void addNewUserBtnAction() {
 		initRoleList();
 		newUser = new UserVO();
 	}
-	
+
 	public void editUserBtnAction() {
 		initRoleList();
 		List<RoleVO> sourceRole = roleServiceRemote.getRoles();
 		List<String> source = new ArrayList<>();
 		List<RoleVO> targetRole = userServiceRemote.findRolesToUser(selectedUser);
 		List<String> target = new ArrayList<>();
-		
+
 		for (RoleVO role : targetRole) {
 			target.add(role.getName());
 		}
-		
+
 		for (RoleVO role : sourceRole) {
-			if(!target.contains(role.getName())){
+			if (!target.contains(role.getName())) {
 				source.add(role.getName());
 			}
 		}
@@ -96,41 +95,37 @@ public class userController {
 
 		userServiceRemote.saveUser(newUser);
 
-		try {
-			newUser = userServiceRemote.findUserByUserName(newUser.getUserName());
-			List<String> target = roleList.getTarget();
+		List<String> target = roleList.getTarget();
 
-			for (String roleName : target) {
-				RoleVO role = roleServiceRemote.getRoleByName(roleName);
-				userServiceRemote.addRoleToUser(newUser, role);
-			}
-			
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",	"New user created: " + newUser.getUserName() ));
-		} catch (Exception e) {
-			userServiceRemote.removeUser(newUser);
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",	newUser.getUserName() ));
-			newUser = null;
+		for (String roleName : target) {
+			RoleVO role = roleServiceRemote.getRoleByName(roleName);
+			userServiceRemote.addRoleToUser(newUser, role);
 		}
+
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "New user created: " + newUser.getUserName()));
 
 	}
 
 	public void editUser() {
 		userServiceRemote.saveUser(selectedUser);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",	"Edited: " + selectedUser.getUserName() ));
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Edited: " + selectedUser.getUserName()));
 	}
 
 	public void removeUser() {
 		userServiceRemote.removeUser(selectedUser);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",	"Removed: " + selectedUser.getUserName() ));
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Removed: " + selectedUser.getUserName()));
 	}
 
-	public boolean isDefaultPasswordUsed(){
-		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	public boolean isDefaultPasswordUsed() {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-		
+
 		try {
 			UserVO currentUser = userServiceRemote.findUserByUserName(user.getUsername());
-			if(bCryptPasswordEncoder.matches("welcome1", currentUser.getPassword())) {
+			if (bCryptPasswordEncoder.matches("welcome1", currentUser.getPassword())) {
 				return true;
 			}
 			return false;
@@ -139,7 +134,7 @@ public class userController {
 			return false;
 		}
 	}
-	
+
 	public LazyUserModel getLazyUserModel() {
 		return lazyUserModel;
 	}
@@ -187,6 +182,5 @@ public class userController {
 	public void setRoleList(DualListModel<String> roleList) {
 		this.roleList = roleList;
 	}
-	
-	
+
 }

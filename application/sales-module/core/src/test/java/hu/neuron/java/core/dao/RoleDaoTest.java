@@ -6,6 +6,7 @@ import hu.neuron.java.core.dao.RoleDAO;
 import hu.neuron.java.core.dao.UserDAO;
 import hu.neuron.java.core.entity.Role;
 import hu.neuron.java.core.entity.User;
+import hu.neuron.java.core.entity.UserRole;
 
 import org.apache.log4j.Logger;
 import org.junit.FixMethodOrder;
@@ -36,6 +37,9 @@ public class RoleDaoTest {
 	@Autowired
 	UserDAO userDao;
 
+	@Autowired
+	UserRoleDAO userRoleDao;
+	
 	@Test
 	public void test1Save() {
 		role = new Role();
@@ -107,7 +111,10 @@ public class RoleDaoTest {
 
 			logger.info("role: " + role);
 
-			roleDao.addRoleToUser(role.getId(), user.getId());
+			UserRole userRole = new UserRole();
+			userRole.setRoleId(role.getRoleId());
+			userRole.setUserId(user.getUserId());
+			userRoleDao.save(userRole);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

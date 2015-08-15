@@ -15,23 +15,23 @@ public class UserRole extends Base {
 	
 	private static final long serialVersionUID = -8340334376160672233L;
 	
-	private Long userId;
+	private String userId;
 	
-	private Long roleId;
+	private String roleId;
 
-	public Long getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	public Long getRoleId() {
+	public String getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(Long roleId) {
+	public void setRoleId(String roleId) {
 		this.roleId = roleId;
 	}
 

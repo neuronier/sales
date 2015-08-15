@@ -16,7 +16,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -71,15 +70,7 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 		return vo;
 
 	}
-
-	@Override
-	public void registrationUser(UserVO userVO) throws Exception {
-
-		User user = userDao.save(userConverter.toEntity(userVO));
-		Role userRole = roleDao.findRoleByName("ROLE_USER");
-		roleDao.addRoleToUser(userRole.getId(), user.getId());
-	}
-
+	
 	@Override
 	public List<UserVO> getUserList(int page, int size, String sortField, int sortOrder, String filter, String filterColumnName) {
 		Direction dir = sortOrder == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -107,6 +98,7 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	@Override
 	public void saveUser(UserVO selectedUser) {
 		userDao.save(userConverter.toEntity(selectedUser));
+		userDao.flush();
 	}
 
 	@Override
@@ -125,28 +117,28 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	}
 
 	@Override
-	public void removeUser(UserVO selectedUser) {
-		userDao.delete(selectedUser.getId());
+	public void removeUser(UserVO user) {
+		userDao.delete(user.getId());
 		
 	}
 	
 	@Override
 	public List<RoleVO> findRolesToUser(UserVO userVo) {
-		List<UserRole> roleIdList = userRoleDao.findUserRolesByUserId(userVo.getId());
-		List<Long> idList = new ArrayList<>();
+		List<UserRole> roleIdList = userRoleDao.findUserRolesByUserId(userVo.getUserId());
+		List<Role> roleList = new ArrayList<>();
 		
 		for (UserRole ur : roleIdList) {
-			idList.add(ur.getRoleId());
+				roleList.add(roleDao.findRoleByRoleId(ur.getRoleId()));
 		}
 		
-		return roleConverter.toVO(roleDao.findAll(idList));
+		return roleConverter.toVO(roleList);
 	}
 
 	@Override
 	public void addRoleToUser(UserVO user, RoleVO role) {
 		UserRole userRole = new UserRole();
-		userRole.setRoleId(role.getId());
-		userRole.setUserId(user.getId());
+		userRole.setRoleId(role.getRoleId());
+		userRole.setUserId(user.getUserId());
 		
 		userRoleDao.save(userRole);
 		
@@ -154,7 +146,7 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 
 	@Override
 	public void removeRoleFromUser(UserVO user, RoleVO role) {
-		UserRole userRole = userRoleDao.findUserRoleByUserIdAndRoleId(user.getId(), role.getId());
+		UserRole userRole = userRoleDao.findUserRoleByUserIdAndRoleId(user.getUserId(), role.getRoleId());
 		userRoleDao.delete(userRole);
 		
 	}
@@ -167,6 +159,11 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	@Override
 	public UserVO findUserByUserName(String userName) throws Exception {
 		return userConverter.toVO(userDao.findUserByName(userName));
+	}
+
+	@Override
+	public UserVO findUserByUserId(String userId) throws Exception {
+		return userConverter.toVO(userDao.findUserByUserId(userId));
 	}
 
 }
