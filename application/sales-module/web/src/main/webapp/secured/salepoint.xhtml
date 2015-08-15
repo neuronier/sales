@@ -11,15 +11,17 @@
 
 
 	<ui:define name="content">
-		<h:form id="form">
-			<p:dataTable var="salesPoint" value="#{salesPointController.lazySalesPointModel}"
-				paginator="true" rows="10"
+		<h:form id="form" style="max-width: 1000px; margin-top: 45px; margin-left: auto; margin-right: auto;">
+			<p:dataTable var="salesPoint"
+				value="#{salesPointController.lazySalesPointModel}" paginator="true"
+				rows="10"
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 				rowsPerPageTemplate="5,10,15" selectionMode="single"
-				selection="#{salesPointController.selectedSalesPoint}" id="salesPointTable"
-				lazy="true">
+				selection="#{salesPointController.selectedSalesPoint}"
+				id="salesPointTable" lazy="true">
 
-				<p:ajax event="rowSelect" listener="#{salesPointController.onRowSelect}"
+				<p:ajax event="rowSelect"
+					listener="#{salesPointController.onRowSelect}"
 					update=":form:removeButton,:form:updateButton,:updateSalesPointDialog" />
 
 				<p:column headerText="Name" sortBy="#{salesPoint.name}"
@@ -29,32 +31,29 @@
 
 			</p:dataTable>
 
-			<div class="ui-grid ui-grid-responsive">
-				<div class="ui-grid-row">
-					<div class="ui-grid-col-3"></div>
-					<div class="ui-grid-col-3">
-						<p:commandButton value="#{out.addnew}" type="button"
-							onclick="PF('createSalesPoint').show();" />
-					</div>
-					<div class="ui-grid-col-3">
-						<p:commandButton value="Update" type="button" id="updateButton"
-							disabled="#{salesPointController.selectedSalesPoint == null}"
-							onclick="PF('updateSalesPoint').show();" />
-					</div>
-					<div class="ui-grid-col-3">
-						<p:commandButton value="Delete" id="removeButton"
-							update="form:salesPointTable,form:removeButton,form:updateButton"
-							disabled="#{salesPointController.selectedSalesPoint == null}"
-							actionListener="#{salesPointController.removeSalesPoint}" />
-					</div>
-				</div>
+			<div style="margin-top: 30px; display: table; margin-left: auto; margin-right: auto;">
+
+					<p:commandButton value="#{out.addnew}" type="button"
+						onclick="PF('createSalesPoint').show();" />
+
+					<p:commandButton value="#{out.update}" type="button" id="updateButton"
+						disabled="#{salesPointController.selectedSalesPoint == null}"
+						onclick="PF('updateSalesPoint').show();" />
+
+					<p:commandButton value="Delete" id="removeButton"
+						update="form:salesPointTable,form:removeButton,form:updateButton"
+						disabled="#{salesPointController.selectedSalesPoint == null}"
+						actionListener="#{salesPointController.removeSalesPoint}" />
+
 			</div>
 
 		</h:form>
-		<p:dialog header="Effects" widgetVar="createSalesPoint" showEffect="explode"
-			hideEffect="bounce" mheight="100" modal="true" appendTo="@(body)">
+		<p:dialog header="Effects" widgetVar="createSalesPoint"
+			showEffect="explode" hideEffect="bounce" mheight="100" modal="true"
+			appendTo="@(body)">
 			<h:form>
-				<h:outputLabel for="salesPointName" value="Name:" style="font-weight:bold" />
+				<h:outputLabel for="salesPointName" value="Name:"
+					style="font-weight:bold" />
 				<p:inputText id="salesPointName" required="true"
 					value="#{salesPointController.newSalesPointName}" />
 
@@ -65,10 +64,12 @@
 			</h:form>
 		</p:dialog>
 
-		<p:dialog header="Effects" widgetVar="updateSalesPoint" showEffect="explode"
-			id="updateSalesPointDialog" hideEffect="bounce" mheight="100" modal="true" appendTo="@(body)">
+		<p:dialog header="Effects" widgetVar="updateSalesPoint"
+			showEffect="explode" id="updateSalesPointDialog" hideEffect="bounce"
+			mheight="100" modal="true" appendTo="@(body)">
 			<h:form>
-				<h:outputLabel for="salesPointName" value="Name:" style="font-weight:bold" />
+				<h:outputLabel for="salesPointName" value="Name:"
+					style="font-weight:bold" />
 				<p:inputText id="salesPointName" required="true"
 					value="#{salesPointController.updateSalesPointName}" />
 

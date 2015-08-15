@@ -34,7 +34,7 @@ public class SalesPointDaoTest {
 	public void test1Create() {
 		entity = new SalesPoint();
 		entity.setSalePointAdress("NOWHERE");
-		entity.setSalePointId(101L);
+		entity.setSalePointId("101L");
 		entity.setName("SALEPOINT");
 		entity.setSalePointPhoneNumber("06303030300");
 		entity.setWareHouseId(303L);
