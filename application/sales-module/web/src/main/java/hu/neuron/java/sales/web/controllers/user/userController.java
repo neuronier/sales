@@ -24,8 +24,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @ManagedBean(name = "userController")
 public class userController {
 
-	private final String defaultPassword = "welcome1";
-
 	private LazyUserModel lazyUserModel;
 
 	@EJB(name = "UserService", mappedName = "UserService")
@@ -89,7 +87,7 @@ public class userController {
 
 	public void addNewUser() {
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-		String encPassword = bCryptPasswordEncoder.encode(defaultPassword);
+		String encPassword = bCryptPasswordEncoder.encode(userServiceRemote.getDefaultPassword());
 
 		newUser.setPassword(encPassword);
 
@@ -125,7 +123,7 @@ public class userController {
 
 		try {
 			UserVO currentUser = userServiceRemote.findUserByUserName(user.getUsername());
-			if (bCryptPasswordEncoder.matches("welcome1", currentUser.getPassword())) {
+			if (bCryptPasswordEncoder.matches(userServiceRemote.getDefaultPassword(), currentUser.getPassword())) {
 				return true;
 			}
 			return false;

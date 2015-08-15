@@ -1,10 +1,15 @@
 package hu.neuron.java.sales.service.impl;
 
+import hu.neuron.java.core.dao.ClientDAO;
+import hu.neuron.java.core.entity.Client;
+import hu.neuron.java.sales.service.ClientServiceRemote;
+import hu.neuron.java.sales.service.converter.ClientConverter;
+import hu.neuron.java.sales.service.vo.ClientVO;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -18,12 +23,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-
-import hu.neuron.java.core.dao.ClientDAO;
-import hu.neuron.java.core.entity.Client;
-import hu.neuron.java.sales.service.ClientServiceRemote;
-import hu.neuron.java.sales.service.converter.ClientConverter;
-import hu.neuron.java.sales.service.vo.ClientVO;
 
 @Stateless(mappedName = "ClientService", name = "ClientService")
 @Remote(ClientServiceRemote.class)

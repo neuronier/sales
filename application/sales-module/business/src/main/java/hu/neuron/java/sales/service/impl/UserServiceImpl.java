@@ -12,9 +12,12 @@ import hu.neuron.java.sales.service.converter.UserConverter;
 import hu.neuron.java.sales.service.vo.RoleVO;
 import hu.neuron.java.sales.service.vo.UserVO;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -50,7 +53,7 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 
 	@Autowired
 	RoleDAO roleDao;
-	
+
 	@Autowired
 	UserRoleDAO userRoleDao;
 
@@ -64,13 +67,13 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	}
 
 	@Override
-	public UserVO findUserByName(String name) throws Exception{
+	public UserVO findUserByName(String name) throws Exception {
 		logger.debug(entityManager);
 		UserVO vo = userConverter.toVO(userDao.findUserByName(name));
 		return vo;
 
 	}
-	
+
 	@Override
 	public List<UserVO> getUserList(int page, int size, String sortField, int sortOrder, String filter, String filterColumnName) {
 		Direction dir = sortOrder == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -93,7 +96,6 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 		}
 		return ret;
 	}
-
 
 	@Override
 	public void saveUser(UserVO selectedUser) {
@@ -119,18 +121,18 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	@Override
 	public void removeUser(UserVO user) {
 		userDao.delete(user.getId());
-		
+
 	}
-	
+
 	@Override
 	public List<RoleVO> findRolesToUser(UserVO userVo) {
 		List<UserRole> roleIdList = userRoleDao.findUserRolesByUserId(userVo.getUserId());
 		List<Role> roleList = new ArrayList<>();
-		
+
 		for (UserRole ur : roleIdList) {
-				roleList.add(roleDao.findRoleByRoleId(ur.getRoleId()));
+			roleList.add(roleDao.findRoleByRoleId(ur.getRoleId()));
 		}
-		
+
 		return roleConverter.toVO(roleList);
 	}
 
@@ -139,16 +141,16 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 		UserRole userRole = new UserRole();
 		userRole.setRoleId(role.getRoleId());
 		userRole.setUserId(user.getUserId());
-		
+
 		userRoleDao.save(userRole);
-		
+
 	}
 
 	@Override
 	public void removeRoleFromUser(UserVO user, RoleVO role) {
 		UserRole userRole = userRoleDao.findUserRoleByUserIdAndRoleId(user.getUserId(), role.getRoleId());
 		userRoleDao.delete(userRole);
-		
+
 	}
 
 	@Override
@@ -165,5 +167,18 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	public UserVO findUserByUserId(String userId) throws Exception {
 		return userConverter.toVO(userDao.findUserByUserId(userId));
 	}
+
+	@Override
+	public String getDefaultPassword() {
+		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("hu/neuron/java/sales/services/Settings.properties");
+
+		Properties properties = new Properties();
+		try {
+			properties.load(inputStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return properties.getProperty("user_default_password");
+	}	
 
 }

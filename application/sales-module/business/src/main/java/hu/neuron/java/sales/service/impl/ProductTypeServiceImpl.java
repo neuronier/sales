@@ -5,10 +5,10 @@ import hu.neuron.java.core.entity.ProductTypeEntity;
 import hu.neuron.java.sales.service.ProductTypeServiceRemote;
 import hu.neuron.java.sales.service.converter.ProductTypeConverter;
 import hu.neuron.java.sales.service.vo.ProductTypeVO;
+
 import java.io.Serializable;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
