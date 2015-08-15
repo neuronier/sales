@@ -13,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface OfferProductTypeDAO extends JpaRepository<OfferProductTypeEntity, Long>{
 	
-	List<OfferProductTypeEntity> findOfferProductTypeEntityByOfferId(Long offerId)throws Exception;
+	List<OfferProductTypeEntity> findOfferProductTypeEntityByOfferId(String offerId)throws Exception;
 
-	List<OfferProductTypeEntity> findOfferProductTypeEntityByProductTypeId(Long productTypeId) throws Exception;
+	List<OfferProductTypeEntity> findOfferProductTypeEntityByProductTypeId(String productTypeId) throws Exception;
 							
 	@Query("select opt from OfferProductTypeEntity opt where opt.offerId=?1 and opt.productTypeId=?2")
-	OfferProductTypeEntity findOfferProductTypeEntityByOfferIdAndProductTypeId(Long offerId, Long productTypeId);
+	OfferProductTypeEntity findOfferProductTypeEntityByOfferIdAndProductTypeId(String offerId, String productTypeId);
 	
 }

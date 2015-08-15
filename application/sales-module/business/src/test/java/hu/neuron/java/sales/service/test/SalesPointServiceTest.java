@@ -44,7 +44,7 @@ public class SalesPointServiceTest {
 		try {
 			sp = new SalesPointVO();
 			sp.setName("TestPont");
-			sp.setIdentifier(202L);
+			sp.setSalePointId("202L");
 			salesPointService.saveSalePoint(sp);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -55,7 +55,7 @@ public class SalesPointServiceTest {
 	@Test
 	public void test2Update() {
 		try {
-			sp.setIdentifier(203L);
+			sp.setSalePointId("203L");
 			sp.setName("Test2Pont");
 			salesPointService.saveSalePoint(sp);
 		} catch (Exception e) {

@@ -1,8 +1,9 @@
 package hu.neuron.java.core.entity;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
 
 @Entity
 @Table(name = "Offer")
@@ -10,18 +11,14 @@ public class OfferEntity extends Base {
 
 	private static final long serialVersionUID = 1L;
 
-	private long offerId;
-	
-	private long offerPrice;
-	
+	private String offerId;
+
 	private String name;
+	
+	private Long offerPrice;
 
-	public long getOfferId() {
-		return offerId;
-	}
-
-	public void setOfferId(long offerId) {
-		this.offerId = offerId;
+	public OfferEntity(){
+		setOfferId(UUID.randomUUID().toString());
 	}
 
 	public long getOfferPrice() {
@@ -42,8 +39,16 @@ public class OfferEntity extends Base {
 
 	@Override
 	public String toString() {
-		return "OfferEntity [offerId=" + offerId + ", offerPrice=" + offerPrice
-				+ ", offerName=" + name + "]";
+		return "OfferEntity [offerId=" + getOfferId() + ", offerPrice="
+				+ offerPrice + ", offerName=" + name + "]";
+	}
+
+	public String getOfferId() {
+		return offerId;
+	}
+
+	public void setOfferId(String offerId) {
+		this.offerId = offerId;
 	}
 
 }

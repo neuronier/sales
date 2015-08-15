@@ -1,16 +1,14 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.UUID;
 
 public class ClientVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	public ClientVO(){
-	}
 	
-	private Long identifier;
+	private Long Id;
 	
 	private String name;
 	
@@ -24,33 +22,12 @@ public class ClientVO implements Serializable {
 
 	private String phoneNumber;
 	
-	private List<AddressVO> billingAddress;
 	
-	private List<AddressVO> deliveryAddress;
-	
-	public List<AddressVO> getBillingAddress() {
-		return billingAddress;
+	public ClientVO(){
+		super();
+		setClientId(UUID.randomUUID().toString());
 	}
 
-	public void setBillingAddress(List<AddressVO> billingAddress) {
-		this.billingAddress = billingAddress;
-	}
-
-	public List<AddressVO> getDeliveryAddress() {
-		return deliveryAddress;
-	}
-
-	public void setDeliveryAddress(List<AddressVO> deliveryAddress) {
-		this.deliveryAddress = deliveryAddress;
-	}
-
-	public Long getIdentifier() {
-		return identifier;
-	}
-
-	public void setIdentifier(Long identifier) {
-		this.identifier = identifier;
-	}
 
 	public String getClientId() {
 		return clientId;
@@ -100,12 +77,14 @@ public class ClientVO implements Serializable {
 		this.name = name;
 	}
 
-	@Override
-	public String toString() {
-		return "ClientVO [identifier=" + identifier + ", name=" + name
-				+ ", clientId=" + clientId + ", userName=" + userName
-				+ ", password=" + password + ", emailAddress=" + emailAddress
-				+ ", phoneNumber=" + phoneNumber + ", billingAddress="
-				+ billingAddress + ", deliveryAddress=" + deliveryAddress + "]";
-	}	
+
+	public Long getId() {
+		return Id;
+	}
+
+
+	public void setId(Long id) {
+		Id = id;
+	}
+
 }

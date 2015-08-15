@@ -2,31 +2,25 @@ package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class OfferVO implements Serializable {
 
 	private static final long serialVersionUID = -3970831971179330872L;
 
 	private Long ID;
-	
-	private long offerId;
-	
-	private long offerPrice;
-	
+
+	private String offerId;
+
 	private String name;
 	
-	//private HashMap<ProductTypeVO, Integer> productTypes = new HashMap<ProductTypeVO, Integer>();
+	private Long offerPrice;
+
+	// private HashMap<ProductTypeVO, Integer> productTypes = new
+	// HashMap<ProductTypeVO, Integer>();
 
 	public OfferVO() {
-		
-	}
-	
-	public long getOfferId() {
-		return offerId;
-	}
-
-	public void setOfferId(long offerId) {
-		this.offerId = offerId;
+		setOfferId(UUID.randomUUID().toString());
 	}
 
 	public long getOfferPrice() {
@@ -45,18 +39,21 @@ public class OfferVO implements Serializable {
 		this.name = name;
 	}
 
-	/*public HashMap<ProductTypeVO, Integer> getProductTypes() {
-		return productTypes;
-	}
-
-	public void setProductTypes(HashMap<ProductTypeVO, Integer> productTypes) {
-		this.productTypes = productTypes;
-	}*/
+	/*
+	 * public HashMap<ProductTypeVO, Integer> getProductTypes() { return
+	 * productTypes; }
+	 * 
+	 * public void setProductTypes(HashMap<ProductTypeVO, Integer> productTypes)
+	 * { this.productTypes = productTypes; }
+	 */
 
 	@Override
 	public String toString() {
-		return "OfferVO [offerId=" + offerId + ", offerPrice=" + offerPrice
-				+ ", name=" + name + ", productTypes=" + /*productTypes +*/ "]";
+		return "OfferVO [offerId=" + getOfferId() + ", offerPrice="
+				+ offerPrice + ", name=" + name + ", productTypes=" + /*
+																	 * productTypes
+																	 * +
+																	 */"]";
 	}
 
 	public Long getID() {
@@ -66,4 +63,12 @@ public class OfferVO implements Serializable {
 	public void setID(Long iD) {
 		ID = iD;
 	}
-} 
+
+	public String getOfferId() {
+		return offerId;
+	}
+
+	public void setOfferId(String offerId) {
+		this.offerId = offerId;
+	}
+}

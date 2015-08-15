@@ -41,9 +41,7 @@ public class SalesPointConverter {
 			rv.setSalePointAdress(vo.getAddress().getSalePointAdress());
 		}
 		rv.setName(vo.getName());
-		if(vo.getID() != null){
-			rv.setSalePointId(vo.getID());
-		}
+		rv.setSalePointId(vo.getSalePointId());
 		if(vo.getWarehouse() != null){
 			rv.setWareHouseId(vo.getWarehouse().getWareHouseId());
 		}

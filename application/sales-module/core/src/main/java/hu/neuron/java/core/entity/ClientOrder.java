@@ -9,24 +9,25 @@ public class ClientOrder extends Base {
 
 	private static final long serialVersionUID = 1503106905028296942L;
 	
-	private Long clientId;
+	private String clientId;
 	
-	private Long orderId;
+	private String orderId;
 
-	public Long getClientId() {
+	public String getClientId() {
 		return clientId;
 	}
 
-	public void setClientId(Long clientId) {
+	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
 
-	public Long getOrderId() {
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(Long orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 
+	
 }

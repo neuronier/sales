@@ -9,17 +9,17 @@ public class SalesPoint extends Base {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long salePointId;
+	private String salePointId;
 	private Long wareHouseId;
 	private String name;
 	private String salePointAdress;
 	private String salePointPhoneNumber;
 
-	public Long getSalePointId() {
+	public String getSalePointId() {
 		return salePointId;
 	}
 
-	public void setSalePointId(Long salesPointId) {
+	public void setSalePointId(String salesPointId) {
 		this.salePointId = salesPointId;
 	}
 
