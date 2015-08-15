@@ -3,11 +3,20 @@ package hu.neuron.java.sales.service.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import hu.neuron.java.core.dao.ClientOrderDAO;
+import hu.neuron.java.core.dao.OfferOrderDAO;
 import hu.neuron.java.core.dao.OrderDAO;
+import hu.neuron.java.core.dao.OrderProductTypeDAO;
+import hu.neuron.java.core.entity.ClientOrder;
+import hu.neuron.java.core.entity.OfferOrderEntity;
 import hu.neuron.java.core.entity.Order;
+import hu.neuron.java.core.entity.OrderProductType;
 import hu.neuron.java.sales.service.OrderServiceRemote;
 import hu.neuron.java.sales.service.converter.OrderConverter;
+import hu.neuron.java.sales.service.vo.ClientVO;
+import hu.neuron.java.sales.service.vo.OfferVO;
 import hu.neuron.java.sales.service.vo.OrderVO;
+import hu.neuron.java.sales.service.vo.ProductTypeVO;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -32,6 +41,15 @@ public class OrderServiceImpl implements OrderServiceRemote, Serializable {
 
 	@Autowired
 	OrderDAO orderDAO;
+	
+	@Autowired
+	ClientOrderDAO clientOrderDAO;
+	
+	@Autowired
+	OfferOrderDAO offerOrderDAO;
+	
+	@Autowired
+	OrderProductTypeDAO orderProductTypeDAO;
 
 	@Autowired
 	OrderConverter oConverter;
@@ -54,6 +72,12 @@ public class OrderServiceImpl implements OrderServiceRemote, Serializable {
 	@Override
 	public OrderVO findOrderByName(String name) throws Exception {
 		OrderVO rvo = oConverter.toVO(orderDAO.findOrderByName(name));
+		return rvo;
+	}
+
+	@Override
+	public OrderVO findOrderByOrderId(String orderId) throws Exception {
+		OrderVO rvo = oConverter.toVO(orderDAO.findOrderByOrderId(orderId));
 		return rvo;
 	}
 
@@ -86,6 +110,45 @@ public class OrderServiceImpl implements OrderServiceRemote, Serializable {
 	public int getRowNumber() {
 		int num = (int) orderDAO.count();
 		return num;
+	}
+
+	@Override
+	public void addClientToOrder(ClientVO client, OrderVO order) {
+		ClientOrder clientOrder = new ClientOrder();
+		
+		clientOrder.setClientId(client.getClientId());
+		clientOrder.setOrderId(order.getOrderId());
+		
+		clientOrderDAO.save(clientOrder);
+
+	}
+
+	@Override
+	public void addOfferToOrder(OfferVO offer, OrderVO order) {
+		OfferOrderEntity offerOrder = new OfferOrderEntity();
+		
+		offerOrder.setOfferId(offer.getOfferId());
+		offerOrder.setOrderId(order.getOrderId());
+		
+		offerOrderDAO.save(offerOrder);
+
+	}
+
+	@Override
+	public void addProductTypeToOrder(ProductTypeVO productType, OrderVO order) {
+		OrderProductType orderProductType = new OrderProductType();
+		
+		orderProductType.setProductTypeId(productType.getProductTypeId());
+		orderProductType.setOrderId(order.getOrderId());
+		
+		orderProductTypeDAO.save(orderProductType);
+
+	}
+
+	@Override
+	public List<OrderVO> findOrdersToClient(ClientVO client) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
