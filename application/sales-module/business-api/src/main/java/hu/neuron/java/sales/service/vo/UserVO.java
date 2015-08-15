@@ -1,7 +1,7 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.UUID;
 
 public class UserVO implements Serializable {
 
@@ -20,9 +20,11 @@ public class UserVO implements Serializable {
 	private String email;
 
 	private String phoneNumber;
-
-	private Collection<RoleVO> roles;
-
+	
+	public UserVO() {
+		this.userId = UUID.randomUUID().toString();
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -77,14 +79,6 @@ public class UserVO implements Serializable {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	public Collection<RoleVO> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Collection<RoleVO> roles) {
-		this.roles = roles;
 	}
 
 	@Override

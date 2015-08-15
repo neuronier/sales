@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface UserRoleDAO extends JpaRepository<UserRole, Long>{
 
-	List<UserRole> findUserRolesByUserId(@Param("userId") Long userId);
+	List<UserRole> findUserRolesByUserId(@Param("userId") String userId);
 	
 	@Query("select ur from UserRole ur where ur.userId=?1 and ur.roleId=?2")
-	UserRole findUserRoleByUserIdAndRoleId(Long userId, Long roleId);
+	UserRole findUserRoleByUserIdAndRoleId(String userId, String roleId);
 }

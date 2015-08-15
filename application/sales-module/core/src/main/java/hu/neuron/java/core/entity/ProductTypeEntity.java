@@ -1,5 +1,7 @@
 package hu.neuron.java.core.entity;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -8,17 +10,13 @@ import javax.persistence.Table;
 public class ProductTypeEntity extends Base {
 
 	private static final long serialVersionUID = -4534980851713861745L;
-	
+
 	private String name;
+
+	private String productTypeId;
 	
-	private Long productTypeId;
-
-	public Long getProductTypeId() {
-		return productTypeId;
-	}
-
-	public void setProductTypeId(Long productTypeId) {
-		this.productTypeId = productTypeId;
+	public ProductTypeEntity(){
+		setProductTypeId(UUID.randomUUID().toString());
 	}
 
 	public String getName() {
@@ -28,4 +26,13 @@ public class ProductTypeEntity extends Base {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getProductTypeId() {
+		return productTypeId;
+	}
+
+	public void setProductTypeId(String productTypeId) {
+		this.productTypeId = productTypeId;
+	}
+
 }

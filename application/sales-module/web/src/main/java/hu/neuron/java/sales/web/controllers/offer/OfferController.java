@@ -35,26 +35,26 @@ public class OfferController implements Serializable {
 	List<ProductTypeVO> updateOfferProductTypeList;
 
 	List<ProductTypeVO> newOfferProductTypeList;
-	
+
 	ProductTypeVO productTypeVO;
-	
+
 	List<ProductTypeVO> productTypeList;
-	
+
 	HashMap<String, Integer> offerProductTypeList;
 
 	private String newOfferName;
 
-	private long newOfferId;
+	private String newOfferId;
 
 	private long newOfferPrice;
 
 	private String updateOfferName;
 
-	private long updateOfferId;
+	private String updateOfferId;
 
 	private long updateOfferPrice;
 
-	private long updateProductTypeId;
+	private String updateProductTypeId;
 
 	private int newQuantity;
 
@@ -70,8 +70,30 @@ public class OfferController implements Serializable {
 
 	private LazyProductTypeModel lazyProductTypeModel;
 
-	
-	
+	public String getNewOfferId() {
+		return newOfferId;
+	}
+
+	public void setNewOfferId(String newOfferId) {
+		this.newOfferId = newOfferId;
+	}
+
+	public String getUpdateOfferId() {
+		return updateOfferId;
+	}
+
+	public void setUpdateOfferId(String updateOfferId) {
+		this.updateOfferId = updateOfferId;
+	}
+
+	public String getUpdateProductTypeId() {
+		return updateProductTypeId;
+	}
+
+	public void setUpdateProductTypeId(String updateProductTypeId) {
+		this.updateProductTypeId = updateProductTypeId;
+	}
+
 	public ProductTypeVO getProductTypeVO() {
 		return productTypeVO;
 	}
@@ -133,14 +155,6 @@ public class OfferController implements Serializable {
 		this.productTypeService = productTypeService;
 	}
 
-	public long getUpdateProductTypeId() {
-		return updateProductTypeId;
-	}
-
-	public void setUpdateProductTypeId(long updateProductTypeId) {
-		this.updateProductTypeId = updateProductTypeId;
-	}
-
 	public int getNewQuantity() {
 		return newQuantity;
 	}
@@ -174,28 +188,12 @@ public class OfferController implements Serializable {
 		this.lazyProductTypeModel = lazyProductTypeModel;
 	}
 
-	public long getNewOfferId() {
-		return newOfferId;
-	}
-
-	public void setNewOfferId(long newOfferId) {
-		this.newOfferId = newOfferId;
-	}
-
 	public long getNewOfferPrice() {
 		return newOfferPrice;
 	}
 
 	public void setNewOfferPrice(long newOfferPrice) {
 		this.newOfferPrice = newOfferPrice;
-	}
-
-	public long getUpdateOfferId() {
-		return updateOfferId;
-	}
-
-	public void setUpdateOfferId(long updateOfferId) {
-		this.updateOfferId = updateOfferId;
 	}
 
 	public long getUpdateOfferPrice() {
@@ -250,7 +248,7 @@ public class OfferController implements Serializable {
 	public void init() {
 		setLazyOfferModel(new LazyOfferModel(offerService));
 		setLazyProductTypeModel(new LazyProductTypeModel(productTypeService));
-		productTypeList = productTypeService.findAll();	
+		productTypeList = productTypeService.findAll();
 	}
 
 	public void saveNewOffer() throws Exception {
@@ -260,7 +258,9 @@ public class OfferController implements Serializable {
 		offerVO.setOfferPrice(newOfferPrice);
 		offerService.saveOffer(offerVO);
 		for (Map.Entry<String, Integer> entry : offerProductTypeList.entrySet()) {
-			offerService.addProductTypeToOffer(offerVO, productTypeService.findProductTypeByName(entry.getKey()), entry.getValue());		
+			offerService.addProductTypeToOffer(offerVO,
+					productTypeService.findProductTypeByName(entry.getKey()),
+					entry.getValue());
 		}
 	}
 
@@ -329,9 +329,9 @@ public class OfferController implements Serializable {
 							"Update: "));
 		}
 	}
-	
+
 	public void addProductTypeToOffer() {
-		offerProductTypeList.put(selectedProductType.getName(),newQuantity);
+		offerProductTypeList.put(selectedProductType.getName(), newQuantity);
 	}
 
 	public void removeProductTypeFromOffer() {

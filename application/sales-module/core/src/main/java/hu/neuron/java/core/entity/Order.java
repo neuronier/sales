@@ -1,25 +1,38 @@
 package hu.neuron.java.core.entity;
 
+import java.util.UUID;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 
 //Mivel a diagramból és a dokumentációból nem derült ki rendesen, hogy milyen mezői legyenek az entitásnak lehet h ezt még BŐVITENI kell! (Roli)
 @Entity
-@Table(name="Orders")
+@Table(name = "Orders")
 public class Order extends Base {
 
 	private static final long serialVersionUID = 1L;
-	
-	private Long orderId;
-	
+
+	private String orderId;
+
 	private String name;
 
-	public Long getOrderId() {
+	@Column(nullable = false)
+	@Type(type = "org.hibernate.type.NumericBooleanType")
+	private boolean status;
+	
+	public Order(){
+		super();
+		setOrderId(UUID.randomUUID().toString());
+	}
+
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(Long orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 
@@ -27,13 +40,16 @@ public class Order extends Base {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setOrderName(String name) {
 		this.name = name;
 	}
 
-	@Override
-	public String toString() {
-		return "Order [orderId=" + orderId + ", orderName=" + name + "]";
+	public boolean isStatus() {
+		return status;
 	}
-	
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
 }

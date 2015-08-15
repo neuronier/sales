@@ -1,72 +1,54 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.UUID;
 
-public class OrderVO implements Serializable{
+public class OrderVO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	public OrderVO(){
-	}
-	
-	private Long identifier;
-	
-	private Long orderId;
-	
-	private String orderName;
-	
-	List<ProductTypeVO> productTypeVOs;
-	
-	List<UserVO> userVOs;
-	
-	List<OfferVO> offerVOs;
 
-	public Long getIdentifier() {
-		return identifier;
+	private Long Id;
+
+	private String orderId;
+
+	private String name;
+
+	private boolean status;
+
+	public OrderVO() {
+		super();
+		setOrderId(UUID.randomUUID().toString());
 	}
 
-	public void setIdentifier(Long identifier) {
-		this.identifier = identifier;
+	public Long getId() {
+		return Id;
 	}
 
-	public Long getOrderId() {
+	public void setId(Long id) {
+		Id = id;
+	}
+
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(Long orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 
-	public String getOrderName() {
-		return orderName;
+	public String getName() {
+		return name;
 	}
 
-	public void setOrderName(String orderName) {
-		this.orderName = orderName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public List<ProductTypeVO> getProductTypeVOs() {
-		return productTypeVOs;
+	public boolean isStatus() {
+		return status;
 	}
 
-	public void setProductTypeVOs(List<ProductTypeVO> productTypeVOs) {
-		this.productTypeVOs = productTypeVOs;
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
-	public List<UserVO> getUserVOs() {
-		return userVOs;
-	}
-
-	public void setUserVOs(List<UserVO> userVOs) {
-		this.userVOs = userVOs;
-	}
-
-	public List<OfferVO> getOfferVOs() {
-		return offerVOs;
-	}
-
-	public void setOfferVOs(List<OfferVO> offerVOs) {
-		this.offerVOs = offerVOs;
-	}
-	
 }

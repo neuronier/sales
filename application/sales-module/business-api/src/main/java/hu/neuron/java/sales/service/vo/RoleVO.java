@@ -1,6 +1,7 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class RoleVO implements Serializable {
 
@@ -12,6 +13,10 @@ public class RoleVO implements Serializable {
 
 	private String roleId;
 
+	public RoleVO() {
+		this.roleId= UUID.randomUUID().toString();
+	}
+	
 	public Long getId() {
 		return id;
 	}

@@ -12,28 +12,25 @@ public class OfferOrderEntity extends Base {
 
 	private static final long serialVersionUID = 1L;
 
-	/*@ManyToOne(fetch = FetchType.LAZY, targetEntity = OfferEntity.class)
-	@JoinTable(name = "Offer")*/
-	private long offerId;
-	
-	/* MISSING ANNOTATIONS !!! */
-	private long orderId;
-	
+	private String offerId;
+
+	private String orderId;
+
 	private int quantity;
 
-	public long getOfferId() {
+	public String getOfferId() {
 		return offerId;
 	}
 
-	public void setOfferId(long offerId) {
+	public void setOfferId(String offerId) {
 		this.offerId = offerId;
 	}
 
-	public long getOrderId() {
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(long orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 
@@ -50,6 +47,5 @@ public class OfferOrderEntity extends Base {
 		return "OfferOrderEntity [offerId=" + offerId + ", orderId=" + orderId
 				+ ", quantity=" + quantity + "]";
 	}
-	
-	
+
 }

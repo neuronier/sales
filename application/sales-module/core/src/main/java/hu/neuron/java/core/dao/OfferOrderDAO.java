@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface OfferOrderDAO extends JpaRepository<OfferOrderEntity, Long>{
 
-	List<OfferOrderEntity> findOfferOrderEntityByOfferId(@Param("offerId") Long offerId) throws Exception;
+	List<OfferOrderEntity> findOfferOrderEntityByOfferId(@Param("offerId") String offerId) throws Exception;
 	
-	List<OfferOrderEntity> findOfferOrderEntityByOrderId(@Param("orderId") Long orderId) throws Exception;
+	List<OfferOrderEntity> findOfferOrderEntityByOrderId(@Param("orderId") String orderId) throws Exception;
 	
 	@Query("select oo from OfferOrderEntity oo where oo.offerId=?1 and oo.orderId=?2")
-	OfferOrderEntity findOfferOrderEntityByOfferIdAndOrderId(Long offerId, Long orderId);
+	OfferOrderEntity findOfferOrderEntityByOfferIdAndOrderId(String offerId, String orderId);
 }

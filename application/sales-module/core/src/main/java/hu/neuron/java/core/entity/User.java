@@ -1,5 +1,7 @@
 package hu.neuron.java.core.entity;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -9,6 +11,7 @@ import javax.persistence.Table;
 @Table(name = "User")
 @NamedQueries({
 		@NamedQuery(name = "User.findUserByName", query = "SELECT u FROM User u  WHERE u.name = :name"),
+		@NamedQuery(name = "User.findUserByUserId", query = "SELECT u FROM User u  WHERE u.userId = :userId"),
 		@NamedQuery(name = "User.findUserByUserName", query = "SELECT u FROM User u  WHERE u.userName = :userName")
 })
 public class User extends Base {
@@ -27,6 +30,12 @@ public class User extends Base {
 
 	private String phoneNumber;
 
+	
+
+	public User() {
+		super();
+		this.userId = UUID.randomUUID().toString();
+	}
 
 	public String getName() {
 		return name;
