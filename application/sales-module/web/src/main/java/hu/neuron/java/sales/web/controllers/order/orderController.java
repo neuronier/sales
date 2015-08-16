@@ -1,9 +1,6 @@
 package hu.neuron.java.sales.web.controllers.order;
 
-import hu.neuron.java.sales.service.ClientServiceRemote;
-import hu.neuron.java.sales.service.OfferServiceRemote;
 import hu.neuron.java.sales.service.OrderServiceRemote;
-import hu.neuron.java.sales.service.ProductTypeServiceRemote;
 import hu.neuron.java.sales.service.vo.OrderVO;
 
 import javax.annotation.PostConstruct;
@@ -24,20 +21,11 @@ public class orderController {
 	@EJB(name="OrderService", mappedName="OrderService")
 	OrderServiceRemote orderService;
 	
-	@EJB(name="OfferService", mappedName="OfferService")
-	OfferServiceRemote offerService;
-	
-	@EJB(name="ClientService", mappedName="ClientService")
-	ClientServiceRemote clientService;
-	
-	@EJB(name="ProductTypeService", mappedName="ProductTypeService")
-	ProductTypeServiceRemote productTypeService;
-	
 	private OrderVO selectedOrder;
 	
 	private OrderVO newOrder;
 	
-	private String orderName;
+	private String orderId;
 	
 	@PostConstruct
 	public void init(){
@@ -53,19 +41,18 @@ public class orderController {
 		newOrder = new OrderVO();
 	}
 	public void addNewOrder(){
-		newOrder.setName(orderName);
 		newOrder.setStatus("Megrendelve");
 		
 		orderService.saveOrder(newOrder);
 	}
 	
 	public void onRowSelected(SelectEvent event){
-		orderName = selectedOrder.getName();
+		orderId = selectedOrder.getOrderId();
 		
 		FacesContext.getCurrentInstance().addMessage(
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
-						selectedOrder.getName()));
+						selectedOrder.getOrderId()));
 	}
 
 	public OrderVO getSelectedOrder() {
@@ -92,11 +79,12 @@ public class orderController {
 		this.lazyOrderModul = lazyOrderModul;
 	}
 
-	public String getOrderName() {
-		return orderName;
+	public String getOrderId() {
+		return orderId;
 	}
 
-	public void setOrderName(String orderName) {
-		this.orderName = orderName;
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
+
 }
