@@ -32,5 +32,7 @@ public interface UserServiceRemote {
 	public void addRoleToUser(UserVO user, RoleVO role);
 	
 	public void removeRoleFromUser(UserVO user, RoleVO role);
+	
+	public String getDefaultPassword();
 
 }

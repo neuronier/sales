@@ -7,12 +7,10 @@ import hu.neuron.java.sales.service.RoleServiceRemote;
 import hu.neuron.java.sales.service.converter.RoleConverter;
 import hu.neuron.java.sales.service.converter.UserConverter;
 import hu.neuron.java.sales.service.vo.RoleVO;
-import hu.neuron.java.sales.service.vo.UserVO;
 
 import java.io.Serializable;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -21,7 +19,6 @@ import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

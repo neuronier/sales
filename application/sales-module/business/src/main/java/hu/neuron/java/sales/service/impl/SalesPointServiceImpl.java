@@ -9,7 +9,6 @@ import hu.neuron.java.sales.service.vo.SalesPointVO;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;

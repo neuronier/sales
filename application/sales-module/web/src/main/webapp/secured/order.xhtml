@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/masterLayout.xhtml"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+	<ui:define name="pageTitle">#{out.orders_title}</ui:define>
+	<ui:define name="header">#{out.orders_title}</ui:define>
+	<ui:define name="head-extra">
+		<style>
+.dataTableContainer tr {
+	vertical-align: top;
+}
+
+#orderDetailsCell {
+	width: 80%;
+	padding: 40px;
+}
+</style>
+	</ui:define>
+
+	<ui:define name="content">
+		<table class="dataTableContainer">
+			<tr>
+				<td id="orderDetailsCell"><h:form id="orderForm">
+						<p:dataTable id="orderDT"
+							value="#{orderController.lazyOrderModul}" var="order"
+							selectionMode="single"
+							selection="#{orderController.selectedOrder}"
+							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+							rowsPerPageTemplate="5,10,15" lazy="true" paginator="true"
+							rows="10" emptyMessage="#{out.empty_message}">
+
+							<p:ajax event="rowSelect" update=":orderForm:orderDT" />
+
+							<p:column headerText="Order id" sortBy="#{order.orderId}"
+								filterBy="#{order.orderId}" filterStyle="width:80%;">
+								<h:outputText value="#{order.orderId}" />
+							</p:column>
+							<p:column headerText="Status" sortBy="#{order.status}"
+								filterBy="#{order.status}" filterStyle="width:80%;">
+								<h:outputText value="#{order.status}" />
+							</p:column>
+						</p:dataTable>
+						
+						<p:panelGrid id="btnPanel" columns="1">
+							<p:commandButton value="New Order" action="#{orderController.addNewOrderButtonAction}" update=":addNewOrderDialogForm"
+								oncomplete="PF('addNewOrderDialog').show()" />
+						</p:panelGrid>
+					</h:form>></td>
+			</tr>
+		</table>
+		
+		<p:dialog widgetVar="addNewOrderDialog" header="Add new order" resizable="false">
+			<h:form id="addNewOrderDialogForm">
+				<p:panelGrid columns="2">
+<!-- 					<p:outputLabel value="Name: " /> -->
+<!-- 					<p:inputText value="#{orderController.newOrder.orderId}" /> -->
+
+<!-- 					<p:outputLabel value="Roles: " /> -->
+<!-- 					<p:pickList id="pickList" value="#{userController.roleList}" var="role" itemLabel="#{role}" itemValue="#{role}" /> -->
+				</p:panelGrid>
+
+				<p:commandButton value="Save" actionListener="#{orderController.addNewOrder}" update=":orderForm:orderDT" oncomplete="PF('addNewOrderDialog').hide()" />
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
