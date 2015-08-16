@@ -33,11 +33,11 @@ public class SalesPointDaoTest {
 	@Test
 	public void test1Create() {
 		entity = new SalesPoint();
-		entity.setSalePointAdress("NOWHERE");
+		entity.setAdressId("NOWHERE");
 		entity.setSalePointId("101L");
 		entity.setName("SALEPOINT");
 		entity.setSalePointPhoneNumber("06303030300");
-		entity.setWareHouseId(303L);
+		entity.setWareHouseId("303L");
 		salesDAO.save(entity);
 	}
 	

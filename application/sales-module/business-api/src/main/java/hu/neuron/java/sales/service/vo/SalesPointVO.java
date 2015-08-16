@@ -11,7 +11,7 @@ public class SalesPointVO implements Serializable{
 	
 	private String name;
 	
-	private Long ID;
+	private Long id;
 	
 	private String salePointId;
 	
@@ -20,6 +20,8 @@ public class SalesPointVO implements Serializable{
 	private AddressVO address;
 	
 	private List<UserVO> users;
+	
+	private String salePointPhoneNumber;
 	
 	public String getSalePointId() {
 		return salePointId;
@@ -61,12 +63,20 @@ public class SalesPointVO implements Serializable{
 		this.name = name;
 	}
 
-	public Long getID() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 
-	public void setID(Long iD) {
-		ID = iD;
+	public void setId(Long iD) {
+		id = iD;
+	}
+
+	public String getSalePointPhoneNumber() {
+		return salePointPhoneNumber;
+	}
+
+	public void setSalePointPhoneNumber(String salePointPhoneNumber) {
+		this.salePointPhoneNumber = salePointPhoneNumber;
 	}
 	
 }

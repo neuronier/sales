@@ -11,6 +11,7 @@
 
 
 	<ui:define name="content">
+		<h2>Salepoint management</h2>
 		<h:form id="form" style="max-width: 1000px; margin-top: 45px; margin-left: auto; margin-right: auto;">
 			<p:dataTable var="salesPoint"
 				value="#{salesPointController.lazySalesPointModel}" paginator="true"
@@ -24,9 +25,24 @@
 					listener="#{salesPointController.onRowSelect}"
 					update=":form:removeButton,:form:updateButton,:updateSalesPointDialog" />
 
-				<p:column headerText="Name" sortBy="#{salesPoint.name}"
+				<p:column headerText="#{out.salepointcolname}" sortBy="#{salesPoint.name}"
 					filterBy="#{salesPoint.name}">
 					<h:outputText value="#{salesPoint.name}" />
+				</p:column>
+				
+				<p:column headerText="#{out.salepointcoladdress}" sortBy="#{salesPoint.address.city}"
+					filterBy="#{salesPoint.address.city}">
+					<h:outputText value="#{salesPoint.address.city}" />
+				</p:column>
+				
+				<p:column headerText="#{out.salepointcolphone}" sortBy="#{salesPoint.salePointPhoneNumber}"
+					filterBy="#{salesPoint.salePointPhoneNumber}">
+					<h:outputText value="#{salesPoint.salePointPhoneNumber}" />
+				</p:column>
+				
+				<p:column headerText="#{out.salepointcolwarehouse}" sortBy="#{salesPoint.warehouse.wareHouseId}"
+					filterBy="#{salesPoint.warehouse.wareHouseId}">
+					<h:outputText value="#{salesPoint.warehouse.wareHouseId}" />
 				</p:column>
 
 			</p:dataTable>

@@ -10,9 +10,9 @@ public class SalesPoint extends Base {
 	private static final long serialVersionUID = 1L;
 
 	private String salePointId;
-	private Long wareHouseId;
+	private String wareHouseId;
 	private String name;
-	private String salePointAdress;
+	private String adressId;
 	private String salePointPhoneNumber;
 
 	public String getSalePointId() {
@@ -23,11 +23,11 @@ public class SalesPoint extends Base {
 		this.salePointId = salesPointId;
 	}
 
-	public Long getWareHouseId() {
+	public String getWareHouseId() {
 		return wareHouseId;
 	}
 
-	public void setWareHouseId(Long wareHouseId) {
+	public void setWareHouseId(String wareHouseId) {
 		this.wareHouseId = wareHouseId;
 	}
 
@@ -39,12 +39,12 @@ public class SalesPoint extends Base {
 		this.name = salesPointName;
 	}
 
-	public String getSalePointAdress() {
-		return salePointAdress;
+	public String getAdressId() {
+		return adressId;
 	}
 
-	public void setSalePointAdress(String salesPointAdress) {
-		this.salePointAdress = salesPointAdress;
+	public void setAdressId(String salesPointAdress) {
+		this.adressId = salesPointAdress;
 	}
 
 	public String getSalePointPhoneNumber() {
@@ -59,7 +59,7 @@ public class SalesPoint extends Base {
 	public String toString() {
 		return "SalesPoint [salesPointId=" + salePointId + ", wareHouseId="
 				+ wareHouseId + ", salesPointName=" + name
-				+ ", salesPointAdress=" + salePointAdress
+				+ ", salesPointAdress=" + adressId
 				+ ", salesPointPhoneNumber=" + salePointPhoneNumber + "]";
 	}
 }

@@ -19,6 +19,7 @@
 		<class>hu.neuron.java.core.entity.SalesPoint</class>
 		<class>hu.neuron.java.core.entity.User</class>
 		<class>hu.neuron.java.core.entity.UserRole</class>
+		<class>hu.neuron.java.core.entity.Warehouse</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 
 		<properties>

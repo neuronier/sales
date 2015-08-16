@@ -14,6 +14,16 @@ public class AddressVO implements Serializable{
 	 */
 	String salePointAdress;
 	
+	private String zipCode;
+	
+	private String city;
+	
+	private String sreet;
+	
+	private String houseNumber;
+	
+	private String addresId;
+	
 	public AddressVO() {}
 	
 	public AddressVO(String salePointAdress) {

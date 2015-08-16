@@ -12,11 +12,13 @@ public class WarehouseVO implements Serializable{
 	/**
 	 * ÁTMENETI ADATTAG, MEG KELL VÁLTOZTATNI MAJD!!!!
 	 */
-	Long wareHouseId;
+	String wareHouseId;
+	
+	private Long id;
 	
 	public WarehouseVO() {}
 	
-	public WarehouseVO(Long wareHouseId) {
+	public WarehouseVO(String wareHouseId) {
 		// TODO A SalesPointConverterben használom ezt a konstruktort.
 		// a SalesPoint(Entity)-nek van egy String salePointAddress adattagja
 		// szerintem ez majd az address azonosítója lesz.
@@ -34,7 +36,7 @@ public class WarehouseVO implements Serializable{
 	 * NE HASZNÁLD!!! Átmeneti metódus, valszeg nem jó üzleti logika van mögötte.
 	 * Bővebb infó az WarehouseVO egyik konstruktorában kommentként!
 	 * */
-	public Long getWareHouseId() {
+	public String getWareHouseId() {
 		return wareHouseId;
 	}
 
@@ -42,8 +44,16 @@ public class WarehouseVO implements Serializable{
 	 * NE HASZNÁLD!!! Átmeneti metódus, valszeg nem jó üzleti logika van mögötte.
 	 * Bővebb infó az WarehouseVO egyik konstruktorában kommentként!
 	 * */
-	public void setWareHouseId(Long wareHouseId) {
+	public void setWareHouseId(String wareHouseId) {
 		this.wareHouseId = wareHouseId;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }
