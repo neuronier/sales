@@ -50,10 +50,10 @@ public class ClientDaoTest {
 				
 				address = new Address();
 				address.setCity("City");
-				address.setSreet("Street");
+				address.setStreet("Street");
 				address.setZipCode("0242");
 				address.setHouseNumber("43");
-				address.setAddresId("1");
+				address.setAddressId("1");
 				
 				address = addressDAO.save(address);
 				

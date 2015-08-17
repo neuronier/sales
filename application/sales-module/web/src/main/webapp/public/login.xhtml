@@ -31,12 +31,17 @@
 		</h:form>
 
 		<div style="margin-top: 100px;">
-			<h:panelGroup layout="block" class="error" rendered="#{param['error'] == 1}">#{out.login_wrong_password}</h:panelGroup>
+			
 
 
 			<form action="#{request.contextPath}/login" method="post">
 
 				<table style="margin: 0 auto;">
+					<tr>
+					<td colspan="2" style="text-align:center; color:red;">
+						<h:panelGroup layout="block" class="error" rendered="#{param['error'] == 1}">#{out.login_wrong_password}</h:panelGroup>
+					</td>
+					</tr>
 					<tr>
 						<td><p:outputLabel value="#{out.login_username}: " /></td>
 						<td><input type="text" name="username" /></td>

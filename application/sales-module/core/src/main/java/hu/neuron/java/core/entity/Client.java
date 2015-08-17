@@ -76,20 +76,4 @@ public class Client extends Base {
 		this.clientId = clientId;
 	}
 
-	// public List<Address> getBillingAddress() {
-	// return billingAddress;
-	// }
-	//
-	// public void setBillingAddress(List<Address> billingAddress) {
-	// this.billingAddress = billingAddress;
-	// }
-	//
-	// public List<Address> getDeliveryAddress() {
-	// return deliveryAddress;
-	// }
-	//
-	// public void setDeliveryAddress(List<Address> deliveryAddress) {
-	// this.deliveryAddress = deliveryAddress;
-	// }
-
 }

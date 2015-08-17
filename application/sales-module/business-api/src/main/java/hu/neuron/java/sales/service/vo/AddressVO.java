@@ -1,6 +1,7 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class AddressVO implements Serializable{
 
@@ -9,53 +10,65 @@ public class AddressVO implements Serializable{
 	 */
 	private static final long serialVersionUID = 4037424070007872953L;
 	
-	/**
-	 * ÁTMENETI ADATTAG, MEG KELL VÁLTOZTATNI MAJD!!!!
-	 */
-	String salePointAdress;
-	
 	private String zipCode;
 	
 	private String city;
 	
-	private String sreet;
+	private String street;
 	
 	private String houseNumber;
 	
-	private String addresId;
+	private String addressId;
 	
 	public AddressVO() {}
 	
-	public AddressVO(String salePointAdress) {
-		// TODO A SalesPointConverterben használom ezt a konstruktort.
-		// a SalesPoint(Entity)-nek van egy String salePointAddress adattagja
-		// szerintem ez majd az address azonosítója lesz.
-		// Ha igen akkor úgy lenne érdemes megírni majd ezt a konstruktort, hogy ha meghívják
-		// ezzel az adattaggal, akkor itt(ebben a konstruktorban), az azonosító alapján, 
-		// lekérdezzük az adatbázisból a többi számunkra fontos adatát az Address-nek és
-		// letároljuk ebben az objektumba. (Jocó)
-		// EGYENLŐRE, IDEIGLENESEN LETÁROLOM EZT A STRINGET ÉS CSINÁLOK GETTERT SETTERT
-		// DE VALSZEG NEM LESZ EZ JÓ VÉGLEGES MEGDOLÁSNAK (Jocó, 2015.08.10)
-		
-		this.salePointAdress = salePointAdress;
+	public AddressVO(boolean generateUUID) {
+		if(generateUUID){
+			generateAddressId();
+		}
 	}
 
-	/**
-	 * NE HASZNÁLD!!! Átmeneti metódus, valszeg nem jó üzleti logika van mögötte.
-	 * Bővebb infó az AdressVO egyik konstruktorában kommentként!
-	 * */
-	public String getSalePointAdress() {
-		return salePointAdress;
+	public String getZipCode() {
+		return zipCode;
 	}
 
-	/**
-	 * NE HASZNÁLD!!! Átmeneti metódus, valszeg nem jó üzleti logika van mögötte.
-	 * Bővebb infó az AdressVO egyik konstruktorában kommentként!
-	 * */
-	public void setSalePointAdress(String salePointAdress) {
-		this.salePointAdress = salePointAdress;
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getHouseNumber() {
+		return houseNumber;
+	}
+
+	public void setHouseNumber(String houseNumber) {
+		this.houseNumber = houseNumber;
+	}
+
+	public String getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(String addresId) {
+		this.addressId = addresId;
 	}
 	
-	
-
+	public void generateAddressId(){
+		this.addressId = UUID.randomUUID().toString();
+	}
 }

@@ -1,13 +1,12 @@
 package hu.neuron.java.sales.service.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import hu.neuron.java.core.entity.Role;
 import hu.neuron.java.sales.service.vo.RoleVO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
 
 import org.apache.log4j.Logger;
 import org.dozer.Mapper;

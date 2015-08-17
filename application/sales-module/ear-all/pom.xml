@@ -11,7 +11,7 @@
 	<artifactId>ear-all</artifactId>
 	<packaging>ear</packaging>
 
-	<name>SalesApp</name>
+	<name>ear-all</name>
 	
 	<description>A web és a business modul együttes telepítéséhez szükséges ear fájl előállítását megvalósító modul</description>
 
