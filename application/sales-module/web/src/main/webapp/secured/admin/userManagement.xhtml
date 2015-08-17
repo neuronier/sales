@@ -57,9 +57,10 @@
 						<p:panelGrid id="btnPanel" columns="3">
 							<p:commandButton value="#{out.user_add_new}" action="#{userController.addNewUserBtnAction}" update=":addNewUserDialogForm"
 								oncomplete="PF('addNewUserDialog').show()" />
-							<p:commandButton value="#{out.user_edit}" action="#{userController.editUserBtnAction}" update=":editUserDialogForm" onclick="PF('editUserDialog').show()"
+							<p:commandButton value="#{out.user_edit}" action="#{userController.editUserBtnAction}" update=":editUserDialogForm"
+								onclick="PF('editUserDialog').show()" disabled="#{userController.selectedUser == null}" />
+							<p:commandButton value="#{out.user_remove}" actionListener="#{userController.removeUser}" update="userDT"
 								disabled="#{userController.selectedUser == null}" />
-							<p:commandButton value="#{out.user_remove}" actionListener="#{userController.removeUser}" update="userDT" disabled="#{userController.selectedUser == null}" />
 						</p:panelGrid>
 
 					</h:form></td>
@@ -82,7 +83,8 @@
 								oncomplete="PF('addNewRoleDialog').show()" />
 							<p:commandButton value="#{out.user_edit}" update=":editRoleDialogForm" onclick="PF('editRoleDialog').show()"
 								disabled="#{roleController.selectedRole == null}" />
-							<p:commandButton value="#{out.user_remove}" actionListener="#{roleController.removeRole}" update="roleDT" disabled="#{roleController.selectedRole == null}" />
+							<p:commandButton value="#{out.user_remove}" actionListener="#{roleController.removeRole}" update="roleDT"
+								disabled="#{roleController.selectedRole == null}" />
 						</p:panelGrid>
 
 					</h:form></td>
@@ -100,10 +102,19 @@
 					<p:inputText value="#{userController.newUser.userName}" />
 
 					<p:outputLabel value="#{out.user_email}: " />
-					<p:inputText value="#{userController.newUser.email}" />
+					<p:inputText value="#{userController.newUser.email}" validatorMessage="#{out.user_invalid_email_format}">
+						<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+					</p:inputText>
 
 					<p:outputLabel value="#{out.user_phone_number}: " />
-					<p:inputText value="#{userController.newUser.phoneNumber}" />
+
+					<p:column>
+						<p:inputText id="phoneNumber" value="#{userController.newUser.phoneNumber}" validatorMessage="#{out.user_invalid_phone_number_format}">
+							<f:validateRegex pattern="^\+(\d{8,13})$" />
+						</p:inputText>
+						<p:watermark for="phoneNumber" value="+36301231234" id="watermark" />
+					</p:column>
+
 
 					<p:outputLabel value="#{out.user_roles}: " />
 					<p:pickList id="pickList" value="#{userController.roleList}" var="role" itemLabel="#{role}" itemValue="#{role}">
@@ -112,7 +123,8 @@
 					</p:pickList>
 				</p:panelGrid>
 
-				<p:commandButton value="#{out.user_save}" actionListener="#{userController.addNewUser}" update=":userForm:userDT" oncomplete="PF('addNewUserDialog').hide()" />
+				<p:commandButton value="#{out.user_save}" actionListener="#{userController.addNewUser}" update=":userForm:userDT"
+					onsuccess="PF('addNewUserDialog').hide()" validateClient="true" />
 			</h:form>
 		</p:dialog>
 
@@ -126,10 +138,17 @@
 					<p:inputText value="#{userController.selectedUser.userName}" />
 
 					<p:outputLabel value="#{out.user_email}: " />
-					<p:inputText value="#{userController.selectedUser.email}" />
+					<p:inputText value="#{userController.selectedUser.email}" validatorMessage="#{out.user_invalid_email_format}">
+						<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+					</p:inputText>
 
 					<p:outputLabel value="#{out.user_phone_number}: " />
-					<p:inputText value="#{userController.selectedUser.phoneNumber}" />
+					<p:column>
+						<p:inputText id="phoneNumber" value="#{userController.selectedUser.phoneNumber}" validatorMessage="#{out.user_invalid_phone_number_format}">
+							<f:validateRegex pattern="^\+(\d{8,13})$" />
+						</p:inputText>
+						<p:watermark for="phoneNumber" value="+36301231234" id="watermark" />
+					</p:column>
 
 					<p:outputLabel value="#{out.user_roles}: " />
 					<p:pickList id="pickList" value="#{userController.roleList}" var="roles" itemLabel="#{roles}" itemValue="#{roles}">
@@ -138,7 +157,8 @@
 					</p:pickList>
 				</p:panelGrid>
 
-				<p:commandButton value="#{out.user_save}" actionListener="#{userController.editUser}" update=":userForm:userDT" oncomplete="PF('editUserDialog').hide()" />
+				<p:commandButton value="#{out.user_save}" actionListener="#{userController.editUser}" update=":userForm:userDT"
+					oncomplete="PF('editUserDialog').hide()" />
 			</h:form>
 		</p:dialog>
 
@@ -149,7 +169,8 @@
 					<p:inputText value="#{roleController.newRole.name}" />
 				</p:panelGrid>
 
-				<p:commandButton value="#{out.user_save}" actionListener="#{roleController.addNewRole}" update=":roleForm:roleDT" oncomplete="PF('addNewRoleDialog').hide()" />
+				<p:commandButton value="#{out.user_save}" actionListener="#{roleController.addNewRole}" update=":roleForm:roleDT"
+					oncomplete="PF('addNewRoleDialog').hide()" />
 			</h:form>
 		</p:dialog>
 
@@ -160,7 +181,8 @@
 					<p:inputText value="#{roleController.selectedRole.name}" />
 				</p:panelGrid>
 
-				<p:commandButton value="#{out.user_save}" actionListener="#{roleController.editRole}" update=":roleForm:roleDT" oncomplete="PF('editRoleDialog').hide()" />
+				<p:commandButton value="#{out.user_save}" actionListener="#{roleController.editRole}" update=":roleForm:roleDT"
+					oncomplete="PF('editRoleDialog').hide()" />
 			</h:form>
 		</p:dialog>
 
