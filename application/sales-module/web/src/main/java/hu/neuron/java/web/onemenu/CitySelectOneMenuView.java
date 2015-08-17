@@ -16,7 +16,6 @@ public class CitySelectOneMenuView {
      
     @PostConstruct
     public void init() {
-    
         cities = service.getCities();
     }
 
@@ -38,5 +37,9 @@ public class CitySelectOneMenuView {
     
     public static String getStaticCity() {
         return city;
+    }
+    
+    public static void setStaticCity(String city) {
+    	CitySelectOneMenuView.city = city;
     }
 }

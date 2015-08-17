@@ -24,11 +24,11 @@ public class CityService {
 	}
 
 	public List<String> getCities() {
-		updateCityList();
+		//updateCityList();
 		return cities;
 	}
 
-	private void updateCityList() {
+	public void updateCityList() {
 		try {
 			cities = adService.findAllCities();
 		} catch (Exception e) {

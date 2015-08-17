@@ -12,7 +12,7 @@ public class SalesPoint extends Base {
 	private String salePointId;
 	private String wareHouseId;
 	private String name;
-	private String adressId;
+	private String addressId;
 	private String salePointPhoneNumber;
 
 	public String getSalePointId() {
@@ -40,11 +40,11 @@ public class SalesPoint extends Base {
 	}
 
 	public String getAdressId() {
-		return adressId;
+		return addressId;
 	}
 
-	public void setAdressId(String salesPointAdress) {
-		this.adressId = salesPointAdress;
+	public void setAdressId(String addressId) {
+		this.addressId = addressId;
 	}
 
 	public String getSalePointPhoneNumber() {
@@ -59,7 +59,7 @@ public class SalesPoint extends Base {
 	public String toString() {
 		return "SalesPoint [salesPointId=" + salePointId + ", wareHouseId="
 				+ wareHouseId + ", salesPointName=" + name
-				+ ", salesPointAdress=" + adressId
+				+ ", salesPointAdress=" + addressId
 				+ ", salesPointPhoneNumber=" + salePointPhoneNumber + "]";
 	}
 }

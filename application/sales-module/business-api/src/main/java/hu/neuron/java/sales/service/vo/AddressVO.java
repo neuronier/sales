@@ -5,9 +5,6 @@ import java.util.UUID;
 
 public class AddressVO implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4037424070007872953L;
 	
 	private String zipCode;
@@ -70,5 +67,6 @@ public class AddressVO implements Serializable{
 	
 	public void generateAddressId(){
 		this.addressId = UUID.randomUUID().toString();
-	}
+	}	
+	
 }

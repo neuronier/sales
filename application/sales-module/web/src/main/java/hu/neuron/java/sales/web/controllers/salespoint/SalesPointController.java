@@ -5,6 +5,7 @@ import hu.neuron.java.sales.service.SalesPointServiceRemote;
 import hu.neuron.java.sales.service.vo.AddressVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
 import hu.neuron.java.web.onemenu.CitySelectOneMenuView;
+import hu.neuron.java.web.onemenu.CityService;
 
 import java.io.Serializable;
 
@@ -12,6 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -40,6 +42,9 @@ public class SalesPointController implements Serializable {
 	
 	@EJB(name = "AddressService", mappedName = "AddressService")
 	private AddressServiceRemote addressService;
+	
+	@ManagedProperty("#{cityService}")
+	private CityService cityService;
 
 	private LazySalesPointModel lazySalesPointModel;
 
@@ -71,7 +76,15 @@ public class SalesPointController implements Serializable {
 		}
 		salesPointVO.setName(newSalesPointName);
 		salesPointService.saveSalePoint(salesPointVO);
-
+		cityService.updateCityList();
+		selectedSalesPoint = null;
+		newSalesPointName = null;
+		updateSalesPointName = null;
+		CitySelectOneMenuView.setStaticCity(null);
+		streetName = null;
+		houseNumber = null;
+		houseNumber = null;
+		zipCode = null;
 	}
 
 	public void onRowSelect(SelectEvent event) {
@@ -174,4 +187,20 @@ public class SalesPointController implements Serializable {
 		this.zipCode = zipCode;
 	}
 
+	public CityService getCityService() {
+		return cityService;
+	}
+
+	public void setCityService(CityService cityService) {
+		this.cityService = cityService;
+	}
+	
+	public int sortByAddress(Object addr1, Object addr2){
+		if(addr1 instanceof AddressVO && addr2 instanceof AddressVO){
+			AddressVO ad1 = (AddressVO)addr1;
+			AddressVO ad2 = (AddressVO)addr2;
+			return ad1.getCity().compareTo(ad2.getCity());
+		}
+		return 0;
+	}
 }

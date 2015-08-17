@@ -30,11 +30,19 @@
 					sortBy="#{salesPoint.name}" filterBy="#{salesPoint.name}">
 					<h:outputText value="#{salesPoint.name}" />
 				</p:column>
-
+	
 				<p:column headerText="#{out.salepointcoladdress}"
-					sortBy="#{salesPoint.address.city}"
-					filterBy="#{salesPoint.address.city}">
-					<h:outputText value="#{salesPoint.address.city}" />
+					sortBy="#{salesPoint.name}" sortFunction="#{salesPointController.sortByAddress}"
+					filterBy="#{salesPoint.name}">
+						
+						<h:outputText value="#{salesPoint.address.zipCode} "/>
+
+						<h:outputText value="#{salesPoint.address.city}&lt;br/&gt;" escape="false"/>
+				
+						<h:outputText value="#{salesPoint.address.street} "/>
+
+						<h:outputText value="#{salesPoint.address.houseNumber}" />
+
 				</p:column>
 
 				<p:column headerText="#{out.salepointcolphone}"
@@ -70,7 +78,7 @@
 			</div>
 
 		</h:form>
-		<p:dialog header="#{out.popupnewsalepoint}"
+		<p:dialog id="adder" header="#{out.popupnewsalepoint}"
 			widgetVar="createSalesPoint" showEffect="explode" hideEffect="bounce"
 			mheight="100" modal="true" appendTo="@(body)">
 			<h:form>
@@ -109,7 +117,7 @@
 
 				<p:commandButton value="Save" id="save"
 					actionListener="#{salesPointController.saveNewSalesPoint}"
-					update=":form:salesPointTable" icon="ui-icon-disk"
+					update=":form:salesPointTable, :adder" icon="ui-icon-disk"
 					oncomplete="PF('createSalesPoint').hide();" />
 			</h:form>
 		</p:dialog>
