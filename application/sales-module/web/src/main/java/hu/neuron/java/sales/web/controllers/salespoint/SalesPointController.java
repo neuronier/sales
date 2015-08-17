@@ -1,7 +1,10 @@
 package hu.neuron.java.sales.web.controllers.salespoint;
 
+import hu.neuron.java.sales.service.AddressServiceRemote;
 import hu.neuron.java.sales.service.SalesPointServiceRemote;
+import hu.neuron.java.sales.service.vo.AddressVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
+import hu.neuron.java.web.onemenu.CitySelectOneMenuView;
 
 import java.io.Serializable;
 
@@ -25,9 +28,18 @@ public class SalesPointController implements Serializable {
 	private String newSalesPointName;
 
 	private String updateSalesPointName;
+	
+	private String streetName;
+	
+	private String houseNumber;
+	
+	private String zipCode;
 
 	@EJB(name = "SalesPointService", mappedName = "SalesPointService")
 	private SalesPointServiceRemote salesPointService;
+	
+	@EJB(name = "AddressService", mappedName = "AddressService")
+	private AddressServiceRemote addressService;
 
 	private LazySalesPointModel lazySalesPointModel;
 
@@ -37,7 +49,26 @@ public class SalesPointController implements Serializable {
 	}
 
 	public void saveNewSalesPoint() {
-		SalesPointVO salesPointVO = new SalesPointVO();
+		SalesPointVO salesPointVO = new SalesPointVO(true);
+		AddressVO addressVO = new AddressVO();
+		addressVO.setCity(CitySelectOneMenuView.getStaticCity());
+		addressVO.setHouseNumber(houseNumber);
+		addressVO.setStreet(streetName);
+		addressVO.setZipCode(zipCode);
+		AddressVO check = null;
+		try {
+			check = addressService.findAddressByEquals(addressVO);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(check == null){
+			addressVO.generateAddressId();
+			addressService.saveAddress(addressVO);
+			salesPointVO.setAddress(addressVO);
+		} else{
+			salesPointVO.setAddress(check);
+		}
 		salesPointVO.setName(newSalesPointName);
 		salesPointService.saveSalePoint(salesPointVO);
 
@@ -117,6 +148,30 @@ public class SalesPointController implements Serializable {
 
 	public void setUpdateSalesPointName(String updateSalesPointName) {
 		this.updateSalesPointName = updateSalesPointName;
+	}
+
+	public String getStreetName() {
+		return streetName;
+	}
+
+	public void setStreetName(String streetName) {
+		this.streetName = streetName;
+	}
+
+	public String getHouseNumber() {
+		return houseNumber;
+	}
+
+	public void setHouseNumber(String houseNumber) {
+		this.houseNumber = houseNumber;
+	}
+
+	public String getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
 	}
 
 }

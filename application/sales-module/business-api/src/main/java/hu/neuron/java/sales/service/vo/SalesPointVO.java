@@ -2,6 +2,7 @@ package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 public class SalesPointVO implements Serializable{
 
@@ -9,6 +10,12 @@ public class SalesPointVO implements Serializable{
 	
 	public SalesPointVO(){}
 	
+	public SalesPointVO(boolean generateUUID){
+		if(generateUUID){
+			generateSalePointId();
+		}
+	}
+
 	private String name;
 	
 	private Long id;
@@ -79,4 +86,9 @@ public class SalesPointVO implements Serializable{
 		this.salePointPhoneNumber = salePointPhoneNumber;
 	}
 	
+	private void generateSalePointId() {
+		salePointId = UUID.randomUUID().toString();
+		
+	}
+
 }

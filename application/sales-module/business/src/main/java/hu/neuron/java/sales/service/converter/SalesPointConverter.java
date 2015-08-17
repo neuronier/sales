@@ -36,7 +36,7 @@ public class SalesPointConverter {
 		}
 		SalesPointVO rv = new SalesPointVO();
 		try {
-			rv.setAddress(adConverter.toVO(addressDao.findAddressByAddresId(entity.getAdressId())));
+			rv.setAddress(adConverter.toVO(addressDao.findAddressByAddressId(entity.getAdressId())));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,7 +64,7 @@ public class SalesPointConverter {
 		}
 		SalesPoint rv = new SalesPoint();
 		if(vo.getAddress()!=null){
-			rv.setAdressId(vo.getAddress().getSalePointAdress());
+			rv.setAdressId(vo.getAddress().getAddressId());
 		}
 		rv.setName(vo.getName());
 		rv.setSalePointId(vo.getSalePointId());
