@@ -31,8 +31,8 @@ public interface OrderServiceRemote {
 	
 	public void addClientToOrder(ClientVO client, OrderVO order);
 	
-	public void addOfferToOrder(OfferVO offer, OrderVO order);
+	public void addOfferToOrder(OfferVO offer, OrderVO order, int q);
 	
-	public void addProductTypeToOrder(ProductTypeVO productType, OrderVO order);
+	public void addProductTypeToOrder(ProductTypeVO productType, OrderVO order, int q);
 
 }

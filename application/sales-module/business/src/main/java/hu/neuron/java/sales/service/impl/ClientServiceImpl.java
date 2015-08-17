@@ -14,6 +14,7 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -23,10 +24,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 @Stateless(mappedName = "ClientService", name = "ClientService")
 @Remote(ClientServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Interceptors(SpringBeanAutowiringInterceptor.class)
 public class ClientServiceImpl implements ClientServiceRemote, Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -85,6 +88,12 @@ public class ClientServiceImpl implements ClientServiceRemote, Serializable{
 	@Override
 	public void saveClient(ClientVO selectedClient) {
 		clientDAO.save(clientConverter.toEntity(selectedClient));
+	}
+
+	@Override
+	public List<ClientVO> findAll() throws Exception {
+		List<ClientVO> rvo = clientConverter.toVO(clientDAO.findAll());
+		return rvo;
 	}
 
 }

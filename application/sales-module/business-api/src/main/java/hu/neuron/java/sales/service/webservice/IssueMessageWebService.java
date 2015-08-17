@@ -30,6 +30,6 @@ public interface IssueMessageWebService {
 	
 	@WebMethod(operationName = "modifyIssueThreadStatus")
 	@WebResult(name = "modifyIssueThreadStatus")
-	public void modifyIssueThreadStatusWebMethod(String threadId, String status);
+	public void modifyIssueThreadStatusWebMethod(String threadId, String status) throws Exception;
 
 }

@@ -12,5 +12,7 @@ public interface ClientServiceRemote {
 	public List<ClientVO> getClientList(int i, int pageSize, String sortField, int dir, String filter, String filterColumnName);
 
 	public void saveClient(ClientVO selectedClient);
+	
+	public List<ClientVO> findAll() throws Exception;
 
 }

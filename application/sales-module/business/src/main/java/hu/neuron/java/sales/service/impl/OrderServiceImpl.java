@@ -124,22 +124,24 @@ public class OrderServiceImpl implements OrderServiceRemote, Serializable {
 	}
 
 	@Override
-	public void addOfferToOrder(OfferVO offer, OrderVO order) {
+	public void addOfferToOrder(OfferVO offer, OrderVO order, int q) {
 		OfferOrderEntity offerOrder = new OfferOrderEntity();
 		
 		offerOrder.setOfferId(offer.getOfferId());
 		offerOrder.setOrderId(order.getOrderId());
+		offerOrder.setQuantity(q);
 		
 		offerOrderDAO.save(offerOrder);
 
 	}
 
 	@Override
-	public void addProductTypeToOrder(ProductTypeVO productType, OrderVO order) {
+	public void addProductTypeToOrder(ProductTypeVO productType, OrderVO order, int q) {
 		OrderProductType orderProductType = new OrderProductType();
 		
 		orderProductType.setProductTypeId(productType.getProductTypeId());
 		orderProductType.setOrderId(order.getOrderId());
+		orderProductType.setQuantity(q);
 		
 		orderProductTypeDAO.save(orderProductType);
 
