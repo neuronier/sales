@@ -1,7 +1,6 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.UUID;
 
 public class OfferVO implements Serializable {

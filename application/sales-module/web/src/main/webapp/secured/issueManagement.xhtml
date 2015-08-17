@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" template="/templates/masterLayout.xhtml"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+	<ui:define name="pageTitle">#{out.admin_title}</ui:define>
+	<ui:define name="header">#{out.admin_title}</ui:define>
+	<ui:define name="head-extra">
+
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form>
+			<p:dataTable id="issueThreadDT" value="#{issueManagementController.lazyIssueThreadModel}" var="issueThread" selectionMode="single"
+				selection="#{issueManagementController.selectedIssueThread}"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" rows="10" emptyMessage="#{out.empty_message}">
+
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton action="#{issueManagementController.initIssueThreadViewerDialog()}" update=":issueThreadViewerDialogForm"
+						oncomplete="PF('issueThreadViewerDialog').show()" icon="ui-icon-search" title="View">
+						<f:setPropertyActionListener value="#{issueThread}" target="#{issueManagementController.selectedIssueThread}" />
+					</p:commandButton>
+				</p:column>
+
+				<p:column headerText="Client" sortBy="#{issueThread.clientUserName}" filterBy="#{issueThread.clientUserName}" filterStyle="width:80%;">
+					<h:outputText value="#{issueThread.clientUserName}" />
+				</p:column>
+
+				<p:column headerText="Subject" sortBy="#{issueThread.subject}" filterBy="#{issueThread.subject}" filterStyle="width:80%;">
+					<h:outputText value="#{issueThread.subject}" />
+				</p:column>
+
+				<p:column headerText="Status" sortBy="#{issueThread.status}" filterBy="#{issueThread.status}" filterStyle="width:80%;">
+					<h:outputText value="#{issueThread.status}" />
+				</p:column>
+
+				<p:column headerText="Last update" sortBy="#{issueThread.lastUpdate}">
+					<h:outputText value="#{issueThread.lastUpdate}">
+						<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="Europe/Budapest"/>
+					</h:outputText>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+		<p:dialog widgetVar="issueThreadViewerDialog" width="80%" resizable="false">
+			<h:form id="issueThreadViewerDialogForm">
+				<p:dataTable value="#{issueManagementController.issueMessageList}" var="issueMsg" scrollable="true" scrollHeight="150">
+
+					<p:column style="width:16px">
+						<p:rowToggler />
+					</p:column>
+
+					<p:column headerText="From">
+						<h:outputText value="#{issueMsg.owner}" />
+					</p:column>
+
+					<p:column headerText="Date">
+						<h:outputText value="#{issueMsg.date}">
+							<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="Europe/Budapest"/>
+						</h:outputText>
+					</p:column>
+
+					<p:rowExpansion>
+						<h:outputText value="#{issueMsg.text}" escape="false"/>
+					</p:rowExpansion>
+
+				</p:dataTable>
+
+				<p:editor id="editor" widgetVar="editorWidget" value="#{issueManagementController.comment}"
+				controls="bold italic underline color bullets numbering" />
+				
+				<p:commandButton value="Send" action="#{issueManagementController.sendMessage()}" update=":issueThreadViewerDialogForm"/>
+				<p:commandButton value="Clear" type="button" onclick="PF('editorWidget').clear();" />
+
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

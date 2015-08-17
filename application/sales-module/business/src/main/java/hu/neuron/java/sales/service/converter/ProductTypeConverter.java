@@ -6,9 +6,6 @@ import hu.neuron.java.sales.service.vo.ProductTypeVO;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Singleton;
-
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component("ProductTypeConverter")
