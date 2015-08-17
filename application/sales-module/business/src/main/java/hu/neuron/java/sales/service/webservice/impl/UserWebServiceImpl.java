@@ -65,7 +65,7 @@ public class UserWebServiceImpl implements UserWebService {
 
 	public UserListWebServiceVO getUserListWebMethod() {
 		initEJB();
-		System.out.println("serviceRemote = " + serviceRemote);
+
 		List<UserVO> userVOs = serviceRemote.getUserList();
 		UserListWebServiceVO rv = new UserListWebServiceVO();
 		rv.setList(new ArrayList<UserWebServiceVO>());

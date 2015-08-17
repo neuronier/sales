@@ -41,4 +41,31 @@ public class ProductTypeVO implements Serializable {
 	public void setID(Long iD) {
 		ID = iD;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((productTypeId == null) ? 0 : productTypeId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ProductTypeVO other = (ProductTypeVO) obj;
+		if (productTypeId == null) {
+			if (other.productTypeId != null)
+				return false;
+		} else if (!productTypeId.equals(other.productTypeId))
+			return false;
+		return true;
+	}
+	
+	
 }

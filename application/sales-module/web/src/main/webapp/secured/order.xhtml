@@ -44,26 +44,36 @@
 								<h:outputText value="#{order.status}" />
 							</p:column>
 						</p:dataTable>
-						
+
 						<p:panelGrid id="btnPanel" columns="1">
-							<p:commandButton value="New Order" action="#{orderController.addNewOrderButtonAction}" update=":addNewOrderDialogForm"
+							<p:commandButton value="New Order"
+								action="#{orderController.addNewOrderButtonAction}"
+								update=":addNewOrderDialogForm"
 								oncomplete="PF('addNewOrderDialog').show()" />
 						</p:panelGrid>
 					</h:form>></td>
 			</tr>
 		</table>
-		
-		<p:dialog widgetVar="addNewOrderDialog" header="Add new order" resizable="false">
+
+		<p:dialog widgetVar="addNewOrderDialog" header="Add new order"
+			resizable="false">
 			<h:form id="addNewOrderDialogForm">
 				<p:panelGrid columns="2">
-<!-- 					<p:outputLabel value="Name: " /> -->
-<!-- 					<p:inputText value="#{orderController.newOrder.orderId}" /> -->
-
-<!-- 					<p:outputLabel value="Roles: " /> -->
-<!-- 					<p:pickList id="pickList" value="#{userController.roleList}" var="role" itemLabel="#{role}" itemValue="#{role}" /> -->
+					<p:outputLabel for="offer" value="Offers: " />
+					<p:selectOneMenu id="offer" value="#{orderController.selectedOfferName}" effect="fold" editable="true">
+						<f:selectItems value="#{orderController.helper}" />
+					</p:selectOneMenu>
+			
+				<p:outputLabel for="status" value="Status: " />
+					<p:selectOneMenu id="status" value="#{orderController.selectedStatus}" effect="fold" editable="true">
+						<f:selectItems value="#{orderController.status}" />
+					</p:selectOneMenu>
 				</p:panelGrid>
 
-				<p:commandButton value="Save" actionListener="#{orderController.addNewOrder}" update=":orderForm:orderDT" oncomplete="PF('addNewOrderDialog').hide()" />
+				<p:commandButton value="Save"
+					actionListener="#{orderController.addNewOrder}"
+					update=":orderForm:orderDT"
+					oncomplete="PF('addNewOrderDialog').hide()" />
 			</h:form>
 		</p:dialog>
 	</ui:define>

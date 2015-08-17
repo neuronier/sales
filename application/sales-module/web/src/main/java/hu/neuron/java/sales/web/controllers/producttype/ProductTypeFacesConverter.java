@@ -37,7 +37,7 @@ public class ProductTypeFacesConverter implements Converter {
 	@Override
 	public String getAsString(FacesContext arg0, UIComponent arg1, Object object) {
 		 if(object != null) {
-		        return String.valueOf(((ProductTypeVO) object).getName());
+		        return ((ProductTypeVO) object).getName();
 		    }
 		    else {
 		        return null;
