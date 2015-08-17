@@ -17,24 +17,24 @@
 
 				<p:column style="width:32px;text-align: center">
 					<p:commandButton action="#{issueManagementController.initIssueThreadViewerDialog()}" update=":issueThreadViewerDialogForm"
-						oncomplete="PF('issueThreadViewerDialog').show()" icon="ui-icon-search" title="View">
+						oncomplete="PF('issueThreadViewerDialog').show()" icon="ui-icon-search" title="#{out.issue_view}">
 						<f:setPropertyActionListener value="#{issueThread}" target="#{issueManagementController.selectedIssueThread}" />
 					</p:commandButton>
 				</p:column>
 
-				<p:column headerText="Client" sortBy="#{issueThread.clientUserName}" filterBy="#{issueThread.clientUserName}" filterStyle="width:80%;">
+				<p:column headerText="#{out.issue_client}" sortBy="#{issueThread.clientUserName}" filterBy="#{issueThread.clientUserName}" filterStyle="width:80%;">
 					<h:outputText value="#{issueThread.clientUserName}" />
 				</p:column>
 
-				<p:column headerText="Subject" sortBy="#{issueThread.subject}" filterBy="#{issueThread.subject}" filterStyle="width:80%;">
+				<p:column headerText="#{out.issue_subject}" sortBy="#{issueThread.subject}" filterBy="#{issueThread.subject}" filterStyle="width:80%;">
 					<h:outputText value="#{issueThread.subject}" />
 				</p:column>
 
-				<p:column headerText="Status" sortBy="#{issueThread.status}" filterBy="#{issueThread.status}" filterStyle="width:80%;">
+				<p:column headerText="#{out.issue_status}" sortBy="#{issueThread.status}" filterBy="#{issueThread.status}" filterStyle="width:80%;">
 					<h:outputText value="#{issueThread.status}" />
 				</p:column>
 
-				<p:column headerText="Last update" sortBy="#{issueThread.lastUpdate}">
+				<p:column headerText="#{out.issue_last_update}" sortBy="#{issueThread.lastUpdate}">
 					<h:outputText value="#{issueThread.lastUpdate}">
 						<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="Europe/Budapest"/>
 					</h:outputText>
@@ -45,17 +45,17 @@
 
 		<p:dialog widgetVar="issueThreadViewerDialog" width="80%" resizable="false">
 			<h:form id="issueThreadViewerDialogForm">
-				<p:dataTable value="#{issueManagementController.issueMessageList}" var="issueMsg" scrollable="true" scrollHeight="150">
+				<p:dataTable value="#{issueManagementController.issueMessageList}" var="issueMsg" scrollable="true" scrollHeight="150" emptyMessage="#{out.empty_message}">
 
 					<p:column style="width:16px">
 						<p:rowToggler />
 					</p:column>
 
-					<p:column headerText="From">
+					<p:column headerText="#{out.issue_from}">
 						<h:outputText value="#{issueMsg.owner}" />
 					</p:column>
 
-					<p:column headerText="Date">
+					<p:column headerText="#{out.issue_date}">
 						<h:outputText value="#{issueMsg.date}">
 							<f:convertDateTime pattern="yyyy.MM.dd HH:mm" timeZone="Europe/Budapest"/>
 						</h:outputText>
@@ -70,8 +70,8 @@
 				<p:editor id="editor" widgetVar="editorWidget" value="#{issueManagementController.comment}"
 				controls="bold italic underline color bullets numbering" />
 				
-				<p:commandButton value="Send" action="#{issueManagementController.sendMessage()}" update=":issueThreadViewerDialogForm"/>
-				<p:commandButton value="Clear" type="button" onclick="PF('editorWidget').clear();" />
+				<p:commandButton value="#{out.issue_send}" action="#{issueManagementController.sendMessage()}" update=":issueThreadViewerDialogForm"/>
+				<p:commandButton value="#{out.issue_clear}" type="button" onclick="PF('editorWidget').clear();" />
 
 			</h:form>
 		</p:dialog>

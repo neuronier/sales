@@ -4,6 +4,7 @@ import hu.neuron.java.sales.service.RoleServiceRemote;
 import hu.neuron.java.sales.service.UserServiceRemote;
 import hu.neuron.java.sales.service.vo.RoleVO;
 import hu.neuron.java.sales.service.vo.UserVO;
+import hu.neuron.java.sales.web.LocalizationsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,21 +101,29 @@ public class userController {
 			userServiceRemote.addRoleToUser(newUser, role);
 		}
 
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "New user created: " + newUser.getUserName()));
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, LocalizationsUtils.getText("user_info", context), LocalizationsUtils.getText(
+				"user_new_user_created", context) + ": " + newUser.getUserName());
+		context.addMessage(null, msg);
 
 	}
 
 	public void editUser() {
 		userServiceRemote.saveUser(selectedUser);
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Edited: " + selectedUser.getUserName()));
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, LocalizationsUtils.getText("user_info", context), LocalizationsUtils.getText(
+				"user_user_edited_successfuly", context) + ": " + selectedUser.getUserName());
+		context.addMessage(null, msg);
 	}
 
 	public void removeUser() {
 		userServiceRemote.removeUser(selectedUser);
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Removed: " + selectedUser.getUserName()));
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, LocalizationsUtils.getText("user_info", context), LocalizationsUtils.getText(
+				"user_user_removed", context) + ": " + selectedUser.getUserName());
+		context.addMessage(null, msg);
 	}
 
 	public boolean isDefaultPasswordUsed() {

@@ -36,30 +36,30 @@
 
 							<p:ajax event="rowSelect" update=":userForm:btnPanel" />
 
-							<p:column headerText="name" sortBy="#{user.name}" filterBy="#{user.name}" filterStyle="width:80%;">
+							<p:column headerText="#{out.user_name}" sortBy="#{user.name}" filterBy="#{user.name}" filterStyle="width:80%;">
 								<h:outputText value="#{user.name}" />
 							</p:column>
 
-							<p:column headerText="user name" sortBy="#{user.userName}" filterBy="#{user.userName}" filterStyle="width:80%;">
+							<p:column headerText="#{out.user_user_name}" sortBy="#{user.userName}" filterBy="#{user.userName}" filterStyle="width:80%;">
 								<h:outputText value="#{user.userName}" />
 							</p:column>
 
-							<p:column headerText="email" sortBy="#{user.email}" filterBy="#{user.email}" filterStyle="width:80%;">
+							<p:column headerText="#{out.user_email}" sortBy="#{user.email}" filterBy="#{user.email}" filterStyle="width:80%;">
 								<h:outputText value="#{user.email}" />
 							</p:column>
 
-							<p:column headerText="phone number" filterBy="#{user.phoneNumber}" filterStyle="width:80%;">
+							<p:column headerText="#{out.user_phone_number}" filterBy="#{user.phoneNumber}" filterStyle="width:80%;">
 								<h:outputText value="#{user.phoneNumber}" />
 							</p:column>
 
 						</p:dataTable>
 
 						<p:panelGrid id="btnPanel" columns="3">
-							<p:commandButton value="Add new" action="#{userController.addNewUserBtnAction}" update=":addNewUserDialogForm"
+							<p:commandButton value="#{out.user_add_new}" action="#{userController.addNewUserBtnAction}" update=":addNewUserDialogForm"
 								oncomplete="PF('addNewUserDialog').show()" />
-							<p:commandButton value="Edit" action="#{userController.editUserBtnAction}" update=":editUserDialogForm" onclick="PF('editUserDialog').show()"
+							<p:commandButton value="#{out.user_edit}" action="#{userController.editUserBtnAction}" update=":editUserDialogForm" onclick="PF('editUserDialog').show()"
 								disabled="#{userController.selectedUser == null}" />
-							<p:commandButton value="Remove" actionListener="#{userController.removeUser}" update="userDT" disabled="#{userController.selectedUser == null}" />
+							<p:commandButton value="#{out.user_remove}" actionListener="#{userController.removeUser}" update="userDT" disabled="#{userController.selectedUser == null}" />
 						</p:panelGrid>
 
 					</h:form></td>
@@ -71,18 +71,18 @@
 
 							<p:ajax event="rowSelect" update=":roleForm:roleBtnPanel" />
 
-							<p:column headerText="Role" sortBy="#{role.name}" filterBy="#{role.name}" filterStyle="width:80%;">
+							<p:column headerText="#{out.user_role}" sortBy="#{role.name}" filterBy="#{role.name}" filterStyle="width:80%;">
 								<h:outputText value="#{role.name}" />
 							</p:column>
 
 						</p:dataTable>
 
 						<p:panelGrid id="roleBtnPanel" columns="3">
-							<p:commandButton value="Add new" action="#{roleController.addNewRoleBtnAction}" update=":addNewRoleDialogForm"
+							<p:commandButton value="#{out.user_add_new}" action="#{roleController.addNewRoleBtnAction}" update=":addNewRoleDialogForm"
 								oncomplete="PF('addNewRoleDialog').show()" />
-							<p:commandButton value="Edit" update=":editRoleDialogForm" onclick="PF('editRoleDialog').show()"
+							<p:commandButton value="#{out.user_edit}" update=":editRoleDialogForm" onclick="PF('editRoleDialog').show()"
 								disabled="#{roleController.selectedRole == null}" />
-							<p:commandButton value="Remove" actionListener="#{roleController.removeRole}" update="roleDT" disabled="#{roleController.selectedRole == null}" />
+							<p:commandButton value="#{out.user_remove}" actionListener="#{roleController.removeRole}" update="roleDT" disabled="#{roleController.selectedRole == null}" />
 						</p:panelGrid>
 
 					</h:form></td>
@@ -90,77 +90,77 @@
 
 		</table>
 
-		<p:dialog widgetVar="addNewUserDialog" header="Add new user" resizable="false">
+		<p:dialog widgetVar="addNewUserDialog" header="#{out.user_add_new_user}" resizable="false">
 			<h:form id="addNewUserDialogForm">
 				<p:panelGrid columns="2">
-					<p:outputLabel value="Name: " />
+					<p:outputLabel value="#{out.user_name}: " />
 					<p:inputText value="#{userController.newUser.name}" />
 
-					<p:outputLabel value="Username: " />
+					<p:outputLabel value="#{out.user_user_name}: " />
 					<p:inputText value="#{userController.newUser.userName}" />
 
-					<p:outputLabel value="Email: " />
+					<p:outputLabel value="#{out.user_email}: " />
 					<p:inputText value="#{userController.newUser.email}" />
 
-					<p:outputLabel value="Phone number: " />
+					<p:outputLabel value="#{out.user_phone_number}: " />
 					<p:inputText value="#{userController.newUser.phoneNumber}" />
 
-					<p:outputLabel value="Roles: " />
+					<p:outputLabel value="#{out.user_roles}: " />
 					<p:pickList id="pickList" value="#{userController.roleList}" var="role" itemLabel="#{role}" itemValue="#{role}">
-						<f:facet name="sourceCaption">Available</f:facet>
-						<f:facet name="targetCaption">Assigned</f:facet>
+						<f:facet name="sourceCaption">#{out.user_available}</f:facet>
+						<f:facet name="targetCaption">#{out.user_assigned}</f:facet>
 					</p:pickList>
 				</p:panelGrid>
 
-				<p:commandButton value="Save" actionListener="#{userController.addNewUser}" update=":userForm:userDT" oncomplete="PF('addNewUserDialog').hide()" />
+				<p:commandButton value="#{out.user_save}" actionListener="#{userController.addNewUser}" update=":userForm:userDT" oncomplete="PF('addNewUserDialog').hide()" />
 			</h:form>
 		</p:dialog>
 
-		<p:dialog widgetVar="editUserDialog" header="Edit user" resizable="false">
+		<p:dialog widgetVar="editUserDialog" header="#{out.user_edit_user}" resizable="false">
 			<h:form id="editUserDialogForm">
 				<p:panelGrid columns="2">
-					<p:outputLabel value="Name: " />
+					<p:outputLabel value="#{out.user_name}: " />
 					<p:inputText value="#{userController.selectedUser.name}" />
 
-					<p:outputLabel value="Username: " />
+					<p:outputLabel value="#{out.user_user_name}: " />
 					<p:inputText value="#{userController.selectedUser.userName}" />
 
-					<p:outputLabel value="Email: " />
+					<p:outputLabel value="#{out.user_email}: " />
 					<p:inputText value="#{userController.selectedUser.email}" />
 
-					<p:outputLabel value="Phone number: " />
+					<p:outputLabel value="#{out.user_phone_number}: " />
 					<p:inputText value="#{userController.selectedUser.phoneNumber}" />
 
-					<p:outputLabel value="Roles: " />
+					<p:outputLabel value="#{out.user_roles}: " />
 					<p:pickList id="pickList" value="#{userController.roleList}" var="roles" itemLabel="#{roles}" itemValue="#{roles}">
-						<f:facet name="sourceCaption">Available</f:facet>
-						<f:facet name="targetCaption">Assigned</f:facet>
+						<f:facet name="sourceCaption">#{out.user_available}</f:facet>
+						<f:facet name="targetCaption">#{out.user_assigned}</f:facet>
 					</p:pickList>
 				</p:panelGrid>
 
-				<p:commandButton value="Save" actionListener="#{userController.editUser}" update=":userForm:userDT" oncomplete="PF('editUserDialog').hide()" />
+				<p:commandButton value="#{out.user_save}" actionListener="#{userController.editUser}" update=":userForm:userDT" oncomplete="PF('editUserDialog').hide()" />
 			</h:form>
 		</p:dialog>
 
-		<p:dialog widgetVar="addNewRoleDialog" header="Add new Role" resizable="false">
+		<p:dialog widgetVar="addNewRoleDialog" header="#{out.user_add_new_role}" resizable="false">
 			<h:form id="addNewRoleDialogForm">
 				<p:panelGrid columns="2">
-					<p:outputLabel value="Name: " />
+					<p:outputLabel value="#{out.user_name}: " />
 					<p:inputText value="#{roleController.newRole.name}" />
 				</p:panelGrid>
 
-				<p:commandButton value="Save" actionListener="#{roleController.addNewRole}" update=":roleForm:roleDT" oncomplete="PF('addNewRoleDialog').hide()" />
+				<p:commandButton value="#{out.user_save}" actionListener="#{roleController.addNewRole}" update=":roleForm:roleDT" oncomplete="PF('addNewRoleDialog').hide()" />
 			</h:form>
 		</p:dialog>
 
-		<p:dialog widgetVar="editRoleDialog" header="Edit role" resizable="false">
+		<p:dialog widgetVar="editRoleDialog" header="#{out.user_edit_role}" resizable="false">
 			<h:form id="editRoleDialogForm">
 				<p:panelGrid columns="2">
-					<p:outputLabel value="Name: " />
+					<p:outputLabel value="#{out.user_name}: " />
 					<p:inputText value="#{roleController.selectedRole.name}" />
 				</p:panelGrid>
 
-				<p:commandButton value="Save" actionListener="#{roleController.editRole}" update=":roleForm:roleDT" oncomplete="PF('editRoleDialog').hide()" />
+				<p:commandButton value="#{out.user_save}" actionListener="#{roleController.editRole}" update=":roleForm:roleDT" oncomplete="PF('editRoleDialog').hide()" />
 			</h:form>
 		</p:dialog>
 

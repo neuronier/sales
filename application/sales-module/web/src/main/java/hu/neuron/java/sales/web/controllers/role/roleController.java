@@ -2,6 +2,7 @@ package hu.neuron.java.sales.web.controllers.role;
 
 import hu.neuron.java.sales.service.RoleServiceRemote;
 import hu.neuron.java.sales.service.vo.RoleVO;
+import hu.neuron.java.sales.web.LocalizationsUtils;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -10,24 +11,22 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-
 @ViewScoped
 @ManagedBean(name = "roleController")
 public class roleController {
 
-	
 	private LazyRoleModel lazyRoleModel;
-	
+
 	@EJB(name = "RoleService", mappedName = "RoleService")
 	private RoleServiceRemote roleService;
-	
+
 	private RoleVO selectedRole;
 	private RoleVO newRole;
-	
+
 	public roleController() {
 		super();
 	}
-	
+
 	@PostConstruct
 	public void init() {
 		setLazyRoleModel(new LazyRoleModel(roleService));
@@ -36,22 +35,34 @@ public class roleController {
 	public void addNewRoleBtnAction() {
 		newRole = new RoleVO();
 	}
-	
-	public void addNewRole(){
+
+	public void addNewRole() {
 		roleService.saveRole(newRole);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",	"Created: " + newRole.getName() ));
-	}
-	
-	public void editRole(){
-		roleService.saveRole(selectedRole);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",	"Edited: " + newRole.getName() ));
-	}
-	
-	public void removeRole() {
-		roleService.removeRole(selectedRole);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",	"Removed: " + selectedRole.getName() ));
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, LocalizationsUtils.getText("user_info", context), LocalizationsUtils.getText(
+				"user_role_created", context) + ": " + newRole.getName());
+		context.addMessage(null, msg);
+
 	}
 
+	public void editRole() {
+		roleService.saveRole(selectedRole);
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, LocalizationsUtils.getText("user_info", context), LocalizationsUtils.getText(
+				"user_role_edited", context) + ": " + selectedRole.getName());
+		context.addMessage(null, msg);
+	}
+
+	public void removeRole() {
+		roleService.removeRole(selectedRole);
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, LocalizationsUtils.getText("user_info", context), LocalizationsUtils.getText(
+				"user_role_removed", context) + ": " + selectedRole.getName());
+		context.addMessage(null, msg);
+	}
 
 	public LazyRoleModel getLazyRoleModel() {
 		return lazyRoleModel;
@@ -75,6 +86,6 @@ public class roleController {
 
 	public void setNewRole(RoleVO newRole) {
 		this.newRole = newRole;
-	}	
-	
+	}
+
 }
