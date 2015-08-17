@@ -22,7 +22,7 @@ public class Address extends Base {
 	/**
 	 * Utca.
 	 */
-	private String sreet;
+	private String street;
 
 	/**
 	 * Házszám.
@@ -32,7 +32,7 @@ public class Address extends Base {
 	/**
 	 * Az entitás azonosítója.
 	 */
-	private String addresId;
+	private String addressId;
 
 	public String getZipCode() {
 		return zipCode;
@@ -50,12 +50,12 @@ public class Address extends Base {
 		this.city = city;
 	}
 
-	public String getSreet() {
-		return sreet;
+	public String getStreet() {
+		return street;
 	}
 
-	public void setSreet(String sreet) {
-		this.sreet = sreet;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
 	public String getHouseNumber() {
@@ -66,12 +66,12 @@ public class Address extends Base {
 		this.houseNumber = houseNumber;
 	}
 
-	public String getAddresId() {
-		return addresId;
+	public String getAddressId() {
+		return addressId;
 	}
 
-	public void setAddresId(String addresId) {
-		this.addresId = addresId;
+	public void setAddressId(String addressId) {
+		this.addressId = addressId;
 	}
 
 }

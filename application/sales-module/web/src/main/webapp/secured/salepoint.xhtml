@@ -12,7 +12,8 @@
 
 	<ui:define name="content">
 		<h2>Salepoint management</h2>
-		<h:form id="form" style="max-width: 1000px; margin-top: 45px; margin-left: auto; margin-right: auto;">
+		<h:form id="form"
+			style="max-width: 1000px; margin-top: 45px; margin-left: auto; margin-right: auto;">
 			<p:dataTable var="salesPoint"
 				value="#{salesPointController.lazySalesPointModel}" paginator="true"
 				rows="10"
@@ -25,53 +26,86 @@
 					listener="#{salesPointController.onRowSelect}"
 					update=":form:removeButton,:form:updateButton,:updateSalesPointDialog" />
 
-				<p:column headerText="#{out.salepointcolname}" sortBy="#{salesPoint.name}"
-					filterBy="#{salesPoint.name}">
+				<p:column headerText="#{out.salepointname}"
+					sortBy="#{salesPoint.name}" filterBy="#{salesPoint.name}">
 					<h:outputText value="#{salesPoint.name}" />
 				</p:column>
-				
-				<p:column headerText="#{out.salepointcoladdress}" sortBy="#{salesPoint.address.city}"
+
+				<p:column headerText="#{out.salepointcoladdress}"
+					sortBy="#{salesPoint.address.city}"
 					filterBy="#{salesPoint.address.city}">
 					<h:outputText value="#{salesPoint.address.city}" />
 				</p:column>
-				
-				<p:column headerText="#{out.salepointcolphone}" sortBy="#{salesPoint.salePointPhoneNumber}"
+
+				<p:column headerText="#{out.salepointcolphone}"
+					sortBy="#{salesPoint.salePointPhoneNumber}"
 					filterBy="#{salesPoint.salePointPhoneNumber}">
 					<h:outputText value="#{salesPoint.salePointPhoneNumber}" />
 				</p:column>
-				
-				<p:column headerText="#{out.salepointcolwarehouse}" sortBy="#{salesPoint.warehouse.wareHouseId}"
+
+				<p:column headerText="#{out.salepointcolwarehouse}"
+					sortBy="#{salesPoint.warehouse.wareHouseId}"
 					filterBy="#{salesPoint.warehouse.wareHouseId}">
 					<h:outputText value="#{salesPoint.warehouse.wareHouseId}" />
 				</p:column>
 
 			</p:dataTable>
 
-			<div style="margin-top: 30px; display: table; margin-left: auto; margin-right: auto;">
+			<div
+				style="margin-top: 30px; display: table; margin-left: auto; margin-right: auto;">
 
-					<p:commandButton value="#{out.addnew}" type="button"
-						onclick="PF('createSalesPoint').show();" />
+				<p:commandButton value="#{out.addnew}" type="button"
+					onclick="PF('createSalesPoint').show();" />
 
-					<p:commandButton value="#{out.update}" type="button" id="updateButton"
-						disabled="#{salesPointController.selectedSalesPoint == null}"
-						onclick="PF('updateSalesPoint').show();" />
+				<p:commandButton value="#{out.update}" type="button"
+					id="updateButton"
+					disabled="#{salesPointController.selectedSalesPoint == null}"
+					onclick="PF('updateSalesPoint').show();" />
 
-					<p:commandButton value="Delete" id="removeButton"
-						update="form:salesPointTable,form:removeButton,form:updateButton"
-						disabled="#{salesPointController.selectedSalesPoint == null}"
-						actionListener="#{salesPointController.removeSalesPoint}" />
+				<p:commandButton value="Delete" id="removeButton"
+					update="form:salesPointTable,form:removeButton,form:updateButton"
+					disabled="#{salesPointController.selectedSalesPoint == null}"
+					actionListener="#{salesPointController.removeSalesPoint}" />
 
 			</div>
 
 		</h:form>
-		<p:dialog header="Effects" widgetVar="createSalesPoint"
-			showEffect="explode" hideEffect="bounce" mheight="100" modal="true"
-			appendTo="@(body)">
+		<p:dialog header="#{out.popupnewsalepoint}"
+			widgetVar="createSalesPoint" showEffect="explode" hideEffect="bounce"
+			mheight="100" modal="true" appendTo="@(body)">
 			<h:form>
-				<h:outputLabel for="salesPointName" value="Name:"
+				<h:outputLabel for="salesPointName" value="#{out.salepointname}"
 					style="font-weight:bold" />
 				<p:inputText id="salesPointName" required="true"
 					value="#{salesPointController.newSalesPointName}" />
+
+				<h:outputLabel for="city" value="#{out.city}"
+					style="font-weight:bold" />
+				<p:selectOneMenu id="city" value="#{citySelectOneMenuView.city}"
+					converter="cityConverter" panelStyle="width:180px" effect="fade"
+					var="c" style="width:160px" filter="true"
+					filterMatchMode="startsWith">
+					<f:selectItems value="#{citySelectOneMenuView.cities}" var="city"
+						itemLabel="#{city}" itemValue="#{city}" />
+					<p:column>
+						<h:outputText value="#{c}" />
+					</p:column>
+				</p:selectOneMenu>
+				
+				<h:outputLabel for="streetName" value="#{out.streetname}"
+					style="font-weight:bold" />
+				<p:inputText id="streetName" required="true"
+					value="#{salesPointController.streetName}" />
+					
+				<h:outputLabel for="houseNumber" value="#{out.housenumber}"
+					style="font-weight:bold" />
+				<p:inputText id="houseNumber" required="true"
+					value="#{salesPointController.houseNumber}" />
+					
+				<h:outputLabel for="zipCode" value="#{out.zipcode}"
+					style="font-weight:bold" />
+				<p:inputText id="zipCode" required="true"
+					value="#{salesPointController.zipCode}" />
 
 				<p:commandButton value="Save" id="save"
 					actionListener="#{salesPointController.saveNewSalesPoint}"
@@ -80,9 +114,10 @@
 			</h:form>
 		</p:dialog>
 
-		<p:dialog header="Effects" widgetVar="updateSalesPoint"
-			showEffect="explode" id="updateSalesPointDialog" hideEffect="bounce"
-			mheight="100" modal="true" appendTo="@(body)">
+		<p:dialog header="#{out.popupmodifysalepoint}"
+			widgetVar="updateSalesPoint" showEffect="explode"
+			id="updateSalesPointDialog" hideEffect="bounce" mheight="100"
+			modal="true" appendTo="@(body)">
 			<h:form>
 				<h:outputLabel for="salesPointName" value="Name:"
 					style="font-weight:bold" />
