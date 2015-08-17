@@ -19,9 +19,7 @@ public class Order extends Base {
 
 	private String name;
 
-	@Column(nullable = false)
-	@Type(type = "org.hibernate.type.NumericBooleanType")
-	private boolean status;
+	private String status;
 	
 	public Order(){
 		super();
@@ -44,12 +42,11 @@ public class Order extends Base {
 		this.name = name;
 	}
 
-	public boolean isStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(boolean status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
-
 }

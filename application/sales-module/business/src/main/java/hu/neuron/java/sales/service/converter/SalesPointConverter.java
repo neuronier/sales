@@ -1,17 +1,31 @@
 package hu.neuron.java.sales.service.converter;
 
+import hu.neuron.java.core.dao.AddressDAO;
+import hu.neuron.java.core.dao.WarehouseDAO;
 import hu.neuron.java.core.entity.SalesPoint;
-import hu.neuron.java.sales.service.vo.AddressVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
-import hu.neuron.java.sales.service.vo.WarehouseVO;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SalesPointConverter {
+	
+	
+	@Autowired
+	WarehouseDAO warehouseDao;
+	
+	@Autowired
+	WarehouseConverter whConverter;
+	
+	@Autowired
+	AddressDAO addressDao;
+	
+	@Autowired
+	AddressConverter adConverter;
 
 	/**
 	 * ÁTMENETI CONVERTER- AZ ENTITÁSOK NORMÁLIS KIALAKÍTÁSA UTÁN MÉG ÁT KELL ÍRNI!!!!
@@ -21,11 +35,23 @@ public class SalesPointConverter {
 			return null;
 		}
 		SalesPointVO rv = new SalesPointVO();
-		rv.setAddress(new AddressVO(entity.getSalePointAdress()));
-		rv.setID(entity.getId());
+		try {
+			rv.setAddress(adConverter.toVO(addressDao.findAddressByAddresId(entity.getAdressId())));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		rv.setSalePointPhoneNumber(entity.getSalePointPhoneNumber());
+		rv.setId(entity.getId());
+		rv.setSalePointId(entity.getSalePointId());
 		rv.setName(entity.getName());
 		//TODO HIÁNYZIK AZ ENTITYBŐL A SALE POINT USEREK TÁROLÁSA
-		rv.setWarehouse(new WarehouseVO(entity.getWareHouseId()));
+		try {
+			rv.setWarehouse(whConverter.toVO(warehouseDao.findWarehouseByWarehouseId(entity.getWareHouseId())));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return rv;
 	}
 
@@ -38,14 +64,15 @@ public class SalesPointConverter {
 		}
 		SalesPoint rv = new SalesPoint();
 		if(vo.getAddress()!=null){
-			rv.setSalePointAdress(vo.getAddress().getSalePointAdress());
+			rv.setAdressId(vo.getAddress().getSalePointAdress());
 		}
 		rv.setName(vo.getName());
 		rv.setSalePointId(vo.getSalePointId());
+		rv.setSalePointPhoneNumber(vo.getSalePointPhoneNumber());
 		if(vo.getWarehouse() != null){
 			rv.setWareHouseId(vo.getWarehouse().getWareHouseId());
 		}
-		rv.setId(vo.getID());;
+		rv.setId(vo.getId());;
 		return rv;
 	}
 

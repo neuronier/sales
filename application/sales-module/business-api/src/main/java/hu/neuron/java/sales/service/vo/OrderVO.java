@@ -12,7 +12,7 @@ public class OrderVO implements Serializable {
 
 	private String name;
 
-	private boolean status;
+	private String status;
 
 	public OrderVO() {
 		super();
@@ -43,11 +43,11 @@ public class OrderVO implements Serializable {
 		this.name = name;
 	}
 
-	public boolean isStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(boolean status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

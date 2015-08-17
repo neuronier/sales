@@ -1,6 +1,5 @@
 package hu.neuron.java.core.dao;
 
-import hu.neuron.java.core.entity.Address;
 import hu.neuron.java.core.entity.Warehouse;
 
 import org.springframework.data.domain.Page;
@@ -10,15 +9,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Repository
 @Transactional(propagation = Propagation.SUPPORTS)
-public interface AddressDAO extends JpaRepository<Address, Long>{
+public interface WarehouseDAO extends JpaRepository<Warehouse, Long>{
 	
-	Address findAddressByCity(String city) throws Exception;
+	Warehouse findWarehouseByWarehouseId(String warehouseId) throws Exception;
 	
-	Address findAddressByAddresId(String addressId) throws Exception;
-	
-	Page<Address> findByCityStartsWith(String filter, Pageable pageRequest);
-
+	Page<Warehouse> findByWarehouseNameStartsWith(String filter, Pageable pageRequest);
 }
