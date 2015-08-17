@@ -51,25 +51,53 @@
 								update=":addNewOrderDialogForm"
 								oncomplete="PF('addNewOrderDialog').show()" />
 						</p:panelGrid>
-					</h:form>></td>
+					</h:form></td>
 			</tr>
 		</table>
 
 		<p:dialog widgetVar="addNewOrderDialog" header="Add new order"
 			resizable="false">
 			<h:form id="addNewOrderDialogForm">
-				<p:panelGrid columns="2">
+				<p:panelGrid columns="2" cellpadding="2">
 					<p:outputLabel for="offer" value="Offers: " />
-					<p:selectOneMenu id="offer" value="#{orderController.selectedOfferName}" effect="fold" editable="true">
-						<f:selectItems value="#{orderController.helper}" />
-					</p:selectOneMenu>
-			
-				<p:outputLabel for="status" value="Status: " />
-					<p:selectOneMenu id="status" value="#{orderController.selectedStatus}" effect="fold" editable="true">
+					<p:panelGrid columns="4">
+						<p:selectOneMenu id="offer"
+							value="#{orderController.selectedOfferName}" effect="fold"
+							editable="true">
+							<f:selectItems value="#{orderController.offerHelper}" />
+						</p:selectOneMenu>
+						<h:outputText id="output"
+							value="#{orderController.counterOfferString}" />
+						<p:commandButton value="+"
+							actionListener="#{orderController.increment}" update="output" />
+						<p:commandButton value="-"
+							actionListener="#{orderController.dcrement}" update="output" />
+					</p:panelGrid>
+					<p:outputLabel value="Product Types" />
+					<p:panelGrid columns="4">
+						<p:selectOneMenu id="productType"
+							value="#{orderController.selectedProductTypeName}" effect="fold"
+							editable="true">
+							<f:selectItems value="#{orderController.productHelper}" />
+						</p:selectOneMenu>
+						<h:outputText id="output2"
+							value="#{orderController.counterProductString}" />
+						<p:commandButton value="+"
+							actionListener="#{orderController.increment2}" update="output2" />
+						<p:commandButton value="-"
+							actionListener="#{orderController.dcrement2}" update="output2" />
+					</p:panelGrid>
+					<p:outputLabel value="Clients:" for="client" />
+					<p:autoComplete id="client"
+						value="#{orderController.selectedClientName}"
+						completeMethod="#{orderController.completeTextClient}" />
+					<p:outputLabel for="status" value="Status: " />
+					<p:selectOneMenu id="status"
+						value="#{orderController.selectedStatus}" effect="fold"
+						editable="true">
 						<f:selectItems value="#{orderController.status}" />
 					</p:selectOneMenu>
 				</p:panelGrid>
-
 				<p:commandButton value="Save"
 					actionListener="#{orderController.addNewOrder}"
 					update=":orderForm:orderDT"

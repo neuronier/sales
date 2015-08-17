@@ -11,44 +11,23 @@ public class Client extends Base {
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Az ügyfél neve.
-	 */
 	private String name;
 
-	/**
-	 * Az ügyfél azonosítója.
-	 */
 	private String clientId;
 
-	/**
-	 * Az ügyfél felhasználóneve.
-	 */
 	private String userName;
 
-	/**
-	 * Az ügyfél jelszava.
-	 */
 	private String password;
 
-	/**
-	 * Az ügyfél e-mail címe.
-	 */
 	private String emailAddress;
 
-	/**
-	 * Az ügyfél telefonszáma.
-	 */
 	private String phoneNumber;
 
-	/**
-	 * Az ügyfélhez tartozó számlázási címek.
-	 */
-
-	public Client(){
+	public Client() {
 		super();
 		setClientId(UUID.randomUUID().toString());
 	}
+
 	public String getName() {
 		return name;
 	}
