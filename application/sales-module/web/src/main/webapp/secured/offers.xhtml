@@ -54,7 +54,8 @@
 							<td><div class="ui-grid-col-3">
 									<p:commandButton value="Update" type="button" id="updateButton"
 										disabled="#{offerController.selectedOffer == null}"
-										onclick="PF('updateOffer').show();" />
+										onclick="PF('updateOffer').show();"
+										 />
 								</div></td>
 							<td><div class="ui-grid-col-3">
 									<p:commandButton value="Delete" id="removeButton"
@@ -68,9 +69,10 @@
 			</div>
 
 		</h:form>
-		<p:dialog header="Effects" widgetVar="createOffer"
+		<p:dialog header="Create New Offer" widgetVar="createOffer"
 			showEffect="explode" hideEffect="bounce" mheight="100" modal="true"
 			appendTo="@(body)">
+
 			<h:form id="form2">
 
 
@@ -98,75 +100,57 @@
 							oncomplete="PF('createOffer').hide();" />
 					</tr>
 					<tr>
-						<td><p:dataTable var="offerProductType"
-								value="#{offerController.offerProductTypeList}"
-								paginator="true" rows="10"
-								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-								rowsPerPageTemplate="5,10,15" selectionMode="single"
+						<td><p:dataTable id="offerProductTypeTable"
+								var="offerProductType"
+								value="#{offerController.selectedOfferProductTypeList}"
+								selectionMode="single"
 								selection="#{offerController.selectedOfferProductType}"
-								id="offerProductTypeTable" lazy="true">
-
+								rowKey="#{offerProductType.name}">
 								<f:facet name="header">
-      						 		Product Types of this Offer
-    							</f:facet>
-
+            					Product Types Of This Offer !
+        					</f:facet>
 								<p:ajax event="rowSelect"
 									listener="#{offerController.onOfferProductTypeRowSelect}"
-									update="" />
-
-								<p:column headerText="Name" sortBy="#{offerProductType.key}"
-									filterBy="#{offerProductType.key}">
-									<h:outputText value="#{offerProductType.key}" />
+									update=":form2:removeButton" />
+								<p:column headerText="Name">
+									<h:outputText value="#{offerProductType.name}" />
 								</p:column>
-								
-								<p:column headerText="Quantity"
-									sortBy="#{offerProductType.value}"
-									filterBy="#{offerProductType.value}">
-									<h:outputText value="#{offerProductType.value}" />
+								<p:column headerText="Quantity">
+									<h:outputText value="#{offerProductType.quantity}" />
 								</p:column>
-
 							</p:dataTable></td>
 					</tr>
 					<tr>
-						<td align="center">
-						
-						<h:form id="formOne">
-						<p:outputLabel for="advanced" value="Product Types:" />
-							<h:panelGrid columns="2" style="margin-bottom:10px"
-								cellpadding="5">
-								
-								<p:selectOneMenu id="advanced" converter="#{productTypeConverter}"
-									value="#{offerController.productTypeVO}"
+						<td align="center"><p:outputLabel for="advanced"
+								value="Product Types:" /> <h:panelGrid columns="2"
+								style="margin-bottom:10px" cellpadding="5">
+								<p:selectOneMenu id="advanced"
+									converter="#{productTypeConverter}"
+									value="#{offerController.selectedProductType}"
 									panelStyle="width:180px" effect="fade" var="t"
 									style="width:160px" filter="true" filterMatchMode="startsWith">
+									<p:ajax event="change" update=":form2:addButton" />
 									<f:selectItems value="#{offerController.productTypeList}"
-										var="productTypeVO" itemLabel="#{productTypeVO.name}"
-										itemValue="#{productTypeVO}" />
-						
-									<p:ajax event="change" update=":form2:addButton"/>
-									
+										var="selectedProductType"
+										itemLabel="#{selectedProductType.name}"
+										itemValue="#{selectedProductType}" />
 									<p:column style="width:10%">
 										<h:outputText value="#{t.productTypeId}" />
 									</p:column>
-
 									<p:column>
 										<h:outputText value="#{t.name}" />
 									</p:column>
-
 								</p:selectOneMenu>
-							</h:panelGrid>
-						</h:form>
-						
-						<h:outputLabel for="newQuantity"
-								value="Quantity:" style="font-weight:bold" /> <p:inputText
-								id="newQuantity" required="true"
-								value="#{offerController.newQuantity}" /> <p:commandButton
-								value="Add" id="addButton"
+
+							</h:panelGrid> <h:outputLabel for="newQuantity" value="Quantity:"
+								style="font-weight:bold" /> <p:inputText id="newQuantity"
+								required="true" value="#{offerController.newQuantity}" /> <p:commandButton
+								value="Add" id="addButton" update=":form2:offerProductTypeTable"
+								icon="ui-icon-disk"
 								actionListener="#{offerController.addProductTypeToOffer}"
-								update=":form2:offerProductTypeTable" icon="ui-icon-disk"
 								disabled="#{offerController.selectedProductType == null}" /> <p:commandButton
 								value="Remove" id="removeButton"
-								update=":form2:offerProductTypeTable,form2:removeButton"
+								update=":form2:offerProductTypeTable,:form2:removeButton"
 								disabled="#{offerController.selectedOfferProductType == null}"
 								actionListener="#{offerController.removeProductTypeFromOffer}" />
 						</td>
@@ -175,26 +159,91 @@
 			</h:form>
 		</p:dialog>
 
-		<p:dialog header="Effects" widgetVar="updateOffer"
+		<p:dialog header="Update Selected Offer" widgetVar="updateOffer"
 			showEffect="explode" id="updateOfferDialog" hideEffect="bounce"
 			mheight="100" modal="true" appendTo="@(body)">
-			<h:form>
-				<h:outputLabel for="offerId" value="offerId:"
-					style="font-weight:bold" />
-				<p:inputText id="offerId" required="true"
-					value="#{offerController.updateOfferId}" />
-				<h:outputLabel for="offerName" value="Name:"
-					style="font-weight:bold" />
-				<p:inputText id="offerName" required="true"
-					value="#{offerController.updateOfferName}" />
-				<h:outputLabel for="offerPrice" value="offerPrice:"
-					style="font-weight:bold" />
-				<p:inputText id="offerPrice" required="true"
-					value="#{offerController.updateOfferPrice}" />
-				<p:commandButton value="Update" id="update"
-					actionListener="#{offerController.updateOffer}"
-					update=":form:offerTable,:form:updateButton,:form:removeButton"
-					icon="ui-icon-disk" oncomplete="PF('updateOffer').hide();" />
+			<h:form id="form3">
+
+				<table>
+					<tr>
+
+						<h:outputLabel for="offerId" value="offerId:"
+							style="font-weight:bold" />
+						<p:inputText id="offerId" required="true"
+							value="#{offerController.updateOfferId}" />
+						<h:outputLabel for="offerName" value="Name:"
+							style="font-weight:bold" />
+						<p:inputText id="offerName" required="true"
+							value="#{offerController.updateOfferName}" />
+						<h:outputLabel for="offerPrice" value="offerPrice:"
+							style="font-weight:bold" />
+						<p:inputText id="offerPrice" required="true"
+							value="#{offerController.updateOfferPrice}" />
+						<p:commandButton value="Update" id="update"
+							actionListener="#{offerController.updateOffer}"
+							update=":form:offerTable,:form:updateButton,:form:removeButton"
+							icon="ui-icon-disk" oncomplete="PF('updateOffer').hide();" />
+
+					</tr>
+					<tr>
+						<td><p:dataTable id="offerProductTypeTableUpdate"
+								var="offerProductType"
+								value="#{offerController.selectedOfferProductTypeList}"
+								selectionMode="single"
+								selection="#{offerController.selectedOfferProductType}"
+								rowKey="#{offerProductType.name}">
+								<f:facet name="header">
+            					Product Types Of This Offer !
+        					</f:facet>
+								<p:ajax event="rowSelect"
+									listener="#{offerController.onOfferProductTypeRowSelect}"
+									update=":form3:removeButton" />
+								<p:column headerText="Name">
+									<h:outputText value="#{offerProductType.name}" />
+								</p:column>
+								<p:column headerText="Quantity">
+									<h:outputText value="#{offerProductType.quantity}" />
+								</p:column>
+							</p:dataTable></td>
+					</tr>
+					<tr>
+						<td align="center"><p:outputLabel for="updateOne" value="Product Types:" />
+							<h:panelGrid columns="2" style="margin-bottom:10px"
+								cellpadding="5">
+								<p:selectOneMenu id="updateOne"
+									converter="#{productTypeConverter}"
+									value="#{offerController.selectedProductType}"
+									panelStyle="width:180px" effect="fade" var="t"
+									style="width:160px" filter="true" filterMatchMode="startsWith">
+									<p:ajax event="change" update=":form3:addButton" />
+									<f:selectItems value="#{offerController.productTypeList}"
+										var="selectedProductType"
+										itemLabel="#{selectedProductType.name}"
+										itemValue="#{selectedProductType}" />
+									<p:column style="width:10%">
+										<h:outputText value="#{t.productTypeId}" />
+									</p:column>
+									<p:column>
+										<h:outputText value="#{t.name}" />
+									</p:column>
+								</p:selectOneMenu>
+
+							</h:panelGrid> <h:outputLabel for="newQuantity" value="Quantity:"
+								style="font-weight:bold" /> <p:inputText id="newQuantity"
+								required="true" value="#{offerController.newQuantity}" /> <p:commandButton
+								value="Add" id="addButton" update=":form3:offerProductTypeTableUpdate"
+								icon="ui-icon-disk"
+								actionListener="#{offerController.addProductTypeToOffer}"
+								disabled="#{offerController.selectedProductType == null}" /> <p:commandButton
+								value="Remove" id="removeButton"
+								update=":form3:offerProductTypeTableUpdate,:form3:removeButton"
+								disabled="#{offerController.selectedOfferProductType == null}"
+								actionListener="#{offerController.removeProductTypeFromOffer}" />
+						</td>
+					</tr>
+
+				</table>
+
 
 			</h:form>
 		</p:dialog>

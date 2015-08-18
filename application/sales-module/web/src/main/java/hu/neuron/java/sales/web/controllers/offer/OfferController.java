@@ -7,9 +7,8 @@ import hu.neuron.java.sales.service.vo.ProductTypeVO;
 import hu.neuron.java.sales.web.controllers.producttype.LazyProductTypeModel;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -17,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.SelectEvent;
 
@@ -29,18 +29,12 @@ public class OfferController implements Serializable {
 	OfferVO selectedOffer;
 
 	ProductTypeVO selectedProductType;
-
-	ProductTypeVO selectedOfferProductType;
-
-	List<ProductTypeVO> updateOfferProductTypeList;
-
-	List<ProductTypeVO> newOfferProductTypeList;
-
-	ProductTypeVO productTypeVO;
+	
+	OfferProductType selectedOfferProductType;
 
 	List<ProductTypeVO> productTypeList;
 
-	HashMap<String, Integer> offerProductTypeList;
+	List<OfferProductType> selectedOfferProductTypeList = new ArrayList<OfferProductType>();
 
 	private String newOfferName;
 
@@ -58,8 +52,6 @@ public class OfferController implements Serializable {
 
 	private int newQuantity;
 
-	private int updateQuantity;
-
 	@EJB(name = "OfferService", mappedName = "OfferService")
 	private OfferServiceRemote offerService;
 
@@ -69,6 +61,15 @@ public class OfferController implements Serializable {
 	private LazyOfferModel lazyOfferModel;
 
 	private LazyProductTypeModel lazyProductTypeModel;
+	
+	public List<OfferProductType> getSelectedOfferProductTypeList() {
+		return selectedOfferProductTypeList;
+	}
+
+	public void setSelectedOfferProductTypeList(
+			List<OfferProductType> selectedOfferProductTypeList) {
+		this.selectedOfferProductTypeList = selectedOfferProductTypeList;
+	}
 
 	public String getNewOfferId() {
 		return newOfferId;
@@ -94,14 +95,6 @@ public class OfferController implements Serializable {
 		this.updateProductTypeId = updateProductTypeId;
 	}
 
-	public ProductTypeVO getProductTypeVO() {
-		return productTypeVO;
-	}
-
-	public void setProductTypeVO(ProductTypeVO productTypeVO) {
-		this.productTypeVO = productTypeVO;
-	}
-
 	public List<ProductTypeVO> getProductTypeList() {
 		return productTypeList;
 	}
@@ -110,40 +103,13 @@ public class OfferController implements Serializable {
 		this.productTypeList = productTypeList;
 	}
 
-	public HashMap<String, Integer> getOfferProductTypeList() {
-		return offerProductTypeList;
-	}
-
-	public void setOfferProductTypeList(
-			HashMap<String, Integer> offerProductTypeList) {
-		this.offerProductTypeList = offerProductTypeList;
-	}
-
-	public ProductTypeVO getSelectedOfferProductType() {
+	public OfferProductType getSelectedOfferProductType() {
 		return selectedOfferProductType;
 	}
 
 	public void setSelectedOfferProductType(
-			ProductTypeVO selectedOfferProductType) {
+			OfferProductType selectedOfferProductType) {
 		this.selectedOfferProductType = selectedOfferProductType;
-	}
-
-	public List<ProductTypeVO> getUpdateOfferProductTypeList() {
-		return updateOfferProductTypeList;
-	}
-
-	public void setUpdateOfferProductTypeList(
-			List<ProductTypeVO> updateOfferProductTypeList) {
-		this.updateOfferProductTypeList = updateOfferProductTypeList;
-	}
-
-	public List<ProductTypeVO> getNewOfferProductTypeList() {
-		return newOfferProductTypeList;
-	}
-
-	public void setNewOfferProductTypeList(
-			List<ProductTypeVO> newOfferProductTypeList) {
-		this.newOfferProductTypeList = newOfferProductTypeList;
 	}
 
 	public ProductTypeServiceRemote getProductTypeService() {
@@ -161,14 +127,6 @@ public class OfferController implements Serializable {
 
 	public void setNewQuantity(int newQuantity) {
 		this.newQuantity = newQuantity;
-	}
-
-	public int getUpdateQuantity() {
-		return updateQuantity;
-	}
-
-	public void setUpdateQuantity(int updateQuantity) {
-		this.updateQuantity = updateQuantity;
 	}
 
 	public ProductTypeVO getSelectedProductType() {
@@ -257,10 +215,8 @@ public class OfferController implements Serializable {
 		offerVO.setOfferId(newOfferId);
 		offerVO.setOfferPrice(newOfferPrice);
 		offerService.saveOffer(offerVO);
-		for (Map.Entry<String, Integer> entry : offerProductTypeList.entrySet()) {
-			offerService.addProductTypeToOffer(offerVO,
-					productTypeService.findProductTypeByName(entry.getKey()),
-					entry.getValue());
+		for (OfferProductType offerProductType : selectedOfferProductTypeList) {
+			offerService.addProductTypeToOffer(offerVO, productTypeService.findProductTypeByName(offerProductType.getName()), offerProductType.getQuantity());
 		}
 	}
 
@@ -269,16 +225,11 @@ public class OfferController implements Serializable {
 		updateOfferName = selectedOffer.getName();
 		updateOfferId = selectedOffer.getOfferId();
 		updateOfferPrice = selectedOffer.getOfferPrice();
-		updateOfferProductTypeList = offerService
-				.findProductTypesToOffer(selectedOffer);
-		FacesContext.getCurrentInstance().addMessage(
-				null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
-						selectedOffer.getName()));
-	}
-
-	public void onProductTypeRowSelect(SelectEvent event) {
-		selectedProductType = (ProductTypeVO) event.getObject();
+		
+		
+		getProductTypesToSelectedOffer();
+		
+		
 		FacesContext.getCurrentInstance().addMessage(
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
@@ -286,11 +237,11 @@ public class OfferController implements Serializable {
 	}
 
 	public void onOfferProductTypeRowSelect(SelectEvent event) {
-		selectedOfferProductType = (ProductTypeVO) event.getObject();
+		selectedOfferProductType = (OfferProductType) event.getObject();
 		FacesContext.getCurrentInstance().addMessage(
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
-						selectedOffer.getName()));
+						selectedOfferProductType.getName()));
 	}
 
 	public void removeOffer() {
@@ -316,7 +267,9 @@ public class OfferController implements Serializable {
 			selectedOffer.setOfferId(updateOfferId);
 			selectedOffer.setOfferPrice(updateOfferPrice);
 			offerService.saveOffer(selectedOffer);
-
+			for (OfferProductType offerProductType : selectedOfferProductTypeList) {
+				offerService.addProductTypeToOffer(selectedOffer, productTypeService.findProductTypeByName(offerProductType.getName()), offerProductType.getQuantity());
+			}
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
@@ -330,11 +283,22 @@ public class OfferController implements Serializable {
 		}
 	}
 
-	public void addProductTypeToOffer() {
-		offerProductTypeList.put(selectedProductType.getName(), newQuantity);
+	public void addProductTypeToOffer(ActionEvent actionEvent) {
+		selectedOfferProductTypeList.add(new OfferProductType(selectedProductType.getName(), newQuantity));
 	}
 
-	public void removeProductTypeFromOffer() {
-		offerProductTypeList.remove(selectedOfferProductType.getName());
+	public void removeProductTypeFromOffer(ActionEvent actionEvent) {
+		selectedOfferProductTypeList.remove(selectedOfferProductType);
+	}
+	
+	public void getProductTypesToSelectedOffer() throws Exception {
+		System.out.println("\n getProductTypesToSelectedOffer \n");
+		selectedProductType = null;
+		selectedOfferProductTypeList.clear();
+		List<ProductTypeVO> list = offerService.findProductTypesToOffer(selectedOffer);	
+		
+		for(ProductTypeVO productTypeVO : list) {
+			selectedOfferProductTypeList.add(new OfferProductType(productTypeVO.getName(),offerService.findQuantityToOfferProductType(selectedOffer, productTypeVO)));
+		} 
 	}
 }
