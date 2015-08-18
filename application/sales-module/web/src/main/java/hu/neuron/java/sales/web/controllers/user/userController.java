@@ -115,6 +115,8 @@ public class userController {
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, LocalizationsUtils.getText("user_info", context), LocalizationsUtils.getText(
 				"user_user_edited_successfuly", context) + ": " + selectedUser.getUserName());
 		context.addMessage(null, msg);
+		
+		selectedUser = null;
 	}
 
 	public void removeUser() {
@@ -124,6 +126,8 @@ public class userController {
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, LocalizationsUtils.getText("user_info", context), LocalizationsUtils.getText(
 				"user_user_removed", context) + ": " + selectedUser.getUserName());
 		context.addMessage(null, msg);
+		
+		selectedUser = null;
 	}
 
 	public boolean isDefaultPasswordUsed() {

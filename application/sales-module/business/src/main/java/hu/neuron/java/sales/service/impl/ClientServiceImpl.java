@@ -86,14 +86,31 @@ public class ClientServiceImpl implements ClientServiceRemote, Serializable{
 	}
 
 	@Override
-	public void saveClient(ClientVO selectedClient) {
-		clientDAO.save(clientConverter.toEntity(selectedClient));
+	public ClientVO saveClient(ClientVO clientVO) {
+		Client client = clientDAO.save(clientConverter.toEntity(clientVO));
+		return clientConverter.toVO(client);
 	}
 
 	@Override
-	public List<ClientVO> findAll() throws Exception {
+	public List<ClientVO> findAll() {
 		List<ClientVO> rvo = clientConverter.toVO(clientDAO.findAll());
 		return rvo;
+	}
+
+	@Override
+	public ClientVO findByUserName(String userName) {
+		return clientConverter.toVO(clientDAO.findClientByUserName(userName));
+	}
+
+	@Override
+	public ClientVO findByClientId(String clientId) {
+		return clientConverter.toVO(clientDAO.findByClientId(clientId));
+	}
+
+	@Override
+	public void removeClient(String clientId) {
+		Client clientToRemove = clientDAO.findByClientId(clientId);
+		clientDAO.delete(clientToRemove);
 	}
 
 }

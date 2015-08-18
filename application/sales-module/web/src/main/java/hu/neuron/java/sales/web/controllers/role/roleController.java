@@ -53,6 +53,8 @@ public class roleController {
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, LocalizationsUtils.getText("user_info", context), LocalizationsUtils.getText(
 				"user_role_edited", context) + ": " + selectedRole.getName());
 		context.addMessage(null, msg);
+		
+		selectedRole = null;
 	}
 
 	public void removeRole() {
@@ -62,6 +64,8 @@ public class roleController {
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, LocalizationsUtils.getText("user_info", context), LocalizationsUtils.getText(
 				"user_role_removed", context) + ": " + selectedRole.getName());
 		context.addMessage(null, msg);
+		
+		selectedRole  = null;
 	}
 
 	public LazyRoleModel getLazyRoleModel() {

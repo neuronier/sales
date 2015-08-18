@@ -10,8 +10,7 @@
 
 	<ui:define name="content">
 		<h:form>
-			<p:dataTable id="issueThreadDT" value="#{issueManagementController.lazyIssueThreadModel}" var="issueThread" selectionMode="single"
-				selection="#{issueManagementController.selectedIssueThread}"
+			<p:dataTable id="issueThreadDT" value="#{issueManagementController.lazyIssueThreadModel}" var="issueThread" 
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 				rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" rows="10" emptyMessage="#{out.empty_message}">
 

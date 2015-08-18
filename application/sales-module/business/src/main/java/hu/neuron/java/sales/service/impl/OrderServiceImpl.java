@@ -1,6 +1,7 @@
 package hu.neuron.java.sales.service.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import hu.neuron.java.core.dao.ClientOrderDAO;
@@ -151,6 +152,17 @@ public class OrderServiceImpl implements OrderServiceRemote, Serializable {
 	public List<OrderVO> findOrdersToClient(ClientVO client) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<OrderVO> findOrdersByClientId(String clientId) throws Exception {
+		List<ClientOrder> clientOrders = clientOrderDAO.findClientOrderByClientId(clientId);
+		List<Order> orders =  new ArrayList<>(); 
+		for (ClientOrder clientOrder : clientOrders) {
+			orders.add(orderDAO.findOrderByOrderId(clientOrder.getOrderId()));
+		}
+		
+		return oConverter.toVO(orders);
 	}
 
 }
