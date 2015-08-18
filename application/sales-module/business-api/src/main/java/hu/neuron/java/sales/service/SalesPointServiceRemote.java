@@ -1,5 +1,6 @@
 package hu.neuron.java.sales.service;
 
+import hu.neuron.java.sales.service.vo.AddressVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
 
 import java.util.List;
@@ -20,5 +21,7 @@ public interface SalesPointServiceRemote {
 	public List<SalesPointVO> findAll();
 
 	public int getRowNumber();
+
+	SalesPointVO findSalePointByAddress(AddressVO address) throws Exception;
 
 }

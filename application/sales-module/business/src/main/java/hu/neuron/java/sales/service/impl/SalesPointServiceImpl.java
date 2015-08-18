@@ -4,6 +4,7 @@ import hu.neuron.java.core.dao.SalesPointDAO;
 import hu.neuron.java.core.entity.SalesPoint;
 import hu.neuron.java.sales.service.SalesPointServiceRemote;
 import hu.neuron.java.sales.service.converter.SalesPointConverter;
+import hu.neuron.java.sales.service.vo.AddressVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
 
 import java.io.Serializable;
@@ -86,6 +87,12 @@ public class SalesPointServiceImpl implements SalesPointServiceRemote,
 	@Override
 	public int getRowNumber() {
 		return (int) salesDao.count();
+	}
+	
+	@Override
+	public SalesPointVO findSalePointByAddress(AddressVO address) throws Exception {
+		SalesPointVO rVO = spConverter.toVO(salesDao.findSalesPointByAddressId(address.getAddressId()));
+		return rVO;
 	}
 
 }
