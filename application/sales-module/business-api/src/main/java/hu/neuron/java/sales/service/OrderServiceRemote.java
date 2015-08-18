@@ -22,6 +22,8 @@ public interface OrderServiceRemote {
 	//még nincs implementálva
 	public List<OrderVO> findOrdersToClient(ClientVO client) throws Exception;
 	
+	public List<OrderVO> findOrdersByClientId(String clientId) throws Exception;
+	
 	public List<OrderVO> getOrderVOs(int i, int pageSize, String sortField,
 			int dir, String filter, String filterColumnName);
 	
