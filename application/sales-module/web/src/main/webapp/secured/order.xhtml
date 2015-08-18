@@ -22,6 +22,7 @@
 	</ui:define>
 
 	<ui:define name="content">
+	<h3>Order management</h3>
 		<table class="dataTableContainer">
 			<tr>
 				<td id="orderDetailsCell"><h:form id="orderForm">
@@ -34,15 +35,39 @@
 							rows="10" emptyMessage="#{out.empty_message}">
 
 							<p:ajax event="rowSelect" update=":orderForm:orderDT" />
-
-							<p:column headerText="Order id" sortBy="#{order.orderId}"
-								filterBy="#{order.orderId}" filterStyle="width:80%;">
-								<h:outputText value="#{order.orderId}" />
+							
+							<p:column headerText="Client" sortBy="#{order.client.name}"
+								filterBy="#{order.client.name}" filterStyle="width:80%;">
+								<h:outputText value="#{order.client.name}" />
 							</p:column>
+							
+							<p:column headerText="Ordered Offer" sortBy="#{order.offers.name}"
+								filterBy="#{order.offers.name}" filterStyle="width:80%;">
+								<h:outputText value="#{order.offers.name}" />
+							</p:column>
+							
+							<p:column headerText="Offer quantity" sortBy="#{order.oQuantity}"
+								filterBy="#{order.oQuantity}" filterStyle="width:80%;">
+								<h:outputText value="#{order.oQuantity}" />
+							</p:column>
+							
+							<p:column headerText="Ordered Product Type" sortBy="#{order.productType.name}"
+								filterBy="#{order.productType.name}" filterStyle="width:80%;">
+								<h:outputText value="#{order.productType.name}" />
+							</p:column>
+							
+							<p:column headerText="Product Type quantity" sortBy="#{order.pQuantity}"
+								filterBy="#{order.pQuantity}" filterStyle="width:80%;">
+								<h:outputText value="#{order.pQuantity}" />
+							</p:column>
+							
+							
+							
 							<p:column headerText="Status" sortBy="#{order.status}"
 								filterBy="#{order.status}" filterStyle="width:80%;">
 								<h:outputText value="#{order.status}" />
 							</p:column>
+							
 						</p:dataTable>
 
 						<p:panelGrid id="btnPanel" columns="1">
