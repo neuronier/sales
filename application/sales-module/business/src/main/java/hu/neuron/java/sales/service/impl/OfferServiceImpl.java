@@ -5,6 +5,7 @@ import hu.neuron.java.core.dao.OfferProductTypeDAO;
 import hu.neuron.java.core.dao.ProductTypeDAO;
 import hu.neuron.java.core.entity.OfferEntity;
 import hu.neuron.java.core.entity.OfferProductTypeEntity;
+import hu.neuron.java.core.entity.ProductTypeEntity;
 import hu.neuron.java.sales.service.OfferServiceRemote;
 import hu.neuron.java.sales.service.converter.OfferConverter;
 import hu.neuron.java.sales.service.converter.ProductTypeConverter;
@@ -121,13 +122,18 @@ public class OfferServiceImpl implements OfferServiceRemote, Serializable {
 	@Override
 	public List<ProductTypeVO> findProductTypesToOffer(OfferVO offerVo) throws Exception {
 		List<OfferProductTypeEntity> offerProductTypeList = offerProductTypeDao.findOfferProductTypeEntityByOfferId(offerVo.getOfferId());
-		List<Long> productTypeIdList = new ArrayList<>();
+		List<String> productTypeIdList = new ArrayList<>();
+		List<ProductTypeEntity> productTypeEntities = new ArrayList<>();
 		
 		for (OfferProductTypeEntity opt : offerProductTypeList) {
-			productTypeIdList.add(Long.valueOf(opt.getProductTypeId()));
+			productTypeIdList.add(opt.getProductTypeId());
 		}
 		
-		return productTypeConverter.toVO(productTypeDao.findAll(productTypeIdList));
+		for (String productTypeId : productTypeIdList) {
+			productTypeEntities.add(productTypeDao.findProductTypeEntityByProductTypeId(productTypeId));
+		}
+		
+		return productTypeConverter.toVO(productTypeEntities);
 	}
 
 	@Override
