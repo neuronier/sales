@@ -18,12 +18,6 @@ public class AddressVO implements Serializable{
 	private String addressId;
 	
 	public AddressVO() {}
-	
-	public AddressVO(boolean generateUUID) {
-		if(generateUUID){
-			generateAddressId();
-		}
-	}
 
 	public String getZipCode() {
 		return zipCode;

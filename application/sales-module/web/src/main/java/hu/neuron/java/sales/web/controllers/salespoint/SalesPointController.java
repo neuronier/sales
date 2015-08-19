@@ -2,13 +2,14 @@ package hu.neuron.java.sales.web.controllers.salespoint;
 
 import hu.neuron.java.sales.service.AddressServiceRemote;
 import hu.neuron.java.sales.service.SalesPointServiceRemote;
+import hu.neuron.java.sales.service.WarehouseServiceRemote;
 import hu.neuron.java.sales.service.vo.AddressVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
+import hu.neuron.java.sales.service.vo.WarehouseVO;
 import hu.neuron.java.web.onemenu.CitySelectOneMenuView;
 import hu.neuron.java.web.onemenu.CityService;
-
+import hu.neuron.java.web.onemenu.WarehouseSelectOneMenuView;
 import java.io.Serializable;
-import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -19,7 +20,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.SelectEvent;
-import org.primefaces.util.Constants;
 
 @ViewScoped
 @ManagedBean(name = "salesPointController")
@@ -38,12 +38,18 @@ public class SalesPointController implements Serializable {
 	private String houseNumber;
 	
 	private String zipCode;
+	
+	private String phoneNumber;
+	
 
 	@EJB(name = "SalesPointService", mappedName = "SalesPointService")
 	private SalesPointServiceRemote salesPointService;
 	
 	@EJB(name = "AddressService", mappedName = "AddressService")
 	private AddressServiceRemote addressService;
+	
+	@EJB(name = "WarehouseService", mappedName = "WarehouseService")
+	private WarehouseServiceRemote warehouseService;
 	
 	@ManagedProperty("#{cityService}")
 	private CityService cityService;
@@ -62,21 +68,39 @@ public class SalesPointController implements Serializable {
 		addressVO.setHouseNumber(houseNumber);
 		addressVO.setStreet(streetName);
 		addressVO.setZipCode(zipCode);
-		AddressVO check = null;
+		
+		AddressVO addressCheck = null;
 		try {
-			check = addressService.findAddressByEquals(addressVO);
+			addressCheck = addressService.findAddressByEquals(addressVO);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(check == null){
+		if(addressCheck == null){
 			addressVO.generateAddressId();
 			addressService.saveAddress(addressVO);
 			salesPointVO.setAddress(addressVO);
 		} else{
-			salesPointVO.setAddress(check);
+			salesPointVO.setAddress(addressCheck);
 		}
 		salesPointVO.setName(newSalesPointName);
+		salesPointVO.setSalePointPhoneNumber(phoneNumber);
+		
+		WarehouseVO warehouseCheck = null;
+		try {
+			warehouseCheck = warehouseService.findWarehouseByWarehouseName(
+					WarehouseSelectOneMenuView.getStaticWarehouseName());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(warehouseCheck == null){
+			// TODO NAGY SZÍVÁS VAN HA IDE JUT
+			salesPointVO.setWarehouse(warehouseCheck);
+		} else{
+			salesPointVO.setWarehouse(warehouseCheck);
+		}
+		
 		salesPointService.saveSalePoint(salesPointVO);
 		cityService.updateCityList();
 		selectedSalesPoint = null;
@@ -87,6 +111,8 @@ public class SalesPointController implements Serializable {
 		houseNumber = null;
 		houseNumber = null;
 		zipCode = null;
+		phoneNumber = null;
+		WarehouseSelectOneMenuView.setStaticWarehouseName(null);
 	}
 
 	public void onRowSelect(SelectEvent event) {
@@ -197,27 +223,35 @@ public class SalesPointController implements Serializable {
 		this.cityService = cityService;
 	}
 	
-	public int sortByAddress(Object addr1, Object addr2){
-		if(addr1 instanceof AddressVO && addr2 instanceof AddressVO){
-			AddressVO ad1 = (AddressVO)addr1;
-			AddressVO ad2 = (AddressVO)addr2;
-			return ad1.getCity().compareTo(ad2.getCity());
-		}
-		return 0;
+//	public int sortByAddress(Object addr1, Object addr2){
+//		if(addr1 instanceof AddressVO && addr2 instanceof AddressVO){
+//			AddressVO ad1 = (AddressVO)addr1;
+//			AddressVO ad2 = (AddressVO)addr2;
+//			return ad1.getCity().compareTo(ad2.getCity());
+//		}
+//		return 0;
+//	}
+//	
+//	public boolean filterByAddress(Object value, Object filter, Locale locale) {
+//		if(filter == null || filter.toString().trim().equals(Constants.EMPTY_STRING)) {
+//            return true;
+//        }
+//        
+//        if(value == null) {
+//            return false;
+//        }
+//        System.out.println("INFO:::VALUE: " + value.toString());
+//        System.out.println("INFO:::FILTER: " + filter.toString());
+//        AddressVO selected = (AddressVO) value;
+//        String search = selected.getCity() + " " + selected.getStreet() + " " + selected.getHouseNumber();
+//        return search.contains(filter.toString());
+//    }
+
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
-	
-	public boolean filterByAddress(Object value, Object filter, Locale locale) {
-		if(filter == null || filter.toString().trim().equals(Constants.EMPTY_STRING)) {
-            return true;
-        }
-        
-        if(value == null) {
-            return false;
-        }
-        System.out.println("INFO:::VALUE: " + value.toString());
-        System.out.println("INFO:::FILTER: " + filter.toString());
-        AddressVO selected = (AddressVO) value;
-        String search = selected.getCity() + " " + selected.getStreet() + " " + selected.getHouseNumber();
-        return search.contains(filter.toString());
-    }
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}	
 }

@@ -51,9 +51,9 @@
 				</p:column>
 
 				<p:column headerText="#{out.salepointcolwarehouse}"
-					sortBy="#{salesPoint.warehouse.wareHouseId}"
-					filterBy="#{salesPoint.warehouse.wareHouseId}">
-					<h:outputText value="#{salesPoint.warehouse.wareHouseId}" />
+					sortBy="#{salesPoint.warehouse}"
+					filterBy="#{salesPoint.warehouse}">
+					<h:outputText value="#{salesPoint.warehouse.warehouseName}" />
 				</p:column>
 
 			</p:dataTable>
@@ -98,7 +98,7 @@
 						<h:outputText value="#{c}" />
 					</p:column>
 				</p:selectOneMenu>
-				
+
 				<h:outputLabel for="streetName" value="#{out.streetname}"
 					style="font-weight:bold" />
 				<p:inputText id="streetName" required="true"
@@ -113,6 +113,24 @@
 					style="font-weight:bold" />
 				<p:inputText id="zipCode" required="true"
 					value="#{salesPointController.zipCode}" />
+					
+					<h:outputLabel for="phoneNumber" value="#{out.phonenumber}"
+					style="font-weight:bold" />
+				<p:inputText id="phoneNumber" required="true"
+					value="#{salesPointController.phoneNumber}" />
+					
+					<h:outputLabel for="warehouse" value="#{out.warehouse}"
+					style="font-weight:bold" />
+				<p:selectOneMenu id="warehouse" value="#{warehouseSelectOneMenuView.warehouseName}"
+					converter="warehouseConverter" panelStyle="width:180px" effect="fade"
+					var="w" style="width:160px" filter="true"
+					filterMatchMode="startsWith">
+					<f:selectItems value="#{warehouseSelectOneMenuView.warehouses}" var="warehouse"
+						itemLabel="#{warehouse}" itemValue="#{warehouse}" />
+					<p:column>
+						<h:outputText value="#{w}" />
+					</p:column>
+				</p:selectOneMenu>
 
 				<p:commandButton value="Save" id="save"
 					actionListener="#{salesPointController.saveNewSalesPoint}"

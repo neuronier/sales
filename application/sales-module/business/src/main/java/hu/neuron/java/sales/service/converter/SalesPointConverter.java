@@ -27,9 +27,6 @@ public class SalesPointConverter {
 	@Autowired
 	AddressConverter adConverter;
 
-	/**
-	 * ÁTMENETI CONVERTER- AZ ENTITÁSOK NORMÁLIS KIALAKÍTÁSA UTÁN MÉG ÁT KELL ÍRNI!!!!
-	 * */
 	public SalesPointVO toVO(SalesPoint entity) {
 		if (entity == null) {
 			return null;
@@ -47,7 +44,7 @@ public class SalesPointConverter {
 		rv.setName(entity.getName());
 		//TODO HIÁNYZIK AZ ENTITYBŐL A SALE POINT USEREK TÁROLÁSA
 		try {
-			rv.setWarehouse(whConverter.toVO(warehouseDao.findWarehouseByWarehouseId(entity.getWareHouseId())));
+			rv.setWarehouse(whConverter.toVO(warehouseDao.findWarehouseByWarehouseId(entity.getWarehouseId())));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,9 +52,6 @@ public class SalesPointConverter {
 		return rv;
 	}
 
-	/**
-	 * ÁTMENETI CONVERTER- AZ ENTITÁSOK NORMÁLIS KIALAKÍTÁSA UTÁN MÉG ÁT KELL ÍRNI!!!!
-	 * */
 	public SalesPoint toEntity(SalesPointVO vo) {
 		if (vo == null) {
 			return null;
@@ -70,15 +64,12 @@ public class SalesPointConverter {
 		rv.setSalePointId(vo.getSalePointId());
 		rv.setSalePointPhoneNumber(vo.getSalePointPhoneNumber());
 		if(vo.getWarehouse() != null){
-			rv.setWareHouseId(vo.getWarehouse().getWareHouseId());
+			rv.setWareHouseId(vo.getWarehouse().getWarehouseId());
 		}
 		rv.setId(vo.getId());;
 		return rv;
 	}
 
-	/**
-	 * ÁTMENETI CONVERTER- AZ ENTITÁSOK NORMÁLIS KIALAKÍTÁSA UTÁN MÉG ÁT KELL ÍRNI!!!!
-	 * */
 	public List<SalesPointVO> toVO(List<SalesPoint> enitites) {
 		if (enitites == null) {
 			return null;
