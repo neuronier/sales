@@ -120,7 +120,12 @@ public class userController {
 	}
 
 	public void removeUser() {
-		userServiceRemote.removeUser(selectedUser);
+		try {
+			userServiceRemote.removeUser(selectedUser);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, LocalizationsUtils.getText("user_info", context), LocalizationsUtils.getText(

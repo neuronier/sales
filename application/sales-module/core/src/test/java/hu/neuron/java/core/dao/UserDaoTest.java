@@ -74,7 +74,7 @@ public class UserDaoTest {
 	@Test
 	public void test4Find() {
 		try {
-			User rvDTO = userDao.findUserByName(user.getUserName());
+			List<User> rvDTO = userDao.findUserByName(user.getUserName());
 			logger.info("rv: " + rvDTO);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

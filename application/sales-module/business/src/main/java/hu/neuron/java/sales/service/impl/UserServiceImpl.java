@@ -27,7 +27,6 @@ import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,8 +41,6 @@ import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 public class UserServiceImpl implements UserServiceRemote, Serializable {
 
 	private static final long serialVersionUID = -2855280432819032935L;
-
-	private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -67,10 +64,8 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	}
 
 	@Override
-	public UserVO findUserByName(String name) throws Exception {
-		logger.debug(entityManager);
-		UserVO vo = userConverter.toVO(userDao.findUserByName(name));
-		return vo;
+	public List<UserVO> findUserByName(String name) throws Exception {
+		return userConverter.toVO(userDao.findUserByName(name));
 
 	}
 
@@ -98,9 +93,10 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	}
 
 	@Override
-	public void saveUser(UserVO selectedUser) {
-		userDao.save(userConverter.toEntity(selectedUser));
+	public UserVO saveUser(UserVO selectedUser) {
+		User u = userDao.save(userConverter.toEntity(selectedUser));
 		userDao.flush();
+		return userConverter.toVO(u);
 	}
 
 	@Override
@@ -119,8 +115,8 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	}
 
 	@Override
-	public void removeUser(UserVO user) {
-		userDao.delete(user.getId());
+	public void removeUser(UserVO user) throws Exception {
+		userDao.delete(userDao.findUserByUserId(user.getUserId()));
 
 	}
 
@@ -154,13 +150,8 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	}
 
 	@Override
-	public UserVO findUserById(Long id) throws Exception {
-		return userConverter.toVO(userDao.findUserById(id));
-	}
-
-	@Override
 	public UserVO findUserByUserName(String userName) throws Exception {
-		return userConverter.toVO(userDao.findUserByName(userName));
+		return userConverter.toVO(userDao.findUserByUserName(userName));
 	}
 
 	@Override

@@ -76,14 +76,9 @@ public class RoleServiceImpl implements RoleServiceRemote, Serializable {
 	}
 
 	@Override
-	public void saveRole(RoleVO roleVO) {
-		roleDao.save(roleConverter.toEntity(roleVO));
-	}
-
-	@Override
-	public void updateRole(RoleVO roleVO) {
-		roleDao.save(roleConverter.toEntity(roleVO));
-
+	public RoleVO saveRole(RoleVO roleVO) {
+		Role role = roleDao.save(roleConverter.toEntity(roleVO));
+		return roleConverter.toVO(role);
 	}
 
 	@Override

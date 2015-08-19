@@ -1,5 +1,7 @@
 package hu.neuron.java.core.dao;
 
+import java.util.List;
+
 import hu.neuron.java.core.entity.User;
 
 import org.springframework.data.domain.Page;
@@ -14,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface UserDAO extends JpaRepository<User, Long> {
 
-	User findUserByName(@Param("name") String name) throws Exception;
+	List<User> findUserByName(@Param("name") String name) throws Exception;
 	
 	User findUserByUserName(@Param("userName") String userName) throws Exception;
 	

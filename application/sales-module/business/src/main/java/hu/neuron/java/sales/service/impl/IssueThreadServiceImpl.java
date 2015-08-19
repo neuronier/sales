@@ -103,8 +103,6 @@ public class IssueThreadServiceImpl implements IssueThreadServiceRemote, Seriali
 		List<IssueThreadVO> ret = new ArrayList<IssueThreadVO>(size);
 		Page<IssueThread> entities;
 
-		System.out.println("filetCOlName: " + filterColumnName);
-
 		if (filter.length() != 0 && filterColumnName.equals("clientUserName")) {
 			entities = issueThreadDAO.findByClientIdIn(getClientIdsByUserName(filter), pageRequest);
 		} else if (filter.length() != 0 && filterColumnName.equals("status")) {

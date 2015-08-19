@@ -10,6 +10,7 @@ import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
 
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -20,7 +21,8 @@ public class SalesPointServiceTest {
 
 	private static final Logger logger = Logger.getLogger(SalesPointServiceTest.class);
 	private static SalesPointVO sp;
-	
+	private EJBContainer ejbContainer;
+
 	@Before
 	public void startTheContainer() throws Exception {
 		final Properties p = new Properties();
@@ -32,7 +34,7 @@ public class SalesPointServiceTest {
 		p.put("hu.neuron.TestDataSource.JdbcDriver", "org.hsqldb.jdbcDriver");
 		p.put("hu.neuron.TestDataSource.JdbcUrl", "jdbc:hsqldb:mem:aname");
 
-		EJBContainer ejbContainer = EJBContainer.createEJBContainer(p);
+		ejbContainer = EJBContainer.createEJBContainer(p);
 		ejbContainer.getContext().bind("inject", this);
 	}
 
@@ -96,6 +98,11 @@ public class SalesPointServiceTest {
 			logger.error(e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
+	}
+
+	@After
+	public void destroy() {
+		ejbContainer.close();
 	}
 
 }

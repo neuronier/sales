@@ -7,9 +7,7 @@ import java.util.List;
 
 public interface UserServiceRemote {
 
-	public UserVO findUserByName(String name) throws Exception;
-	
-	public UserVO findUserById(Long id) throws Exception;
+	public List<UserVO> findUserByName(String name) throws Exception;
 	
 	public UserVO findUserByUserId(String userId) throws Exception;
 
@@ -17,9 +15,9 @@ public interface UserServiceRemote {
 
 	public List<UserVO> getUserList(int i, int pageSize, String sortField, int dir, String filter, String filterColumnName);
 
-	public void saveUser(UserVO selectedUser);
+	public UserVO saveUser(UserVO selectedUser);
 	
-	public void removeUser(UserVO selectedUser);
+	public void removeUser(UserVO selectedUser) throws Exception;
 
 	public List<UserVO> getUserList();
 

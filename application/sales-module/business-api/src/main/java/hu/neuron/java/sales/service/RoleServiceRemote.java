@@ -6,17 +6,13 @@ import java.util.List;
 
 public interface RoleServiceRemote {
 
-//	public UserVO setUpRoles(UserVO vo) throws Exception;
-
 	public int getRowNumber();
 
 	public List<RoleVO> getRoles();
 
 	public RoleVO getRoleByName(String role);
 
-	public void saveRole(RoleVO roleVO);
-
-	public void updateRole(RoleVO roleVO);
+	public RoleVO saveRole(RoleVO roleVO);
 
 	public void removeRole(RoleVO roleVO);
 
