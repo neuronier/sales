@@ -57,12 +57,12 @@ public class AddressServiceImpl implements AddressServiceRemote, Serializable {
 	}
 
 	@Override
-	public List<AddressVO> getAddressList(int page, int size, String sortField, int sortOrder, String filter, String filterColumnName) {
+	public List<AddressVO> getAddresses(int page, int size, String sortField, int sortOrder, String filter, String filterColumnName) {
 		Direction dir = sortOrder == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
 		PageRequest pageRequest = new PageRequest(page, size, new Sort(new Sort.Order(dir, sortField)));
 		Page<Address> entities;
 
-		if (filter.length() != 0 && filterColumnName.equals("name")) {
+		if (filter.length() != 0 && filterColumnName.equals("city")) {
 			entities = addressDao.findByCityStartsWith(filter, pageRequest);
 		} else {
 			entities = addressDao.findAll(pageRequest);

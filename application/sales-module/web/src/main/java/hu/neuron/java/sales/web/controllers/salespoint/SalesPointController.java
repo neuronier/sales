@@ -8,6 +8,7 @@ import hu.neuron.java.web.onemenu.CitySelectOneMenuView;
 import hu.neuron.java.web.onemenu.CityService;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -18,6 +19,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.SelectEvent;
+import org.primefaces.util.Constants;
 
 @ViewScoped
 @ManagedBean(name = "salesPointController")
@@ -50,7 +52,7 @@ public class SalesPointController implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		setLazySalesPointModel(new LazySalesPointModel(salesPointService));
+		setLazySalesPointModel(new LazySalesPointModel(salesPointService,addressService));
 	}
 
 	public void saveNewSalesPoint() {
@@ -203,4 +205,19 @@ public class SalesPointController implements Serializable {
 		}
 		return 0;
 	}
+	
+	public boolean filterByAddress(Object value, Object filter, Locale locale) {
+		if(filter == null || filter.toString().trim().equals(Constants.EMPTY_STRING)) {
+            return true;
+        }
+        
+        if(value == null) {
+            return false;
+        }
+        System.out.println("INFO:::VALUE: " + value.toString());
+        System.out.println("INFO:::FILTER: " + filter.toString());
+        AddressVO selected = (AddressVO) value;
+        String search = selected.getCity() + " " + selected.getStreet() + " " + selected.getHouseNumber();
+        return search.contains(filter.toString());
+    }
 }

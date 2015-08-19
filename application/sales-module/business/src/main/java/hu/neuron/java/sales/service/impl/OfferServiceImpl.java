@@ -129,4 +129,10 @@ public class OfferServiceImpl implements OfferServiceRemote, Serializable {
 		
 		return productTypeConverter.toVO(productTypeDao.findAll(productTypeIdList));
 	}
+
+	@Override
+	public int findQuantityToOfferProductType(OfferVO offer,
+			ProductTypeVO productType) {
+		return (offerProductTypeDao.findOfferProductTypeEntityByOfferIdAndProductTypeId(offer.getOfferId(), productType.getProductTypeId())).getQuantity();	
+	}
 }

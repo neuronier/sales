@@ -10,7 +10,7 @@ public interface AddressServiceRemote {
 
 	public AddressVO findAddressByAddressId(String addressId) throws Exception;
 
-	public List<AddressVO> getAddressList(int i, int pageSize,
+	public List<AddressVO> getAddresses(int i, int pageSize,
 			String sortField, int dir, String filter, String filterColumnName);
 
 	public void saveAddress(AddressVO address);

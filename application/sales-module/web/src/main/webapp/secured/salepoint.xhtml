@@ -32,8 +32,7 @@
 				</p:column>
 	
 				<p:column headerText="#{out.salepointcoladdress}"
-					sortBy="#{salesPoint.name}" sortFunction="#{salesPointController.sortByAddress}"
-					filterBy="#{salesPoint.name}">
+					sortBy="#{salesPoint.address}" filterBy="#{salesPoint.address}">
 						
 						<h:outputText value="#{salesPoint.address.zipCode} "/>
 

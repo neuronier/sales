@@ -27,4 +27,7 @@ public interface OfferServiceRemote {
 	public void addProductTypeToOffer(OfferVO offer, ProductTypeVO productType, int quantity);
 	
 	public void removeProductTypeFromOffer(OfferVO offer, ProductTypeVO productType);
+	
+	public int findQuantityToOfferProductType(OfferVO offer, ProductTypeVO productType);
 }
+
