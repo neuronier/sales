@@ -24,7 +24,6 @@ public class CityService {
 	}
 
 	public List<String> getCities() {
-		//updateCityList();
 		return cities;
 	}
 

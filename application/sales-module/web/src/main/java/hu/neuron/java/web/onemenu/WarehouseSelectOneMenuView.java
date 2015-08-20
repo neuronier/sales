@@ -9,14 +9,17 @@ import javax.faces.bean.ManagedProperty;
 public class WarehouseSelectOneMenuView {
      
     private static String warehouseName;   
-    private List<String> warehouses;
+    private static List<String> warehouses;
      
     @ManagedProperty("#{warehouseService}")
     private WarehouseService service;
+    
+    private static WarehouseService staticService;
      
     @PostConstruct
     public void init() {
         warehouses = service.getWarehouses();
+        staticService = service;
     }
 
     public String getWarehouseName() {
@@ -42,4 +45,10 @@ public class WarehouseSelectOneMenuView {
     public static void setStaticWarehouseName(String warehoseName) {
     	WarehouseSelectOneMenuView.warehouseName = warehoseName;
     }
+
+	public static void updateWarehouseList() {
+		staticService.updateWarehouseList();
+		warehouses = staticService.getWarehouses();
+		
+	}
 }

@@ -134,9 +134,9 @@ public class UserServiceTest {
 	
 
 	
-	/*@After
+	@After
 	public void destroy() {
 		ejbContainer.close();
-	}*/
+	}
 	
 }

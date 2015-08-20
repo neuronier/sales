@@ -29,8 +29,15 @@ public class WarehouseService {
 		}
 	}
 
-	public List<String> getWarehouses() {
-		
+	public List<String> getWarehouses() {	
 		return warehouses;
+	}
+
+	public void updateWarehouseList() {
+		List<WarehouseVO> vos = whService.findAll();
+		warehouses.clear();
+		for(WarehouseVO vo : vos){
+			warehouses.add(vo.getWarehouseName());
+		}
 	}
 }

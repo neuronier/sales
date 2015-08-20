@@ -9,14 +9,17 @@ import javax.faces.bean.ManagedProperty;
 public class CitySelectOneMenuView {
      
     private static String city;   
-    private List<String> cities;
+    private static List<String> cities;
      
     @ManagedProperty("#{cityService}")
     private CityService service;
+    
+    private static CityService staticService;
      
     @PostConstruct
     public void init() {
         cities = service.getCities();
+        staticService = service;
     }
 
     public String getCity() {
@@ -41,5 +44,10 @@ public class CitySelectOneMenuView {
     
     public static void setStaticCity(String city) {
     	CitySelectOneMenuView.city = city;
+    }
+    
+    public static void updateCityList(){
+    	staticService.updateCityList();
+    	cities = staticService.getCities();
     }
 }

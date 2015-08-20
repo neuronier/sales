@@ -26,11 +26,6 @@
 
 
 	<dependencies>
-		<dependency>
-			<groupId>hu.neuron.java.sales</groupId>
-			<artifactId>business-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 
 		<dependency>
 			<groupId>javax</groupId>
@@ -113,6 +108,11 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>hu.neuron.java.sales</groupId>
+			<artifactId>business-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>salesApp</finalName>

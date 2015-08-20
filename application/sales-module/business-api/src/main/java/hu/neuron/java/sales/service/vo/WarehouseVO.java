@@ -1,6 +1,7 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class WarehouseVO implements Serializable{
 
@@ -40,6 +41,10 @@ public class WarehouseVO implements Serializable{
 
 	public void setWarehouseName(String warehouseName) {
 		this.warehouseName = warehouseName;
+	}
+	
+	public void generateWarehouseId(){
+		this.warehouseId = UUID.randomUUID().toString();
 	}
 
 }
