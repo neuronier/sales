@@ -16,7 +16,7 @@ public class ProductTypeEntity extends Base {
 	private String productTypeId;
 	
 	public ProductTypeEntity(){
-		setProductTypeId(UUID.randomUUID().toString());
+//		setProductTypeId(UUID.randomUUID().toString());
 	}
 
 	public String getName() {
