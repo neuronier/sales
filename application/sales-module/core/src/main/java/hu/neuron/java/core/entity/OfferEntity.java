@@ -1,7 +1,5 @@
 package hu.neuron.java.core.entity;
 
-import java.util.UUID;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -9,7 +7,7 @@ import javax.persistence.Table;
 @Table(name = "Offer")
 public class OfferEntity extends Base {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -433947333801752871L;
 
 	private String offerId;
 
@@ -18,7 +16,8 @@ public class OfferEntity extends Base {
 	private Long offerPrice;
 
 	public OfferEntity(){
-		setOfferId(UUID.randomUUID().toString());
+		Long systime = System.currentTimeMillis();
+		setOfferId("OFFER_" + systime.toString());
 	}
 
 	public long getOfferPrice() {

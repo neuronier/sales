@@ -122,6 +122,7 @@ public class OfferServiceImpl implements OfferServiceRemote, Serializable {
 	@Override
 	public List<ProductTypeVO> findProductTypesToOffer(OfferVO offerVo) throws Exception {
 		List<OfferProductTypeEntity> offerProductTypeList = offerProductTypeDao.findOfferProductTypeEntityByOfferId(offerVo.getOfferId());
+		
 		List<String> productTypeIdList = new ArrayList<>();
 		List<ProductTypeEntity> productTypeEntities = new ArrayList<>();
 		
@@ -139,6 +140,6 @@ public class OfferServiceImpl implements OfferServiceRemote, Serializable {
 	@Override
 	public int findQuantityToOfferProductType(OfferVO offer,
 			ProductTypeVO productType) {
-		return (offerProductTypeDao.findOfferProductTypeEntityByOfferIdAndProductTypeId(offer.getOfferId(), productType.getProductTypeId())).getQuantity();	
+		return offerProductTypeDao.findOfferProductTypeEntityByOfferIdAndProductTypeId(offer.getOfferId(), productType.getProductTypeId()).getQuantity();	
 	}
 }
