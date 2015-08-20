@@ -1,7 +1,5 @@
 package hu.neuron.java.core.entity;
 
-import java.util.UUID;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -14,9 +12,10 @@ public class ProductTypeEntity extends Base {
 	private String name;
 
 	private String productTypeId;
-	
-	public ProductTypeEntity(){
-//		setProductTypeId(UUID.randomUUID().toString());
+
+	public ProductTypeEntity() {
+		Long systime = System.currentTimeMillis();
+		setProductTypeId("PRODUCTTYPE_" + systime.toString());
 	}
 
 	public String getName() {

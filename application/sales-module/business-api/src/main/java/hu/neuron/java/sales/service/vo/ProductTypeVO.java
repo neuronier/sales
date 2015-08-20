@@ -1,7 +1,6 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public class ProductTypeVO implements Serializable {
 
@@ -12,10 +11,10 @@ public class ProductTypeVO implements Serializable {
 	private String name;
 
 	private String productTypeId;
-	
-	public ProductTypeVO(){
-		super();
-		setProductTypeId(UUID.randomUUID().toString());
+
+	public ProductTypeVO() {
+		Long systime = System.currentTimeMillis();
+		setProductTypeId("PRODUCTTYPE_" + systime.toString());
 	}
 
 	public String getProductTypeId() {
@@ -46,7 +45,8 @@ public class ProductTypeVO implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((productTypeId == null) ? 0 : productTypeId.hashCode());
+		result = prime * result
+				+ ((productTypeId == null) ? 0 : productTypeId.hashCode());
 		return result;
 	}
 
@@ -66,6 +66,5 @@ public class ProductTypeVO implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
+
 }

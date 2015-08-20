@@ -1,7 +1,5 @@
 package hu.neuron.java.core.entity;
 
-import java.util.UUID;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -18,7 +16,8 @@ public class OfferEntity extends Base {
 	private Long offerPrice;
 
 	public OfferEntity(){
-//		setOfferId(UUID.randomUUID().toString());
+		Long systime = System.currentTimeMillis();
+		setOfferId("OFFER_" + systime.toString());
 	}
 
 	public long getOfferPrice() {

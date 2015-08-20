@@ -35,16 +35,17 @@ public class OfferController implements Serializable {
 	List<ProductTypeVO> productTypeList;
 
 	List<OfferProductType> selectedOfferProductTypeList = new ArrayList<OfferProductType>();
+	
+	List<ProductTypeVO> existingPts = new ArrayList<ProductTypeVO>();
+	
+	List<ProductTypeVO> trashProductTypeList = new ArrayList<ProductTypeVO>();
 
 	private String newOfferName;
 
-	private String newOfferId;
 
 	private long newOfferPrice;
 
 	private String updateOfferName;
-
-	private String updateOfferId;
 
 	private long updateOfferPrice;
 
@@ -62,6 +63,24 @@ public class OfferController implements Serializable {
 
 	private LazyProductTypeModel lazyProductTypeModel;
 	
+	
+	
+	public List<ProductTypeVO> getTrashProductTypeList() {
+		return trashProductTypeList;
+	}
+
+	public void setTrashProductTypeList(List<ProductTypeVO> trashProductTypeList) {
+		this.trashProductTypeList = trashProductTypeList;
+	}
+
+	public List<ProductTypeVO> getExistingPts() {
+		return existingPts;
+	}
+
+	public void setExistingPts(List<ProductTypeVO> existingPts) {
+		this.existingPts = existingPts;
+	}
+
 	public List<OfferProductType> getSelectedOfferProductTypeList() {
 		return selectedOfferProductTypeList;
 	}
@@ -69,22 +88,6 @@ public class OfferController implements Serializable {
 	public void setSelectedOfferProductTypeList(
 			List<OfferProductType> selectedOfferProductTypeList) {
 		this.selectedOfferProductTypeList = selectedOfferProductTypeList;
-	}
-
-	public String getNewOfferId() {
-		return newOfferId;
-	}
-
-	public void setNewOfferId(String newOfferId) {
-		this.newOfferId = newOfferId;
-	}
-
-	public String getUpdateOfferId() {
-		return updateOfferId;
-	}
-
-	public void setUpdateOfferId(String updateOfferId) {
-		this.updateOfferId = updateOfferId;
 	}
 
 	public String getUpdateProductTypeId() {
@@ -212,18 +215,20 @@ public class OfferController implements Serializable {
 	public void saveNewOffer() throws Exception {
 		OfferVO offerVO = new OfferVO();
 		offerVO.setName(newOfferName);
-		offerVO.setOfferId(newOfferId);
 		offerVO.setOfferPrice(newOfferPrice);
 		offerService.saveOffer(offerVO);
+		
 		for (OfferProductType offerProductType : selectedOfferProductTypeList) {
-			offerService.addProductTypeToOffer(offerVO, productTypeService.findProductTypeByName(offerProductType.getName()), offerProductType.getQuantity());
+			if(!(existingPts.contains(productTypeService.findProductTypeByName(offerProductType.getName()))))
+			{
+				offerService.addProductTypeToOffer(offerVO, productTypeService.findProductTypeByName(offerProductType.getName()), offerProductType.getQuantity());
+			}
 		}
 	}
 
 	public void onRowSelect(SelectEvent event) throws Exception {
 		selectedOffer = (OfferVO) event.getObject();
 		updateOfferName = selectedOffer.getName();
-		updateOfferId = selectedOffer.getOfferId();
 		updateOfferPrice = selectedOffer.getOfferPrice();
 		
 		
@@ -246,6 +251,10 @@ public class OfferController implements Serializable {
 
 	public void removeOffer() {
 		try {
+			for (OfferProductType offerProductType : selectedOfferProductTypeList) {
+				ProductTypeVO productType = productTypeService.findProductTypeByName(offerProductType.getName());
+				offerService.removeProductTypeFromOffer(selectedOffer, productType);
+			}
 			offerService.removeOffer(selectedOffer);
 
 			FacesContext.getCurrentInstance().addMessage(
@@ -264,11 +273,21 @@ public class OfferController implements Serializable {
 	public void updateOffer() {
 		try {
 			selectedOffer.setName(updateOfferName);
-			selectedOffer.setOfferId(updateOfferId);
 			selectedOffer.setOfferPrice(updateOfferPrice);
 			offerService.saveOffer(selectedOffer);
+			if(!(trashProductTypeList.isEmpty()))
+			{
+				for (ProductTypeVO productTypeVO : trashProductTypeList) {
+					offerService.removeProductTypeFromOffer(selectedOffer, productTypeVO);
+				}
+			}
+			trashProductTypeList.clear();
+			existingPts = offerService.findProductTypesToOffer(selectedOffer);
 			for (OfferProductType offerProductType : selectedOfferProductTypeList) {
-				offerService.addProductTypeToOffer(selectedOffer, productTypeService.findProductTypeByName(offerProductType.getName()), offerProductType.getQuantity());
+				if(!(existingPts.contains(productTypeService.findProductTypeByName(offerProductType.getName()))))
+				{
+					offerService.addProductTypeToOffer(selectedOffer, productTypeService.findProductTypeByName(offerProductType.getName()), offerProductType.getQuantity());
+				}
 			}
 			FacesContext.getCurrentInstance().addMessage(
 					null,
@@ -287,17 +306,23 @@ public class OfferController implements Serializable {
 		selectedOfferProductTypeList.add(new OfferProductType(selectedProductType.getName(), newQuantity));
 	}
 
-	public void removeProductTypeFromOffer(ActionEvent actionEvent) {
+	public void removeProductTypeFromOffer(ActionEvent actionEvent) throws Exception {
+		trashProductTypeList.add(productTypeService.findProductTypeByName(selectedOfferProductType.getName()));
 		selectedOfferProductTypeList.remove(selectedOfferProductType);
 	}
 	
-	public void getProductTypesToSelectedOffer() throws Exception {
+	public void getProductTypesToSelectedOffer(){
 		System.out.println("\n getProductTypesToSelectedOffer \n");
 		selectedProductType = null;
 		selectedOfferProductTypeList.clear();
-		List<ProductTypeVO> list = offerService.findProductTypesToOffer(selectedOffer);	
-		
-		for(ProductTypeVO productTypeVO : list) {
+		existingPts.clear();
+		try {
+			existingPts = offerService.findProductTypesToOffer(selectedOffer);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+	
+		for(ProductTypeVO productTypeVO : existingPts) {
 			selectedOfferProductTypeList.add(new OfferProductType(productTypeVO.getName(),offerService.findQuantityToOfferProductType(selectedOffer, productTypeVO)));
 		} 
 	}
