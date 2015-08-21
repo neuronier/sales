@@ -1,8 +1,6 @@
 package hu.neuron.java.sales.service.test;
 
 import hu.neuron.java.sales.service.OrderServiceRemote;
-import hu.neuron.java.sales.service.vo.ClientVO;
-import hu.neuron.java.sales.service.vo.OfferVO;
 import hu.neuron.java.sales.service.vo.OrderVO;
 import hu.neuron.java.sales.service.vo.ProductTypeVO;
 
@@ -53,21 +51,14 @@ public class OrderServiceTest {
 		vo.setName("name");
 		vo.setOrderId("orderId");
 		vo.setStatus("status");
-		vo.setoQuantity("10");
-		vo.setpQuantity("20");
+		vo.setQuantity("10");
 		
 		orderService.saveOrder(vo);
 		
-		ClientVO client = new ClientVO();
-		OfferVO offer = new OfferVO();
 		ProductTypeVO product = new ProductTypeVO();
 		
-		client.setClientId("clientId");
-		offer.setOfferId("offerId");
 		product.setProductTypeId("productId");
 		
-		vo.setClient(client);
-		vo.setOffers(offer);
 		vo.setProductType(product);
 		
 		orderService.updateOrder(vo);
@@ -75,7 +66,6 @@ public class OrderServiceTest {
 		List<OrderVO> listHelper = new ArrayList<OrderVO>();
 		
 		try {
-			listHelper = orderService.findOrdersByClientId(client.getClientId());
 			listHelper = orderService.findAll();
 					logger.info(listHelper + "vos");
 		} catch (Exception e) {

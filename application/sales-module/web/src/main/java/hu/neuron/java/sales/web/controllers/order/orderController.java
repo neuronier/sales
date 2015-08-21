@@ -1,16 +1,13 @@
 package hu.neuron.java.sales.web.controllers.order;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import hu.neuron.java.sales.service.ClientServiceRemote;
-import hu.neuron.java.sales.service.OfferServiceRemote;
 import hu.neuron.java.sales.service.OrderServiceRemote;
 import hu.neuron.java.sales.service.ProductTypeServiceRemote;
-import hu.neuron.java.sales.service.vo.ClientVO;
-import hu.neuron.java.sales.service.vo.OfferVO;
 import hu.neuron.java.sales.service.vo.OrderVO;
 import hu.neuron.java.sales.service.vo.ProductTypeVO;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -30,41 +27,20 @@ public class orderController {
 	@EJB(name = "OrderService", mappedName = "OrderService")
 	OrderServiceRemote orderService;
 
-	@EJB(name = "OfferService", mappedName = "OfferService")
-	OfferServiceRemote offerService;
-
-	@EJB(name = "ClientService", mappedName = "ClientService")
-	ClientServiceRemote clientService;
-
 	@EJB(name = "ProductTypeService", mappedName = "ProductTypeService")
 	ProductTypeServiceRemote productTypeService;
 
+	// SZERKESZTENI KELL
 	private final String[] status = { "Feldolgozas alatt", "Feldolgozva",
 			"Kezbesitve" };
 
 	private String selectedStatus;
 
-	private OrderVO selectedOrder;
-
 	private OrderVO newOrder;
 
-	private List<OfferVO> offerVOs;
+	private OrderVO selectedOrder;
 
-	private OfferVO selectedOffer;
-
-	private List<ClientVO> clientVOs;
-
-	private ClientVO selectedClient;
-
-	private String selectedOfferName;
-
-	private List<String> clientHelper;
-
-	private List<String> offerHelper;
-
-	private String selectedClientName;
-
-	private String orderId;
+	private String selectedOrderId;
 
 	private List<ProductTypeVO> prodTypeVOs;
 
@@ -74,111 +50,69 @@ public class orderController {
 
 	private String selectedProductTypeName;
 
-	private int counterOffer;
-	
-	private int counterProduct;
+	private int quantity;
 
-	private String counterOfferString;
-	
-	private String counterProductString;
+	private List<PList> products;
 
 	@PostConstruct
 	public void init() {
 		setLazyOrderModul(new LazyOrderModel(orderService));
 	}
-	
-	
+
 	public orderController() {
 		super();
 	}
-	
-	public void productInit(){
+
+	public List<String> completeTextProduct(String query) {
 		prodTypeVOs = new ArrayList<ProductTypeVO>();
 		productHelper = new ArrayList<String>();
-		prodTypeVOs = productTypeService.findAll();
-		for (ProductTypeVO ptvo : prodTypeVOs) {
-			productHelper.add(ptvo.getName());
-		}
-	}
-	
-	
-	public List<String> completeTextClient(String query) {
-		clientVOs = new ArrayList<ClientVO>();
-		clientHelper = new ArrayList<String>();
 		try {
-			clientVOs = clientService.findAll();
+			prodTypeVOs = productTypeService.findAll();
+			//System.out.println("Product type SIZE" + prodTypeVOs.size());
 			query.toLowerCase();
-			for (ClientVO cvo : clientVOs) {
-				if (cvo.getName().toLowerCase().startsWith(query)) {
-					clientHelper.add(cvo.getName());
+			for (ProductTypeVO pvo : prodTypeVOs) {
+				if (pvo.getName().toLowerCase().startsWith(query)) {
+					productHelper.add(pvo.getName());
 				}
 			}
-			return clientHelper;
+			return productHelper;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	public void offersInit() {
-		offerVOs = new ArrayList<OfferVO>();
-		offerHelper = new ArrayList<String>();
-		offerVOs = offerService.findAll();
-		for (OfferVO ofv : offerVOs) {
-			offerHelper.add(ofv.getName());
-		}
-	}
-
 	public void addNewOrderButtonAction() {
 		newOrder = new OrderVO();
-		offersInit();
-		productInit();
-		counterOffer = 1;
-		
-		counterProduct = 1;
-		
-		counterProductString = counterProduct + " pcs";
-		counterOfferString = counterOffer + " pcs";
+		products = new ArrayList<PList>();
+		quantity = 1;
 	}
 
 	public void addNewOrder() {
+		//initOrder();
 		newOrder.setStatus(selectedStatus);
-		if (selectedOfferName != null) {
-			selectedOffer = new OfferVO();
-			for (OfferVO ofv : offerVOs) {
-				if (selectedOfferName.equals(ofv.getName())) {
-					selectedOffer = ofv;
-				}
-			}
-			orderService.addOfferToOrder(selectedOffer, newOrder, counterOffer);
+		newOrder.setDate(new Date());
 
-		}
+		for (int i = 0; i < products.size(); i++) {
+			selectedProductTypeName = products.get(i).getName();
+			quantity = products.get(i).getQuantity();
 
-		if (selectedClientName != null) {
-			selectedClient = new ClientVO();
-			// System.out.println(selectedClientName);
-			for (ClientVO cvo : clientVOs) {
-				if (cvo.getName().equals(selectedClientName)) {
-					selectedClient = cvo;
+			if (selectedProductTypeName != null) {
+				selectedProdType = new ProductTypeVO();
+				for (ProductTypeVO ptvo : prodTypeVOs) {
+					if (selectedProductTypeName.equals(ptvo.getName())) {
+						selectedProdType = ptvo;
+					}
 				}
 			}
-			orderService.addClientToOrder(selectedClient, newOrder);
+			orderService.addProductTypeToOrder(selectedProdType, newOrder, quantity);
+			selectedProductTypeName = null;
+			orderService.saveOrder(newOrder);
 		}
-		
-		if(selectedProductTypeName != null){
-			selectedProdType = new ProductTypeVO();
-			for (ProductTypeVO ptvo : prodTypeVOs) {
-				if(selectedProductTypeName.equals(ptvo.getName())){
-					selectedProdType = ptvo;
-				}
-			}
-			orderService.addProductTypeToOrder(selectedProdType, newOrder, counterProduct);
-		}
-		orderService.saveOrder(newOrder);
 	}
 
 	public void onRowSelected(SelectEvent event) {
-		orderId = selectedOrder.getOrderId();
+		setSelectedOrderId(selectedOrder.getOrderId());
 
 		FacesContext.getCurrentInstance().addMessage(
 				null,
@@ -186,30 +120,31 @@ public class orderController {
 						selectedOrder.getOrderId()));
 	}
 
-	public void increment() {
-		counterOffer++;
-
-		counterOfferString = counterOffer + " pcs";
-	}
-
-	public void dcrement() {
-		counterOffer--;
-
-		counterOfferString = counterOffer + " pcs";
+	public void addToList() {
+		String id = newOrder.getOrderId();
+		getProducts().add(new PList(id, selectedProductTypeName, quantity));
+		//System.out.println(getProducts());
+		selectedProductTypeName = "";
+		quantity = 1;
 	}
 	
-	public void increment2() {
-		
-		setCounterProduct(getCounterProduct() + 1);
-
-		counterProductString = counterProduct + " pcs";
-	}
-
-	public void dcrement2() {
-		setCounterProduct(getCounterProduct() - 1);
-
-		setCounterProductString(counterProduct + " pcs");
-	}
+	//UJRA KELL GONDOLNI
+//	public void initOrder(){
+//		setInitOrderList(new ArrayList<PList>());
+//		String id = newOrder.getOrderId();
+//		System.out.println("Order ID" +id);
+//		
+//		try {
+//			for (PList pList : all) {
+//				if (pList.getId().equals(id)) {
+//					initOrderList.add(new PList(id, pList.getName(), pList.getQuantity()));
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//	}
 
 	public OrderVO getSelectedOrder() {
 		return selectedOrder;
@@ -235,46 +170,6 @@ public class orderController {
 		this.lazyOrderModul = lazyOrderModul;
 	}
 
-	public String getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
-
-	public List<OfferVO> getOfferVOs() {
-		return offerVOs;
-	}
-
-	public void setOfferVOs(List<OfferVO> offerVOs) {
-		this.offerVOs = offerVOs;
-	}
-
-	public List<String> getofferHelper() {
-		return offerHelper;
-	}
-
-	public void setofferHelper(List<String> helper) {
-		this.offerHelper = helper;
-	}
-
-	public OfferVO getSelectedOffer() {
-		return selectedOffer;
-	}
-
-	public void setSelectedOffer(OfferVO selectedOffer) {
-		this.selectedOffer = selectedOffer;
-	}
-
-	public String getSelectedOfferName() {
-		return selectedOfferName;
-	}
-
-	public void setSelectedOfferName(String selectedOfferName) {
-		this.selectedOfferName = selectedOfferName;
-	}
-
 	public String[] getStatus() {
 		return status;
 	}
@@ -285,54 +180,6 @@ public class orderController {
 
 	public void setSelectedStatus(String selectedStatus) {
 		this.selectedStatus = selectedStatus;
-	}
-
-	public List<ClientVO> getClientVOs() {
-		return clientVOs;
-	}
-
-	public void setClientVOs(List<ClientVO> clientVOs) {
-		this.clientVOs = clientVOs;
-	}
-
-	public ClientVO getSelectedClient() {
-		return selectedClient;
-	}
-
-	public void setSelectedClient(ClientVO selectedClient) {
-		this.selectedClient = selectedClient;
-	}
-
-	public List<String> getClientHelper() {
-		return clientHelper;
-	}
-
-	public void setClientHelper(List<String> clientHelper) {
-		this.clientHelper = clientHelper;
-	}
-
-	public String getSelectedClientName() {
-		return selectedClientName;
-	}
-
-	public void setSelectedClientName(String selectedClientName) {
-		this.selectedClientName = selectedClientName;
-	}
-
-	public int getCounterOffer() {
-		return counterOffer;
-	}
-
-	public void setCounterOffer(int counterOffer) {
-		this.counterOffer = counterOffer;
-	}
-
-	public String getCounterOfferString() {
-		return counterOfferString;
-	}
-
-	public void setCounterOfferString(String counterOfferString) {
-		this.counterOfferString = counterOfferString;
 	}
 
 	public List<ProductTypeVO> getProdTypeVOs() {
@@ -367,20 +214,27 @@ public class orderController {
 		this.selectedProductTypeName = selectedProductTypeName;
 	}
 
-	public int getCounterProduct() {
-		return counterProduct;
+	public String getSelectedOrderId() {
+		return selectedOrderId;
 	}
 
-	public void setCounterProduct(int counterProduct) {
-		this.counterProduct = counterProduct;
+	public void setSelectedOrderId(String selectedOrderId) {
+		this.selectedOrderId = selectedOrderId;
 	}
 
-	public String getCounterProductString() {
-		return counterProductString;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setCounterProductString(String counterProductString) {
-		this.counterProductString = counterProductString;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
+	public List<PList> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<PList> products) {
+		this.products = products;
+	}
 }

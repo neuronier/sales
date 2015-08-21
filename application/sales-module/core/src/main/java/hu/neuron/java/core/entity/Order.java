@@ -1,5 +1,6 @@
 package hu.neuron.java.core.entity;
 
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ public class Order extends Base {
 	private String name;
 
 	private String status;
+	
+	private Date date;
 	
 	public Order(){
 		super();
@@ -45,5 +48,13 @@ public class Order extends Base {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 }
