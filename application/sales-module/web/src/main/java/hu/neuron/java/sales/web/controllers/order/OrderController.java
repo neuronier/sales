@@ -20,7 +20,7 @@ import org.primefaces.event.SelectEvent;
 
 @ViewScoped
 @ManagedBean(name = "orderController")
-public class orderController {
+public class OrderController {
 
 	private LazyOrderModel lazyOrderModul;
 
@@ -52,14 +52,14 @@ public class orderController {
 
 	private int quantity;
 
-	private List<PList> products;
+	private List<OrderProductType> products;
 
 	@PostConstruct
 	public void init() {
 		setLazyOrderModul(new LazyOrderModel(orderService));
 	}
 
-	public orderController() {
+	public OrderController() {
 		super();
 	}
 
@@ -84,7 +84,7 @@ public class orderController {
 
 	public void addNewOrderButtonAction() {
 		newOrder = new OrderVO();
-		products = new ArrayList<PList>();
+		products = new ArrayList<OrderProductType>();
 		quantity = 1;
 	}
 
@@ -121,8 +121,7 @@ public class orderController {
 	}
 
 	public void addToList() {
-		String id = newOrder.getOrderId();
-		getProducts().add(new PList(id, selectedProductTypeName, quantity));
+		getProducts().add(new OrderProductType(selectedProductTypeName, quantity));
 		//System.out.println(getProducts());
 		selectedProductTypeName = "";
 		quantity = 1;
@@ -230,11 +229,11 @@ public class orderController {
 		this.quantity = quantity;
 	}
 
-	public List<PList> getProducts() {
+	public List<OrderProductType> getProducts() {
 		return products;
 	}
 
-	public void setProducts(List<PList> products) {
+	public void setProducts(List<OrderProductType> products) {
 		this.products = products;
 	}
 }

@@ -2,17 +2,15 @@ package hu.neuron.java.sales.web.controllers.order;
 
 import java.io.Serializable;
 
-public class PList implements Serializable {
+public class OrderProductType implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private String id;
 	private String name;
 	private int quantity;
 
-	public PList(String id, String name, int q) {
+	public OrderProductType(String name, int q) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.quantity = q;
 	}
@@ -36,13 +34,5 @@ public class PList implements Serializable {
 	@Override
 	public String toString() {
 		return "[name=" + name + ", quantity=" + quantity + "]";
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 }

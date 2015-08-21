@@ -1,7 +1,6 @@
 package hu.neuron.java.core.entity;
 
 import java.util.Date;
-import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -23,7 +22,8 @@ public class Order extends Base {
 	
 	public Order(){
 		super();
-		setOrderId(UUID.randomUUID().toString());
+		Long systime = System.currentTimeMillis();
+		setOrderId("ORDER_" + systime.toString());
 	}
 
 	public String getOrderId() {
