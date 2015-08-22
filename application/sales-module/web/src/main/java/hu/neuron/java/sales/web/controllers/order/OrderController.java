@@ -5,6 +5,7 @@ import hu.neuron.java.sales.service.ProductTypeServiceRemote;
 import hu.neuron.java.sales.service.vo.OrderVO;
 import hu.neuron.java.sales.service.vo.ProductTypeVO;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +21,9 @@ import org.primefaces.event.SelectEvent;
 
 @ViewScoped
 @ManagedBean(name = "orderController")
-public class OrderController {
+public class OrderController implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	private LazyOrderModel lazyOrderModul;
 
@@ -53,6 +56,8 @@ public class OrderController {
 	private int quantity;
 
 	private List<OrderProductType> products;
+	
+	private OrderProductType selectedProduct;
 
 	@PostConstruct
 	public void init() {
@@ -85,6 +90,7 @@ public class OrderController {
 	public void addNewOrderButtonAction() {
 		newOrder = new OrderVO();
 		products = new ArrayList<OrderProductType>();
+		selectedProductTypeName = null;
 		quantity = 1;
 	}
 
@@ -107,24 +113,47 @@ public class OrderController {
 			}
 			orderService.addProductTypeToOrder(selectedProdType, newOrder, quantity);
 			selectedProductTypeName = null;
-			orderService.saveOrder(newOrder);
 		}
+		orderService.saveOrder(newOrder);
+	}
+	
+	public void removeOrder(){
+		//selectedOrder = null;
 	}
 
 	public void onRowSelected(SelectEvent event) {
 		setSelectedOrderId(selectedOrder.getOrderId());
 
+		//PRÓBA
+//		Properties properties = new Properties();
+//		try {
+//			properties.load(new FileInputStream("src/main/resources/hu/neuron/java/sales/web/Messages_en.properties"));
+//			for(String key : properties.stringPropertyNames()) {
+//				  String value = properties.getProperty(key);
+//				  System.out.println(key + " => " + value);
+//				}
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			System.out.println("fukkk");
+//		}
 		FacesContext.getCurrentInstance().addMessage(
 				null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "#{out.order_selected}",
 						selectedOrder.getOrderId()));
 	}
 
 	public void addToList() {
-		getProducts().add(new OrderProductType(selectedProductTypeName, quantity));
-		//System.out.println(getProducts());
-		selectedProductTypeName = "";
+		getProducts().add(new OrderProductType(newOrder.getOrderId(), selectedProductTypeName, quantity));
+		System.out.println(getProducts());
+		selectedProductTypeName = null;
 		quantity = 1;
+	}
+	
+	public void removeFromList(){
+		products.remove(selectedProduct);
+		System.out.println(products);
+		selectedProduct = null;
+		//
 	}
 	
 	//UJRA KELL GONDOLNI
@@ -235,5 +264,13 @@ public class OrderController {
 
 	public void setProducts(List<OrderProductType> products) {
 		this.products = products;
+	}
+
+	public OrderProductType getSelectedProduct() {
+		return selectedProduct;
+	}
+
+	public void setSelectedProduct(OrderProductType selectedProduct) {
+		this.selectedProduct = selectedProduct;
 	}
 }
