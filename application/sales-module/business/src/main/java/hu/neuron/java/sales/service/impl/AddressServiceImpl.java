@@ -108,6 +108,13 @@ public class AddressServiceImpl implements AddressServiceRemote, Serializable {
 		addressDao.delete(adConv.toEntity(address));
 
 	}
+	
+	@Override
+	public void removeAddressById(String addressId) throws Exception {
+		Address addr = addressDao.findAddressByAddressId(addressId);
+		addressDao.delete(addr);
+
+	}
 
 	@Override
 	public List<String> findAllCities() throws Exception {

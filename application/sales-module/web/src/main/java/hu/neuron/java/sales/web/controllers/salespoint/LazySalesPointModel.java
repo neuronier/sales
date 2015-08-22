@@ -62,16 +62,21 @@ public class LazySalesPointModel extends LazyDataModel<SalesPointVO> {
 		
 		if (sortField == null) {
 			sortField = "";		//csak akkor lesz null, ha az első oszlopon van először rendezés nélkül,
-								//amúgy mindenképp lesz kiválasztva sort, mert csak akkor változik amikor
+								//amúgy mindenképp lesz kiválasztva SORT, mert csak akkor változik amikor
 								//másik oszlopon kattintják be a rendezést és olyankor sose lesz null.
 		}
 	
 		int dir = sortOrder.equals(SortOrder.ASCENDING) ? 1 : 2;
 		
-		if(filterColumnName.equals("address")){	//város alapján akarok rendezni, de az xhtml-ből (sortBy és filterBy)
-			sortField = "city";	//vagy address, vagy address.city-t tudok szerezni, ezért a rövidebbel
-			filterColumnName = "city";			//dolgozok inkább és beállítom, hogy a megfelelő oszlopot használja.
-			queryByAddress(first, pageSize, sortField, filter, filterColumnName, dir);
+		if(filterColumnName.equals("address")){	
+			if(sortField.equals("name")){
+				visibleSalesPointList = salesPointService.getSalePoints(first / pageSize, pageSize,
+						sortField, dir, filter, filterColumnName);
+			} else {
+				sortField = "city";
+				filterColumnName = "city";
+				queryByAddress(first, pageSize, sortField, filter, filterColumnName, dir);
+			}
 			
 		} else {
 			if(sortField.equals("address")){
@@ -92,7 +97,7 @@ public class LazySalesPointModel extends LazyDataModel<SalesPointVO> {
 		return visibleSalesPointList;
 
 	}
-	
+
 	private void queryByAddress(int first, int pageSize, String sortField,
 			String filter, String filterColumnName, int dir) {
 		

@@ -10,7 +10,6 @@ import hu.neuron.java.web.onemenu.CitySelectOneMenuView;
 import hu.neuron.java.web.onemenu.WarehouseSelectOneMenuView;
 
 import java.io.Serializable;
-
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -18,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.event.CloseEvent;
 import org.primefaces.event.SelectEvent;
 
 @ViewScoped
@@ -28,7 +28,7 @@ public class SalesPointController implements Serializable {
 
 	private SalesPointVO selectedSalesPoint;
 
-	private String newSalesPointName;
+	private String salesPointName;
 
 	private String streetName;
 
@@ -37,6 +37,16 @@ public class SalesPointController implements Serializable {
 	private String zipCode;
 
 	private String phoneNumber;
+	
+	private String updateSalesPointName;
+
+	private String updateStreetName;
+
+	private String updateHouseNumber;
+
+	private String updateZipCode;
+
+	private String updatePhoneNumber;
 
 	@EJB(name = "SalesPointService", mappedName = "SalesPointService")
 	private SalesPointServiceRemote salesPointService;
@@ -77,7 +87,7 @@ public class SalesPointController implements Serializable {
 		} else {
 			salesPointVO.setAddress(addressCheck);
 		}
-		salesPointVO.setName(newSalesPointName);
+		salesPointVO.setName(salesPointName);
 		salesPointVO.setSalePointPhoneNumber(phoneNumber);
 
 		WarehouseVO warehouseCheck = null;
@@ -104,7 +114,7 @@ public class SalesPointController implements Serializable {
 		CitySelectOneMenuView.updateCityList();
 		WarehouseSelectOneMenuView.updateWarehouseList();
 		selectedSalesPoint = null;
-		newSalesPointName = null;
+		salesPointName = null;
 		CitySelectOneMenuView.setStaticCity(null);
 		WarehouseSelectOneMenuView.setStaticWarehouseName(null);
 		streetName = null;
@@ -120,26 +130,32 @@ public class SalesPointController implements Serializable {
 		WarehouseVO wrh = selectedSalesPoint.getWarehouse();
 		if (adr != null) {
 			CitySelectOneMenuView.setStaticCity(adr.getCity());
+			updateStreetName = adr.getStreet();
+			updateHouseNumber = adr.getHouseNumber();
+			updateZipCode = adr.getZipCode();
 		}
 		if (wrh != null) {
-			WarehouseSelectOneMenuView.setStaticWarehouseName(wrh
-					.getWarehouseName());
+			WarehouseSelectOneMenuView.setStaticWarehouseName(wrh.getWarehouseName());
 		}
-		FacesContext.getCurrentInstance().addMessage(
-				null,
+		updateSalesPointName = selectedSalesPoint.getName();
+		updatePhoneNumber = selectedSalesPoint.getSalePointPhoneNumber();
+		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
 						selectedSalesPoint.getName()));
 	}
 
 	public void removeSalesPoint() {
 		try {
+			AddressVO addr = selectedSalesPoint.getAddress();
 			salesPointService.removeSalePoint(selectedSalesPoint);
-
+			addressService.removeAddressById(addr.getAddressId());
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
 							"Deleted: " + selectedSalesPoint.getName()));
 			selectedSalesPoint = null;
+			CitySelectOneMenuView.setStaticCity(null);
+			WarehouseSelectOneMenuView.setStaticWarehouseName(null);
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
@@ -153,10 +169,12 @@ public class SalesPointController implements Serializable {
 			AddressVO currentAddr = selectedSalesPoint.getAddress();
 			if (currentAddr != null) {
 				currentAddr.setCity(CitySelectOneMenuView.getStaticCity());
+				currentAddr.setHouseNumber(updateHouseNumber);
+				currentAddr.setStreet(updateStreetName);
+				currentAddr.setZipCode(updateZipCode);
 			} else {
 				throw new NullPointerException();
 			}
-			// TODO nem biztos h jó minden adatagra
 			addressService.updateAddress(currentAddr);
 			WarehouseVO warehouseCheck = null;
 			try {
@@ -184,6 +202,8 @@ public class SalesPointController implements Serializable {
 
 			CitySelectOneMenuView.setStaticCity(null);
 			WarehouseSelectOneMenuView.setStaticWarehouseName(null);
+			selectedSalesPoint.setName(updateSalesPointName);
+			selectedSalesPoint.setSalePointPhoneNumber(updatePhoneNumber);
 			salesPointService.saveSalePoint(selectedSalesPoint);
 			WarehouseSelectOneMenuView.updateWarehouseList();
 
@@ -192,13 +212,30 @@ public class SalesPointController implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
 							"Update: " + selectedSalesPoint.getName()));
 			selectedSalesPoint = null;
+			updateSalesPointName = null;
+			updateStreetName = null;
+			updateHouseNumber = null;
+			updatePhoneNumber = null;
+			updateZipCode = null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
 							"Update: "));
+			selectedSalesPoint = null;
 		}
+	}
+	
+	public void clearSelection(CloseEvent event){ 
+		selectedSalesPoint = null;
+		CitySelectOneMenuView.setStaticCity(null);
+		WarehouseSelectOneMenuView.setStaticWarehouseName(null);
+		updateSalesPointName = null;
+		updateStreetName = null;
+		updateHouseNumber = null;
+		updatePhoneNumber = null;
+		updateZipCode = null;
 	}
 
 	public LazySalesPointModel getLazySalesPointModel() {
@@ -217,20 +254,13 @@ public class SalesPointController implements Serializable {
 		this.selectedSalesPoint = selectedSalesPoint;
 	}
 
-	public String getNewSalesPointName() {
-		return newSalesPointName;
+	public String getSalesPointName() {
+		return salesPointName;
 	}
 
-	public void setNewSalesPointName(String newSalesPointName) {
-		this.newSalesPointName = newSalesPointName;
+	public void setSalesPointName(String newSalesPointName) {
+		this.salesPointName = newSalesPointName;
 	}
-
-	/*
-	 * public String getUpdateSalesPointName() { return updateSalesPointName; }
-	 * 
-	 * public void setUpdateSalesPointName(String updateSalesPointName) {
-	 * this.updateSalesPointName = updateSalesPointName; }
-	 */
 
 	public String getStreetName() {
 		return streetName;
@@ -263,4 +293,46 @@ public class SalesPointController implements Serializable {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+
+	public String getUpdateSalesPointName() {
+		return updateSalesPointName;
+	}
+
+	public void setUpdateSalesPointName(String updateSalesPointName) {
+		this.updateSalesPointName = updateSalesPointName;
+	}
+
+	public String getUpdateStreetName() {
+		return updateStreetName;
+	}
+
+	public void setUpdateStreetName(String updateStreetName) {
+		this.updateStreetName = updateStreetName;
+	}
+
+	public String getUpdateHouseNumber() {
+		return updateHouseNumber;
+	}
+
+	public void setUpdateHouseNumber(String updateHouseNumber) {
+		this.updateHouseNumber = updateHouseNumber;
+	}
+
+	public String getUpdateZipCode() {
+		return updateZipCode;
+	}
+
+	public void setUpdateZipCode(String updateZipCode) {
+		this.updateZipCode = updateZipCode;
+	}
+
+	public String getUpdatePhoneNumber() {
+		return updatePhoneNumber;
+	}
+
+	public void setUpdatePhoneNumber(String updatePhoneNumber) {
+		this.updatePhoneNumber = updatePhoneNumber;
+	}
+	
+	
 }
