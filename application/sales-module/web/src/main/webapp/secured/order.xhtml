@@ -35,9 +35,10 @@
 								selection="#{orderController.selectedOrder}"
 								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 								rowsPerPageTemplate="5,10,15" lazy="true" paginator="true"
-								rows="10" emptyMessage="#{out.empty_message}">
+								rows="10">
 
-								<p:ajax event="rowSelect" update=":orderForm:orderDT"
+								<p:ajax event="rowSelect"
+									update=":orderForm:orderDT,:orderForm:btnPanel"
 									listener="#{orderController.onRowSelected}" />
 
 								<p:column headerText="Id" filterStyle="width:80%;">
@@ -69,8 +70,19 @@
 							<p:panelGrid id="btnPanel" columns="3">
 								<p:commandButton value="#{out.orders_buttons_create}"
 									action="#{orderController.addNewOrderButtonAction}"
-									update=":addNewOrderDialogForm" oncomplete="PF('addNewOrderDialog').show()" />
-								
+									update=":addNewOrderDialogForm"
+									oncomplete="PF('addNewOrderDialog').show()" />
+
+								<p:commandButton value="#{out.orders_buttons_edit}"
+									disabled="#{orderController.selectedOrder == null}"
+									action="#{orderController.editOrderButtonAction}"
+									update=":editOrderDialogForm,:orderForm:orderDT,:orderForm:btnPanel"
+									oncomplete="PF('editOrderDialog').show()" />
+
+								<p:commandButton value="#{out.orders_buttons_delete}"
+									action="#{orderController.removeOrder}"
+									update=":orderForm:orderDT,:orderForm:btnPanel"
+									disabled="#{orderController.selectedOrder == null}"></p:commandButton>
 							</p:panelGrid>
 						</h:form></td>
 				</tr>
@@ -86,14 +98,14 @@
 						<p:panelGrid columns="3">
 							<p:autoComplete id="product"
 								value="#{orderController.selectedProductTypeName}"
-								completeMethod="#{orderController.completeTextProduct}" />
+								completeMethod="#{orderController.completeTextProduct}"
+								size="45" />
 							<p:inputText value="#{orderController.quantity}" size="2" />
-							<p:commandButton value="#{out.orders_add}"
+							<p:commandButton id="addProduct" value="#{out.orders_add}"
 								actionListener="#{orderController.addToList}"
-								update="addNewOrderDialogForm" />
+								update="addNewOrderDialogForm:addedProducts,:addNewOrderDialogForm" />
 						</p:panelGrid>
 						<p:outputLabel value="" />
-
 
 						<p:panelGrid columns="1" style="width: 100%">
 							<p:dataTable id="addedProducts" var="products"
@@ -104,8 +116,9 @@
 								rowKey="#{products.name}">
 
 								<p:ajax event="rowSelect"
-									update=":addNewOrderDialogForm:addedProducts" />
-
+									listener="#{orderController.disableSaveOrder}"
+									update=":addNewOrderDialogForm:addedProducts,
+									:addNewOrderDialogForm:removeProduct,:addNewOrderDialogForm:saveProducts" />
 
 								<p:column headerText="#{out.orders_ordered_products}">
 									<h:outputText value="#{products.name}" />
@@ -115,26 +128,32 @@
 								</p:column>
 							</p:dataTable>
 							<p:commandButton value="#{out.userform_remove}"
-								update="addedProducts"
-								actionListener="#{orderController.removeFromList}"></p:commandButton>
+								id="removeProduct" update="addedProducts"
+								actionListener="#{orderController.removeFromList}"
+								disabled="#{orderController.selectedProduct == null}"></p:commandButton>
 						</p:panelGrid>
-
-
-
 
 						<p:outputLabel value="#{out.orders_status}" />
 						<p:panelGrid columns="1">
 							<p:selectOneMenu id="status"
 								value="#{orderController.selectedStatus}" effect="fold"
-								editable="true">
+								editable="true" required="true">
 								<f:selectItems value="#{orderController.status}" />
 							</p:selectOneMenu>
 						</p:panelGrid>
 					</p:panelGrid>
-					<p:commandButton value="#{out.profile_save}"
+					<p:commandButton id="saveProducts" value="#{out.profile_save}"
 						actionListener="#{orderController.addNewOrder}"
 						update=":orderForm:orderDT"
-						oncomplete="PF('addNewOrderDialog').hide()" />
+						oncomplete="PF('addNewOrderDialog').hide()"
+						disabled="#{orderController.disableSaveOrderValue}" />
+				</h:form>
+			</p:dialog>
+
+			<p:dialog widgetVar="editOrderDialog"
+				header="#{out.orders_edit_dialog_head}" resizable="false">
+				<h:form id="editOrderDialogForm">
+					<h1>Folyamatban...</h1>
 				</h:form>
 			</p:dialog>
 

@@ -21,7 +21,7 @@ import org.primefaces.event.SelectEvent;
 
 @ViewScoped
 @ManagedBean(name = "orderController")
-public class OrderController implements Serializable{
+public class OrderController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,8 +34,7 @@ public class OrderController implements Serializable{
 	ProductTypeServiceRemote productTypeService;
 
 	// SZERKESZTENI KELL
-	private final String[] status = { "Feldolgozas alatt", "Feldolgozva",
-			"Kezbesitve" };
+	private final String[] status = { "New", "In progress", "Done" };
 
 	private String selectedStatus;
 
@@ -56,8 +55,12 @@ public class OrderController implements Serializable{
 	private int quantity;
 
 	private List<OrderProductType> products;
-	
+
 	private OrderProductType selectedProduct;
+
+	private boolean disableSaveOrderValue;
+
+	private boolean disableAddOrdeValue;
 
 	@PostConstruct
 	public void init() {
@@ -73,13 +76,14 @@ public class OrderController implements Serializable{
 		productHelper = new ArrayList<String>();
 		try {
 			prodTypeVOs = productTypeService.findAll();
-			//System.out.println("Product type SIZE" + prodTypeVOs.size());
+			// System.out.println("Product type SIZE" + prodTypeVOs.size());
 			query.toLowerCase();
 			for (ProductTypeVO pvo : prodTypeVOs) {
 				if (pvo.getName().toLowerCase().startsWith(query)) {
 					productHelper.add(pvo.getName());
 				}
 			}
+
 			return productHelper;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,12 +94,18 @@ public class OrderController implements Serializable{
 	public void addNewOrderButtonAction() {
 		newOrder = new OrderVO();
 		products = new ArrayList<OrderProductType>();
-		selectedProductTypeName = null;
+		selectedStatus = "New";
+		disableSaveOrderValue = true;
+		disableAddOrdeValue = true;
 		quantity = 1;
 	}
 
+	public void editOrderButtonAction() {
+
+	}
+
 	public void addNewOrder() {
-		//initOrder();
+		// initOrder();
 		newOrder.setStatus(selectedStatus);
 		newOrder.setDate(new Date());
 
@@ -111,68 +121,106 @@ public class OrderController implements Serializable{
 					}
 				}
 			}
-			orderService.addProductTypeToOrder(selectedProdType, newOrder, quantity);
+			orderService.addProductTypeToOrder(selectedProdType, newOrder,
+					quantity);
 			selectedProductTypeName = null;
 		}
 		orderService.saveOrder(newOrder);
 	}
-	
-	public void removeOrder(){
-		//selectedOrder = null;
+
+	public void removeOrder() {
+		orderService.removeOrder(selectedOrder);
+		try {
+			List<ProductTypeVO> vos = orderService
+					.findProductTypesToOrder(selectedOrder);
+			for (ProductTypeVO productTypeVO : vos) {
+				orderService.removeProductTypeFromOrder(productTypeVO,
+						selectedOrder);
+			}
+
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Deleted",
+							selectedOrder.getOrderId()));
+			selectedOrder = null;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void onRowSelected(SelectEvent event) {
+		// selectedOrder = (OrderVO) event.getObject();
 		setSelectedOrderId(selectedOrder.getOrderId());
 
-		//PRÓBA
-//		Properties properties = new Properties();
-//		try {
-//			properties.load(new FileInputStream("src/main/resources/hu/neuron/java/sales/web/Messages_en.properties"));
-//			for(String key : properties.stringPropertyNames()) {
-//				  String value = properties.getProperty(key);
-//				  System.out.println(key + " => " + value);
-//				}
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			System.out.println("fukkk");
-//		}
+		// PRÓBA
+		// Properties properties = new Properties();
+		// try {
+		// properties.load(new
+		// FileInputStream("src/main/resources/hu/neuron/java/sales/web/Messages_en.properties"));
+		// for(String key : properties.stringPropertyNames()) {
+		// String value = properties.getProperty(key);
+		// System.out.println(key + " => " + value);
+		// }
+		// } catch (Exception e) {
+		// // TODO: handle exception
+		// System.out.println("fukkk");
+		// }
 		FacesContext.getCurrentInstance().addMessage(
 				null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "#{out.order_selected}",
-						selectedOrder.getOrderId()));
+				new FacesMessage(FacesMessage.SEVERITY_INFO,
+						"#{out.order_selected}", selectedOrder.getOrderId()));
 	}
 
 	public void addToList() {
-		getProducts().add(new OrderProductType(newOrder.getOrderId(), selectedProductTypeName, quantity));
-		System.out.println(getProducts());
-		selectedProductTypeName = null;
-		quantity = 1;
+		if (selectedProductTypeName == null) {
+		} else {
+			getProducts().add(
+					new OrderProductType(newOrder.getOrderId(),
+							selectedProductTypeName, quantity));
+			System.out.println(getProducts());
+			selectedProductTypeName = "";
+			quantity = 1;
+			disableSaveOrder();
+		}
 	}
-	
-	public void removeFromList(){
+
+	public void removeFromList() {
 		products.remove(selectedProduct);
 		System.out.println(products);
 		selectedProduct = null;
 		//
 	}
-	
-	//UJRA KELL GONDOLNI
-//	public void initOrder(){
-//		setInitOrderList(new ArrayList<PList>());
-//		String id = newOrder.getOrderId();
-//		System.out.println("Order ID" +id);
-//		
-//		try {
-//			for (PList pList : all) {
-//				if (pList.getId().equals(id)) {
-//					initOrderList.add(new PList(id, pList.getName(), pList.getQuantity()));
-//				}
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		
-//	}
+
+	// UJRA KELL GONDOLNI
+	// public void initOrder(){
+	// setInitOrderList(new ArrayList<PList>());
+	// String id = newOrder.getOrderId();
+	// System.out.println("Order ID" +id);
+	//
+	// try {
+	// for (PList pList : all) {
+	// if (pList.getId().equals(id)) {
+	// initOrderList.add(new PList(id, pList.getName(), pList.getQuantity()));
+	// }
+	// }
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	//
+	// }
+
+	public void disableSaveOrder() {
+		if (products.size() == 0) {
+			disableSaveOrderValue = true;
+		} else {
+			disableSaveOrderValue = false;
+		}
+	}
+
+	public void disableAddOrder() {
+		setDisableAddOrdeValue(false);
+	}
 
 	public OrderVO getSelectedOrder() {
 		return selectedOrder;
@@ -272,5 +320,21 @@ public class OrderController implements Serializable{
 
 	public void setSelectedProduct(OrderProductType selectedProduct) {
 		this.selectedProduct = selectedProduct;
+	}
+
+	public boolean isDisableSaveOrderValue() {
+		return disableSaveOrderValue;
+	}
+
+	public void setDisableSaveOrderValue(boolean disableSaveOrderValue) {
+		this.disableSaveOrderValue = disableSaveOrderValue;
+	}
+
+	public boolean isDisableAddOrdeValue() {
+		return disableAddOrdeValue;
+	}
+
+	public void setDisableAddOrdeValue(boolean disableAddOrdeValue) {
+		this.disableAddOrdeValue = disableAddOrdeValue;
 	}
 }
