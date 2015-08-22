@@ -1,23 +1,20 @@
 package hu.neuron.java.sales.service.impl;
 
+import hu.neuron.java.core.dao.OrderDAO;
+import hu.neuron.java.core.dao.OrderProductTypeDAO;
+import hu.neuron.java.core.dao.ProductTypeDAO;
+import hu.neuron.java.core.entity.Order;
+import hu.neuron.java.core.entity.OrderProductType;
+import hu.neuron.java.core.entity.ProductTypeEntity;
+import hu.neuron.java.sales.service.OrderServiceRemote;
+import hu.neuron.java.sales.service.converter.OrderConverter;
+import hu.neuron.java.sales.service.converter.ProductTypeConverter;
+import hu.neuron.java.sales.service.vo.OrderVO;
+import hu.neuron.java.sales.service.vo.ProductTypeVO;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import hu.neuron.java.core.dao.ClientOrderDAO;
-import hu.neuron.java.core.dao.OfferOrderDAO;
-import hu.neuron.java.core.dao.OrderDAO;
-import hu.neuron.java.core.dao.OrderProductTypeDAO;
-import hu.neuron.java.core.entity.ClientOrder;
-import hu.neuron.java.core.entity.OfferOrderEntity;
-import hu.neuron.java.core.entity.Order;
-import hu.neuron.java.core.entity.OrderProductType;
-import hu.neuron.java.sales.service.OrderServiceRemote;
-import hu.neuron.java.sales.service.converter.OrderConverter;
-import hu.neuron.java.sales.service.vo.ClientVO;
-import hu.neuron.java.sales.service.vo.OfferVO;
-import hu.neuron.java.sales.service.vo.OrderVO;
-import hu.neuron.java.sales.service.vo.ProductTypeVO;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -42,19 +39,19 @@ public class OrderServiceImpl implements OrderServiceRemote, Serializable {
 
 	@Autowired
 	OrderDAO orderDAO;
-	
-	@Autowired
-	ClientOrderDAO clientOrderDAO;
-	
-	@Autowired
-	OfferOrderDAO offerOrderDAO;
-	
+
 	@Autowired
 	OrderProductTypeDAO orderProductTypeDAO;
+	
+	@Autowired
+	ProductTypeDAO productTypeDAO;
 
 	@Autowired
 	OrderConverter oConverter;
 
+	@Autowired
+	ProductTypeConverter productTypeConverter;
+	
 	@Override
 	public void saveOrder(OrderVO orderVO) {
 		orderDAO.save(oConverter.toEntity(orderVO));
@@ -114,55 +111,49 @@ public class OrderServiceImpl implements OrderServiceRemote, Serializable {
 	}
 
 	@Override
-	public void addClientToOrder(ClientVO client, OrderVO order) {
-		ClientOrder clientOrder = new ClientOrder();
-		
-		clientOrder.setClientId(client.getClientId());
-		clientOrder.setOrderId(order.getOrderId());
-		
-		clientOrderDAO.save(clientOrder);
-
-	}
-
-	@Override
-	public void addOfferToOrder(OfferVO offer, OrderVO order, int q) {
-		OfferOrderEntity offerOrder = new OfferOrderEntity();
-		
-		offerOrder.setOfferId(offer.getOfferId());
-		offerOrder.setOrderId(order.getOrderId());
-		offerOrder.setQuantity(q);
-		
-		offerOrderDAO.save(offerOrder);
-
-	}
-
-	@Override
-	public void addProductTypeToOrder(ProductTypeVO productType, OrderVO order, int q) {
+	public void addProductTypeToOrder(ProductTypeVO productType, OrderVO order,
+			int q) {
 		OrderProductType orderProductType = new OrderProductType();
-		
+
 		orderProductType.setProductTypeId(productType.getProductTypeId());
 		orderProductType.setOrderId(order.getOrderId());
 		orderProductType.setQuantity(q);
-		
+
 		orderProductTypeDAO.save(orderProductType);
 
 	}
 
 	@Override
-	public List<OrderVO> findOrdersToClient(ClientVO client) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public void removeProductTypeFromOrder(ProductTypeVO productType,
+			OrderVO order) {
+		OrderProductType orderProductType = orderProductTypeDAO.findOrderProductTypeByOrderIdAndProductTypeId(order.getOrderId(), productType.getProductTypeId());
+		orderProductTypeDAO.delete(orderProductType);
+
 	}
 
 	@Override
-	public List<OrderVO> findOrdersByClientId(String clientId) throws Exception {
-		List<ClientOrder> clientOrders = clientOrderDAO.findClientOrderByClientId(clientId);
-		List<Order> orders =  new ArrayList<>(); 
-		for (ClientOrder clientOrder : clientOrders) {
-			orders.add(orderDAO.findOrderByOrderId(clientOrder.getOrderId()));
+	public int findQuantityToOrderProductType(ProductTypeVO productType,
+			OrderVO order) {
+
+		return orderProductTypeDAO.findOrderProductTypeByOrderIdAndProductTypeId(order.getOrderId(), productType.getProductTypeId()).getQuantity();
+	}
+
+	@Override
+	public List<ProductTypeVO> findProductTypesToOrder(OrderVO order)
+			throws Exception {
+		List<OrderProductType> entities = orderProductTypeDAO.findOrderProductTypeByOrderId(order.getOrderId());
+		
+		List<String> productTypeIdList = new ArrayList<>();
+		List<ProductTypeEntity> productTypeEntities = new ArrayList<>();
+		
+		for (OrderProductType e : entities) {
+			productTypeIdList.add(e.getProductTypeId());
 		}
 		
-		return oConverter.toVO(orders);
+		for (String productTypeId : productTypeIdList) {
+			productTypeEntities.add(productTypeDAO.findProductTypeEntityByProductTypeId(productTypeId));
+		}
+		return productTypeConverter.toVO(productTypeEntities);
 	}
 
 }

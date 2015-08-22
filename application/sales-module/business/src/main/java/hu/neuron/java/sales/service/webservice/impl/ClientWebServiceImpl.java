@@ -1,14 +1,10 @@
 package hu.neuron.java.sales.service.webservice.impl;
 
 import hu.neuron.java.sales.service.ClientServiceRemote;
-import hu.neuron.java.sales.service.OrderServiceRemote;
 import hu.neuron.java.sales.service.vo.ClientVO;
-import hu.neuron.java.sales.service.vo.OrderVO;
 import hu.neuron.java.sales.service.webservice.ClientWebService;
 import hu.neuron.java.sales.service.webservice.vo.ClientListWebServiceVO;
 import hu.neuron.java.sales.service.webservice.vo.ClientWebServiceVO;
-import hu.neuron.java.sales.service.webservice.vo.OrderListWebServiceVO;
-import hu.neuron.java.sales.service.webservice.vo.OrderWebServiceVO;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +35,7 @@ public class ClientWebServiceImpl implements ClientWebService {
 	Mapper mapper;
 
 	ClientServiceRemote clientService;
-	OrderServiceRemote orderService;
+	//OrderServiceRemote orderService;
 
 	public void initEJB() {
 		try {
@@ -63,7 +59,7 @@ public class ClientWebServiceImpl implements ClientWebService {
 			ctx = new InitialContext(env);
 			System.out.println("ctx  = " + ctx);
 			clientService = (ClientServiceRemote) ctx.lookup("ClientService#hu.neuron.java.sales.service.ClientServiceRemote");
-			orderService = (OrderServiceRemote) ctx.lookup("OrderServiceRemote#hu.neuron.java.sales.service.OrderServiceRemote");
+			//orderService = (OrderServiceRemote) ctx.lookup("OrderServiceRemote#hu.neuron.java.sales.service.OrderServiceRemote");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
@@ -88,25 +84,25 @@ public class ClientWebServiceImpl implements ClientWebService {
 		return mapper.map(clientService.findByClientId(clientId), ClientWebServiceVO.class);
 	}
 
-	@Override
-	public OrderListWebServiceVO getOrderListByClientIdWebMethod(String clientId) {
-		initEJB();
-		List<OrderVO> orderVOs;
-		OrderListWebServiceVO rv = new OrderListWebServiceVO();
-		try {
-			orderVOs = orderService.findOrdersByClientId(clientId);
-			rv.setList(new ArrayList<OrderWebServiceVO>());
-			for (OrderVO orderVO : orderVOs) {
-				rv.getList().add(mapper.map(orderVO, OrderWebServiceVO.class));
-			}
-
-			return rv;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return rv;
-		}
-		
-	}
+//	@Override
+//	public OrderListWebServiceVO getOrderListByClientIdWebMethod(String clientId) {
+//		initEJB();
+//		List<OrderVO> orderVOs;
+//		OrderListWebServiceVO rv = new OrderListWebServiceVO();
+//		try {
+//			orderVOs = orderService.findOrdersByClientId(clientId);
+//			rv.setList(new ArrayList<OrderWebServiceVO>());
+//			for (OrderVO orderVO : orderVOs) {
+//				rv.getList().add(mapper.map(orderVO, OrderWebServiceVO.class));
+//			}
+//
+//			return rv;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return rv;
+//		}
+//		
+//	}
 
 	@Override
 	public ClientWebServiceVO createClientWebMethod(String name, String userName, String password, String email, String phoneNumber) {

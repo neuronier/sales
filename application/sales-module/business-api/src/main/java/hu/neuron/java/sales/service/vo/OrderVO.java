@@ -1,7 +1,7 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
-import java.util.UUID;
+import java.util.Date;
 
 public class OrderVO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -14,19 +14,16 @@ public class OrderVO implements Serializable {
 
 	private String status;
 
-	private ClientVO client;
-
-	private OfferVO offers;
+	private Date date;
 
 	private ProductTypeVO productType;
-	
-	private String oQuantity;
-	
-	private String pQuantity;
+
+	private String quantity;
 
 	public OrderVO() {
 		super();
-		setOrderId(UUID.randomUUID().toString());
+		Long systime = System.currentTimeMillis();
+		setOrderId("ORDER_" + systime.toString());
 	}
 
 	public Long getId() {
@@ -61,20 +58,20 @@ public class OrderVO implements Serializable {
 		this.status = status;
 	}
 
-	public ClientVO getClient() {
-		return client;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setClient(ClientVO client) {
-		this.client = client;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
-	public OfferVO getOffers() {
-		return offers;
+	public String getQuantity() {
+		return quantity;
 	}
 
-	public void setOffers(OfferVO offers) {
-		this.offers = offers;
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
 	}
 
 	public ProductTypeVO getProductType() {
@@ -83,21 +80,5 @@ public class OrderVO implements Serializable {
 
 	public void setProductType(ProductTypeVO productType) {
 		this.productType = productType;
-	}
-
-	public String getoQuantity() {
-		return oQuantity;
-	}
-
-	public void setoQuantity(String oQuantity) {
-		this.oQuantity = oQuantity;
-	}
-
-	public String getpQuantity() {
-		return pQuantity;
-	}
-
-	public void setpQuantity(String pQuantity) {
-		this.pQuantity = pQuantity;
 	}
 }
