@@ -2,24 +2,23 @@ package hu.neuron.java.sales.web.controllers.salespoint;
 
 import hu.neuron.java.sales.service.AddressServiceRemote;
 import hu.neuron.java.sales.service.SalesPointServiceRemote;
+import hu.neuron.java.sales.service.WarehouseServiceRemote;
 import hu.neuron.java.sales.service.vo.AddressVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
+import hu.neuron.java.sales.service.vo.WarehouseVO;
 import hu.neuron.java.web.onemenu.CitySelectOneMenuView;
-import hu.neuron.java.web.onemenu.CityService;
+import hu.neuron.java.web.onemenu.WarehouseSelectOneMenuView;
 
 import java.io.Serializable;
-import java.util.Locale;
-
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.event.CloseEvent;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.util.Constants;
 
 @ViewScoped
 @ManagedBean(name = "salesPointController")
@@ -29,30 +28,41 @@ public class SalesPointController implements Serializable {
 
 	private SalesPointVO selectedSalesPoint;
 
-	private String newSalesPointName;
+	private String salesPointName;
 
-	private String updateSalesPointName;
-	
 	private String streetName;
-	
+
 	private String houseNumber;
-	
+
 	private String zipCode;
+
+	private String phoneNumber;
+	
+	private String updateSalesPointName;
+
+	private String updateStreetName;
+
+	private String updateHouseNumber;
+
+	private String updateZipCode;
+
+	private String updatePhoneNumber;
 
 	@EJB(name = "SalesPointService", mappedName = "SalesPointService")
 	private SalesPointServiceRemote salesPointService;
-	
+
 	@EJB(name = "AddressService", mappedName = "AddressService")
 	private AddressServiceRemote addressService;
-	
-	@ManagedProperty("#{cityService}")
-	private CityService cityService;
+
+	@EJB(name = "WarehouseService", mappedName = "WarehouseService")
+	private WarehouseServiceRemote warehouseService;
 
 	private LazySalesPointModel lazySalesPointModel;
 
 	@PostConstruct
 	public void init() {
-		setLazySalesPointModel(new LazySalesPointModel(salesPointService,addressService));
+		setLazySalesPointModel(new LazySalesPointModel(salesPointService,
+				addressService));
 	}
 
 	public void saveNewSalesPoint() {
@@ -62,51 +72,90 @@ public class SalesPointController implements Serializable {
 		addressVO.setHouseNumber(houseNumber);
 		addressVO.setStreet(streetName);
 		addressVO.setZipCode(zipCode);
-		AddressVO check = null;
+
+		AddressVO addressCheck = null;
 		try {
-			check = addressService.findAddressByEquals(addressVO);
+			addressCheck = addressService.findAddressByEquals(addressVO);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(check == null){
+		if (addressCheck == null) {
 			addressVO.generateAddressId();
 			addressService.saveAddress(addressVO);
 			salesPointVO.setAddress(addressVO);
-		} else{
-			salesPointVO.setAddress(check);
+		} else {
+			salesPointVO.setAddress(addressCheck);
 		}
-		salesPointVO.setName(newSalesPointName);
+		salesPointVO.setName(salesPointName);
+		salesPointVO.setSalePointPhoneNumber(phoneNumber);
+
+		WarehouseVO warehouseCheck = null;
+		try {
+			warehouseCheck = warehouseService
+					.findWarehouseByWarehouseName(WarehouseSelectOneMenuView
+							.getStaticWarehouseName());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (warehouseCheck == null) {
+			warehouseCheck = new WarehouseVO();
+			warehouseCheck.setWarehouseName(WarehouseSelectOneMenuView
+					.getStaticWarehouseName());
+			warehouseCheck.generateWarehouseId();
+			warehouseService.saveWarehouse(warehouseCheck);
+			salesPointVO.setWarehouse(warehouseCheck);
+		} else {
+			salesPointVO.setWarehouse(warehouseCheck);
+		}
+
 		salesPointService.saveSalePoint(salesPointVO);
-		cityService.updateCityList();
+		CitySelectOneMenuView.updateCityList();
+		WarehouseSelectOneMenuView.updateWarehouseList();
 		selectedSalesPoint = null;
-		newSalesPointName = null;
-		updateSalesPointName = null;
+		salesPointName = null;
 		CitySelectOneMenuView.setStaticCity(null);
+		WarehouseSelectOneMenuView.setStaticWarehouseName(null);
 		streetName = null;
 		houseNumber = null;
 		houseNumber = null;
 		zipCode = null;
+		phoneNumber = null;
 	}
 
 	public void onRowSelect(SelectEvent event) {
 		selectedSalesPoint = (SalesPointVO) event.getObject();
+		AddressVO adr = selectedSalesPoint.getAddress();
+		WarehouseVO wrh = selectedSalesPoint.getWarehouse();
+		if (adr != null) {
+			CitySelectOneMenuView.setStaticCity(adr.getCity());
+			updateStreetName = adr.getStreet();
+			updateHouseNumber = adr.getHouseNumber();
+			updateZipCode = adr.getZipCode();
+		}
+		if (wrh != null) {
+			WarehouseSelectOneMenuView.setStaticWarehouseName(wrh.getWarehouseName());
+		}
 		updateSalesPointName = selectedSalesPoint.getName();
-		FacesContext.getCurrentInstance().addMessage(
-				null,
+		updatePhoneNumber = selectedSalesPoint.getSalePointPhoneNumber();
+		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
 						selectedSalesPoint.getName()));
 	}
 
 	public void removeSalesPoint() {
 		try {
+			AddressVO addr = selectedSalesPoint.getAddress();
 			salesPointService.removeSalePoint(selectedSalesPoint);
-
+			addressService.removeAddressById(addr.getAddressId());
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
 							"Deleted: " + selectedSalesPoint.getName()));
 			selectedSalesPoint = null;
+			CitySelectOneMenuView.setStaticCity(null);
+			WarehouseSelectOneMenuView.setStaticWarehouseName(null);
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
@@ -117,20 +166,76 @@ public class SalesPointController implements Serializable {
 
 	public void updateSalesPoint() {
 		try {
+			AddressVO currentAddr = selectedSalesPoint.getAddress();
+			if (currentAddr != null) {
+				currentAddr.setCity(CitySelectOneMenuView.getStaticCity());
+				currentAddr.setHouseNumber(updateHouseNumber);
+				currentAddr.setStreet(updateStreetName);
+				currentAddr.setZipCode(updateZipCode);
+			} else {
+				throw new NullPointerException();
+			}
+			addressService.updateAddress(currentAddr);
+			WarehouseVO warehouseCheck = null;
+			try {
+				warehouseCheck = warehouseService
+						.findWarehouseByWarehouseName(WarehouseSelectOneMenuView
+								.getStaticWarehouseName());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (warehouseCheck == null) {
+				warehouseCheck = new WarehouseVO();
+				warehouseCheck.setWarehouseName(WarehouseSelectOneMenuView
+						.getStaticWarehouseName());
+				warehouseCheck.generateWarehouseId();
+				warehouseService.saveWarehouse(warehouseCheck);
+				selectedSalesPoint.setWarehouse(warehouseCheck);
+			} else {
+				selectedSalesPoint.setWarehouse(warehouseCheck);
+				if(!warehouseCheck.getWarehouseName().equals(WarehouseSelectOneMenuView
+						.getStaticWarehouseName())){
+					warehouseService.updateWarehouse(warehouseCheck);
+				}
+			}
+
+			CitySelectOneMenuView.setStaticCity(null);
+			WarehouseSelectOneMenuView.setStaticWarehouseName(null);
 			selectedSalesPoint.setName(updateSalesPointName);
+			selectedSalesPoint.setSalePointPhoneNumber(updatePhoneNumber);
 			salesPointService.saveSalePoint(selectedSalesPoint);
+			WarehouseSelectOneMenuView.updateWarehouseList();
 
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
 							"Update: " + selectedSalesPoint.getName()));
 			selectedSalesPoint = null;
+			updateSalesPointName = null;
+			updateStreetName = null;
+			updateHouseNumber = null;
+			updatePhoneNumber = null;
+			updateZipCode = null;
 		} catch (Exception e) {
+			e.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
 							"Update: "));
+			selectedSalesPoint = null;
 		}
+	}
+	
+	public void clearSelection(CloseEvent event){ 
+		selectedSalesPoint = null;
+		CitySelectOneMenuView.setStaticCity(null);
+		WarehouseSelectOneMenuView.setStaticWarehouseName(null);
+		updateSalesPointName = null;
+		updateStreetName = null;
+		updateHouseNumber = null;
+		updatePhoneNumber = null;
+		updateZipCode = null;
 	}
 
 	public LazySalesPointModel getLazySalesPointModel() {
@@ -149,20 +254,12 @@ public class SalesPointController implements Serializable {
 		this.selectedSalesPoint = selectedSalesPoint;
 	}
 
-	public String getNewSalesPointName() {
-		return newSalesPointName;
+	public String getSalesPointName() {
+		return salesPointName;
 	}
 
-	public void setNewSalesPointName(String newSalesPointName) {
-		this.newSalesPointName = newSalesPointName;
-	}
-
-	public String getUpdateSalesPointName() {
-		return updateSalesPointName;
-	}
-
-	public void setUpdateSalesPointName(String updateSalesPointName) {
-		this.updateSalesPointName = updateSalesPointName;
+	public void setSalesPointName(String newSalesPointName) {
+		this.salesPointName = newSalesPointName;
 	}
 
 	public String getStreetName() {
@@ -189,35 +286,53 @@ public class SalesPointController implements Serializable {
 		this.zipCode = zipCode;
 	}
 
-	public CityService getCityService() {
-		return cityService;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 
-	public void setCityService(CityService cityService) {
-		this.cityService = cityService;
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getUpdateSalesPointName() {
+		return updateSalesPointName;
+	}
+
+	public void setUpdateSalesPointName(String updateSalesPointName) {
+		this.updateSalesPointName = updateSalesPointName;
+	}
+
+	public String getUpdateStreetName() {
+		return updateStreetName;
+	}
+
+	public void setUpdateStreetName(String updateStreetName) {
+		this.updateStreetName = updateStreetName;
+	}
+
+	public String getUpdateHouseNumber() {
+		return updateHouseNumber;
+	}
+
+	public void setUpdateHouseNumber(String updateHouseNumber) {
+		this.updateHouseNumber = updateHouseNumber;
+	}
+
+	public String getUpdateZipCode() {
+		return updateZipCode;
+	}
+
+	public void setUpdateZipCode(String updateZipCode) {
+		this.updateZipCode = updateZipCode;
+	}
+
+	public String getUpdatePhoneNumber() {
+		return updatePhoneNumber;
+	}
+
+	public void setUpdatePhoneNumber(String updatePhoneNumber) {
+		this.updatePhoneNumber = updatePhoneNumber;
 	}
 	
-	public int sortByAddress(Object addr1, Object addr2){
-		if(addr1 instanceof AddressVO && addr2 instanceof AddressVO){
-			AddressVO ad1 = (AddressVO)addr1;
-			AddressVO ad2 = (AddressVO)addr2;
-			return ad1.getCity().compareTo(ad2.getCity());
-		}
-		return 0;
-	}
 	
-	public boolean filterByAddress(Object value, Object filter, Locale locale) {
-		if(filter == null || filter.toString().trim().equals(Constants.EMPTY_STRING)) {
-            return true;
-        }
-        
-        if(value == null) {
-            return false;
-        }
-        System.out.println("INFO:::VALUE: " + value.toString());
-        System.out.println("INFO:::FILTER: " + filter.toString());
-        AddressVO selected = (AddressVO) value;
-        String search = selected.getCity() + " " + selected.getStreet() + " " + selected.getHouseNumber();
-        return search.contains(filter.toString());
-    }
 }

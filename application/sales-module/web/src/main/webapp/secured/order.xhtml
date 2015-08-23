@@ -20,114 +20,143 @@
 }
 </style>
 	</ui:define>
-
 	<ui:define name="content">
-	<h3>Order management</h3>
-		<table class="dataTableContainer">
-			<tr>
-				<td id="orderDetailsCell"><h:form id="orderForm">
-						<p:dataTable id="orderDT"
-							value="#{orderController.lazyOrderModul}" var="order"
-							selectionMode="single"
-							selection="#{orderController.selectedOrder}"
-							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-							rowsPerPageTemplate="5,10,15" lazy="true" paginator="true"
-							rows="10" emptyMessage="#{out.empty_message}">
 
-							<p:ajax event="rowSelect" update=":orderForm:orderDT" />
-							
-							<p:column headerText="Client" sortBy="#{order.client.name}"
-								filterBy="#{order.client.name}" filterStyle="width:80%;">
-								<h:outputText value="#{order.client.name}" />
-							</p:column>
-							
-							<p:column headerText="Ordered Offer" sortBy="#{order.offers.name}"
-								filterBy="#{order.offers.name}" filterStyle="width:80%;">
-								<h:outputText value="#{order.offers.name}" />
-							</p:column>
-							
-							<p:column headerText="Offer quantity" sortBy="#{order.oQuantity}"
-								filterBy="#{order.oQuantity}" filterStyle="width:80%;">
-								<h:outputText value="#{order.oQuantity}" />
-							</p:column>
-							
-							<p:column headerText="Ordered Product Type" sortBy="#{order.productType.name}"
-								filterBy="#{order.productType.name}" filterStyle="width:80%;">
-								<h:outputText value="#{order.productType.name}" />
-							</p:column>
-							
-							<p:column headerText="Product Type quantity" sortBy="#{order.pQuantity}"
-								filterBy="#{order.pQuantity}" filterStyle="width:80%;">
-								<h:outputText value="#{order.pQuantity}" />
-							</p:column>
-							
-							
-							
-							<p:column headerText="Status" sortBy="#{order.status}"
-								filterBy="#{order.status}" filterStyle="width:80%;">
-								<h:outputText value="#{order.status}" />
-							</p:column>
-							
-						</p:dataTable>
 
-						<p:panelGrid id="btnPanel" columns="1">
-							<p:commandButton value="New Order"
-								action="#{orderController.addNewOrderButtonAction}"
-								update=":addNewOrderDialogForm"
-								oncomplete="PF('addNewOrderDialog').show()" />
+		<p:fieldset legend="#{out.orders_details_dialog_head}"
+			style="margin-bottom:20px">
+
+			<table class="dataTableContainer">
+				<tr>
+					<td id="orderDetailsCell"><h:form id="orderForm">
+							<p:dataTable id="orderDT" scrollable="true" scrollHeight="400"
+								value="#{orderController.lazyOrderModul}" var="order"
+								selectionMode="single"
+								selection="#{orderController.selectedOrder}"
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+								rowsPerPageTemplate="5,10,15" lazy="true" paginator="true"
+								rows="10">
+
+								<p:ajax event="rowSelect"
+									update=":orderForm:orderDT,:orderForm:btnPanel"
+									listener="#{orderController.onRowSelected}" />
+
+								<p:column headerText="Id" filterStyle="width:80%;">
+									<h:outputText value="#{order.orderId}" />
+								</p:column>
+								<!-- 								<p:column headerText="#{out.orders_ordered_products}" -->
+								<!-- 									filterStyle="width:80%;"> -->
+								<!-- 									<h:outputText value="#{order.productType.name}" /> -->
+								<!-- 								</p:column> -->
+
+								<!-- 								<p:column headerText="#{out.orders_quantity}" -->
+								<!-- 									filterStyle="width:80%;"> -->
+								<!-- 									<h:outputText value="#{order.quantity}" /> -->
+								<!-- 								</p:column> -->
+
+
+								<p:column headerText="#{out.warehouse}" filterStyle="width:80%;">
+									<h:outputText value="" />
+								</p:column>
+								<p:column headerText="#{out.orders_details_dialog_date}"
+									filterStyle="width:80%;">
+									<h:outputText value="#{order.date}" />
+								</p:column>
+								<p:column headerText="#{out.orders_status}"
+									filterStyle="width:80%;">
+									<h:outputText value="#{order.status}" />
+								</p:column>
+							</p:dataTable>
+							<p:panelGrid id="btnPanel" columns="3">
+								<p:commandButton value="#{out.orders_buttons_create}"
+									action="#{orderController.addNewOrderButtonAction}"
+									update=":addNewOrderDialogForm"
+									oncomplete="PF('addNewOrderDialog').show()" />
+
+								<p:commandButton value="#{out.orders_buttons_edit}"
+									disabled="#{orderController.selectedOrder == null}"
+									action="#{orderController.editOrderButtonAction}"
+									update=":editOrderDialogForm,:orderForm:orderDT,:orderForm:btnPanel"
+									oncomplete="PF('editOrderDialog').show()" />
+
+								<p:commandButton value="#{out.orders_buttons_delete}"
+									action="#{orderController.removeOrder}"
+									update=":orderForm:orderDT,:orderForm:btnPanel"
+									disabled="#{orderController.selectedOrder == null}"></p:commandButton>
+							</p:panelGrid>
+						</h:form></td>
+				</tr>
+			</table>
+
+
+			<p:dialog widgetVar="addNewOrderDialog"
+				header="#{out.orders_create_dialog_head}" resizable="false"
+				width="700">
+				<h:form id="addNewOrderDialogForm">
+					<p:panelGrid columns="2" cellpadding="2">
+						<p:outputLabel value="#{out.orders_products}" />
+						<p:panelGrid columns="3">
+							<p:autoComplete id="product"
+								value="#{orderController.selectedProductTypeName}"
+								completeMethod="#{orderController.completeTextProduct}"
+								size="45" />
+							<p:inputText value="#{orderController.quantity}" size="2" />
+							<p:commandButton id="addProduct" value="#{out.orders_add}"
+								actionListener="#{orderController.addToList}"
+								update="addNewOrderDialogForm:addedProducts,:addNewOrderDialogForm" />
 						</p:panelGrid>
-					</h:form></td>
-			</tr>
-		</table>
+						<p:outputLabel value="" />
 
-		<p:dialog widgetVar="addNewOrderDialog" header="Add new order"
-			resizable="false">
-			<h:form id="addNewOrderDialogForm">
-				<p:panelGrid columns="2" cellpadding="2">
-					<p:outputLabel for="offer" value="Offers: " />
-					<p:panelGrid columns="4">
-						<p:selectOneMenu id="offer"
-							value="#{orderController.selectedOfferName}" effect="fold"
-							editable="true">
-							<f:selectItems value="#{orderController.offerHelper}" />
-						</p:selectOneMenu>
-						<h:outputText id="output"
-							value="#{orderController.counterOfferString}" />
-						<p:commandButton value="+"
-							actionListener="#{orderController.increment}" update="output" />
-						<p:commandButton value="-"
-							actionListener="#{orderController.dcrement}" update="output" />
+						<p:panelGrid columns="1" style="width: 100%">
+							<p:dataTable id="addedProducts" var="products"
+								value="#{orderController.products}" scrollable="true"
+								scrollHeight="150" resizableColumns="true"
+								selectionMode="single"
+								selection="#{orderController.selectedProduct}"
+								rowKey="#{products.name}">
+
+								<p:ajax event="rowSelect"
+									listener="#{orderController.disableSaveOrder}"
+									update=":addNewOrderDialogForm:addedProducts,
+									:addNewOrderDialogForm:removeProduct,:addNewOrderDialogForm:saveProducts" />
+
+								<p:column headerText="#{out.orders_ordered_products}">
+									<h:outputText value="#{products.name}" />
+								</p:column>
+								<p:column headerText="#{out.orders_quantity}">
+									<h:outputText value="#{products.quantity}" />
+								</p:column>
+							</p:dataTable>
+							<p:commandButton value="#{out.userform_remove}"
+								id="removeProduct" update="addedProducts"
+								actionListener="#{orderController.removeFromList}"
+								disabled="#{orderController.selectedProduct == null}"></p:commandButton>
+						</p:panelGrid>
+
+						<p:outputLabel value="#{out.orders_status}" />
+						<p:panelGrid columns="1">
+							<p:selectOneMenu id="status"
+								value="#{orderController.selectedStatus}" effect="fold"
+								editable="true" required="true">
+								<f:selectItems value="#{orderController.status}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
 					</p:panelGrid>
-					<p:outputLabel value="Product Types" />
-					<p:panelGrid columns="4">
-						<p:selectOneMenu id="productType"
-							value="#{orderController.selectedProductTypeName}" effect="fold"
-							editable="true">
-							<f:selectItems value="#{orderController.productHelper}" />
-						</p:selectOneMenu>
-						<h:outputText id="output2"
-							value="#{orderController.counterProductString}" />
-						<p:commandButton value="+"
-							actionListener="#{orderController.increment2}" update="output2" />
-						<p:commandButton value="-"
-							actionListener="#{orderController.dcrement2}" update="output2" />
-					</p:panelGrid>
-					<p:outputLabel value="Clients:" for="client" />
-					<p:autoComplete id="client"
-						value="#{orderController.selectedClientName}"
-						completeMethod="#{orderController.completeTextClient}" />
-					<p:outputLabel for="status" value="Status: " />
-					<p:selectOneMenu id="status"
-						value="#{orderController.selectedStatus}" effect="fold"
-						editable="true">
-						<f:selectItems value="#{orderController.status}" />
-					</p:selectOneMenu>
-				</p:panelGrid>
-				<p:commandButton value="Save"
-					actionListener="#{orderController.addNewOrder}"
-					update=":orderForm:orderDT"
-					oncomplete="PF('addNewOrderDialog').hide()" />
-			</h:form>
-		</p:dialog>
+					<p:commandButton id="saveProducts" value="#{out.profile_save}"
+						actionListener="#{orderController.addNewOrder}"
+						update=":orderForm:orderDT"
+						oncomplete="PF('addNewOrderDialog').hide()"
+						disabled="#{orderController.disableSaveOrderValue}" />
+				</h:form>
+			</p:dialog>
+
+			<p:dialog widgetVar="editOrderDialog"
+				header="#{out.orders_edit_dialog_head}" resizable="false">
+				<h:form id="editOrderDialogForm">
+					<h1>Folyamatban...</h1>
+				</h:form>
+			</p:dialog>
+
+		</p:fieldset>
 	</ui:define>
 </ui:composition>

@@ -28,21 +28,22 @@ import hu.neuron.java.sales.service.vo.AddressVO;
 @Stateless(mappedName = "AddressService", name = "AddressService")
 @Remote(AddressServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-@Interceptors(SpringBeanAutowiringInterceptor.class) //For Unit tests to work
+@Interceptors(SpringBeanAutowiringInterceptor.class)
+// For Unit tests to work
 public class AddressServiceImpl implements AddressServiceRemote, Serializable {
 
 	private static final long serialVersionUID = 1838519677303448003L;
-	
+
 	@Autowired
 	AddressDAO addressDao;
-	
+
 	@Autowired
 	AddressConverter adConv;
-	
+
 	@Override
 	public AddressVO findAddressByEquals(AddressVO addressVO) throws Exception {
-		return adConv.toVO(addressDao.findAddressByEquals(
-				addressVO.getCity(), addressVO.getStreet(), addressVO.getHouseNumber(), 
+		return adConv.toVO(addressDao.findAddressByEquals(addressVO.getCity(),
+				addressVO.getStreet(), addressVO.getHouseNumber(),
 				addressVO.getZipCode()));
 	}
 
@@ -57,9 +58,12 @@ public class AddressServiceImpl implements AddressServiceRemote, Serializable {
 	}
 
 	@Override
-	public List<AddressVO> getAddresses(int page, int size, String sortField, int sortOrder, String filter, String filterColumnName) {
-		Direction dir = sortOrder == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
-		PageRequest pageRequest = new PageRequest(page, size, new Sort(new Sort.Order(dir, sortField)));
+	public List<AddressVO> getAddresses(int page, int size, String sortField,
+			int sortOrder, String filter, String filterColumnName) {
+		Direction dir = sortOrder == 1 ? Sort.Direction.ASC
+				: Sort.Direction.DESC;
+		PageRequest pageRequest = new PageRequest(page, size, new Sort(
+				new Sort.Order(dir, sortField)));
 		Page<Address> entities;
 
 		if (filter.length() != 0 && filterColumnName.equals("city")) {
@@ -78,7 +82,7 @@ public class AddressServiceImpl implements AddressServiceRemote, Serializable {
 		addressDao.save(adConv.toEntity(address));
 
 	}
-	
+
 	@Override
 	public int getRowNumber() {
 		return (int) addressDao.count();
@@ -91,21 +95,32 @@ public class AddressServiceImpl implements AddressServiceRemote, Serializable {
 
 	@Override
 	public void updateAddress(AddressVO address) {
+		try {
+			addressDao.delete(addressDao.findAddressByAddressId(address.getAddressId()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		saveAddress(address);
-		
 	}
 
 	@Override
 	public void removeAddress(AddressVO address) {
 		addressDao.delete(adConv.toEntity(address));
-		
+
+	}
+	
+	@Override
+	public void removeAddressById(String addressId) throws Exception {
+		Address addr = addressDao.findAddressByAddressId(addressId);
+		addressDao.delete(addr);
+
 	}
 
 	@Override
 	public List<String> findAllCities() throws Exception {
 		List<AddressVO> res = findAll();
 		Set<String> set = new HashSet<>();
-		for(AddressVO ad : res){
+		for (AddressVO ad : res) {
 			set.add(ad.getCity());
 		}
 		List<String> rv = new ArrayList<>(set.size());

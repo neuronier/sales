@@ -6,7 +6,6 @@ import hu.neuron.java.sales.service.SalesPointServiceRemote;
 import hu.neuron.java.sales.service.converter.SalesPointConverter;
 import hu.neuron.java.sales.service.vo.AddressVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
-
 import java.io.Serializable;
 import java.util.List;
 

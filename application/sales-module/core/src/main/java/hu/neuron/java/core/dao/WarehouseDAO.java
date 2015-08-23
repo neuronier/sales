@@ -15,5 +15,7 @@ public interface WarehouseDAO extends JpaRepository<Warehouse, Long>{
 	
 	Warehouse findWarehouseByWarehouseId(String warehouseId) throws Exception;
 	
+	Warehouse findWarehouseByWarehouseName(String warehouseName) throws Exception;
+	
 	Page<Warehouse> findByWarehouseNameStartsWith(String filter, Pageable pageRequest);
 }

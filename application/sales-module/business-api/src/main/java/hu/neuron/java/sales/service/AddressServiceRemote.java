@@ -27,4 +27,6 @@ public interface AddressServiceRemote {
 
 	public AddressVO findAddressByEquals(AddressVO addressVO) throws Exception;
 
+	public void removeAddressById(String addressId) throws Exception;
+
 }

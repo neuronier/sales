@@ -1,7 +1,6 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public class OfferVO implements Serializable {
 
@@ -15,11 +14,9 @@ public class OfferVO implements Serializable {
 	
 	private Long offerPrice;
 
-	// private HashMap<ProductTypeVO, Integer> productTypes = new
-	// HashMap<ProductTypeVO, Integer>();
-
 	public OfferVO() {
-		setOfferId(UUID.randomUUID().toString());
+		Long systime = System.currentTimeMillis();
+		setOfferId("OFFER_" + systime.toString());
 	}
 
 	public long getOfferPrice() {

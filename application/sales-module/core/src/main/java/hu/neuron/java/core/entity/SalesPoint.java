@@ -23,7 +23,7 @@ public class SalesPoint extends Base {
 		this.salePointId = salesPointId;
 	}
 
-	public String getWareHouseId() {
+	public String getWarehouseId() {
 		return wareHouseId;
 	}
 

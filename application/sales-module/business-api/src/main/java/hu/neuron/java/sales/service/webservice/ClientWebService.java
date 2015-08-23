@@ -2,7 +2,6 @@ package hu.neuron.java.sales.service.webservice;
 
 import hu.neuron.java.sales.service.webservice.vo.ClientListWebServiceVO;
 import hu.neuron.java.sales.service.webservice.vo.ClientWebServiceVO;
-import hu.neuron.java.sales.service.webservice.vo.OrderListWebServiceVO;
 
 import javax.jws.WebMethod;
 import javax.jws.WebResult;
@@ -19,9 +18,9 @@ public interface ClientWebService {
 	@WebResult(name = "getClientByClientId")
 	public ClientWebServiceVO getClientByClientIdWebMethod(String clientId);
 	
-	@WebMethod(operationName = "getOrderListByClientId")
-	@WebResult(name = "getOrderListByClientId")
-	public OrderListWebServiceVO getOrderListByClientIdWebMethod(String clientId);
+//	@WebMethod(operationName = "getOrderListByClientId")
+//	@WebResult(name = "getOrderListByClientId")
+//	public OrderListWebServiceVO getOrderListByClientIdWebMethod(String clientId);
 
 	@WebMethod(operationName = "createClient")
 	@WebResult(name = "createClient")
