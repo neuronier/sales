@@ -51,14 +51,8 @@ public class ClientServiceImpl implements ClientServiceRemote, Serializable{
 	@Override
 	public ClientVO findClientByName(String name) throws Exception {
 		logger.debug(entityManager);
-		ClientVO vo = clientConverter.toVO(clientDAO.findClientByUserName(name));
+		ClientVO vo = clientConverter.toVO(clientDAO.findByName(name));
 		return vo;
-	}
-
-	@Override
-	public void registrationClient(ClientVO clientVO) throws Exception {
-		//Client client = 
-				clientDAO.save(clientConverter.toEntity(clientVO));
 	}
 
 	@Override

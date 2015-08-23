@@ -7,8 +7,6 @@ import java.util.List;
 public interface ClientServiceRemote {
 	
 	public ClientVO findClientByName(String name) throws Exception;
-
-	public void registrationClient(ClientVO clientVO) throws Exception;
 	
 	public ClientVO findByUserName(String userName);
 	

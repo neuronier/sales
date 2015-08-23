@@ -97,7 +97,13 @@ public class userController {
 		List<String> target = roleList.getTarget();
 
 		for (String roleName : target) {
-			RoleVO role = roleServiceRemote.getRoleByName(roleName);
+			RoleVO role = null;
+			try {
+				role = roleServiceRemote.getRoleByName(roleName);
+			} catch (Exception e) {
+				// Nincs ilyen role
+				e.printStackTrace();
+			}
 			userServiceRemote.addRoleToUser(newUser, role);
 		}
 

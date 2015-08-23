@@ -53,26 +53,14 @@ public class RoleServiceImpl implements RoleServiceRemote, Serializable {
 	public RoleServiceImpl() {
 	}
 
-
-	@Override
-	public int getRowNumber() {
-		return (int) userDao.count();
-	}
-
 	@Override
 	public List<RoleVO> getRoles() {
 		return roleConverter.toVO(roleDao.findAll());
 	}
 
 	@Override
-	public RoleVO getRoleByName(String role) {
-		RoleVO vo = null;
-		try {
-			vo = roleConverter.toVO(roleDao.findRoleByName(role));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return vo;
+	public RoleVO getRoleByName(String role) throws Exception{
+		return roleConverter.toVO(roleDao.findRoleByName(role));
 	}
 
 	@Override

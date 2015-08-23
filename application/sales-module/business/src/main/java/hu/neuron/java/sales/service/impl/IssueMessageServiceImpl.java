@@ -33,9 +33,9 @@ public class IssueMessageServiceImpl implements IssueMessageServiceRemote, Seria
 	IssueMessageConverter issueMessageConverter;
 
 	@Override
-	public String saveIssueMessage(IssueMessageVO issueMessage) {
-		IssueMessage im = issueMessageDAO.save(issueMessageConverter.toEntity(issueMessage)); 
-		return im.getMessageId();
+	public IssueMessageVO saveIssueMessage(IssueMessageVO issueMessage) {
+		IssueMessage im = issueMessageDAO.save(issueMessageConverter.toEntity(issueMessage));
+		return issueMessageConverter.toVO(im);
 	}
 
 	@Override

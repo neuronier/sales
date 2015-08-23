@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.SUPPORTS)
 public interface ClientDAO extends JpaRepository<Client, Long> {
 
+	Client findByName(String name);
+	
 	Client findClientByUserName(String userName);
 	
 	Client findByClientId(String clientId);
