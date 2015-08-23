@@ -72,8 +72,13 @@ public class ProductTypeServiceImpl implements ProductTypeServiceRemote,
 	}
 
 	@Override
-	public ProductTypeVO findProductTypeByName(String name) throws Exception {
-		ProductTypeVO rVO = ptConverter.toVO(productTypeDao.findProductTypeEntityByName(name));
+	public ProductTypeVO findProductTypeByName(String name){
+		ProductTypeVO rVO = null;
+		try {
+			rVO = ptConverter.toVO(productTypeDao.findProductTypeEntityByName(name));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return rVO;
 	}
 
