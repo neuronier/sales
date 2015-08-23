@@ -127,6 +127,10 @@ public class OrderController implements Serializable {
 		}
 		orderService.saveOrder(newOrder);
 	}
+	
+	public void editOrder(){
+		
+	}
 
 	public void removeOrder() {
 		orderService.removeOrder(selectedOrder);
@@ -174,12 +178,29 @@ public class OrderController implements Serializable {
 
 	public void addToList() {
 		if (selectedProductTypeName == null) {
-		} else {
-			getProducts().add(
-					new OrderProductType(newOrder.getOrderId(),
-							selectedProductTypeName, quantity));
+		}else if (products == null) {
+			System.err.println("itt a hba");
+		} 
+		
+		else {
+			boolean helper = false;
+			int index = 0;
+			for (OrderProductType opt : products) {
+				if (opt.getName().equals(selectedProductTypeName)) {
+					 helper = true;
+					 index = products.indexOf(opt);
+				}
+			}
+			
+			if (helper) {
+				products.get(index).setQuantity(products.get(index).getQuantity() + quantity);
+			}else{
+				getProducts().add(
+						new OrderProductType(newOrder.getOrderId(),
+								selectedProductTypeName, quantity));
+			}
 			System.out.println(getProducts());
-			selectedProductTypeName = "";
+			selectedProductTypeName = null;
 			quantity = 1;
 			disableSaveOrder();
 		}
