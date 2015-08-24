@@ -153,12 +153,57 @@
 			<p:dialog widgetVar="editOrderDialog"
 				header="#{out.orders_edit_dialog_head}" resizable="false"
 				width="700">
-				<p:panelGrid columns="2" cellpadding="2">
-				
-
-				</p:panelGrid>
 				<h:form id="editOrderDialogForm">
-					<p:commandButton id="save2Products" value="#{out.profile_save}"
+					<p:panelGrid columns="2" cellpadding="2">
+						<p:outputLabel value="#{out.orders_products}" />
+						<p:panelGrid columns="3">
+							<p:autoComplete id="product2"
+								value="#{orderController.selectedProductTypeName}"
+								completeMethod="#{orderController.completeTextProduct}"
+								size="45" />
+							<p:inputText value="#{orderController.quantity}" size="2" />
+							<p:commandButton id="addProduct2" value="#{out.orders_add}"
+								actionListener="#{orderController.addToList}"
+								update="editOrderDialogForm:addedProducts2,:editOrderDialogForm" />
+						</p:panelGrid>
+
+						<p:outputLabel value="" />
+
+						<p:panelGrid columns="1" style="width: 100%">
+							<p:dataTable id="addedProducts2" var="products"
+								value="#{orderController.products}" scrollable="true"
+								scrollHeight="150" resizableColumns="true"
+								selectionMode="single"
+								selection="#{orderController.selectedProduct}"
+								rowKey="#{products.name}">
+
+								<p:ajax event="rowSelect"
+									update=":editOrderDialogForm:addedProducts2,
+									:editOrderDialogForm:removeProduct2,:editOrderDialogForm:saveProducts2" />
+
+								<p:column headerText="#{out.orders_ordered_products}">
+									<h:outputText value="#{products.name}" />
+								</p:column>
+								<p:column headerText="#{out.orders_quantity}">
+									<h:outputText value="#{products.quantity}" />
+								</p:column>
+							</p:dataTable>
+							<p:commandButton value="#{out.userform_remove}"
+								id="removeProduct2" update="addedProducts2,:editOrderDialogForm"
+								actionListener="#{orderController.removeFromList}"
+								disabled="#{orderController.selectedProduct == null}"></p:commandButton>
+						</p:panelGrid>
+						
+						<p:outputLabel value="#{out.orders_status}" />
+						<p:panelGrid columns="1">
+							<p:selectOneMenu id="status2"
+								value="#{orderController.selectedStatus}" effect="fold"
+								editable="true" required="true">
+								<f:selectItems value="#{orderController.status}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:commandButton id="saveProducts2" value="#{out.profile_save}"
 						actionListener="#{orderController.editOrder}"
 						update=":orderForm:orderDT,:orderForm:btnPanel"
 						oncomplete="PF('editOrderDialog').hide()"></p:commandButton>
