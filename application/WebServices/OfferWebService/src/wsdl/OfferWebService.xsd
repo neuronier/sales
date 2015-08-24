@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2.8-b13937 svn-revision#13942.--><xsd:schema targetNamespace="http://hu.neuron" xmlns:ns0="http://hu.neuron" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:complexType name="modifyOfferByOfferIdResponse">
+    <xsd:sequence>
+      <xsd:element name="modifyOfferByOfferId" type="ns0:offerWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="modifyOfferByOfferId">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg1" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg2" type="xsd:long" minOccurs="0"/>
+      <xsd:element name="arg3" minOccurs="0">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="entry" minOccurs="0" maxOccurs="unbounded">
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element name="key" type="xsd:string" minOccurs="0"/>
+                  <xsd:element name="value" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="getOfferByOfferIdResponse">
+    <xsd:sequence>
+      <xsd:element name="getOfferByOfferId" type="ns0:offerWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="createOffer">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg1" type="xsd:long" minOccurs="0"/>
+      <xsd:element name="arg2" minOccurs="0">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="entry" minOccurs="0" maxOccurs="unbounded">
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element name="key" type="xsd:string" minOccurs="0"/>
+                  <xsd:element name="value" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="offerListWebServiceVO">
+    <xsd:sequence>
+      <xsd:element name="offers" type="ns0:offerWebServiceVO" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="getOfferByOfferId">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="getOfferList"/>
+  <xsd:complexType name="offerWebServiceVO">
+    <xsd:sequence>
+      <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="offerId" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="offerPrice" type="xsd:long" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="removeOfferByOfferIdResponse"/>
+  <xsd:complexType name="removeOfferByOfferId">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="createOfferResponse">
+    <xsd:sequence>
+      <xsd:element name="createOffer" type="ns0:offerWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="getOfferListResponse">
+    <xsd:sequence>
+      <xsd:element name="getOfferList" type="ns0:offerListWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="modifyOfferByOfferIdResponse" type="ns0:modifyOfferByOfferIdResponse"/>
+  <xsd:element name="modifyOfferByOfferId" type="ns0:modifyOfferByOfferId"/>
+  <xsd:element name="getOfferByOfferIdResponse" type="ns0:getOfferByOfferIdResponse"/>
+  <xsd:element name="createOffer" type="ns0:createOffer"/>
+  <xsd:element name="OfferList" type="ns0:offerListWebServiceVO"/>
+  <xsd:element name="getOfferByOfferId" type="ns0:getOfferByOfferId"/>
+  <xsd:element name="getOfferList" type="ns0:getOfferList"/>
+  <xsd:element name="removeOfferByOfferIdResponse" type="ns0:removeOfferByOfferIdResponse"/>
+  <xsd:element name="removeOfferByOfferId" type="ns0:removeOfferByOfferId"/>
+  <xsd:element name="createOfferResponse" type="ns0:createOfferResponse"/>
+  <xsd:element name="Offer" type="ns0:offerWebServiceVO"/>
+  <xsd:element name="getOfferListResponse" type="ns0:getOfferListResponse"/>
+</xsd:schema>
