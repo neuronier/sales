@@ -101,6 +101,7 @@ public class OrderController implements Serializable {
 
 	public void editOrderButtonAction() {
 		products = new ArrayList<OrderProductType>();
+		selectedProductTypeName = null;
 		selectedStatus = selectedOrder.getStatus();
 		quantity = 1;
 
@@ -110,9 +111,9 @@ public class OrderController implements Serializable {
 			for (ProductTypeVO productTypeVO : vos) {
 				int q = orderService.findQuantityToOrderProductType(
 						productTypeVO, selectedOrder);
-				products.add(new OrderProductType(selectedOrder.getOrderId(),
-						productTypeVO.getName(), q));
+				products.add(new OrderProductType(productTypeVO.getName(), q));
 			}
+			System.out.println(products);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -142,9 +143,40 @@ public class OrderController implements Serializable {
 		}
 		orderService.saveOrder(newOrder);
 	}
-	
-	//FEJESZTÉS ALATT
+
+	// FEJESZTÉS ALATT
 	public void editOrder() {
+		selectedOrder.setStatus(selectedStatus);
+		
+		try {
+			List<ProductTypeVO> vos = orderService
+					.findProductTypesToOrder(selectedOrder);
+			for (ProductTypeVO productTypeVO : vos) {
+				orderService.removeProductTypeFromOrder(productTypeVO,
+						selectedOrder);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		for (int i = 0; i < products.size(); i++) {
+			selectedProductTypeName = products.get(i).getName();
+			quantity = products.get(i).getQuantity();
+
+			if (selectedProductTypeName != null) {
+				selectedProdType = new ProductTypeVO();
+				for (ProductTypeVO ptvo : prodTypeVOs) {
+					if (selectedProductTypeName.equals(ptvo.getName())) {
+						selectedProdType = ptvo;
+					}
+				}
+			}
+			orderService.addProductTypeToOrder(selectedProdType, selectedOrder,
+					quantity);
+			selectedProductTypeName = null;
+		}
+		orderService.updateOrder(selectedOrder);
 		selectedOrder = null;
 	}
 
@@ -208,9 +240,9 @@ public class OrderController implements Serializable {
 				products.get(index).setQuantity(
 						products.get(index).getQuantity() + quantity);
 			} else {
-				getProducts().add(
-						new OrderProductType(newOrder.getOrderId(),
-								selectedProductTypeName, quantity));
+				getProducts()
+						.add(new OrderProductType(selectedProductTypeName,
+								quantity));
 			}
 			System.out.println(getProducts());
 			selectedProductTypeName = null;
@@ -224,7 +256,7 @@ public class OrderController implements Serializable {
 		System.out.println(products);
 		selectedProduct = null;
 	}
-	
+
 	public void disableSaveOrder() {
 		if (products.size() == 0) {
 			disableSaveOrderValue = true;
