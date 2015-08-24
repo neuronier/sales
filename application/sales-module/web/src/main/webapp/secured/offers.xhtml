@@ -88,8 +88,10 @@
 										<tr>
 											<td>
 												<div class="ui-grid-col-3">
-													<p:commandButton value="Save" type="button"
-														onclick="PF('createOffer').show();" />
+													<p:commandButton value="Save"
+														action="#{offerController.saveSelectOneMenu}"
+														update=":form2"
+														oncomplete="PF('createOffer').show();" />
 												</div>
 											</td>
 											<td><div class="ui-grid-col-3">
@@ -116,7 +118,7 @@
 
 		</h:form>
 		<p:dialog header="Create New Offer" widgetVar="createOffer"
-			showEffect="explode" hideEffect="bounce" mheight="100" modal="true"
+			showEffect="blind" hideEffect="drop" mheight="100" modal="true"
 			appendTo="@(body)" width="600px" height="350">
 
 			<h:form id="form2">
@@ -187,7 +189,8 @@
 											style="width:160px" filter="true"
 											filterMatchMode="startsWith">
 											<p:ajax event="change" update=":form2:addButton" />
-											<f:selectItems value="#{offerController.productTypeList}"
+											<f:selectItems
+												value="#{offerController.selectOneMenuOfferProductTypeList}"
 												var="selectedProductType"
 												itemLabel="#{selectedProductType.name}"
 												itemValue="#{selectedProductType}" />
@@ -213,14 +216,15 @@
 								<p:row>
 									<p:column>
 										<p:commandButton value="Add" id="addButton"
-											update=":form2:offerProductTypeTable" icon="ui-icon-disk"
+											update=":form2:offerProductTypeTable,:form2:advanced"
+											icon="ui-icon-disk"
 											actionListener="#{offerController.addProductTypeToOffer}"
 											disabled="#{offerController.selectedProductType == null}"
 											style="float: right;" />
 									</p:column>
 									<p:column>
 										<p:commandButton value="Remove" id="removeButton"
-											update=":form2:offerProductTypeTable,:form2:removeButton"
+											update=":form2:offerProductTypeTable,:form2:removeButton,:form2:advanced"
 											disabled="#{offerController.selectedOfferProductType == null}"
 											actionListener="#{offerController.removeProductTypeFromOffer}"
 											style="float: left;" />
@@ -296,10 +300,9 @@
 			</h:form>
 		</p:dialog>
 
-		<p:dialog widgetVar="updateOffer"
-			showEffect="explode" id="updateOfferDialog" hideEffect="bounce"
-			mheight="100" modal="true" appendTo="@(body)" width="600px"
-			height="600px">
+		<p:dialog widgetVar="updateOffer" showEffect="blind"
+			id="updateOfferDialog" hideEffect="drop" mheight="100" modal="true"
+			appendTo="@(body)" width="600px" height="600px">
 			<h:form id="form3">
 
 				<p:fieldset legend="Updating Offer" style="margin-bottom:20px">
@@ -365,7 +368,8 @@
 											style="width:160px" filter="true"
 											filterMatchMode="startsWith">
 											<p:ajax event="change" update=":form3:addButton" />
-											<f:selectItems value="#{offerController.productTypeList}"
+											<f:selectItems
+												value="#{offerController.selectOneMenuOfferProductTypeList}"
 												var="selectedProductType"
 												itemLabel="#{selectedProductType.name}"
 												itemValue="#{selectedProductType}" />
@@ -391,14 +395,15 @@
 								<p:row>
 									<p:column>
 										<p:commandButton value="Add" id="addButton"
-											update=":form3:offerProductTypeTableUpdate"
+											update=":form3:offerProductTypeTableUpdate,:form3:updateOne"
 											icon="ui-icon-disk"
 											actionListener="#{offerController.addProductTypeToOffer}"
-											disabled="#{offerController.selectedProductType == null}" style="float: right;"  />
+											disabled="#{offerController.selectedProductType == null}"
+											style="float: right;" />
 									</p:column>
 									<p:column>
 										<p:commandButton value="Remove" id="removeButton"
-											update=":form3:offerProductTypeTableUpdate,:form3:removeButton"
+											update=":form3:offerProductTypeTableUpdate,:form3:removeButton,:form3:updateOne"
 											disabled="#{offerController.selectedOfferProductType == null}"
 											actionListener="#{offerController.removeProductTypeFromOffer}" />
 									</p:column>
@@ -408,7 +413,8 @@
 										<p:commandButton value="Update" id="update"
 											actionListener="#{offerController.updateOffer}"
 											update=":form:offerTable,:form:updateButton,:form:removeButton"
-											icon="ui-icon-disk" oncomplete="PF('updateOffer').hide();" style="float: right;"  />
+											icon="ui-icon-disk" oncomplete="PF('updateOffer').hide();"
+											style="float: right;" />
 									</p:column>
 								</p:row>
 							</p:panelGrid>

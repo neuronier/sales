@@ -36,6 +36,8 @@ public class OfferController implements Serializable {
 
 	List<OfferProductType> selectedOfferProductTypeList = new ArrayList<OfferProductType>();
 	
+	List<ProductTypeVO> selectOneMenuOfferProductTypeList = new ArrayList<ProductTypeVO>();
+	
 	List<ProductTypeVO> existingPts = new ArrayList<ProductTypeVO>();
 	
 	List<ProductTypeVO> trashProductTypeList = new ArrayList<ProductTypeVO>();
@@ -63,8 +65,15 @@ public class OfferController implements Serializable {
 
 	private LazyProductTypeModel lazyProductTypeModel;
 	
-	
-	
+	public List<ProductTypeVO> getSelectOneMenuOfferProductTypeList() {
+		return selectOneMenuOfferProductTypeList;
+	}
+
+	public void setSelectOneMenuOfferProductTypeList(
+			List<ProductTypeVO> selectOneMenuOfferProductTypeList) {
+		this.selectOneMenuOfferProductTypeList = selectOneMenuOfferProductTypeList;
+	}
+
 	public List<ProductTypeVO> getTrashProductTypeList() {
 		return trashProductTypeList;
 	}
@@ -231,9 +240,13 @@ public class OfferController implements Serializable {
 		updateOfferName = selectedOffer.getName();
 		updateOfferPrice = selectedOffer.getOfferPrice();
 		
-		
 		getProductTypesToSelectedOffer();
 		
+		selectOneMenuOfferProductTypeList = productTypeList;
+		
+		for (OfferProductType offerProductType : selectedOfferProductTypeList) {
+			selectOneMenuOfferProductTypeList.remove(productTypeService.findProductTypeByName(offerProductType.getName()));
+		}	
 		
 		FacesContext.getCurrentInstance().addMessage(
 				null,
@@ -304,11 +317,13 @@ public class OfferController implements Serializable {
 
 	public void addProductTypeToOffer(ActionEvent actionEvent) {
 		selectedOfferProductTypeList.add(new OfferProductType(selectedProductType.getName(), newQuantity));
+		selectOneMenuOfferProductTypeList.remove(selectedProductType);
 	}
 
 	public void removeProductTypeFromOffer(ActionEvent actionEvent) throws Exception {
 		trashProductTypeList.add(productTypeService.findProductTypeByName(selectedOfferProductType.getName()));
 		selectedOfferProductTypeList.remove(selectedOfferProductType);
+		selectOneMenuOfferProductTypeList.add(productTypeService.findProductTypeByName(selectedOfferProductType.getName()));
 	}
 	
 	public void getProductTypesToSelectedOffer(){
@@ -325,5 +340,14 @@ public class OfferController implements Serializable {
 		for(ProductTypeVO productTypeVO : existingPts) {
 			selectedOfferProductTypeList.add(new OfferProductType(productTypeVO.getName(),offerService.findQuantityToOfferProductType(selectedOffer, productTypeVO)));
 		} 
+	}
+	
+	public void saveSelectOneMenu(){
+		newOfferName = null;
+		newOfferPrice = 0;
+		newQuantity = 0;
+		selectedOfferProductTypeList.clear();
+		productTypeList = productTypeService.findAll();
+		selectOneMenuOfferProductTypeList = productTypeList;
 	}
 }

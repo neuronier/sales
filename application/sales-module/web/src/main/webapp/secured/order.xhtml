@@ -128,7 +128,7 @@
 								</p:column>
 							</p:dataTable>
 							<p:commandButton value="#{out.userform_remove}"
-								id="removeProduct" update="addedProducts"
+								id="removeProduct" update="addedProducts,:addNewOrderDialogForm"
 								actionListener="#{orderController.removeFromList}"
 								disabled="#{orderController.selectedProduct == null}"></p:commandButton>
 						</p:panelGrid>
@@ -151,12 +151,19 @@
 			</p:dialog>
 
 			<p:dialog widgetVar="editOrderDialog"
-				header="#{out.orders_edit_dialog_head}" resizable="false">
+				header="#{out.orders_edit_dialog_head}" resizable="false"
+				width="700">
+				<p:panelGrid columns="2" cellpadding="2">
+				
+
+				</p:panelGrid>
 				<h:form id="editOrderDialogForm">
-					<h1>Folyamatban...</h1>
+					<p:commandButton id="save2Products" value="#{out.profile_save}"
+						actionListener="#{orderController.editOrder}"
+						update=":orderForm:orderDT,:orderForm:btnPanel"
+						oncomplete="PF('editOrderDialog').hide()"></p:commandButton>
 				</h:form>
 			</p:dialog>
-
 		</p:fieldset>
 	</ui:define>
 </ui:composition>
