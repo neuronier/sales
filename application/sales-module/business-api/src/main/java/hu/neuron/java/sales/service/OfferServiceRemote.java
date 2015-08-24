@@ -7,13 +7,17 @@ import java.util.List;
 
 public interface OfferServiceRemote {
 
-	public void saveOffer(OfferVO offer);
+	public OfferVO saveOffer(OfferVO offerVO);
 	
 	public void updateOffer(OfferVO offer);
 	  
 	public void removeOffer(OfferVO offer);
 	
-	public OfferVO findOfferEntityByName(String name) throws Exception;
+	public void removeOfferById(String offerId);
+	
+	public OfferVO findOfferEntityByName(String name);
+	
+	public OfferVO findOfferEntityByOfferId(String offerId);
 	
 	public List<OfferVO> getOffers(int i, int pageSize, String sortField,
 			int dir, String filter, String filterColumnName);
@@ -27,6 +31,10 @@ public interface OfferServiceRemote {
 	public void addProductTypeToOffer(OfferVO offer, ProductTypeVO productType, int quantity);
 	
 	public void removeProductTypeFromOffer(OfferVO offer, ProductTypeVO productType);
+	
+	public void removeProductTypesFromOffer(OfferVO offer, List<ProductTypeVO> productType);
+	
+	public void removeAllProductTypeFromOffer(OfferVO offer);
 	
 	public int findQuantityToOfferProductType(OfferVO offer, ProductTypeVO productType);
 }

@@ -53,8 +53,9 @@ public class OfferServiceImpl implements OfferServiceRemote, Serializable {
 	ProductTypeDAO productTypeDao;
 	
 	@Override
-	public void saveOffer(OfferVO offer) {
-		offerDao.save(offerConverter.toEntity(offer));
+	public OfferVO saveOffer(OfferVO offerVO) {
+		OfferEntity offer = offerDao.save(offerConverter.toEntity(offerVO));
+		return offerConverter.toVO(offer);
 	}
 
 	@Override
@@ -85,8 +86,14 @@ public class OfferServiceImpl implements OfferServiceRemote, Serializable {
 	}
 
 	@Override
-	public OfferVO findOfferEntityByName(String name) throws Exception {
-		OfferVO rVO = offerConverter.toVO(offerDao.findOfferEntityByName(name));
+	public OfferVO findOfferEntityByName(String name){
+		OfferVO rVO = null;
+		try {
+			rVO = offerConverter.toVO(offerDao.findOfferEntityByName(name));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return rVO;
 	}
 
@@ -141,5 +148,51 @@ public class OfferServiceImpl implements OfferServiceRemote, Serializable {
 	public int findQuantityToOfferProductType(OfferVO offer,
 			ProductTypeVO productType) {
 		return offerProductTypeDao.findOfferProductTypeEntityByOfferIdAndProductTypeId(offer.getOfferId(), productType.getProductTypeId()).getQuantity();	
+	}
+
+	@Override
+	public OfferVO findOfferEntityByOfferId(String offerId) {
+		OfferVO rVO = null;
+		try {
+			rVO = offerConverter.toVO(offerDao.findOfferEntityByOfferId(offerId));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rVO;
+	}
+
+	@Override
+	public void removeOfferById(String offerId) {
+		OfferEntity offer = null;
+		try {
+			offer = offerDao.findOfferEntityByOfferId(offerId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		offerDao.delete(offer);	
+	}
+
+	@Override
+	public void removeProductTypesFromOffer(OfferVO offer,
+			List<ProductTypeVO> productTypes) {
+		for (ProductTypeVO productTypeVO : productTypes) {
+			OfferProductTypeEntity offerProductType = offerProductTypeDao.findOfferProductTypeEntityByOfferIdAndProductTypeId(offer.getOfferId(), productTypeVO.getProductTypeId());
+			offerProductTypeDao.delete(offerProductType); 
+		}
+	}
+
+	@Override
+	public void removeAllProductTypeFromOffer(OfferVO offer) {
+		List<ProductTypeVO> productTypes = null;
+		try {
+			productTypes = findProductTypesToOffer(offer);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		for (ProductTypeVO productTypeVO : productTypes) {
+			OfferProductTypeEntity offerProductType = offerProductTypeDao.findOfferProductTypeEntityByOfferIdAndProductTypeId(offer.getOfferId(), productTypeVO.getProductTypeId());
+			offerProductTypeDao.delete(offerProductType); 
+		}
 	}
 }

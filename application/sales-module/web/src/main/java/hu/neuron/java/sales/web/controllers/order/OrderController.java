@@ -33,7 +33,6 @@ public class OrderController implements Serializable {
 	@EJB(name = "ProductTypeService", mappedName = "ProductTypeService")
 	ProductTypeServiceRemote productTypeService;
 
-	// SZERKESZTENI KELL
 	private final String[] status = { "New", "In progress", "Done" };
 
 	private String selectedStatus;
@@ -101,7 +100,23 @@ public class OrderController implements Serializable {
 	}
 
 	public void editOrderButtonAction() {
+		products = new ArrayList<OrderProductType>();
+		selectedStatus = selectedOrder.getStatus();
+		quantity = 1;
 
+		List<ProductTypeVO> vos = new ArrayList<ProductTypeVO>();
+		try {
+			vos = orderService.findProductTypesToOrder(selectedOrder);
+			for (ProductTypeVO productTypeVO : vos) {
+				int q = orderService.findQuantityToOrderProductType(
+						productTypeVO, selectedOrder);
+				products.add(new OrderProductType(selectedOrder.getOrderId(),
+						productTypeVO.getName(), q));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void addNewOrder() {
@@ -126,6 +141,11 @@ public class OrderController implements Serializable {
 			selectedProductTypeName = null;
 		}
 		orderService.saveOrder(newOrder);
+	}
+	
+	//FEJESZTÉS ALATT
+	public void editOrder() {
+		selectedOrder = null;
 	}
 
 	public void removeOrder() {
@@ -175,11 +195,25 @@ public class OrderController implements Serializable {
 	public void addToList() {
 		if (selectedProductTypeName == null) {
 		} else {
-			getProducts().add(
-					new OrderProductType(newOrder.getOrderId(),
-							selectedProductTypeName, quantity));
+			boolean helper = false;
+			int index = 0;
+			for (OrderProductType opt : products) {
+				if (opt.getName().equals(selectedProductTypeName)) {
+					helper = true;
+					index = products.indexOf(opt);
+				}
+			}
+
+			if (helper) {
+				products.get(index).setQuantity(
+						products.get(index).getQuantity() + quantity);
+			} else {
+				getProducts().add(
+						new OrderProductType(newOrder.getOrderId(),
+								selectedProductTypeName, quantity));
+			}
 			System.out.println(getProducts());
-			selectedProductTypeName = "";
+			selectedProductTypeName = null;
 			quantity = 1;
 			disableSaveOrder();
 		}
@@ -189,27 +223,8 @@ public class OrderController implements Serializable {
 		products.remove(selectedProduct);
 		System.out.println(products);
 		selectedProduct = null;
-		//
 	}
-
-	// UJRA KELL GONDOLNI
-	// public void initOrder(){
-	// setInitOrderList(new ArrayList<PList>());
-	// String id = newOrder.getOrderId();
-	// System.out.println("Order ID" +id);
-	//
-	// try {
-	// for (PList pList : all) {
-	// if (pList.getId().equals(id)) {
-	// initOrderList.add(new PList(id, pList.getName(), pList.getQuantity()));
-	// }
-	// }
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	//
-	// }
-
+	
 	public void disableSaveOrder() {
 		if (products.size() == 0) {
 			disableSaveOrderValue = true;

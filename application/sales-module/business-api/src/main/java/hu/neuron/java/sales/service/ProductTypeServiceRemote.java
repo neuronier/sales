@@ -11,7 +11,7 @@ public interface ProductTypeServiceRemote {
 	
 	public void removeProductType(ProductTypeVO productType);
 	
-	public ProductTypeVO findProductTypeByName(String name) throws Exception;
+	public ProductTypeVO findProductTypeByName(String name);
 	
 	public List<ProductTypeVO> getProductTypes(int i, int pageSize, String sortField,
 			int dir, String filter, String filterColumnName);
