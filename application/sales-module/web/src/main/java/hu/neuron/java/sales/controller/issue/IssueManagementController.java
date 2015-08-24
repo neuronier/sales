@@ -2,6 +2,7 @@ package hu.neuron.java.sales.controller.issue;
 
 import hu.neuron.java.sales.service.IssueMessageServiceRemote;
 import hu.neuron.java.sales.service.IssueThreadServiceRemote;
+import hu.neuron.java.sales.service.IssueThreadServiceRemote.Status;
 import hu.neuron.java.sales.service.vo.IssueMessageVO;
 import hu.neuron.java.sales.service.vo.IssueThreadVO;
 
@@ -41,6 +42,10 @@ public class IssueManagementController {
 	}
 	
 	public void initIssueThreadViewerDialog(){
+		if(selectedIssueThread.getStatus().equals(Status.NEW.toString())){
+			selectedIssueThread.setStatus(Status.ONGOING.toString());
+			issueThreadService.saveIssueThread(selectedIssueThread);
+		}
 		issueMessageList = issueMessageService.findByThreadId(selectedIssueThread.getThreadId()); 
 	}
 	

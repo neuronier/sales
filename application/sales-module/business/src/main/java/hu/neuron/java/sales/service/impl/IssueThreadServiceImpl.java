@@ -55,18 +55,6 @@ public class IssueThreadServiceImpl implements IssueThreadServiceRemote, Seriali
 		IssueThread it = issueThreadDAO.save(issueThreadConverter.toEntity(issueThread));
 		return issueThreadConverter.toVO(it);
 	}
-	
-	@Override
-	public IssueThreadVO modifyIssueThread(IssueThreadVO issueThread) {
-		IssueThread it = issueThreadDAO.findByThreadId(issueThread.getThreadId());
-		if(it != null) {
-			it.setClientId(issueThread.getClientId());
-			it.setStatus(issueThread.getStatus());
-			it.setSubject(issueThread.getSubject());
-		}
-		it = issueThreadDAO.save(it);
-		return issueThreadConverter.toVO(it);
-	}
 
 
 	@Override
@@ -144,7 +132,11 @@ public class IssueThreadServiceImpl implements IssueThreadServiceRemote, Seriali
 		for (Client client : clients) {
 			clientIds.add(client.getClientId());
 		}
-
+		
+		if(clientIds.isEmpty()) {
+			clientIds.add("");
+		}
+		
 		return clientIds;
 	}
 

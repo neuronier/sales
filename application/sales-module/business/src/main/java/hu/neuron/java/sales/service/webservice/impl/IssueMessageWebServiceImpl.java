@@ -2,6 +2,7 @@ package hu.neuron.java.sales.service.webservice.impl;
 
 import hu.neuron.java.sales.service.IssueMessageServiceRemote;
 import hu.neuron.java.sales.service.IssueThreadServiceRemote;
+import hu.neuron.java.sales.service.IssueThreadServiceRemote.Status;
 import hu.neuron.java.sales.service.vo.IssueMessageVO;
 import hu.neuron.java.sales.service.vo.IssueThreadVO;
 import hu.neuron.java.sales.service.webservice.IssueMessageWebService;
@@ -94,7 +95,7 @@ public class IssueMessageWebServiceImpl implements IssueMessageWebService{
 		IssueThreadVO issueThread = new IssueThreadVO();
 		issueThread.setClientId(clientId);
 		issueThread.setSubject(subject);
-		issueThread.setStatus("Ongoing");
+		issueThread.setStatus(Status.NEW.toString());
 		issueThread = issueThreadService.saveIssueThread(issueThread);
 		
 		return mapper.map(issueThread, IssueThreadWebServiceVO.class);
@@ -134,7 +135,7 @@ public class IssueMessageWebServiceImpl implements IssueMessageWebService{
 		IssueThreadVO issueThread = issueThreadService.findByThreadId(threadId);		
 		issueThread.setStatus(status);
 		
-		issueThreadService.modifyIssueThread(issueThread);
+		issueThreadService.saveIssueThread(issueThread);
 	}
 
 	
