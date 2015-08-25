@@ -1,6 +1,7 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 public class UserVO implements Serializable {
@@ -20,6 +21,11 @@ public class UserVO implements Serializable {
 	private String email;
 
 	private String phoneNumber;
+	
+	private Date registrationDate;
+
+	private SalesPointVO salesPoint;
+
 	
 	public UserVO() {
 		this.userId = UUID.randomUUID().toString();
@@ -80,6 +86,14 @@ public class UserVO implements Serializable {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+	
+	public Date getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
+	}
 
 	@Override
 	public String toString() {
@@ -111,6 +125,11 @@ public class UserVO implements Serializable {
 		return true;
 	}
 
-	
-	
+	public SalesPointVO getSalesPoint() {
+		return salesPoint;
+	}
+
+	public void setSalesPoint(SalesPointVO salesPoint) {
+		this.salesPoint = salesPoint;
+	}	
 }

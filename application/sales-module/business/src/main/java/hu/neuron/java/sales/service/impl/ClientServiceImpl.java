@@ -8,6 +8,7 @@ import hu.neuron.java.sales.service.vo.ClientVO;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Remote;
@@ -51,14 +52,8 @@ public class ClientServiceImpl implements ClientServiceRemote, Serializable{
 	@Override
 	public ClientVO findClientByName(String name) throws Exception {
 		logger.debug(entityManager);
-		ClientVO vo = clientConverter.toVO(clientDAO.findClientByUserName(name));
+		ClientVO vo = clientConverter.toVO(clientDAO.findByName(name));
 		return vo;
-	}
-
-	@Override
-	public void registrationClient(ClientVO clientVO) throws Exception {
-		//Client client = 
-				clientDAO.save(clientConverter.toEntity(clientVO));
 	}
 
 	@Override
@@ -111,6 +106,11 @@ public class ClientServiceImpl implements ClientServiceRemote, Serializable{
 	public void removeClient(String clientId) {
 		Client clientToRemove = clientDAO.findByClientId(clientId);
 		clientDAO.delete(clientToRemove);
+	}
+
+	@Override
+	public int findNumberOfClientsBeforeDate(Date date) {
+		return clientDAO.findNumberOfCliensBeforeDate(date);
 	}
 
 }

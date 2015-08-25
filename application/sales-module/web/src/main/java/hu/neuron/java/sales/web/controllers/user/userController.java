@@ -7,6 +7,7 @@ import hu.neuron.java.sales.service.vo.UserVO;
 import hu.neuron.java.sales.web.LocalizationsUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -91,13 +92,20 @@ public class userController {
 		String encPassword = bCryptPasswordEncoder.encode(userServiceRemote.getDefaultPassword());
 
 		newUser.setPassword(encPassword);
+		newUser.setRegistrationDate(new Date());
 
 		userServiceRemote.saveUser(newUser);
 
 		List<String> target = roleList.getTarget();
 
 		for (String roleName : target) {
-			RoleVO role = roleServiceRemote.getRoleByName(roleName);
+			RoleVO role = null;
+			try {
+				role = roleServiceRemote.getRoleByName(roleName);
+			} catch (Exception e) {
+				// Nincs ilyen role
+				e.printStackTrace();
+			}
 			userServiceRemote.addRoleToUser(newUser, role);
 		}
 

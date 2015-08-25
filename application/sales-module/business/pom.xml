@@ -49,6 +49,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.openejb</groupId>
+			<artifactId>openejb-junit</artifactId>
+			<version>4.7.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>hu.neuron.java.sales</groupId>
 			<artifactId>business-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
@@ -80,9 +86,9 @@
 			<groupId>net.sf.dozer</groupId>
 			<artifactId>dozer</artifactId>
 		</dependency>
-		
+
 	</dependencies>
-	
+
 	<reporting>
 		<plugins>
 			<plugin>

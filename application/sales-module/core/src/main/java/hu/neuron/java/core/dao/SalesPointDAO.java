@@ -20,4 +20,6 @@ public interface SalesPointDAO extends JpaRepository<SalesPoint, Long>{
 	Page<SalesPoint> findByNameStartsWith(String filter, Pageable pageRequest);
 
 	SalesPoint findSalesPointByAddressId(String addressId);
+	
+	SalesPoint findSalesPointBySalePointId(String salePointId) throws Exception;
 }

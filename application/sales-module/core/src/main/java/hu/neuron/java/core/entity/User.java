@@ -1,5 +1,6 @@
 package hu.neuron.java.core.entity;
 
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Entity;
@@ -29,8 +30,10 @@ public class User extends Base {
 	private String email;
 
 	private String phoneNumber;
-
 	
+	private String salePointId;
+
+	private Date registrationDate;
 
 	public User() {
 		super();
@@ -85,10 +88,25 @@ public class User extends Base {
 		this.phoneNumber = phoneNumber;
 	}
 
+	public Date getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
+	}
 
 	@Override
 	public String toString() {
 		return "User [userName=" + userName + ", password=" + password + ", getId()=" + getId() + "]";
+	}
+
+	public String getSalePointId() {
+		return salePointId;
+	}
+
+	public void setSalePointId(String salePointId) {
+		this.salePointId = salePointId;
 	}
 
 }

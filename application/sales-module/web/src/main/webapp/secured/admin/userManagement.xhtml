@@ -95,18 +95,20 @@
 		<p:dialog widgetVar="addNewUserDialog" header="#{out.user_add_new_user}" resizable="false">
 			<h:form id="addNewUserDialogForm">
 				<p:panelGrid columns="2">
-					<p:outputLabel value="#{out.user_name}: " />
-					<p:inputText value="#{userController.newUser.name}" />
+					<p:outputLabel for="name" value="#{out.user_name}:" />
+					<p:inputText id="name" value="#{userController.newUser.name}" required="true" />
 
-					<p:outputLabel value="#{out.user_user_name}: " />
-					<p:inputText value="#{userController.newUser.userName}" />
+					<p:outputLabel for="userName" value="#{out.user_user_name}:" />
+					<p:inputText id="userName" value="#{userController.newUser.userName}" required="true" validatorMessage="#{out.user_username_already_in_use}">
+						<f:validator binding="#{uniqueUsernameValidator}" />
+					</p:inputText>
 
-					<p:outputLabel value="#{out.user_email}: " />
-					<p:inputText value="#{userController.newUser.email}" validatorMessage="#{out.user_invalid_email_format}">
+					<p:outputLabel for="email" value="#{out.user_email}:" />
+					<p:inputText id="email" value="#{userController.newUser.email}" validatorMessage="#{out.user_invalid_email_format}">
 						<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 					</p:inputText>
 
-					<p:outputLabel value="#{out.user_phone_number}: " />
+					<p:outputLabel for="phoneNumber" value="#{out.user_phone_number}:" />
 
 					<p:column>
 						<p:inputText id="phoneNumber" value="#{userController.newUser.phoneNumber}" validatorMessage="#{out.user_invalid_phone_number_format}">
@@ -123,8 +125,8 @@
 					</p:pickList>
 				</p:panelGrid>
 
-				<p:commandButton value="#{out.user_save}" actionListener="#{userController.addNewUser}" update=":userForm"
-					onsuccess="PF('addNewUserDialog').hide()" validateClient="true" />
+				<p:commandButton value="#{out.user_save}" actionListener="#{userController.addNewUser}" update=":userForm :addNewUserDialogForm"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) PF('addNewUserDialog').hide()" validateClient="true" />
 			</h:form>
 		</p:dialog>
 
@@ -157,8 +159,7 @@
 					</p:pickList>
 				</p:panelGrid>
 
-				<p:commandButton value="#{out.user_save}" actionListener="#{userController.editUser}" update=":userForm"
-					oncomplete="PF('editUserDialog').hide()" />
+				<p:commandButton value="#{out.user_save}" actionListener="#{userController.editUser}" update=":userForm" oncomplete="PF('editUserDialog').hide()" />
 			</h:form>
 		</p:dialog>
 
@@ -181,8 +182,7 @@
 					<p:inputText value="#{roleController.selectedRole.name}" />
 				</p:panelGrid>
 
-				<p:commandButton value="#{out.user_save}" actionListener="#{roleController.editRole}" update=":roleForm"
-					oncomplete="PF('editRoleDialog').hide()" />
+				<p:commandButton value="#{out.user_save}" actionListener="#{roleController.editRole}" update=":roleForm" oncomplete="PF('editRoleDialog').hide()" />
 			</h:form>
 		</p:dialog>
 
