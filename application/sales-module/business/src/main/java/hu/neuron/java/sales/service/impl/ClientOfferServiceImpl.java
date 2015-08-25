@@ -36,6 +36,7 @@ public class ClientOfferServiceImpl implements ClientOfferServiceRemote,
 	
 	@Override
 	public void saveClientOffer(ClientOfferVO purchase) {
+		purchase.createId();
 		coDao.save(coConv.toEntity(purchase));
 		
 	}
@@ -58,7 +59,7 @@ public class ClientOfferServiceImpl implements ClientOfferServiceRemote,
 	}
 
 	@Override
-	public ClientOfferVO findClientOfferByClientIdAndDate(String clientId,
+	public List<ClientOfferVO> findClientOfferByClientIdAndDate(String clientId,
 			Date date) throws Exception {
 		
 		return coConv.toVO(coDao.findClientOfferByClientIdAndDate(clientId, date));

@@ -15,7 +15,7 @@ public interface ClientOfferServiceRemote {
 	
 	public List<ClientOfferVO> findAll() throws Exception;
 	
-	public ClientOfferVO findClientOfferByClientIdAndDate(String clientId, Date date) throws Exception;
+	public List<ClientOfferVO> findClientOfferByClientIdAndDate(String clientId, Date date) throws Exception;
 	
 	public List<ClientOfferVO> findClientOfferByClientIdAndOfferId(String clientId, String offerId) throws Exception;
 	
