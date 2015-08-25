@@ -29,6 +29,8 @@ public class User extends Base {
 	private String email;
 
 	private String phoneNumber;
+	
+	private String salePointId;
 
 	
 
@@ -89,6 +91,14 @@ public class User extends Base {
 	@Override
 	public String toString() {
 		return "User [userName=" + userName + ", password=" + password + ", getId()=" + getId() + "]";
+	}
+
+	public String getSalePointId() {
+		return salePointId;
+	}
+
+	public void setSalePointId(String salePointId) {
+		this.salePointId = salePointId;
 	}
 
 }

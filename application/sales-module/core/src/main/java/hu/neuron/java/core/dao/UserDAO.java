@@ -25,4 +25,6 @@ public interface UserDAO extends JpaRepository<User, Long> {
 	User findUserByUserId(@Param("userId") String userId) throws Exception;
 	
 	Page<User> findByUserNameStartsWith(String filter,Pageable pageable);
+	
+	List<User> findUserBySalePointId(String salePointId) throws Exception;
 }

@@ -22,5 +22,7 @@ public interface SalesPointServiceRemote {
 	public int getRowNumber();
 
 	SalesPointVO findSalePointByAddress(AddressVO address) throws Exception;
+	
+	SalesPointVO findSalesPointBySalePointId(String salePointId) throws Exception;
 
 }

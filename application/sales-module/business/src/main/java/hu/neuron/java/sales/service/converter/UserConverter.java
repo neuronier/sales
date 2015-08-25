@@ -1,5 +1,6 @@
 package hu.neuron.java.sales.service.converter;
 
+import hu.neuron.java.core.dao.SalesPointDAO;
 import hu.neuron.java.core.entity.User;
 import hu.neuron.java.sales.service.vo.UserVO;
 
@@ -9,9 +10,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
-import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 
@@ -21,8 +20,10 @@ public class UserConverter {
 	private static final Logger logger = Logger.getLogger(UserConverter.class);
 
 	@Autowired
-	@Qualifier("mapper")
-	Mapper mapper;
+	SalesPointDAO spDao;
+	
+	@Autowired
+	SalesPointConverter spConv;
 
 	@PostConstruct
 	void init() {
@@ -34,14 +35,39 @@ public class UserConverter {
 		if (dto == null) {
 			return null;
 		}
-		return mapper.map(dto, UserVO.class);
+		UserVO uvo = new UserVO();
+		uvo.setEmail(dto.getEmail());
+		uvo.setId(dto.getId());
+		uvo.setName(dto.getName());
+		uvo.setPassword(dto.getPassword());
+		uvo.setPhoneNumber(dto.getPhoneNumber());
+		uvo.setUserId(dto.getUserId());
+		uvo.setUserName(dto.getUserName());
+		try {
+			uvo.setSalesPoint(spConv.toVO(spDao.findSalesPointBySalePointId(dto.getSalePointId())));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return uvo;
 	}
 
 	public User toEntity(UserVO vo) {
 		if (vo == null) {
 			return null;
 		}
-		return mapper.map(vo, User.class);
+		User ue = new User();
+		ue.setEmail(vo.getEmail());
+		ue.setId(vo.getId());
+		ue.setName(vo.getName());
+		ue.setPassword(vo.getPassword());
+		ue.setPhoneNumber(vo.getPhoneNumber());
+		ue.setUserId(vo.getUserId());
+		ue.setUserName(vo.getUserName());
+		if(vo.getSalesPoint()!= null){
+			ue.setSalePointId(vo.getSalesPoint().getSalePointId());
+		}
+		return ue;
 	}
 
 	public List<UserVO> toVO(List<User> dtos) {
