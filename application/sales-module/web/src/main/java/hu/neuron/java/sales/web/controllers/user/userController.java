@@ -7,6 +7,7 @@ import hu.neuron.java.sales.service.vo.UserVO;
 import hu.neuron.java.sales.web.LocalizationsUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -91,6 +92,7 @@ public class userController {
 		String encPassword = bCryptPasswordEncoder.encode(userServiceRemote.getDefaultPassword());
 
 		newUser.setPassword(encPassword);
+		newUser.setRegistrationDate(new Date());
 
 		userServiceRemote.saveUser(newUser);
 

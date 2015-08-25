@@ -217,6 +217,7 @@
 									<p:column>
 										<p:commandButton value="Add" id="addButton"
 											update=":form2:offerProductTypeTable,:form2:advanced"
+											disabled="#{offerController.selectedOfferProductType == null}"
 											icon="ui-icon-disk"
 											actionListener="#{offerController.addProductTypeToOffer}"
 											style="float: right;" />

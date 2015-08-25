@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -170,6 +171,16 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 			e.printStackTrace();
 		}
 		return properties.getProperty("user_default_password");
+	}
+
+	@Override
+	public List<UserVO> findByRegistrationDateBetween(Date from, Date to) {
+		return userConverter.toVO(userDao.findByRegistrationDateBetween(from, to));
+	}
+
+	@Override
+	public int findNumberOfUsersBeforeDate(Date date) {
+		return userDao.findNumberOfUsersBeforeDate(date);
 	}	
 
 }

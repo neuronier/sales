@@ -1,6 +1,7 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 public class ClientVO implements Serializable {
@@ -21,6 +22,7 @@ public class ClientVO implements Serializable {
 
 	private String phoneNumber;
 	
+	private Date registrationDate;
 	
 	public ClientVO(){
 		super();
@@ -85,7 +87,14 @@ public class ClientVO implements Serializable {
 	public void setId(Long id) {
 		Id = id;
 	}
+	
+	public Date getRegistrationDate() {
+		return registrationDate;
+	}
 
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
+	}
 
 	@Override
 	public int hashCode() {

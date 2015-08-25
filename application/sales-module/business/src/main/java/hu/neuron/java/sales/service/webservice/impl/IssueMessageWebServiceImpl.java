@@ -96,6 +96,7 @@ public class IssueMessageWebServiceImpl implements IssueMessageWebService{
 		issueThread.setClientId(clientId);
 		issueThread.setSubject(subject);
 		issueThread.setStatus(Status.NEW.toString());
+		issueThread.setLastUpdate(new Date());
 		issueThread = issueThreadService.saveIssueThread(issueThread);
 		
 		return mapper.map(issueThread, IssueThreadWebServiceVO.class);
@@ -126,6 +127,10 @@ public class IssueMessageWebServiceImpl implements IssueMessageWebService{
 		issueMessage.setText(messageText);
 		issueMessage.setOwner(owner);
 		issueMessageService.saveIssueMessage(issueMessage);
+		
+		IssueThreadVO thread = issueThreadService.findByThreadId(threadId);
+		thread.setLastUpdate(new Date());
+		issueThreadService.saveIssueThread(thread);
 	}
 
 	@Override
@@ -134,6 +139,7 @@ public class IssueMessageWebServiceImpl implements IssueMessageWebService{
 		
 		IssueThreadVO issueThread = issueThreadService.findByThreadId(threadId);		
 		issueThread.setStatus(status);
+		issueThread.setLastUpdate(new Date());
 		
 		issueThreadService.saveIssueThread(issueThread);
 	}

@@ -2,6 +2,7 @@ package hu.neuron.java.sales.service;
 
 import hu.neuron.java.sales.service.vo.ClientVO;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ClientServiceRemote {
@@ -20,5 +21,6 @@ public interface ClientServiceRemote {
 	
 	public List<ClientVO> findAll();
 
+	public int findNumberOfClientsBeforeDate(Date date);
 
 }
