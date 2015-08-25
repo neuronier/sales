@@ -23,6 +23,9 @@ public class UserVO implements Serializable {
 	private String phoneNumber;
 	
 	private Date registrationDate;
+
+	private SalesPointVO salesPoint;
+
 	
 	public UserVO() {
 		this.userId = UUID.randomUUID().toString();
@@ -122,6 +125,11 @@ public class UserVO implements Serializable {
 		return true;
 	}
 
-	
-	
+	public SalesPointVO getSalesPoint() {
+		return salesPoint;
+	}
+
+	public void setSalesPoint(SalesPointVO salesPoint) {
+		this.salesPoint = salesPoint;
+	}	
 }

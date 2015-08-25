@@ -32,4 +32,6 @@ public interface UserDAO extends JpaRepository<User, Long> {
 	
 	@Query("select COUNT(u.registrationDate) from User u where u.registrationDate < ?1")
 	int findNumberOfUsersBeforeDate(Date date);
+
+	List<User> findUserBySalePointId(String salePointId) throws Exception;
 }

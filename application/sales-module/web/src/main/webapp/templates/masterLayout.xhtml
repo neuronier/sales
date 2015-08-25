@@ -50,7 +50,6 @@ body {
 						<p:menuitem value="Reports" url="/secured/report.xhtml" />
 						<p:menuitem value="User Management" url="/secured/admin/userManagement.xhtml" />
 						<p:menuitem value="Issue Management" url="/secured/issueManagement.xhtml" />
-
 						<f:facet name="options">
 							<h:outputLabel value="#{out.logged_in_as}:" />
 							[<p:commandLink value="#{request.userPrincipal.name}" action="/secured/userProfile.xhml?faces-redirect=true" />]
@@ -58,6 +57,10 @@ body {
 						</f:facet>
 
 					</p:menubar>
+					<p:breadCrumb style="max-width:300px; margin-top: 5px;">
+					<p:menuitem>#{navigationController.getPosition(view.viewId)}</p:menuitem>
+					</p:breadCrumb>
+	
 				</h:form>
 			</p:layoutUnit>
 			<p:layoutUnit position="center" style="z-index: -1;">

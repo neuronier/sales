@@ -3,6 +3,7 @@ package hu.neuron.java.sales.service.impl;
 import hu.neuron.java.core.dao.RoleDAO;
 import hu.neuron.java.core.dao.UserDAO;
 import hu.neuron.java.core.dao.UserRoleDAO;
+import hu.neuron.java.core.dao.WarehouseDAO;
 import hu.neuron.java.core.entity.Role;
 import hu.neuron.java.core.entity.User;
 import hu.neuron.java.core.entity.UserRole;
@@ -10,8 +11,8 @@ import hu.neuron.java.sales.service.UserServiceRemote;
 import hu.neuron.java.sales.service.converter.RoleConverter;
 import hu.neuron.java.sales.service.converter.UserConverter;
 import hu.neuron.java.sales.service.vo.RoleVO;
+import hu.neuron.java.sales.service.vo.SalesPointVO;
 import hu.neuron.java.sales.service.vo.UserVO;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -51,6 +52,9 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 
 	@Autowired
 	RoleDAO roleDao;
+
+	@Autowired
+	WarehouseDAO warehouseDao;
 
 	@Autowired
 	UserRoleDAO userRoleDao;
@@ -181,6 +185,15 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	@Override
 	public int findNumberOfUsersBeforeDate(Date date) {
 		return userDao.findNumberOfUsersBeforeDate(date);
-	}	
+	}
+
+	public List<UserVO> findUserBySalesPoint(SalesPointVO salesPoint) throws Exception {
+		return userConverter.toVO(userDao.findUserBySalePointId(salesPoint.getSalePointId()));
+	}
+
+	@Override
+	public UserVO updateUser(UserVO selectedUser) {
+		return saveUser(selectedUser);
+	}
 
 }

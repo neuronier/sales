@@ -8,10 +8,18 @@
 
 	<ui:define name="pageTitle">#{out.admin_title}</ui:define>
 	<ui:define name="header">#{out.admin_title}</ui:define>
+	<ui:define name="head-extra">
+		<style>
+			.ui-wizard-step-title {
+				font-size: 90% !important;
+			}
+		</style>
+	</ui:define>
 
 
 	<ui:define name="content">
-		<h2 style="font-size:180%; margin-bottom: -40px;">#{out.salespointmanagement}</h2>
+		<h1>#{out.salespoint_header}</h1>
+		<h2 style="text-align:center;">#{out.salespoint_list}</h2>
 		<h:form id="form"
 			style="max-width: 85%; margin-top: 45px; margin-left: auto; margin-right: auto;">
 			<p:dataTable var="salesPoint"
@@ -76,6 +84,8 @@
 			<p:ajax event="close" update=":f1:pg1,:form:salesPointTable,:form:updateButton,:form:removeButton"
 				resetValues="true" listener="#{salesPointController.clearSelection}" />
 			<h:form id="f1">
+				 <p:wizard flowListener="#{salesPointWizard.onFlowProcess}">
+					<p:tab id="details" title="#{out.details}">
 					<p:panelGrid columns="2" id="pg1">
 						<h:outputLabel for="salesPointName" value="#{out.salepointname}"
 							style="font-weight:bold; display: inline-block; min-width:110px;" />
@@ -128,11 +138,33 @@
 							</p:column>
 						</p:selectOneMenu>
 					</p:panelGrid>
-						<p:commandButton value="Save" id="save"
-							actionListener="#{salesPointController.saveNewSalesPoint}"
-							update=":form:salesPointTable" 
-							icon="ui-icon-disk" oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('createSalesPoint').hide()};"
-							style="margin: 10px auto 0 auto; display:block;" />
+					</p:tab>
+					
+					<p:tab id="users" title="#{out.users}">
+					<p:pickList id="UserPickList" value="#{userPickListView.users}" var="user" effect="bounce"
+		                itemValue="#{user}" itemLabel="#{user.name}" responsive="true"
+		                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" 
+		                converter="userConverter"  >
+ 
+				        <f:facet name="sourceCaption">#{out.user_salespoint_assignment_source}</f:facet>
+				        <f:facet name="targetCaption">#{out.user_salespoint_assignment_target}</f:facet>
+				 
+				        <p:column style="width:50%">
+				            <h:outputText value="#{user.salesPoint.name eq null ? 'Nowhere' : user.salesPoint.name}" />
+				        </p:column>
+				 
+				        <p:column style="width:50%;">
+				            <h:outputText value="#{user.name}" />
+				        </p:column>
+				    </p:pickList>
+					</p:tab>
+					
+				</p:wizard>
+				<p:commandButton value="Save" id="save"
+					actionListener="#{salesPointController.saveNewSalesPoint}"
+					update=":form:salesPointTable" 
+					icon="ui-icon-disk" oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('createSalesPoint').hide()};"
+					style="margin: 10px auto 0 auto; display:block;" />
 
 			</h:form>
 		</p:dialog>
@@ -144,58 +176,82 @@
 			<p:ajax event="close" update=":f2:pg2,:form:salesPointTable,:form:updateButton,:form:removeButton"
 				resetValues="true" listener="#{salesPointController.clearSelection}" />
 			<h:form id="f2">
-				<p:panelGrid columns="2" id="pg2">
-					<h:outputLabel for="updSalesPointName" value="#{out.salepointname}"
-						style="font-weight:bold; display: inline-block; min-width:110px;" />
-					<p:inputText id="updSalesPointName" required="true"
-						value="#{salesPointController.updateSalesPointName}" />
-	
-					<h:outputLabel for="updCity" value="#{out.city}"
-						style="font-weight:bold; display: inline-block; min-width:110px;" />
-					<p:selectOneMenu id="updCity" value="#{citySelectOneMenuView.city}"
-						converter="cityConverter" panelStyle="width:180px" effect="fade"
-						var="c" style="width:160px" filter="true"
-						filterMatchMode="startsWith" editable="true">
-						<f:selectItems value="#{citySelectOneMenuView.cities}" var="city"
-							itemLabel="#{city}" itemValue="#{city}" />
-						<p:column>
-							<h:outputText value="#{c}" />
-						</p:column>
-					</p:selectOneMenu>
-	
-					<h:outputLabel for="updStreetName" value="#{out.streetname}"
-						style="font-weight:bold; display: inline-block; min-width:110px;" />
-					<p:inputText id="updStreetName" required="true"
-						value="#{salesPointController.updateStreetName}" />
-						
-					<h:outputLabel for="updHouseNumber" value="#{out.housenumber}"
-						style="font-weight:bold; display: inline-block; min-width:110px;" />
-					<p:inputText id="updHouseNumber" required="true"
-						value="#{salesPointController.updateHouseNumber}" />
-						
-					<h:outputLabel for="updZipCode" value="#{out.zipcode}"
-						style="font-weight:bold; display: inline-block; min-width:110px;" />
-					<p:inputText id="updZipCode" required="true"
-						value="#{salesPointController.updateZipCode}" />
-						
-					<h:outputLabel for="updPhoneNumber" value="#{out.phonenumber}"
-						style="font-weight:bold; display: inline-block; min-width:110px;" />
-					<p:inputText id="updPhoneNumber" required="true"
-						value="#{salesPointController.updatePhoneNumber}" />
-						
-					<h:outputLabel for="updWarehouse" value="#{out.warehouse}"
-						style="font-weight:bold; display: inline-block; min-width:110px;" />
-					<p:selectOneMenu id="updWarehouse" value="#{warehouseSelectOneMenuView.warehouseName}"
-						converter="warehouseConverter" panelStyle="width:180px" effect="fade"
-						var="w" style="width:160px" filter="true"
-						filterMatchMode="startsWith" editable="true">
-						<f:selectItems value="#{warehouseSelectOneMenuView.warehouses}" var="warehouse"
-							itemLabel="#{warehouse}" itemValue="#{warehouse}" />
-						<p:column>
-							<h:outputText value="#{w}" />
-						</p:column>
-					</p:selectOneMenu>
-				</p:panelGrid>
+			 <p:wizard flowListener="#{salesPointWizard.onFlowProcess}">
+					<p:tab id="details" title="#{out.details}">
+						<p:panelGrid columns="2" id="pg2">
+							<h:outputLabel for="updSalesPointName" value="#{out.salepointname}"
+								style="font-weight:bold; display: inline-block; min-width:110px;" />
+							<p:inputText id="updSalesPointName" required="true"
+								value="#{salesPointController.updateSalesPointName}" />
+			
+							<h:outputLabel for="updCity" value="#{out.city}"
+								style="font-weight:bold; display: inline-block; min-width:110px;" />
+							<p:selectOneMenu id="updCity" value="#{citySelectOneMenuView.city}"
+								converter="cityConverter" panelStyle="width:180px" effect="fade"
+								var="c" style="width:160px" filter="true"
+								filterMatchMode="startsWith" editable="true">
+								<f:selectItems value="#{citySelectOneMenuView.cities}" var="city"
+									itemLabel="#{city}" itemValue="#{city}" />
+								<p:column>
+									<h:outputText value="#{c}" />
+								</p:column>
+							</p:selectOneMenu>
+			
+							<h:outputLabel for="updStreetName" value="#{out.streetname}"
+								style="font-weight:bold; display: inline-block; min-width:110px;" />
+							<p:inputText id="updStreetName" required="true"
+								value="#{salesPointController.updateStreetName}" />
+								
+							<h:outputLabel for="updHouseNumber" value="#{out.housenumber}"
+								style="font-weight:bold; display: inline-block; min-width:110px;" />
+							<p:inputText id="updHouseNumber" required="true"
+								value="#{salesPointController.updateHouseNumber}" />
+								
+							<h:outputLabel for="updZipCode" value="#{out.zipcode}"
+								style="font-weight:bold; display: inline-block; min-width:110px;" />
+							<p:inputText id="updZipCode" required="true"
+								value="#{salesPointController.updateZipCode}" />
+								
+							<h:outputLabel for="updPhoneNumber" value="#{out.phonenumber}"
+								style="font-weight:bold; display: inline-block; min-width:110px;" />
+							<p:inputText id="updPhoneNumber" required="true"
+								value="#{salesPointController.updatePhoneNumber}" />
+								
+							<h:outputLabel for="updWarehouse" value="#{out.warehouse}"
+								style="font-weight:bold; display: inline-block; min-width:110px;" />
+							<p:selectOneMenu id="updWarehouse" value="#{warehouseSelectOneMenuView.warehouseName}"
+								converter="warehouseConverter" panelStyle="width:180px" effect="fade"
+								var="w" style="width:160px" filter="true"
+								filterMatchMode="startsWith" editable="true">
+								<f:selectItems value="#{warehouseSelectOneMenuView.warehouses}" var="warehouse"
+									itemLabel="#{warehouse}" itemValue="#{warehouse}" />
+								<p:column>
+									<h:outputText value="#{w}" />
+								</p:column>
+							</p:selectOneMenu>
+						</p:panelGrid>
+						</p:tab>
+					
+					<p:tab id="users" title="#{out.users}">
+					<p:pickList id="UserPickList" value="#{userPickListView.users}" var="user" effect="bounce"
+		                itemValue="#{user}" itemLabel="#{user.name}" responsive="true"
+		                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" 
+		                converter="userConverter">
+ 
+				        <f:facet name="sourceCaption">#{out.user_salespoint_assignment_source}</f:facet>
+				        <f:facet name="targetCaption">#{out.user_salespoint_assignment_target}</f:facet>
+				 
+				        <p:column style="width:50%">
+				            <h:outputText value="#{user.salesPoint.name eq null ? 'Nowhere' : user.salesPoint.name}" />
+				        </p:column>
+				 
+				        <p:column style="width:50%;">
+				            <h:outputText value="#{user.name}" />
+				        </p:column>
+				    </p:pickList>
+					</p:tab>
+					
+				</p:wizard>
 					<p:commandButton value="Update" id="update"
 						actionListener="#{salesPointController.updateSalesPoint}"
 						update=":form:salesPointTable,:form:updateButton,:form:removeButton"

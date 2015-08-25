@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2.8-b13937 svn-revision#13942.--><xsd:schema targetNamespace="http://hu.neuron" xmlns:ns0="http://hu.neuron" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:complexType name="orderWebServiceVO">
+    <xsd:sequence>
+      <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="orderId" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="status" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="getOrderList"/>
+  <xsd:complexType name="getOrderListResponse">
+    <xsd:sequence>
+      <xsd:element name="getOrderList" type="ns0:orderListWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="getOrderByOrderId">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="modifyOrderByOrderIdResponse">
+    <xsd:sequence>
+      <xsd:element name="modifyOrderByOrderId" type="ns0:orderWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="getOrderByOrderIdResponse">
+    <xsd:sequence>
+      <xsd:element name="getOrderByOrderId" type="ns0:orderWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="orderListWebServiceVO">
+    <xsd:sequence>
+      <xsd:element name="orders" type="ns0:orderWebServiceVO" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="modifyOrderByOrderId">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg1" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="OrderList" type="ns0:orderListWebServiceVO"/>
+  <xsd:element name="getOrderList" type="ns0:getOrderList"/>
+  <xsd:element name="Order" type="ns0:orderWebServiceVO"/>
+  <xsd:element name="getOrderListResponse" type="ns0:getOrderListResponse"/>
+  <xsd:element name="getOrderByOrderId" type="ns0:getOrderByOrderId"/>
+  <xsd:element name="modifyOrderByOrderIdResponse" type="ns0:modifyOrderByOrderIdResponse"/>
+  <xsd:element name="getOrderByOrderIdResponse" type="ns0:getOrderByOrderIdResponse"/>
+  <xsd:element name="modifyOrderByOrderId" type="ns0:modifyOrderByOrderId"/>
+</xsd:schema>

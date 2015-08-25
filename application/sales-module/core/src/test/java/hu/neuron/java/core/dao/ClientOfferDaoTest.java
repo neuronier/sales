@@ -1,10 +1,10 @@
 package hu.neuron.java.core.dao;
 
 import static org.junit.Assert.*;
-
 import hu.neuron.java.core.entity.Client;
-import hu.neuron.java.core.entity.ClientOrder;
-import hu.neuron.java.core.entity.Order;
+import hu.neuron.java.core.entity.OfferEntity;
+import hu.neuron.java.core.entity.ClientOffer;
+
 import org.apache.log4j.Logger;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -21,18 +21,18 @@ import org.springframework.transaction.annotation.Transactional;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @Transactional
 @TransactionConfiguration(defaultRollback = false)
-public class ClientOrderDaoTest {
+public class ClientOfferDaoTest {
 	
-	private static final Logger logger = Logger.getLogger(ClientOrderDaoTest.class);
+	private static final Logger logger = Logger.getLogger(ClientOfferDaoTest.class);
 	
-	private static ClientOrder entity;
+	private static ClientOffer clientOffer;
 	
 	private static Client client;
 	
-	private static Order order;
+	private static OfferEntity offer;
 	
 	@Autowired
-	ClientOrderDAO clientOrderDAO;
+	ClientOfferDAO clientOfferDAO;
 	
 	@Autowired
 	ClientDAO clientDAO;
@@ -42,25 +42,25 @@ public class ClientOrderDaoTest {
 
 	@Test
 	public void test1Create() {
-		entity = new ClientOrder();
+		clientOffer = new ClientOffer();
 		client = new Client();
 		client.setClientId("101L");
 		client.setName("Test Client");
-		order = new Order();
-		order.setOrderId("202L");
-		order.setOrderName("Test Order");
-		entity.setClientId(client.getClientId());
-		entity.setOrderId(order.getOrderId());
-		clientOrderDAO.save(entity);
+		offer = new OfferEntity();
+		offer.setOfferId("202L");
+		offer.setName("Test Offer");
+		clientOffer.setClientId(client.getClientId());
+		clientOffer.setOfferId(offer.getOfferId());
+		clientOfferDAO.save(clientOffer);
 	}
 	
 	@Test
 	public void test2Update() {
 		try {
 			client.setClientId("202L");
-			entity.setClientId(client.getClientId());
-			clientOrderDAO.save(entity);
-			ClientOrder res = clientOrderDAO.findClientOrderByClientId(client.getClientId()).get(0);
+			clientOffer.setClientId(client.getClientId());
+			clientOfferDAO.save(clientOffer);
+			ClientOffer res = clientOfferDAO.findClientOfferByClientId(client.getClientId()).get(0);
 			assertEquals(res.getClientId(),client.getClientId());
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -71,7 +71,7 @@ public class ClientOrderDaoTest {
 	@Test
 	public void test3FindByClientId() {
 		try {
-			ClientOrder resEntity = clientOrderDAO.findClientOrderByClientId(client.getClientId()).get(0);
+			ClientOffer resEntity = clientOfferDAO.findClientOfferByClientId(client.getClientId()).get(0);
 			logger.info("res: " + resEntity);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -82,7 +82,7 @@ public class ClientOrderDaoTest {
 	@Test
 	public void test4FindByOrderId() {
 		try {
-			ClientOrder resEntity = clientOrderDAO.findClientOrderByOrderId(order.getOrderId()).get(0);
+			ClientOffer resEntity = clientOfferDAO.findClientOfferByOfferId(offer.getOfferId()).get(0);
 			logger.info("res: " + resEntity);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -93,9 +93,9 @@ public class ClientOrderDaoTest {
 	@Test
 	public void test5FindByClientIdAndOrderId() {
 		try {
-			ClientOrder clientOrder = 
-					clientOrderDAO.findClientOrderByClientIdAndOrderId(
-							client.getClientId(), order.getOrderId());
+			ClientOffer clientOrder = 
+					clientOfferDAO.findClientOfferByClientIdAndOfferId(
+							client.getClientId(), offer.getOfferId()).get(0);
 			logger.info("res: " + clientOrder);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -106,7 +106,7 @@ public class ClientOrderDaoTest {
 	@Test
 	public void test6Delete() {
 		try {
-			clientOrderDAO.delete(entity);
+			clientOfferDAO.delete(clientOffer);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			throw new RuntimeException(e);

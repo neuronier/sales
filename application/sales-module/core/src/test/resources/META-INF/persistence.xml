@@ -5,10 +5,11 @@
 
 	<persistence-unit name="hsqldb" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-				<class>hu.neuron.java.core.entity.Address</class>
+		<class>hu.neuron.java.core.entity.Address</class>
 		<class>hu.neuron.java.core.entity.Base</class>
 		<class>hu.neuron.java.core.entity.Client</class>
-		<class>hu.neuron.java.core.entity.ClientOrder</class>
+		<class>hu.neuron.java.core.entity.ClientOffer</class>
+		<class>hu.neuron.java.core.entity.Count</class>
 		<class>hu.neuron.java.core.entity.IssueMessage</class>
 		<class>hu.neuron.java.core.entity.IssueThread</class>
 		<class>hu.neuron.java.core.entity.OfferEntity</class>

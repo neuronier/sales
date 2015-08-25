@@ -2,8 +2,11 @@ package hu.neuron.java.sales.web.controllers.order;
 
 import hu.neuron.java.sales.service.OrderServiceRemote;
 import hu.neuron.java.sales.service.ProductTypeServiceRemote;
+import hu.neuron.java.sales.service.SalesPointServiceRemote;
 import hu.neuron.java.sales.service.vo.OrderVO;
 import hu.neuron.java.sales.service.vo.ProductTypeVO;
+import hu.neuron.java.sales.service.vo.SalesPointVO;
+import hu.neuron.java.sales.web.LocalizationsUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,8 +19,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.ToggleEvent;
 
 @ViewScoped
 @ManagedBean(name = "orderController")
@@ -32,10 +37,11 @@ public class OrderController implements Serializable {
 
 	@EJB(name = "ProductTypeService", mappedName = "ProductTypeService")
 	ProductTypeServiceRemote productTypeService;
+	
+	@EJB(name="SalesPointService", mappedName="SalesPointService")
+	SalesPointServiceRemote salePointService;
 
 	private final String[] status = { "New", "In progress", "Done" };
-
-	private String selectedStatus;
 
 	private OrderVO newOrder;
 
@@ -60,9 +66,18 @@ public class OrderController implements Serializable {
 	private boolean disableSaveOrderValue;
 
 	private boolean disableAddOrdeValue;
+	
+	private boolean disableEditDeleteOrderValue;
+	
+	private SalesPointVO selectedSalePoint;
+	
+	private List<String> salePoints;
+	
+	private String selectedSalePointName;
 
 	@PostConstruct
 	public void init() {
+		initSalePoints();
 		setLazyOrderModul(new LazyOrderModel(orderService));
 	}
 
@@ -89,11 +104,23 @@ public class OrderController implements Serializable {
 			return null;
 		}
 	}
+	
+	public void initSalePoints(){
+		List<SalesPointVO> vos = new ArrayList<SalesPointVO>();
+		
+		vos = salePointService.findAll();
+		salePoints = new ArrayList<String>();
+		selectedSalePointName = "";
+		
+		for (SalesPointVO salesPointVO : vos) {
+			salePoints.add(salesPointVO.getName());
+		}
+	}
 
 	public void addNewOrderButtonAction() {
 		newOrder = new OrderVO();
 		products = new ArrayList<OrderProductType>();
-		selectedStatus = "New";
+
 		disableSaveOrderValue = true;
 		disableAddOrdeValue = true;
 		quantity = 1;
@@ -101,7 +128,7 @@ public class OrderController implements Serializable {
 
 	public void editOrderButtonAction() {
 		products = new ArrayList<OrderProductType>();
-		selectedStatus = selectedOrder.getStatus();
+		selectedProductTypeName = null;
 		quantity = 1;
 
 		List<ProductTypeVO> vos = new ArrayList<ProductTypeVO>();
@@ -110,9 +137,9 @@ public class OrderController implements Serializable {
 			for (ProductTypeVO productTypeVO : vos) {
 				int q = orderService.findQuantityToOrderProductType(
 						productTypeVO, selectedOrder);
-				products.add(new OrderProductType(selectedOrder.getOrderId(),
-						productTypeVO.getName(), q));
+				products.add(new OrderProductType(productTypeVO.getName(), q));
 			}
+			System.out.println(products);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -120,8 +147,7 @@ public class OrderController implements Serializable {
 	}
 
 	public void addNewOrder() {
-		// initOrder();
-		newOrder.setStatus(selectedStatus);
+		newOrder.setStatus("New");
 		newOrder.setDate(new Date());
 
 		for (int i = 0; i < products.size(); i++) {
@@ -141,10 +167,55 @@ public class OrderController implements Serializable {
 			selectedProductTypeName = null;
 		}
 		orderService.saveOrder(newOrder);
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				LocalizationsUtils.getText("user_info", context),
+				LocalizationsUtils.getText("order_created", context) + " \n "
+						+ newOrder.getOrderId());
+		context.addMessage(null, msg);
 	}
-	
-	//FEJESZTÉS ALATT
+
+	// FEJESZTÉS ALATT
 	public void editOrder() {
+
+		try {
+			List<ProductTypeVO> vos = orderService
+					.findProductTypesToOrder(selectedOrder);
+			for (ProductTypeVO productTypeVO : vos) {
+				orderService.removeProductTypeFromOrder(productTypeVO,
+						selectedOrder);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		for (int i = 0; i < products.size(); i++) {
+			selectedProductTypeName = products.get(i).getName();
+			quantity = products.get(i).getQuantity();
+
+			if (selectedProductTypeName != null) {
+				selectedProdType = new ProductTypeVO();
+				for (ProductTypeVO ptvo : prodTypeVOs) {
+					if (selectedProductTypeName.equals(ptvo.getName())) {
+						selectedProdType = ptvo;
+					}
+				}
+			}
+			orderService.addProductTypeToOrder(selectedProdType, selectedOrder,
+					quantity);
+			selectedProductTypeName = null;
+		}
+		
+		orderService.updateOrder(selectedOrder);
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				LocalizationsUtils.getText("user_info", context),
+				LocalizationsUtils.getText("order_edited", context) + " \n "
+						+ selectedOrder.getOrderId());
+		context.addMessage(null, msg);
 		selectedOrder = null;
 	}
 
@@ -158,10 +229,12 @@ public class OrderController implements Serializable {
 						selectedOrder);
 			}
 
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Deleted",
-							selectedOrder.getOrderId()));
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					LocalizationsUtils.getText("user_info", context),
+					LocalizationsUtils.getText("order_deleted", context)
+							+ " \n " + selectedOrder.getOrderId());
+			context.addMessage(null, msg);
 			selectedOrder = null;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -170,26 +243,15 @@ public class OrderController implements Serializable {
 	}
 
 	public void onRowSelected(SelectEvent event) {
-		// selectedOrder = (OrderVO) event.getObject();
+		disableEditDeleteOrder();
 		setSelectedOrderId(selectedOrder.getOrderId());
 
-		// PRÓBA
-		// Properties properties = new Properties();
-		// try {
-		// properties.load(new
-		// FileInputStream("src/main/resources/hu/neuron/java/sales/web/Messages_en.properties"));
-		// for(String key : properties.stringPropertyNames()) {
-		// String value = properties.getProperty(key);
-		// System.out.println(key + " => " + value);
-		// }
-		// } catch (Exception e) {
-		// // TODO: handle exception
-		// System.out.println("fukkk");
-		// }
-		FacesContext.getCurrentInstance().addMessage(
-				null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO,
-						"#{out.order_selected}", selectedOrder.getOrderId()));
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				LocalizationsUtils.getText("user_info", context),
+				LocalizationsUtils.getText("order_selected", context)
+						+ selectedOrder.getOrderId());
+		context.addMessage(null, msg);
 	}
 
 	public void addToList() {
@@ -208,9 +270,9 @@ public class OrderController implements Serializable {
 				products.get(index).setQuantity(
 						products.get(index).getQuantity() + quantity);
 			} else {
-				getProducts().add(
-						new OrderProductType(newOrder.getOrderId(),
-								selectedProductTypeName, quantity));
+				getProducts()
+						.add(new OrderProductType(selectedProductTypeName,
+								quantity));
 			}
 			System.out.println(getProducts());
 			selectedProductTypeName = null;
@@ -224,13 +286,32 @@ public class OrderController implements Serializable {
 		System.out.println(products);
 		selectedProduct = null;
 	}
-	
+
 	public void disableSaveOrder() {
 		if (products.size() == 0) {
 			disableSaveOrderValue = true;
 		} else {
 			disableSaveOrderValue = false;
 		}
+	}
+	
+	public void disableEditDeleteOrder(){
+		if (selectedOrder.getStatus().equals("New")) {
+			setDisableEditDeleteOrderValue(false);
+		}else{
+			setDisableEditDeleteOrderValue(true);
+		}
+	}
+
+	public void handleToggle(ToggleEvent event) {
+		
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				"Toggled", "Visibility:" + event.getVisibility());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	
+	//FEJLESZTES ALATT
+	public void loadWarehouseButtonAction(ActionEvent actionEvent){
 	}
 
 	public void disableAddOrder() {
@@ -263,14 +344,6 @@ public class OrderController implements Serializable {
 
 	public String[] getStatus() {
 		return status;
-	}
-
-	public String getSelectedStatus() {
-		return selectedStatus;
-	}
-
-	public void setSelectedStatus(String selectedStatus) {
-		this.selectedStatus = selectedStatus;
 	}
 
 	public List<ProductTypeVO> getProdTypeVOs() {
@@ -351,5 +424,37 @@ public class OrderController implements Serializable {
 
 	public void setDisableAddOrdeValue(boolean disableAddOrdeValue) {
 		this.disableAddOrdeValue = disableAddOrdeValue;
+	}
+
+	public SalesPointVO getSelectedSalePoint() {
+		return selectedSalePoint;
+	}
+
+	public void setSelectedSalePoint(SalesPointVO selectedSalePoint) {
+		this.selectedSalePoint = selectedSalePoint;
+	}
+
+	public List<String> getSalePoints() {
+		return salePoints;
+	}
+
+	public void setSalePoints(List<String> salePoints) {
+		this.salePoints = salePoints;
+	}
+
+	public String getSelectedSalePointName() {
+		return selectedSalePointName;
+	}
+
+	public void setSelectedSalePointName(String selectedSalePointName) {
+		this.selectedSalePointName = selectedSalePointName;
+	}
+
+	public boolean isDisableEditDeleteOrderValue() {
+		return disableEditDeleteOrderValue;
+	}
+
+	public void setDisableEditDeleteOrderValue(boolean disableEditDeleteOrderValue) {
+		this.disableEditDeleteOrderValue = disableEditDeleteOrderValue;
 	}
 }
