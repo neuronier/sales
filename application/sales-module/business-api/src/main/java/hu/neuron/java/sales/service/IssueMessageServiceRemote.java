@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IssueMessageServiceRemote {
 	
-	public String saveIssueMessage(IssueMessageVO issueMessage);
+	public IssueMessageVO saveIssueMessage(IssueMessageVO issueMessage);
 	
 	public void removeIssueMessage(IssueMessageVO issueMessage);
 	

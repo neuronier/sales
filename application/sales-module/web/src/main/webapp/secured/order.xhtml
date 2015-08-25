@@ -146,7 +146,7 @@
 							</p:column>
 						</p:dataTable>
 						<p:commandButton value="#{out.userform_remove}" id="removeProduct"
-							update="addedProducts,:addNewOrderDialogForm"
+							update="addedProducts,:addNewOrderDialogForm,:addNewOrderDialogForm:saveProducts"
 							actionListener="#{orderController.removeFromList}"
 							disabled="#{orderController.selectedProduct == null}"></p:commandButton>
 					</p:panelGrid>

@@ -37,8 +37,8 @@ public class OrderController implements Serializable {
 
 	@EJB(name = "ProductTypeService", mappedName = "ProductTypeService")
 	ProductTypeServiceRemote productTypeService;
-	
-	@EJB(name="SalesPointService", mappedName="SalesPointService")
+
+	@EJB(name = "SalesPointService", mappedName = "SalesPointService")
 	SalesPointServiceRemote salePointService;
 
 	private final String[] status = { "New", "In progress", "Done" };
@@ -66,13 +66,13 @@ public class OrderController implements Serializable {
 	private boolean disableSaveOrderValue;
 
 	private boolean disableAddOrdeValue;
-	
+
 	private boolean disableEditDeleteOrderValue;
-	
+
 	private SalesPointVO selectedSalePoint;
-	
+
 	private List<String> salePoints;
-	
+
 	private String selectedSalePointName;
 
 	@PostConstruct
@@ -104,14 +104,14 @@ public class OrderController implements Serializable {
 			return null;
 		}
 	}
-	
-	public void initSalePoints(){
+
+	public void initSalePoints() {
 		List<SalesPointVO> vos = new ArrayList<SalesPointVO>();
-		
+
 		vos = salePointService.findAll();
 		salePoints = new ArrayList<String>();
 		selectedSalePointName = "";
-		
+
 		for (SalesPointVO salesPointVO : vos) {
 			salePoints.add(salesPointVO.getName());
 		}
@@ -207,9 +207,9 @@ public class OrderController implements Serializable {
 					quantity);
 			selectedProductTypeName = null;
 		}
-		
+
 		orderService.updateOrder(selectedOrder);
-		
+
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 				LocalizationsUtils.getText("user_info", context),
@@ -257,34 +257,92 @@ public class OrderController implements Serializable {
 	public void addToList() {
 		if (selectedProductTypeName == null) {
 		} else {
-			boolean helper = false;
-			int index = 0;
-			for (OrderProductType opt : products) {
-				if (opt.getName().equals(selectedProductTypeName)) {
-					helper = true;
-					index = products.indexOf(opt);
+
+			if (!productHelper.contains(selectedProductTypeName)) {
+				FacesContext context = FacesContext.getCurrentInstance();
+				FacesMessage msg = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						LocalizationsUtils.getText("error", context),
+						LocalizationsUtils.getText("orders_beer_not_exists",
+								context) + "\n" + selectedProductTypeName);
+				context.addMessage(null, msg);
+			} else {
+				if (quantity <= 0) {
+					FacesContext context = FacesContext.getCurrentInstance();
+					FacesMessage msg = new FacesMessage(
+							FacesMessage.SEVERITY_ERROR,
+							LocalizationsUtils.getText("error", context),
+							LocalizationsUtils.getText("order_quantity_error",
+									context));
+					context.addMessage(null, msg);
+				} else {
+					boolean helper = false;
+					int index = 0;
+					for (OrderProductType opt : products) {
+						if (opt.getName().equals(selectedProductTypeName)) {
+							helper = true;
+							index = products.indexOf(opt);
+						}
+					}
+
+					if (helper) {
+						products.get(index).setQuantity(
+								products.get(index).getQuantity() + quantity);
+					} else {
+						getProducts().add(
+								new OrderProductType(selectedProductTypeName,
+										quantity));
+					}
+
+					FacesContext context = FacesContext.getCurrentInstance();
+					FacesMessage msg = new FacesMessage(
+							FacesMessage.SEVERITY_INFO,
+							LocalizationsUtils.getText("user_info", context),
+							LocalizationsUtils.getText("order_added_info",
+									context)
+									+ "\n"
+									+ selectedProductTypeName
+									+ " "
+									+ quantity
+									+ " "
+									+ LocalizationsUtils.getText("orders_q",
+											context));
+					context.addMessage(null, msg);
+
+					System.out.println(getProducts());
+					selectedProductTypeName = null;
+					quantity = 1;
+					disableSaveOrder();
 				}
 			}
-
-			if (helper) {
-				products.get(index).setQuantity(
-						products.get(index).getQuantity() + quantity);
-			} else {
-				getProducts()
-						.add(new OrderProductType(selectedProductTypeName,
-								quantity));
-			}
-			System.out.println(getProducts());
-			selectedProductTypeName = null;
-			quantity = 1;
-			disableSaveOrder();
 		}
 	}
 
 	public void removeFromList() {
 		products.remove(selectedProduct);
 		System.out.println(products);
+		
+		quantity = selectedProduct.getQuantity();
+		selectedProductTypeName = selectedProduct.getName();
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage msg = new FacesMessage(
+				FacesMessage.SEVERITY_INFO,
+				LocalizationsUtils.getText("user_info", context),
+				LocalizationsUtils.getText("orders_delete_info",
+						context)
+						+ "\n"
+						+ selectedProductTypeName
+						+ " "
+						+ quantity
+						+ " "
+						+ LocalizationsUtils.getText("orders_q",
+								context));
+		context.addMessage(null, msg);
+		disableSaveOrder();
 		selectedProduct = null;
+		selectedProductTypeName = null;
+		quantity = 1;
 	}
 
 	public void disableSaveOrder() {
@@ -294,24 +352,24 @@ public class OrderController implements Serializable {
 			disableSaveOrderValue = false;
 		}
 	}
-	
-	public void disableEditDeleteOrder(){
+
+	public void disableEditDeleteOrder() {
 		if (selectedOrder.getStatus().equals("New")) {
 			setDisableEditDeleteOrderValue(false);
-		}else{
+		} else {
 			setDisableEditDeleteOrderValue(true);
 		}
 	}
 
 	public void handleToggle(ToggleEvent event) {
-		
+
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 				"Toggled", "Visibility:" + event.getVisibility());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
-	
-	//FEJLESZTES ALATT
-	public void loadWarehouseButtonAction(ActionEvent actionEvent){
+
+	// FEJLESZTES ALATT
+	public void loadWarehouseButtonAction(ActionEvent actionEvent) {
 	}
 
 	public void disableAddOrder() {
@@ -454,7 +512,8 @@ public class OrderController implements Serializable {
 		return disableEditDeleteOrderValue;
 	}
 
-	public void setDisableEditDeleteOrderValue(boolean disableEditDeleteOrderValue) {
+	public void setDisableEditDeleteOrderValue(
+			boolean disableEditDeleteOrderValue) {
 		this.disableEditDeleteOrderValue = disableEditDeleteOrderValue;
 	}
 }

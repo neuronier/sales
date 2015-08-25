@@ -3,6 +3,8 @@ package hu.neuron.java.sales.service;
 import hu.neuron.java.sales.service.vo.RoleVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
 import hu.neuron.java.sales.service.vo.UserVO;
+
+import java.util.Date;
 import java.util.List;
 
 public interface UserServiceRemote {
@@ -35,6 +37,11 @@ public interface UserServiceRemote {
 	
 	public String getDefaultPassword();
 	
+	public List<UserVO> findByRegistrationDateBetween(Date from, Date to);
+	
+	public int findNumberOfUsersBeforeDate(Date date);
+
 	public List<UserVO> findUserBySalesPoint(SalesPointVO salesPoint) throws Exception;
+
 
 }

@@ -23,7 +23,7 @@ public class IssueMessage extends Base{
 	private String messageId;
 	
 	@Column(length = 5000)
-	private String Text;
+	private String text;
 	
 	private Date date;
 	
@@ -45,11 +45,11 @@ public class IssueMessage extends Base{
 	}
 
 	public String getText() {
-		return Text;
+		return text;
 	}
 
 	public void setText(String text) {
-		Text = text;
+		this.text = text;
 	}
 
 	public Date getDate() {

@@ -1,5 +1,6 @@
 package hu.neuron.java.core.entity;
 
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Entity;
@@ -24,6 +25,8 @@ public class IssueThread extends Base{
 	private String status;
 	
 	private String subject;
+	
+	private Date lastUpdate;
 
 	public IssueThread() {
 		super();
@@ -61,5 +64,12 @@ public class IssueThread extends Base{
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-	
+
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 }

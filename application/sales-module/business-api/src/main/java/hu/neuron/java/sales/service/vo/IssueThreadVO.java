@@ -8,6 +8,8 @@ public class IssueThreadVO implements Serializable {
 
 	private static final long serialVersionUID = -3539824510322540496L;
 
+	private Long Id;
+	
 	private String threadId;
 
 	private String clientId;
@@ -23,6 +25,14 @@ public class IssueThreadVO implements Serializable {
 	public IssueThreadVO() {
 		super();
 		this.threadId = UUID.randomUUID().toString();
+	}
+	
+	public Long getId() {
+		return Id;
+	}
+
+	public void setId(Long id) {
+		Id = id;
 	}
 
 	public String getThreadId() {
@@ -71,5 +81,30 @@ public class IssueThreadVO implements Serializable {
 
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
-	}	
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((threadId == null) ? 0 : threadId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IssueThreadVO other = (IssueThreadVO) obj;
+		if (threadId == null) {
+			if (other.threadId != null)
+				return false;
+		} else if (!threadId.equals(other.threadId))
+			return false;
+		return true;
+	}
 }

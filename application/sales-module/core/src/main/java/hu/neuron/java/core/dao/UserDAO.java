@@ -1,12 +1,14 @@
 package hu.neuron.java.core.dao;
 
-import java.util.List;
-
 import hu.neuron.java.core.entity.User;
+
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,5 +28,10 @@ public interface UserDAO extends JpaRepository<User, Long> {
 	
 	Page<User> findByUserNameStartsWith(String filter,Pageable pageable);
 	
+	List<User> findByRegistrationDateBetween(Date from, Date to);
+	
+	@Query("select COUNT(u.registrationDate) from User u where u.registrationDate < ?1")
+	int findNumberOfUsersBeforeDate(Date date);
+
 	List<User> findUserBySalePointId(String salePointId) throws Exception;
 }

@@ -1,6 +1,7 @@
 package hu.neuron.java.sales.service.webservice.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,6 +21,8 @@ public class ClientWebServiceVO implements Serializable{
 	private String emailAddress;
 
 	private String phoneNumber;
+	
+	private Date registrationDate;
 
 	public String getName() {
 		return name;
@@ -67,6 +70,14 @@ public class ClientWebServiceVO implements Serializable{
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public Date getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
 	}
 
 }

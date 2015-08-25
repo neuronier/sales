@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 
 	@Autowired
 	RoleDAO roleDao;
-	
+
 	@Autowired
 	WarehouseDAO warehouseDao;
 
@@ -177,14 +178,22 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 	}
 
 	@Override
-	public List<UserVO> findUserBySalesPoint(SalesPointVO salesPoint)
-			throws Exception {
+	public List<UserVO> findByRegistrationDateBetween(Date from, Date to) {
+		return userConverter.toVO(userDao.findByRegistrationDateBetween(from, to));
+	}
+
+	@Override
+	public int findNumberOfUsersBeforeDate(Date date) {
+		return userDao.findNumberOfUsersBeforeDate(date);
+	}
+
+	public List<UserVO> findUserBySalesPoint(SalesPointVO salesPoint) throws Exception {
 		return userConverter.toVO(userDao.findUserBySalePointId(salesPoint.getSalePointId()));
 	}
 
 	@Override
 	public UserVO updateUser(UserVO selectedUser) {
 		return saveUser(selectedUser);
-	}	
+	}
 
 }
