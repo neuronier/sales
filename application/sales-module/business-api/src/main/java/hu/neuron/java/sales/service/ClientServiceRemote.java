@@ -23,4 +23,6 @@ public interface ClientServiceRemote {
 
 	public int findNumberOfClientsBeforeDate(Date date);
 
+	public int getRowNumber();
+
 }
