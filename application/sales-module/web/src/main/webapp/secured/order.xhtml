@@ -103,7 +103,10 @@
 								<p:commandButton value="#{out.orders_buttons_delete}"
 									action="#{orderController.removeOrder}"
 									update=":orderForm:orderDT,:orderForm:btnPanel"
-									disabled="#{orderController.selectedOrder == null || orderController.disableEditDeleteOrderValue}"></p:commandButton>
+									disabled="#{orderController.selectedOrder == null || orderController.disableEditDeleteOrderValue}">
+									<p:confirm header="#{out.confirm}"
+										message="#{out.confirmdelorder}" icon="ui-icon-alert" />
+								</p:commandButton>
 							</p:panelGrid>
 						</p:fieldset>
 					</h:form></td>
@@ -113,7 +116,7 @@
 
 		<p:dialog widgetVar="addNewOrderDialog"
 			header="#{out.orders_create_dialog_head}" resizable="false"
-			width="700">
+			width="700" modal="true" appendTo="@(body)">
 			<h:form id="addNewOrderDialogForm">
 				<p:panelGrid columns="2" cellpadding="2">
 					<p:outputLabel value="#{out.orders_products}" />
@@ -163,7 +166,8 @@
 		</p:dialog>
 
 		<p:dialog widgetVar="editOrderDialog"
-			header="#{out.orders_edit_dialog_head}" resizable="false" width="700">
+			header="#{out.orders_edit_dialog_head}" resizable="false" width="700"
+			modal="true" appendTo="@(body)">
 			<h:form id="editOrderDialogForm">
 				<p:panelGrid columns="2" cellpadding="2">
 					<p:outputLabel value="#{out.orders_products}" />
@@ -210,6 +214,17 @@
 					oncomplete="PF('editOrderDialog').hide()"></p:commandButton>
 			</h:form>
 		</p:dialog>
+
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<div style="display: block; margin: 0px auto;">
+				<p:commandButton value="Yes" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+					style="margin-left:20%;  float: left;" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close"
+					style="margin-right:20%;  float: right;" />
+			</div>
+		</p:confirmDialog>
 
 	</ui:define>
 </ui:composition>
