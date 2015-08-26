@@ -32,8 +32,8 @@
 					
 						<p:outputLabel value="Available Offers:" for="availableTable"
 							style="margin-left:7px;"/>
-						<p:dataTable var="offer1"  value="#{sellController.lazySellModel}" 
-						 	widgetVar="availableOffers" id="availableTable"
+						<p:dataTable var="availableOffer"  value="#{sellController.lazySellModel}" 
+						 	widgetVar="availableOffers" id="availableTable" lazy="true"
                          	paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          	paginator="true" rows="5" rowsPerPageTemplate="5,10"
                          	style="margin-top: 10px; margin-bottom: 10px;">
@@ -44,12 +44,12 @@
 					            </p:outputPanel>
 					        </f:facet>
 
-							<p:column filterBy="#{offer1.name}" headerText="Name">
-					            <h:outputText value="#{car.name}" />
+							<p:column filterBy="#{availableOffer.name}" headerText="Name">
+					            <h:outputText value="#{availableOffer.name}" />
 					        </p:column>
 					 
-					        <p:column filterBy="#{offer1.price}" headerText="Price">
-					            <h:outputText value="#{offer1.price}">
+					        <p:column filterBy="#{availableOffer.price}" headerText="Price">
+					            <h:outputText value="#{availableOffer.price}">
 					                <f:convertNumber currencySymbol="$" type="currency"/>
 					            </h:outputText>
 					        </p:column>
@@ -57,7 +57,7 @@
 					        <p:column headerText="Add" style="width:32px;text-align: center">
 					             <p:commandButton update=":availableTable, :selectedTable"
 					             	 icon="ui-icon-plus-circle" title="Add">
-					                <f:setPropertyActionListener value="#{offer1}" 
+					                <f:setPropertyActionListener value="#{availableOffer}" 
 					                	target="#{sellController.selectedAvailableOffer}" />
 					            </p:commandButton>
 					        </p:column>
