@@ -27,69 +27,74 @@
 					        <p:autoComplete id="quickOffers" minQueryLength="3" effect="fade"
 					        	value="#{offerAutoCompleteView.offer}"
 					        	completeMethod="#{offerAutoCompleteView.completeText}" />
-					          <p:commandButton process="selectedTable" update=":selectedTable" value="Add" />
+					          <p:commandButton update=":selectForm:selectedTable" value="Add" />
 						 </h:panelGrid>
 					
-						<p:outputLabel value="Available Offers:" for="availableTable"
-							style="margin-left:7px;"/>
-						<p:dataTable var="availableOffer"  value="#{sellController.lazySellModel}" 
-						 	widgetVar="availableOffers" id="availableTable" lazy="true"
-                         	paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         	paginator="true" rows="5" rowsPerPageTemplate="5,10"
-                         	style="margin-top: 10px; margin-bottom: 10px;">
-                         	
-                         	 <f:facet name="header">
-					            <p:outputPanel>
-					                <h:outputText value="Select the offers You want to sell" />
-					            </p:outputPanel>
-					        </f:facet>
-
-							<p:column filterBy="#{availableOffer.name}" headerText="Name">
-					            <h:outputText value="#{availableOffer.name}" />
-					        </p:column>
-					 
-					        <p:column filterBy="#{availableOffer.offerPrice}" headerText="Price">
-					            <h:outputText value="#{availableOffer.offerPrice}">
-					                <f:convertNumber currencySymbol="$" type="currency"/>
-					            </h:outputText>
-					        </p:column>
-					        
-					        <p:column headerText="Add" style="width:32px; text-align: center">
-					             <p:commandButton update=" :selectedTable"
-					             	 title="Add" icon="ui-icon-circle-plus" 
-					             	 	actionListener="#{sellController.addToSelectedOffers}">
-					                <f:setPropertyActionListener value="#{availableOffer}" 
-					                	target="#{sellController.selectedAvailableOffer}" />
-					            </p:commandButton>
-					        </p:column>
-					        
-					    </p:dataTable>
+						<h:form>
+							<p:remoteCommand name="selectionHandler" actionListener="#{sellController.addToSelectedOffers}" update=" :selectForm:selectedTable" />
+							<p:outputLabel value="Available Offers:" for="availableTable"
+								style="margin-left:7px;"/>
+							<p:dataTable var="availableOffer"  value="#{sellController.lazySellModel}" 
+							 	widgetVar="availableOffers" id="availableTable" lazy="true"
+	                         	paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	                         	paginator="true" rows="5" rowsPerPageTemplate="5,10"
+	                         	style="margin-top: 10px; margin-bottom: 10px;">
+	                         	
+	                         	 <f:facet name="header">
+						            <p:outputPanel>
+						                <h:outputText value="Select the offers You want to sell" />
+						            </p:outputPanel>
+						        </f:facet>
+	
+								<p:column filterBy="#{availableOffer.name}" headerText="Name">
+						            <h:outputText value="#{availableOffer.name}" />
+						        </p:column>
 						 
+						        <p:column filterBy="#{availableOffer.offerPrice}" headerText="Price">
+						            <h:outputText value="#{availableOffer.offerPrice}">
+						                <f:convertNumber currencySymbol="$" type="currency"/>
+						            </h:outputText>
+						        </p:column>
+						        
+						        <p:column headerText="Add" style="width:32px; text-align: center">
+						             <p:commandButton update=" :selectForm:selectedTable"
+						             	 title="Add" icon="ui-icon-circle-plus" 
+						             	 oncomplete="selectionHandler();">
+						             	 <f:setPropertyActionListener value="#{availableOffer}" target="#{sellController.selectedAvailableOffer}" />
+						            </p:commandButton>
+						        </p:column>
+						        
+						    </p:dataTable>
+						 </h:form>
 						 <p:separator style="height:5px;"/>
-						 <p:outputLabel value="Selected Offers:" for="selectedTable"
-							style="margin-left:7px;"/>
-						 <p:dataTable id="selectedTable" var="offerWebVO" value="#{sellController.selectedOffers}" 
-							 selectionMode="single" selection="#{sellController.selectedWebOffer}" 
-							 rowKey="#{offerWebVO.offerId}" style="margin-top: 10px;">
-					        <f:facet name="header">
-					            The offers that are going to be sold
-					        </f:facet>
-					        <p:column headerText="Name">
-					            <h:outputText value="#{offerWebVO.offerName}" />
-					        </p:column>
-					        <p:column headerText="Price">
-					            <h:outputText value="#{offerWebVO.offerPrice}" />
-					        </p:column>
-					        <p:column headerText="Quantity">
-					        	<p:cellEditor>
-					        		 <f:facet name="output"><h:outputText value="#{offerWebVO.quantity}" /></f:facet>
-                  					<f:facet name="input"> <p:spinner id="basic" value="#{offerWebVO.quantity}" /></f:facet>
-					            </p:cellEditor>
-					        </p:column>
-					        <f:facet name="footer">
-					            <p:commandButton process="selectedTable" update=":selectedTable" value="Remove" />
-					        </f:facet>
-					    </p:dataTable>
+						 <h:form id="selectForm">
+							 <p:outputLabel value="Selected Offers:" for="selectedTable"
+								style="margin-left:7px;"/>
+							 <p:dataTable id="selectedTable" var="offerWebVO" value="#{sellController.selectedOffers}" 
+								selectionMode="single" selection="#{sellController.selectedWebOffer}"
+								rowKey="#{offerWebVO.offerId}" style="margin-top: 10px;"
+								editable="true" editMode="cell">
+						        <f:facet name="header">
+						            The offers that are going to be sold
+						        </f:facet>
+						        <p:ajax event="cellEdit" update=":selectForm:selectedTable" />
+						        <p:column headerText="Name">
+						            <h:outputText value="#{offerWebVO.offerName}" />
+						        </p:column>
+						        <p:column headerText="Price">
+						            <h:outputText value="#{offerWebVO.offerPrice}" />
+						        </p:column>
+						        <p:column headerText="Quantity">
+						        	<p:cellEditor>
+						        		<f:facet name="output"><h:outputText id="outputQuantity" value="#{offerWebVO.quantity}" /></f:facet>
+	                  					<f:facet name="input"> <p:spinner id="basic" value="#{offerWebVO.quantity}" /></f:facet>
+						            </p:cellEditor>
+						        </p:column>
+						        <f:facet name="footer">
+						            <p:commandButton update=":selectForm:selectedTable" value="Remove" />
+						        </f:facet>
+						    </p:dataTable>
+					    </h:form>
 					</p:fieldset>
 				</div>
 				<div class="ui-grid-col-6">
@@ -100,9 +105,9 @@
 							<p:autoComplete id="quickClient" minQueryLength="3" effect="fade"
 						    	value="#{offerAutoCompleteView.offer}"
 						   		completeMethod="#{offerAutoCompleteView.completeText}" />
-							<p:commandButton process="selectedTable" update=":selectedTable" value="OK"/>
+							<p:commandButton update=":selectForm:selectedTable" value="OK"/>
 						</h:panelGrid>
-						<p:commandButton process="selectedTable" update=":selectedTable" value="Register New" style="margin-top:8px; margin-bottom:10px; float:right;"/>
+						<p:commandButton update=":selectForm:selectedTable" value="Register New" style="margin-top:8px; margin-bottom:10px; float:right;"/>
 						</div>
 						<p:panel header="Customer Details"  style="clear:right;">
 							<div class="ui-grid ui-grid-responsive" style="margin-bottom:15px;">
@@ -154,7 +159,7 @@
 							<div class="ui-grid-col-12">
 								<p:panel>
 								<h4 style="display:inline; margin-right: 5px;">Sell the selected offers:</h4>
-									<p:commandButton process="selectedTable" update=":selectedTable" value="Finish" />
+									<p:commandButton update=":selectForm:selectedTable" value="Finish" />
 								</p:panel>
 							</div>
 						</div>

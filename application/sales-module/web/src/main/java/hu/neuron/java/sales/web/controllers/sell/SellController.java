@@ -28,6 +28,8 @@ public class SellController implements Serializable {
 	
 	private static List<OfferVO> offers;
 	
+	private static List<OfferVO> availableOffers;
+	
 	private static List<OfferWebVO> selectedOffers;
 	
 	private LazySellModel lazySellModel;
@@ -104,6 +106,14 @@ public class SellController implements Serializable {
 
 	public void setSelectedWebOffer(OfferWebVO selectedWebOffer) {
 		SellController.selectedWebOffer = selectedWebOffer;
+	}
+
+	public List<OfferVO> getAvailableOffers() {
+		return availableOffers;
+	}
+
+	public void setAvailableOffers(List<OfferVO> availableOffers) {
+		SellController.availableOffers = availableOffers;
 	}
 	
 	
