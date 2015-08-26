@@ -11,7 +11,7 @@
 	<artifactId>web</artifactId>
 	<name>Sales Web module</name>
 	<packaging>war</packaging>
-	
+
 	<description>A szolgáltatások web-es megjelenítését megvalósító modul</description>
 	<url>http://maven.apache.org</url>
 
@@ -108,6 +108,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.5.6</version>
+		</dependency>
+
+		<dependency>
 			<groupId>hu.neuron.java.sales</groupId>
 			<artifactId>business-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
@@ -116,7 +122,7 @@
 	<build>
 		<finalName>salesApp</finalName>
 	</build>
-	
+
 	<reporting>
 		<plugins>
 			<plugin>
