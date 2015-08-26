@@ -307,6 +307,7 @@ public class OfferController implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
 							"Update: " + selectedOffer.getName()));
 			selectedOffer = null;
+			newQuantity = 0;
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
@@ -327,7 +328,6 @@ public class OfferController implements Serializable {
 	}
 	
 	public void getProductTypesToSelectedOffer(){
-		System.out.println("\n getProductTypesToSelectedOffer \n");
 		selectedProductType = null;
 		selectedOfferProductTypeList.clear();
 		existingPts.clear();
