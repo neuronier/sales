@@ -18,6 +18,8 @@ public class ClientOfferVO implements Serializable{
 	
 	private Date date;
 	
+	private Long offerQuantity;
+	
 	public ClientOfferVO(){}
 
 	public ClientVO getClient() {
@@ -60,4 +62,13 @@ public class ClientOfferVO implements Serializable{
 			setClientOfferId("PURCHASE_" + systime);
 		}
 	}
+
+	public Long getOfferQuantity() {
+		return offerQuantity;
+	}
+
+	public void setOfferQuantity(Long offerQuantity) {
+		this.offerQuantity = offerQuantity;
+	}
+	
 }

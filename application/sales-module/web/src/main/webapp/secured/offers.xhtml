@@ -166,7 +166,7 @@
 
 											<p:ajax event="rowSelect"
 												listener="#{offerController.onOfferProductTypeRowSelect}"
-												update=":form2:removeButton" />
+												update=":form2:addButton, :form2:removeButton" />
 											<p:column headerText="Name">
 												<h:outputText value="#{offerProductType.name}" />
 											</p:column>
@@ -217,7 +217,7 @@
 									<p:column>
 										<p:commandButton value="Add" id="addButton"
 											update=":form2:offerProductTypeTable,:form2:advanced"
-											disabled="#{offerController.selectedOfferProductType == null}"
+											disabled="#{offerController.selectedProductType == null}"
 											icon="ui-icon-disk"
 											actionListener="#{offerController.addProductTypeToOffer}"
 											style="float: right;" />
