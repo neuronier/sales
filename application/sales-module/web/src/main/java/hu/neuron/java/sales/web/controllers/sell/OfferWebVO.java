@@ -24,7 +24,7 @@ public class OfferWebVO implements Serializable{
 			setOfferName(offer.getName());
 			setOfferPrice(offer.getOfferPrice());
 		}
-		quantity = 0L;
+		quantity = 1L;
 	}
 
 	public String getOfferId() {
