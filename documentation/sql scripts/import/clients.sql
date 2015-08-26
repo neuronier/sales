@@ -1,6 +1,6 @@
 INSERT INTO `client` (`id`, `clientId`, `emailAddress`, `name`, `password`, `phoneNumber`, `userName`) VALUES
 (2, '7fdea050-8748-4119-b90b-d85354a035d6', 'jkovacs@ier-sales.hu', 'Kovács János', '$2a$04$Kd7MLBSmJUKVP24.4isZ0OLTOYGx1AwHbkfrQugPp5ReV71NDOAzG', '+36101231234', 'jkovacs'),
-(3, '296b4419-bc16-4bf4-969e-87b8fd0e299d', 'knagy@ier-sales.hu', 'Nagy Kincs?', '$2a$04$kdgQ6BQ.DTymyz615iR0veQpXpr0oiTIu8bUxNRNcRpHotLy8X9vu', '+36123456789', 'knagy'),
+(3, '296b4419-bc16-4bf4-969e-87b8fd0e299d', 'knagy@ier-sales.hu', 'Nagy Kincső', '$2a$04$kdgQ6BQ.DTymyz615iR0veQpXpr0oiTIu8bUxNRNcRpHotLy8X9vu', '+36123456789', 'knagy'),
 (4, '880f3614-edc4-462b-a49b-a202d2b10421', 'bhorvath@ier-sales.hu', 'Horváth Bendegúz', '$2a$04$H0wCJWW54/N90t7F4L6H8eNASN5UXx6X0NjlWLWTX8IokHWN8.lFu', '+36123456798', 'bhorvath'),
 (6, '13cd4b67-9302-4bfa-b494-0060293b4fea', 'akiss@ier-sales.hu', 'Kiss Annamária', '$2a$04$dn02/FQQsgn97LTOIUu/G.wCaKR9ZT08gsEomoeD9IC5Ol1l.AMne', '+36213456798', 'akiss'),
 (7, '6cd7e00b-4053-4ad5-ae68-b7f0a4a9207c', 'rfazekas@ier-sales.hu', 'Fazekas Róbert', '$2a$04$8aNLQQp3wnqyf/K9L9pYo.FIPGX8CGeXo/ryhSP7wO.DiY6as1DGa', '+36219876798', 'rfazekas'),
