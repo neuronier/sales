@@ -1,9 +1,9 @@
 package hu.neuron.java.sales.service;
 
+import hu.neuron.java.sales.service.vo.ClientOfferVO;
+
 import java.util.Date;
 import java.util.List;
-
-import hu.neuron.java.sales.service.vo.ClientOfferVO;
 
 public interface ClientOfferServiceRemote {
 	
