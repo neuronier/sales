@@ -1,5 +1,7 @@
 package hu.neuron.java.sales.web.controllers.sell;
 
+import hu.neuron.java.sales.service.vo.OfferVO;
+
 import java.io.Serializable;
 
 public class OfferWebVO implements Serializable{
@@ -13,6 +15,17 @@ public class OfferWebVO implements Serializable{
 	private Long offerPrice;
 	
 	private Long quantity;
+	
+	public OfferWebVO(){}
+	
+	public OfferWebVO(OfferVO offer){
+		if(offer != null){
+			setOfferId(offer.getOfferId());
+			setOfferName(offer.getName());
+			setOfferPrice(offer.getOfferPrice());
+		}
+		quantity = 0L;
+	}
 
 	public String getOfferId() {
 		return offerId;

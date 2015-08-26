@@ -48,15 +48,16 @@
 					            <h:outputText value="#{availableOffer.name}" />
 					        </p:column>
 					 
-					        <p:column filterBy="#{availableOffer.price}" headerText="Price">
-					            <h:outputText value="#{availableOffer.price}">
+					        <p:column filterBy="#{availableOffer.offerPrice}" headerText="Price">
+					            <h:outputText value="#{availableOffer.offerPrice}">
 					                <f:convertNumber currencySymbol="$" type="currency"/>
 					            </h:outputText>
 					        </p:column>
 					        
-					        <p:column headerText="Add" style="width:32px;text-align: center">
-					             <p:commandButton update=":availableTable, :selectedTable"
-					             	 icon="ui-icon-plus-circle" title="Add">
+					        <p:column headerText="Add" style="width:32px; text-align: center">
+					             <p:commandButton update=" :selectedTable"
+					             	 title="Add" icon="ui-icon-circle-plus" 
+					             	 	actionListener="#{sellController.addToSelectedOffers}">
 					                <f:setPropertyActionListener value="#{availableOffer}" 
 					                	target="#{sellController.selectedAvailableOffer}" />
 					            </p:commandButton>
@@ -64,24 +65,25 @@
 					        
 					    </p:dataTable>
 						 
+						 <p:separator style="height:5px;"/>
 						 <p:outputLabel value="Selected Offers:" for="selectedTable"
 							style="margin-left:7px;"/>
-						 <p:dataTable id="selectedTable" var="selectedOffer" value="#{sellController.selectedOffers}" 
-							 selectionMode="single" selection="#{sellController.selectedOffer}" 
-							 rowKey="#{selectedOffer.offerId}" style="margin-top: 10px;">
+						 <p:dataTable id="selectedTable" var="offerWebVO" value="#{sellController.selectedOffers}" 
+							 selectionMode="single" selection="#{sellController.selectedWebOffer}" 
+							 rowKey="#{offerWebVO.offerId}" style="margin-top: 10px;">
 					        <f:facet name="header">
 					            The offers that are going to be sold
 					        </f:facet>
 					        <p:column headerText="Name">
-					            <h:outputText value="#{selectedOffer.offerName}" />
+					            <h:outputText value="#{offerWebVO.offerName}" />
 					        </p:column>
 					        <p:column headerText="Price">
-					            <h:outputText value="#{selectedOffer.offerPrice}" />
+					            <h:outputText value="#{offerWebVO.offerPrice}" />
 					        </p:column>
 					        <p:column headerText="Quantity">
 					        	<p:cellEditor>
-					        		 <f:facet name="output"><h:outputText value="#{selectedOffer.quantity}" /></f:facet>
-                  					<f:facet name="input"> <p:spinner id="basic" value="#{selectedOffer.quantity}" /></f:facet>
+					        		 <f:facet name="output"><h:outputText value="#{offerWebVO.quantity}" /></f:facet>
+                  					<f:facet name="input"> <p:spinner id="basic" value="#{offerWebVO.quantity}" /></f:facet>
 					            </p:cellEditor>
 					        </p:column>
 					        <f:facet name="footer">

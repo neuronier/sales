@@ -1,11 +1,14 @@
 package hu.neuron.java.sales.web.controllers.sell;
 
+import hu.neuron.java.sales.service.OfferServiceRemote;
 import hu.neuron.java.sales.service.vo.OfferVO;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -19,7 +22,7 @@ public class SellController implements Serializable {
 
 	private static final long serialVersionUID = 2441763337964957672L;
 
-	private static OfferVO selectedOffer;
+	private static OfferWebVO selectedWebOffer;
 	
 	private static OfferVO selectedAvailableOffer;
 	
@@ -28,26 +31,21 @@ public class SellController implements Serializable {
 	private static List<OfferWebVO> selectedOffers;
 	
 	private LazySellModel lazySellModel;
+	
+	@EJB(name = "OfferService", mappedName = "OfferService")
+	private OfferServiceRemote offerService;
 
 	@PostConstruct
 	public void init() {
-
+		setLazySellModel(new LazySellModel(offerService));
+		selectedOffers = new LinkedList<>();
+		offers = new LinkedList<>();
 	}
 
 	public void onRowSelect(SelectEvent event) {
 
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Idejön valami"));
-	}
-
-
-
-	public OfferVO getSelectedOffer() {
-		return selectedOffer;
-	}
-
-	public void setSelectedOffer(OfferVO selectedOffer) {
-		SellController.selectedOffer = selectedOffer;
 	}
 
 	public List<OfferVO> getOffers() {
@@ -80,6 +78,32 @@ public class SellController implements Serializable {
 
 	public void setSelectedOffers(List<OfferWebVO> selectedOffers) {
 		SellController.selectedOffers = selectedOffers;
+	}
+	
+	public void addToSelectedOffers(){
+		boolean contains = false;
+		if(selectedOffers != null){
+			for(OfferWebVO owv : selectedOffers){
+				if(owv != null && selectedAvailableOffer != null){
+					if(owv.getOfferId().equals(selectedAvailableOffer.getOfferId())){
+						contains = true;
+					}
+				}
+			}
+		}
+		if(!contains){
+			OfferWebVO owv = new OfferWebVO(selectedAvailableOffer);
+			selectedOffers.add(owv);
+		}
+		
+	}
+
+	public OfferWebVO getSelectedWebOffer() {
+		return selectedWebOffer;
+	}
+
+	public void setSelectedWebOffer(OfferWebVO selectedWebOffer) {
+		SellController.selectedWebOffer = selectedWebOffer;
 	}
 	
 	
