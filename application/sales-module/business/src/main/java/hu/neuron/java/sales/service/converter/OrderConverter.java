@@ -2,9 +2,11 @@ package hu.neuron.java.sales.service.converter;
 
 import hu.neuron.java.core.dao.OrderProductTypeDAO;
 import hu.neuron.java.core.dao.ProductTypeDAO;
+import hu.neuron.java.core.dao.WarehouseDAO;
 import hu.neuron.java.core.entity.Order;
 import hu.neuron.java.core.entity.OrderProductType;
 import hu.neuron.java.core.entity.ProductTypeEntity;
+import hu.neuron.java.core.entity.Warehouse;
 import hu.neuron.java.sales.service.vo.OrderVO;
 
 import java.util.ArrayList;
@@ -29,12 +31,18 @@ public class OrderConverter {
 
 	@Autowired
 	ProductTypeConverter productConverter;
+	
+	@Autowired
+	WarehouseConverter whConverter;
 
 	@Autowired
 	OrderProductTypeDAO orderProductDAO;
 
 	@Autowired
 	ProductTypeDAO productDAO;
+	
+	@Autowired
+	WarehouseDAO warehouseDAO;
 
 	@PostConstruct
 	void init() {
@@ -81,6 +89,13 @@ public class OrderConverter {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		try{
+			Warehouse wh = warehouseDAO.findWarehouseByWarehouseId(entity.getWarehouseId());
+			rv.setWarehouse(whConverter.toVO(wh));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 
 		rv.setId(entity.getId());
 		rv.setOrderId(entity.getOrderId());
@@ -99,6 +114,7 @@ public class OrderConverter {
 		Order rv = new Order();
 
 		rv.setId(vo.getId());
+		rv.setWarehouseId(vo.getWarehouse().getWarehouseId());
 		rv.setOrderId(vo.getOrderId());
 		rv.setOrderName(vo.getName());
 		rv.setStatus(vo.getStatus());

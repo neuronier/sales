@@ -17,6 +17,8 @@ public class OrderVO implements Serializable {
 	private Date date;
 
 	private ProductTypeVO productType;
+	
+	private WarehouseVO warehouse;
 
 	private String quantity;
 
@@ -80,5 +82,13 @@ public class OrderVO implements Serializable {
 
 	public void setProductType(ProductTypeVO productType) {
 		this.productType = productType;
+	}
+
+	public WarehouseVO getWarehouse() {
+		return warehouse;
+	}
+
+	public void setWarehouse(WarehouseVO warehouse) {
+		this.warehouse = warehouse;
 	}
 }

@@ -33,7 +33,8 @@
 						<p:fieldset legend="#{out.orders_warehouse}"
 							style="margin-bottom:20px" toggleable="true" toggleSpeed="500"
 							collapsed="true">
-							<p:ajax event="toggle" listener="#{orderController.handleToggle}" update="salespoint"/>
+							<p:ajax event="toggle" listener="#{orderController.handleToggle}"
+								update="salespoint" />
 
 							<p:panelGrid columns="2" cellpadding="2">
 								<p:selectOneMenu id="salespoint"
@@ -42,8 +43,9 @@
 									<f:selectItems value="#{orderController.salePoints}" />
 								</p:selectOneMenu>
 								<p:commandLink id="accept" update="warehouseForm:warehouseDT"
-									actionListener="#{orderController.loadWarehouseButtonAction}" ajax="true" align="center">
-									<h:outputText value="Submit"/>
+									actionListener="#{orderController.loadWarehouseButtonAction}"
+									ajax="true" align="center">
+									<h:outputText value="Submit" />
 								</p:commandLink>
 							</p:panelGrid>
 
@@ -73,7 +75,7 @@
 								</p:column>
 
 								<p:column headerText="#{out.warehouse}" filterStyle="width:80%;">
-									<h:outputText value="" />
+									<h:outputText value="#{order.warehouse.warehouseName}" />
 								</p:column>
 								<p:column headerText="#{out.orders_details_dialog_date}"
 									filterStyle="width:80%;">
@@ -87,6 +89,7 @@
 
 							<p:panelGrid id="btnPanel" columns="3">
 								<p:commandButton value="#{out.orders_buttons_create}"
+									disabled="#{orderController.disableCreateOrder}"
 									action="#{orderController.addNewOrderButtonAction}"
 									update=":addNewOrderDialogForm"
 									oncomplete="PF('addNewOrderDialog').show()" />
@@ -100,8 +103,7 @@
 								<p:commandButton value="#{out.orders_buttons_delete}"
 									action="#{orderController.removeOrder}"
 									update=":orderForm:orderDT,:orderForm:btnPanel"
-									disabled="#{orderController.selectedOrder == null || orderController.disableEditDeleteOrderValue}"
-									></p:commandButton>
+									disabled="#{orderController.selectedOrder == null || orderController.disableEditDeleteOrderValue}"></p:commandButton>
 							</p:panelGrid>
 						</p:fieldset>
 					</h:form></td>

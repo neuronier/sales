@@ -13,6 +13,8 @@ public class Order extends Base {
 	private static final long serialVersionUID = 1L;
 
 	private String orderId;
+	
+	private String warehouseId;
 
 	private String name;
 
@@ -56,5 +58,13 @@ public class Order extends Base {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public String getWarehouseId() {
+		return warehouseId;
+	}
+
+	public void setWarehouseId(String warehouseId) {
+		this.warehouseId = warehouseId;
 	}
 }

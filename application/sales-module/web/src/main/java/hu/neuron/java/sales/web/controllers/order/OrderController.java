@@ -3,9 +3,12 @@ package hu.neuron.java.sales.web.controllers.order;
 import hu.neuron.java.sales.service.OrderServiceRemote;
 import hu.neuron.java.sales.service.ProductTypeServiceRemote;
 import hu.neuron.java.sales.service.SalesPointServiceRemote;
+import hu.neuron.java.sales.service.UserServiceRemote;
 import hu.neuron.java.sales.service.vo.OrderVO;
 import hu.neuron.java.sales.service.vo.ProductTypeVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
+import hu.neuron.java.sales.service.vo.UserVO;
+import hu.neuron.java.sales.service.vo.WarehouseVO;
 import hu.neuron.java.sales.web.LocalizationsUtils;
 
 import java.io.Serializable;
@@ -23,6 +26,8 @@ import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleEvent;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 @ViewScoped
 @ManagedBean(name = "orderController")
@@ -41,7 +46,8 @@ public class OrderController implements Serializable {
 	@EJB(name = "SalesPointService", mappedName = "SalesPointService")
 	SalesPointServiceRemote salePointService;
 
-	private final String[] status = { "New", "In progress", "Done" };
+	@EJB(name = "UserService", mappedName = "UserService")
+	UserServiceRemote userService;
 
 	private OrderVO newOrder;
 
@@ -67,6 +73,8 @@ public class OrderController implements Serializable {
 
 	private boolean disableAddOrdeValue;
 
+	private boolean disableCreateOrder;
+
 	private boolean disableEditDeleteOrderValue;
 
 	private SalesPointVO selectedSalePoint;
@@ -83,6 +91,29 @@ public class OrderController implements Serializable {
 
 	public OrderController() {
 		super();
+	}
+
+	public WarehouseVO getWarehouse() {
+		WarehouseVO def = new WarehouseVO();
+		def.setWarehouseId("none");
+		def.setWarehouseName("none");
+		try {
+			User user = null;
+
+			user = (User) SecurityContextHolder.getContext()
+					.getAuthentication().getPrincipal();
+
+			UserVO userVO = userService.findUserByUserName(user.getUsername());
+
+			SalesPointVO salepoint = userVO.getSalesPoint();
+
+			WarehouseVO warehouse = salepoint.getWarehouse();
+			return warehouse;
+
+		} catch (Exception e) {
+			return def;
+		}
+
 	}
 
 	public List<String> completeTextProduct(String query) {
@@ -115,12 +146,15 @@ public class OrderController implements Serializable {
 		for (SalesPointVO salesPointVO : vos) {
 			salePoints.add(salesPointVO.getName());
 		}
+
+		if (getWarehouse().getWarehouseName().equals("none")) {
+			setDisableCreateOrder(true);
+		}
 	}
 
 	public void addNewOrderButtonAction() {
 		newOrder = new OrderVO();
 		products = new ArrayList<OrderProductType>();
-
 		disableSaveOrderValue = true;
 		disableAddOrdeValue = true;
 		quantity = 1;
@@ -149,6 +183,8 @@ public class OrderController implements Serializable {
 	public void addNewOrder() {
 		newOrder.setStatus("New");
 		newOrder.setDate(new Date());
+
+		newOrder.setWarehouse(getWarehouse());
 
 		for (int i = 0; i < products.size(); i++) {
 			selectedProductTypeName = products.get(i).getName();
@@ -187,7 +223,6 @@ public class OrderController implements Serializable {
 						selectedOrder);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -246,6 +281,16 @@ public class OrderController implements Serializable {
 		disableEditDeleteOrder();
 		setSelectedOrderId(selectedOrder.getOrderId());
 
+		System.out.println("aki be van jelentkezve : "
+				+ getWarehouse().getWarehouseName());
+		System.out.println("selected : "
+				+ selectedOrder.getWarehouse().getWarehouseName());
+
+		if (!(getWarehouse().getWarehouseName().equals(selectedOrder
+				.getWarehouse().getWarehouseName()))) {
+			setDisableEditDeleteOrderValue(true);
+
+		}
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 				LocalizationsUtils.getText("user_info", context),
@@ -321,23 +366,16 @@ public class OrderController implements Serializable {
 	public void removeFromList() {
 		products.remove(selectedProduct);
 		System.out.println(products);
-		
+
 		quantity = selectedProduct.getQuantity();
 		selectedProductTypeName = selectedProduct.getName();
-		
+
 		FacesContext context = FacesContext.getCurrentInstance();
-		FacesMessage msg = new FacesMessage(
-				FacesMessage.SEVERITY_INFO,
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 				LocalizationsUtils.getText("user_info", context),
-				LocalizationsUtils.getText("orders_delete_info",
-						context)
-						+ "\n"
-						+ selectedProductTypeName
-						+ " "
-						+ quantity
-						+ " "
-						+ LocalizationsUtils.getText("orders_q",
-								context));
+				LocalizationsUtils.getText("orders_delete_info", context)
+						+ "\n" + selectedProductTypeName + " " + quantity + " "
+						+ LocalizationsUtils.getText("orders_q", context));
 		context.addMessage(null, msg);
 		disableSaveOrder();
 		selectedProduct = null;
@@ -354,9 +392,16 @@ public class OrderController implements Serializable {
 	}
 
 	public void disableEditDeleteOrder() {
+
 		if (selectedOrder.getStatus().equals("New")) {
 			setDisableEditDeleteOrderValue(false);
-		} else {
+		}
+		// else if (selectedOrder.getWarehouse().getWarehouseName()
+		// .equals(vo.getWarehouseName())) {
+		//
+		// setDisableEditDeleteOrderValue(false);
+		// }
+		else {
 			setDisableEditDeleteOrderValue(true);
 		}
 	}
@@ -398,10 +443,6 @@ public class OrderController implements Serializable {
 
 	public void setLazyOrderModul(LazyOrderModel lazyOrderModul) {
 		this.lazyOrderModul = lazyOrderModul;
-	}
-
-	public String[] getStatus() {
-		return status;
 	}
 
 	public List<ProductTypeVO> getProdTypeVOs() {
@@ -515,5 +556,13 @@ public class OrderController implements Serializable {
 	public void setDisableEditDeleteOrderValue(
 			boolean disableEditDeleteOrderValue) {
 		this.disableEditDeleteOrderValue = disableEditDeleteOrderValue;
+	}
+
+	public boolean isDisableCreateOrder() {
+		return disableCreateOrder;
+	}
+
+	public void setDisableCreateOrder(boolean disableCreateOrder) {
+		this.disableCreateOrder = disableCreateOrder;
 	}
 }
