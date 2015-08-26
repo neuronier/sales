@@ -113,4 +113,9 @@ public class ClientServiceImpl implements ClientServiceRemote, Serializable{
 		return clientDAO.findNumberOfCliensBeforeDate(date);
 	}
 
+	@Override
+	public int getRowNumber() {
+		return (int) clientDAO.count();
+	}
+
 }
