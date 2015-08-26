@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2.8-b13937 svn-revision#13942.--><xsd:schema targetNamespace="http://hu.neuron" xmlns:ns0="http://hu.neuron" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:complexType name="issueThreadListByClientResponse">
+    <xsd:sequence>
+      <xsd:element name="issueThreadListByClient" type="ns0:issueThreadListWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Exception">
+    <xsd:sequence>
+      <xsd:element name="message" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="modifyIssueThreadStatus">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg1" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="issueMessageListByThreadId">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="createNewIssueThread">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg1" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="modifyIssueThreadStatusResponse"/>
+  <xsd:complexType name="issueMessageWebServiceVO">
+    <xsd:sequence>
+      <xsd:element name="date" type="xsd:dateTime" minOccurs="0"/>
+      <xsd:element name="messageId" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="owner" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="text" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="threadId" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="issueThreadListWebServiceVO">
+    <xsd:sequence>
+      <xsd:element name="IssueThread" type="ns0:issueThreadWebServiceVO" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="issueMessageListWebServiceVO">
+    <xsd:sequence>
+      <xsd:element name="IssueMessage" type="ns0:issueMessageWebServiceVO" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="issueThreadListByClient">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="createIssueMessageInThread">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg1" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg2" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="createIssueMessageInThreadResponse"/>
+  <xsd:complexType name="createNewIssueThreadResponse">
+    <xsd:sequence>
+      <xsd:element name="createNewIssueThread" type="ns0:issueThreadWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="issueMessageListByThreadIdResponse">
+    <xsd:sequence>
+      <xsd:element name="issueMessageListByThreadId" type="ns0:issueMessageListWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="issueThreadWebServiceVO">
+    <xsd:sequence>
+      <xsd:element name="clientId" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="status" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="subject" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="threadId" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="issueThreadListByClientResponse" type="ns0:issueThreadListByClientResponse"/>
+  <xsd:element name="Exception" type="ns0:Exception"/>
+  <xsd:element name="IssueMessageVO" type="ns0:issueMessageWebServiceVO"/>
+  <xsd:element name="modifyIssueThreadStatus" type="ns0:modifyIssueThreadStatus"/>
+  <xsd:element name="issueMessageListByThreadId" type="ns0:issueMessageListByThreadId"/>
+  <xsd:element name="createNewIssueThread" type="ns0:createNewIssueThread"/>
+  <xsd:element name="modifyIssueThreadStatusResponse" type="ns0:modifyIssueThreadStatusResponse"/>
+  <xsd:element name="issueThreadListByClient" type="ns0:issueThreadListByClient"/>
+  <xsd:element name="IssueThreadList" type="ns0:issueThreadListWebServiceVO"/>
+  <xsd:element name="createIssueMessageInThread" type="ns0:createIssueMessageInThread"/>
+  <xsd:element name="createIssueMessageInThreadResponse" type="ns0:createIssueMessageInThreadResponse"/>
+  <xsd:element name="IssueMessageList" type="ns0:issueMessageListWebServiceVO"/>
+  <xsd:element name="IssueThreadVO" type="ns0:issueThreadWebServiceVO"/>
+  <xsd:element name="createNewIssueThreadResponse" type="ns0:createNewIssueThreadResponse"/>
+  <xsd:element name="issueMessageListByThreadIdResponse" type="ns0:issueMessageListByThreadIdResponse"/>
+</xsd:schema>
