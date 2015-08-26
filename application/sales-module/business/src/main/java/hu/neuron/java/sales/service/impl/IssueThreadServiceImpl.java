@@ -109,9 +109,6 @@ public class IssueThreadServiceImpl implements IssueThreadServiceRemote, Seriali
 		if (sortedByClientUserName) {
 			sortByClientUserName(ret, sortOrder);
 		}
-//		 else if (sortedByLastUpdate) {
-//			sortByLastUpdate(ret, sortOrder);
-//		}
 
 		return ret;
 	}
@@ -154,59 +151,6 @@ public class IssueThreadServiceImpl implements IssueThreadServiceRemote, Seriali
 		}
 		return issueThreads;
 	}
-
-//	private List<IssueThreadVO> sortByLastUpdate(List<IssueThreadVO> issueThreads, int sortOrder) {
-//		if (sortOrder == 1) {
-//			Collections.sort(issueThreads, new Comparator<IssueThreadVO>() {
-//				@Override
-//				public int compare(IssueThreadVO o1, IssueThreadVO o2) {
-//					if (o1.getLastUpdate() == null && o2.getLastUpdate() == null) {
-//						return 0;
-//					}
-//					if (o1.getLastUpdate() == null) {
-//						return -1;
-//					}
-//
-//					if (o2.getLastUpdate() == null) {
-//						return 1;
-//					}
-//					return o1.getLastUpdate().compareTo(o2.getLastUpdate());
-//				}
-//			});
-//
-//		} else {
-//			Collections.sort(issueThreads, new Comparator<IssueThreadVO>() {
-//				@Override
-//				public int compare(IssueThreadVO o1, IssueThreadVO o2) {
-//
-//					if (o1.getLastUpdate() == null && o2.getLastUpdate() == null) {
-//						return 0;
-//					}
-//					if (o1.getLastUpdate() == null) {
-//						return 1;
-//					}
-//
-//					if (o2.getLastUpdate() == null) {
-//						return -1;
-//					}
-//					return -(o1.getLastUpdate().compareTo(o2.getLastUpdate()));
-//				}
-//			});
-//		}
-//		return issueThreads;
-//	}
-//
-//	private Date getLastUpdateToIssueThread(String threadId) {
-//		Direction dir = Sort.Direction.DESC;
-//		IssueMessage lastIssueMessage = issueMessageDAO.findFirst1ByThreadId(threadId, new Sort(new org.springframework.data.domain.Sort.Order(dir,
-//				"date")));
-//
-//		if (lastIssueMessage != null) {
-//			return lastIssueMessage.getDate();
-//		}
-//
-//		return null;
-//	}
 
 	@Override
 	public long countOngoingIssueThread() {

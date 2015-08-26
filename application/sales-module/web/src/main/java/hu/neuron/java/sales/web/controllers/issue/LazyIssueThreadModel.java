@@ -1,4 +1,4 @@
-package hu.neuron.java.sales.controller.issue;
+package hu.neuron.java.sales.web.controllers.issue;
 
 import hu.neuron.java.sales.service.IssueThreadServiceRemote;
 import hu.neuron.java.sales.service.vo.IssueThreadVO;
