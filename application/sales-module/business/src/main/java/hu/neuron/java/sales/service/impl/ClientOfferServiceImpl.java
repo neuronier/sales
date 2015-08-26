@@ -1,6 +1,9 @@
 package hu.neuron.java.sales.service.impl;
 
 import hu.neuron.java.core.dao.ClientOfferDAO;
+import hu.neuron.java.core.dao.OfferDAO;
+import hu.neuron.java.core.entity.ClientOffer;
+import hu.neuron.java.core.entity.OfferEntity;
 import hu.neuron.java.sales.service.ClientOfferServiceRemote;
 import hu.neuron.java.sales.service.converter.ClientOfferConverter;
 import hu.neuron.java.sales.service.vo.ClientOfferVO;
@@ -22,10 +25,15 @@ import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 @Remote(ClientOfferServiceRemote.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Interceptors(SpringBeanAutowiringInterceptor.class)
-public class ClientOfferServiceImpl implements ClientOfferServiceRemote,
-		Serializable {
+public class ClientOfferServiceImpl implements ClientOfferServiceRemote, Serializable {
 
 	private static final long serialVersionUID = -181586732036315166L;
+	
+	@Autowired
+	ClientOfferDAO clientOfferDAO;
+	
+	@Autowired
+	OfferDAO offerDAO;
 
 	@Autowired
 	ClientOfferConverter coConv;
@@ -38,19 +46,16 @@ public class ClientOfferServiceImpl implements ClientOfferServiceRemote,
 	public void saveClientOffer(ClientOfferVO purchase) {
 		purchase.createId();
 		coDao.save(coConv.toEntity(purchase));
-		
 	}
 
 	@Override
 	public void updateClientOffer(ClientOfferVO purchase) {
 		saveClientOffer(purchase);
-		
 	}
 
 	@Override
 	public void removeClientOffer(ClientOfferVO purchase) {
 		coDao.delete(coConv.toEntity(purchase));
-		
 	}
 
 	@Override
@@ -67,13 +72,11 @@ public class ClientOfferServiceImpl implements ClientOfferServiceRemote,
 
 	@Override
 	public List<ClientOfferVO> findClientOfferByClientId(String clientId) throws Exception {
-		
 		return coConv.toVO(coDao.findClientOfferByClientId(clientId));
 	}
 
 	@Override
 	public List<ClientOfferVO> findClientOfferByOfferId(String offerId) throws Exception {
-	
 		return coConv.toVO(coDao.findClientOfferByOfferId(offerId));
 	}
 
@@ -82,6 +85,39 @@ public class ClientOfferServiceImpl implements ClientOfferServiceRemote,
 			String offerId) throws Exception {
 		
 		return coConv.toVO(coDao.findClientOfferByClientIdAndOfferId(clientId, offerId));
+	}
+
+	@Override
+	public int findCountByMonth(int year, int month) {
+		return clientOfferDAO.findCountByMonth(year, month);
+	}
+
+	@Override
+	public int findIncomeByMonth(int year, int month) throws Exception {
+		List<ClientOffer> clientOffers = clientOfferDAO.findByMonth(year, month);
+		
+		int sum = 0;
+		for (ClientOffer clientOffer : clientOffers) {
+			OfferEntity offer = offerDAO.findOfferEntityByOfferId(clientOffer.getOfferId());
+			sum += (int)offer.getOfferPrice();
+		}
+		
+		return sum;
+	}
+
+	@Override
+	public int findCountByOfferId(String offerId) {
+		return clientOfferDAO.findCountByOfferId(offerId);
+	}
+
+	@Override
+	public int count() {
+		return (int)clientOfferDAO.count();
+	}
+
+	@Override
+	public int findTotalIncome() {
+		return clientOfferDAO.findTotalIncome();
 	}
 
 }

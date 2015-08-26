@@ -1,8 +1,10 @@
 package hu.neuron.java.sales.service.impl;
 
+import hu.neuron.java.core.dao.ClientOfferDAO;
 import hu.neuron.java.core.dao.OfferDAO;
 import hu.neuron.java.core.dao.OfferProductTypeDAO;
 import hu.neuron.java.core.dao.ProductTypeDAO;
+import hu.neuron.java.core.entity.ClientOffer;
 import hu.neuron.java.core.entity.OfferEntity;
 import hu.neuron.java.core.entity.OfferProductTypeEntity;
 import hu.neuron.java.core.entity.ProductTypeEntity;
@@ -45,6 +47,9 @@ public class OfferServiceImpl implements OfferServiceRemote, Serializable {
 	
 	@Autowired
 	OfferDAO offerDao;
+	
+	@Autowired
+	ClientOfferDAO clientOfferDao;
 	
 	@Autowired
 	OfferProductTypeDAO offerProductTypeDao;
@@ -194,5 +199,19 @@ public class OfferServiceImpl implements OfferServiceRemote, Serializable {
 			OfferProductTypeEntity offerProductType = offerProductTypeDao.findOfferProductTypeEntityByOfferIdAndProductTypeId(offer.getOfferId(), productTypeVO.getProductTypeId());
 			offerProductTypeDao.delete(offerProductType); 
 		}
+	}
+
+	@Override
+	public List<OfferVO> findTopOffers(int limit) throws Exception{
+		List<OfferVO> topOffers = new ArrayList<>();
+		List<ClientOffer> offers = clientOfferDao.findTopOffers(limit);
+		
+		for (ClientOffer clientOffer : offers) {
+			OfferEntity findOfferEntityByOfferId = offerDao.findOfferEntityByOfferId(clientOffer.getOfferId());
+			OfferVO offer = offerConverter.toVO(findOfferEntityByOfferId);
+			topOffers.add(offer);
+		}
+		
+		return topOffers;
 	}
 }

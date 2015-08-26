@@ -6,7 +6,7 @@ INSERT INTO `user` (`email`, `name`, `password`, `phoneNumber`, `userId`, `userN
 ('imolnar@ier-sales.hu', 'Molnár Izabella', '$2a$10$7AQc.LrMT1A5CZ2zsWha7OyECo7xouX7N29Wsgby2SnYzVLVA54W.', '+36302547258', '927c2277-9ba5-492c-91a9-ba93f6ebe338', 'imolnar'),
 ('ajona@ier-sales.hu', 'Jóna András', '$2a$10$PNHUYf8YzT/0gEgPZXdFRuPEJubfasll5jUj.gNbvE3PgKx7y788G', '+36248963214', '8fbd25a4-b255-4008-a6b7-45a9477f49b4', 'ajona'),
 ('dkardos@ier-sales.hu', 'Kardos Dóra', '$2a$10$hYJ0Xr8/XJJxmD0kTUDG1..n.4W265RxUYfCnNevQdRkGKKeUEhxu', '+36214785236', 'eda70261-3894-49a0-ac81-37b882974e3b', 'dkardos'),
-('gszabados@ier-sales.hu', 'Szabados Gerg?', '$2a$10$lLAL07sv.AmqlugeNQ70oOhLVBPGiDzg5au1yRvQUx/hvNMO.BQgG', '+36728512574', '5edf4224-4dc9-4a2e-8fcd-81782381cd04', 'gszabados'),
+('gszabados@ier-sales.hu', 'Szabados Gergő', '$2a$10$lLAL07sv.AmqlugeNQ70oOhLVBPGiDzg5au1yRvQUx/hvNMO.BQgG', '+36728512574', '5edf4224-4dc9-4a2e-8fcd-81782381cd04', 'gszabados'),
 ('bbalogh@ier-sales.hu', 'Balogh Boglárka', '$2a$10$uZmTPj2mSiZ0qXDwBba2D.9dlce57PgaDdQKm3FGmbpVifalKmoN6', '+36547893214', 'c7789bda-b8df-44d8-b9ce-863a5cab70bc', 'bbalogh'),
 ('abodi@ier-sales.hu', 'Bódi Ágota', '$2a$10$t5g4d7ahPZrsOpxKK5sX1Os5FJ29vlZBHfguZjXyeUK/wZXPnWCQa', '+36201451397', 'aa78dd8d-83dc-4a30-8beb-8233a60116e7', 'abodi');
 
