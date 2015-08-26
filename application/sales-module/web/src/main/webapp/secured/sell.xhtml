@@ -10,10 +10,10 @@
 	<ui:define name="header">#{out.sell_title}</ui:define>
 	<ui:define name="head-extra">
 		<style>
-			.ui-wizard-step-title {
-				font-size: 90% !important;
-			}
-		</style>
+.ui-wizard-step-title {
+	font-size: 90% !important;
+}
+</style>
 	</ui:define>
 	<ui:define name="content">
 
@@ -21,144 +21,173 @@
 			<div class="ui-grid-row">
 				<div class="ui-grid-col-6">
 					<p:fieldset legend="#{out.offer_panel}">
-						
+
 						<h:panelGrid columns="3" cellpadding="5">
-						 	<p:outputLabel value="#{out.quick_offers}" for="quickOffers" />
-					        <p:autoComplete id="quickOffers" minQueryLength="3" effect="fade"
-					        	value="#{offerAutoCompleteView.offer}"
-					        	completeMethod="#{offerAutoCompleteView.completeText}" />
-					          <p:commandButton process="selectedTable" update=":selectedTable" value="Add" />
-						 </h:panelGrid>
-					
+							<p:outputLabel value="#{out.quick_offers}" for="quickOffers" />
+							<p:autoComplete id="quickOffers" minQueryLength="3" effect="fade"
+								value="#{offerAutoCompleteView.offer}"
+								completeMethod="#{offerAutoCompleteView.completeText}" />
+							<p:commandButton process="selectedTable" update=":selectedTable"
+								value="Add" />
+						</h:panelGrid>
+
 						<p:outputLabel value="Available Offers:" for="availableTable"
-							style="margin-left:7px;"/>
-						<p:dataTable var="availableOffer"  value="#{sellController.lazySellModel}" 
-						 	widgetVar="availableOffers" id="availableTable" lazy="true"
-                         	paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         	paginator="true" rows="5" rowsPerPageTemplate="5,10"
-                         	style="margin-top: 10px; margin-bottom: 10px;">
-                         	
-                         	 <f:facet name="header">
-					            <p:outputPanel>
-					                <h:outputText value="Select the offers You want to sell" />
-					            </p:outputPanel>
-					        </f:facet>
+							style="margin-left:7px;" />
+						<p:dataTable var="availableOffer"
+							value="#{sellController.lazySellModel}"
+							widgetVar="availableOffers" id="availableTable" lazy="true"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							paginator="true" rows="5" rowsPerPageTemplate="5,10"
+							style="margin-top: 10px; margin-bottom: 10px;">
+
+							<f:facet name="header">
+								<p:outputPanel>
+									<h:outputText value="Select the offers You want to sell" />
+								</p:outputPanel>
+							</f:facet>
 
 							<p:column filterBy="#{availableOffer.name}" headerText="Name">
-					            <h:outputText value="#{availableOffer.name}" />
-					        </p:column>
-					 
-					        <p:column filterBy="#{availableOffer.offerPrice}" headerText="Price">
-					            <h:outputText value="#{availableOffer.offerPrice}">
-					                <f:convertNumber currencySymbol="$" type="currency"/>
-					            </h:outputText>
-					        </p:column>
-					        
-					        <p:column headerText="Add" style="width:32px; text-align: center">
-					             <p:commandButton update=" :selectedTable"
-					             	 title="Add" icon="ui-icon-circle-plus" 
-					             	 	actionListener="#{sellController.addToSelectedOffers}">
-					                <f:setPropertyActionListener value="#{availableOffer}" 
-					                	target="#{sellController.selectedAvailableOffer}" />
-					            </p:commandButton>
-					        </p:column>
-					        
-					    </p:dataTable>
-						 
-						 <p:separator style="height:5px;"/>
-						 <p:outputLabel value="Selected Offers:" for="selectedTable"
-							style="margin-left:7px;"/>
-						 <p:dataTable id="selectedTable" var="offerWebVO" value="#{sellController.selectedOffers}" 
-							 selectionMode="single" selection="#{sellController.selectedWebOffer}" 
-							 rowKey="#{offerWebVO.offerId}" style="margin-top: 10px;">
-					        <f:facet name="header">
+								<h:outputText value="#{availableOffer.name}" />
+							</p:column>
+
+							<p:column filterBy="#{availableOffer.offerPrice}"
+								headerText="Price">
+								<h:outputText value="#{availableOffer.offerPrice}">
+									<f:convertNumber currencySymbol="$" type="currency" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Add" style="width:32px; text-align: center">
+								<p:commandButton update=" :selectedTable" title="Add"
+									icon="ui-icon-circle-plus"
+									actionListener="#{sellController.addToSelectedOffers}">
+									<f:setPropertyActionListener value="#{availableOffer}"
+										target="#{sellController.selectedAvailableOffer}" />
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+
+						<p:separator style="height:5px;" />
+						<p:outputLabel value="Selected Offers:" for="selectedTable"
+							style="margin-left:7px;" />
+						<p:dataTable id="selectedTable" var="offerWebVO"
+							value="#{sellController.selectedOffers}" selectionMode="single"
+							selection="#{sellController.selectedWebOffer}"
+							rowKey="#{offerWebVO.offerId}" style="margin-top: 10px;">
+							<f:facet name="header">
 					            The offers that are going to be sold
 					        </f:facet>
-					        <p:column headerText="Name">
-					            <h:outputText value="#{offerWebVO.offerName}" />
-					        </p:column>
-					        <p:column headerText="Price">
-					            <h:outputText value="#{offerWebVO.offerPrice}" />
-					        </p:column>
-					        <p:column headerText="Quantity">
-					        	<p:cellEditor>
-					        		 <f:facet name="output"><h:outputText value="#{offerWebVO.quantity}" /></f:facet>
-                  					<f:facet name="input"> <p:spinner id="basic" value="#{offerWebVO.quantity}" /></f:facet>
-					            </p:cellEditor>
-					        </p:column>
-					        <f:facet name="footer">
-					            <p:commandButton process="selectedTable" update=":selectedTable" value="Remove" />
-					        </f:facet>
-					    </p:dataTable>
+							<p:column headerText="Name">
+								<h:outputText value="#{offerWebVO.offerName}" />
+							</p:column>
+							<p:column headerText="Price">
+								<h:outputText value="#{offerWebVO.offerPrice}" />
+							</p:column>
+							<p:column headerText="Quantity">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{offerWebVO.quantity}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:spinner id="basic" value="#{offerWebVO.quantity}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<f:facet name="footer">
+								<p:commandButton process="selectedTable" update=":selectedTable"
+									value="Remove" />
+							</f:facet>
+						</p:dataTable>
 					</p:fieldset>
 				</div>
 				<div class="ui-grid-col-6">
-					<p:fieldset legend="#{out.client_panel}">
-					<div>
-						<h:panelGrid columns="4" cellpadding="5" style="display:inline-block;">
-							<p:outputLabel value="Find Customer" for="quickClient" />
-							<p:autoComplete id="quickClient" minQueryLength="3" effect="fade"
-						    	value="#{offerAutoCompleteView.offer}"
-						   		completeMethod="#{offerAutoCompleteView.completeText}" />
-							<p:commandButton process="selectedTable" update=":selectedTable" value="OK"/>
-						</h:panelGrid>
-						<p:commandButton process="selectedTable" update=":selectedTable" value="Register New" style="margin-top:8px; margin-bottom:10px; float:right;"/>
-						</div>
-						<p:panel header="Customer Details"  style="clear:right;">
-							<div class="ui-grid ui-grid-responsive" style="margin-bottom:15px;">
-								<div class="ui-grid-row">
-									<div class="ui-grid-col-6">
-										<p:outputLabel value="Name:" for="nameInput" style="display: inline-block; min-width:110px;"/>
-										<p:inputText id="nameInput" disabled="true"
-											placeholder="Bean kell a Kontrollerbe"/>
-									</div>
-									<div class="ui-grid-col-6">
-										<p:outputLabel value="Username:" for="userNameInput" style="display: inline-block; min-width:110px;"/>
-										<p:inputText id="userNameInput" disabled="true"
-											placeholder="Bean kell a Kontrollerbe"/>
+
+
+					<h:form id="customerForm">
+						<p:fieldset legend="#{out.client_panel}">
+							<div>
+								<h:panelGrid columns="4" cellpadding="5"
+									style="display:inline-block;">
+									<p:outputLabel value="Find Customer" for="quickClient" />
+									<p:autoComplete id="quickClient" size="30"
+										value="#{offerAutoCompleteView.offer}"
+										completeMethod="#{offerAutoCompleteView.completeText}" />
+									<p:commandButton update="customerForm" value="OK"
+										actionListener="#{offerAutoCompleteView.completeClientData}" />
+								</h:panelGrid>
+								<p:commandButton update=":customerForm" value="Register New"
+									style="margin-top:8px; margin-bottom:10px; float:right;" />
+							</div>
+							<p:panel id="customerDetails" header="Customer Details"
+								style="clear:right;">
+								<div class="ui-grid ui-grid-responsive"
+									style="margin-bottom: 15px;">
+									<div class="ui-grid-row">
+										<div class="ui-grid-col-6">
+											<p:outputLabel value="Name:" for="nameInput"
+												style="display: inline-block; min-width:110px;" />
+											<p:inputText id="nameInput" disabled="true" size="30"
+												value="#{offerAutoCompleteView.selectedClient.name}" />
+										</div>
+										<div class="ui-grid-col-6">
+											<p:outputLabel value="Username:" for="userNameInput"
+												style="display: inline-block; min-width:110px;" />
+											<p:inputText id="userNameInput" disabled="true" size="30"
+												value="#{offerAutoCompleteView.selectedClient.userName}" />
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="ui-grid ui-grid-responsive" style="margin-bottom:15px;">
-								<div class="ui-grid-row">
-									<div class="ui-grid-col-6">
-										<p:outputLabel value="Password:" for="passwordInput" style="display: inline-block; min-width:110px;"/>
-										<p:inputText id="passwordInput" disabled="true"
-											placeholder="Bean kell a Kontrollerbe"/>
-									</div>
-									<div class="ui-grid-col-6">
-										<p:outputLabel value="Email:" for="emailInput" style="display: inline-block; min-width:110px;"/>
-										<p:inputText id="emailInput" disabled="true"
-											placeholder="Bean kell a Kontrollerbe"/>
-									</div>
-								</div>
-							</div>
-							<div class="ui-grid ui-grid-responsive" style="margin-bottom:15px;">
-								<div class="ui-grid-row">
-									<div class="ui-grid-col-6">
-										<p:outputLabel value="Phone number:" for="phoneNumberInput" style="display: inline-block; min-width:110px;"/>
-										<p:inputText id="phoneNumberInput" disabled="true"
-											placeholder="Bean kell a Kontrollerbe"/>
-									</div>
-									<div class="ui-grid-col-6">
-										<p:outputLabel value="Registration:" for="registrationDateInput" style="display: inline-block; min-width:110px;"/>
-										<p:inputText id="registrationDateInput" disabled="true"
-											placeholder="Bean kell a Kontrollerbe"/>
+								<div class="ui-grid ui-grid-responsive"
+									style="margin-bottom: 15px;">
+									<div class="ui-grid-row">
+										<div class="ui-grid-col-6">
+											<p:outputLabel value="Registration:"
+												for="registrationDateInput"
+												style="display: inline-block; min-width:110px;" />
+											<p:inputText id="registrationDateInput" disabled="true" size="30"
+												value="#{offerAutoCompleteView.selectedClient.registrationDate}" />
+										</div>
+										<div class="ui-grid-col-6">
+											<p:outputLabel value="Email:" for="emailInput"
+												style="display: inline-block; min-width:110px;" />
+											<p:inputText id="emailInput" disabled="true" size="30"
+												value="#{offerAutoCompleteView.selectedClient.emailAddress}" />
+										</div>
 									</div>
 								</div>
-							</div>
-						</p:panel>
-					</p:fieldset>
-					<div class="ui-grid ui-grid-responsive" style="margin-left:2px; margin-top:5px;">
+								<div class="ui-grid ui-grid-responsive"
+									style="margin-bottom: 15px;">
+									<div class="ui-grid-row">
+										<div class="ui-grid-col-6">
+											<p:outputLabel value="Phone number:" for="phoneNumberInput"
+												style="display: inline-block; min-width:110px;" />
+											<p:inputText id="phoneNumberInput" disabled="true" size="30"
+												value="#{offerAutoCompleteView.selectedClient.phoneNumber}" />
+										</div>
+
+									</div>
+								</div>
+							</p:panel>
+						</p:fieldset>
+					</h:form>
+
+
+					<div class="ui-grid ui-grid-responsive"
+						style="margin-left: 2px; margin-top: 5px;">
 						<div class="ui-grid-row">
 							<div class="ui-grid-col-12">
 								<p:panel>
-								<h4 style="display:inline; margin-right: 5px;">Sell the selected offers:</h4>
-									<p:commandButton process="selectedTable" update=":selectedTable" value="Finish" />
+									<h4 style="display: inline; margin-right: 5px;">Sell the
+										selected offers:</h4>
+									<p:commandButton process="selectedTable"
+										update=":selectedTable" value="Finish" />
 								</p:panel>
 							</div>
 						</div>
 					</div>
+
+
 				</div>
 			</div>
 		</div>
