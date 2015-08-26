@@ -60,19 +60,60 @@
 
 							</p:dataTable>
 							<p:panelGrid id="btnPanel" columns="2">
-								<p:commandButton id="editCustomer" value="#{out.recipes_table_EditButton}"></p:commandButton>
-								<p:commandButton id="removeCustomer" value="#{out.recipes_table_deleteButton}"
+								<p:commandButton id="editCustomer"
+									value="#{out.recipes_table_EditButton}"
+									update=":customerForm:customerDT,:customerForm:btnPanel,:customerForm,:editCustomerDialogForm"
+									disabled="#{customerController.selectedClient == null}"
+									oncomplete="PF('editCustomerDialog').show()"></p:commandButton>
+								<p:commandButton id="removeCustomer"
+									value="#{out.recipes_table_deleteButton}"
 									disabled="#{customerController.selectedClient == null}"
 									actionListener="#{customerController.removeCustomer}"
 									update=":customerForm:customerDT,:customerForm:btnPanel">
 									<p:confirm header="#{out.confirm}"
-										message="#{out.customer_confirmdelcustomer}" icon="ui-icon-alert" />
+										message="#{out.customer_confirmdelcustomer}"
+										icon="ui-icon-alert" />
 								</p:commandButton>
 							</p:panelGrid>
 						</p:fieldset>
 					</h:form></td>
 			</tr>
 		</table>
+
+		<p:dialog widgetVar="editCustomerDialog" header="#{out.customer_data}"
+			resizable="false" modal="true" appendTo="@(body)">
+			<h:form id="editCustomerDialogForm">
+				<p:panelGrid columns="2">
+					<p:outputLabel value="#{out.user_name}: " />
+					<p:inputText value="#{customerController.selectedClient.name}" />
+
+					<p:outputLabel value="#{out.user_user_name}: " />
+					<p:inputText value="#{customerController.selectedClient.userName}" />
+
+					<p:outputLabel value="#{out.user_email}: " />
+					<p:inputText
+						value="#{customerController.selectedClient.emailAddress}"
+						validatorMessage="#{out.user_invalid_email_format}">
+						<f:validateRegex
+							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+					</p:inputText>
+
+					<p:outputLabel value="#{out.user_phone_number}: " />
+					<p:column>
+						<p:inputText id="phoneNumber"
+							value="#{customerController.selectedClient.phoneNumber}"
+							validatorMessage="#{out.user_invalid_phone_number_format}">
+							<f:validateRegex pattern="^\+(\d{8,13})$" />
+						</p:inputText>
+						<p:watermark for="phoneNumber" value="+36301231234" id="watermark" />
+					</p:column>
+				</p:panelGrid>
+
+				<p:commandButton value="#{out.user_save}"
+					actionListener="#{customerController.editCustomer}"
+					update=":customerForm" oncomplete="PF('editCustomerDialog').hide()" />
+			</h:form>
+		</p:dialog>
 
 		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 			<div style="display: block; margin: 0px auto;">
