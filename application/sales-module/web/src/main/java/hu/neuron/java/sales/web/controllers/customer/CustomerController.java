@@ -40,16 +40,29 @@ public class CustomerController implements Serializable {
 						+ selectedClient.getName());
 		context.addMessage(null, msg);
 	}
-	
-	public void removeCustomer(){
+
+	public void removeCustomer() {
 		clientService.removeClient(selectedClient.getClientId());
-		
+
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 				LocalizationsUtils.getText("user_info", context),
 				LocalizationsUtils.getText("customer_deleted", context)
 						+ " \n " + selectedClient.getName());
 		context.addMessage(null, msg);
+		selectedClient = null;
+	}
+
+	public void editCustomer() {
+		clientService.updateClient(selectedClient);
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				LocalizationsUtils.getText("user_info", context),
+				LocalizationsUtils.getText("customer_updated", context)
+						+ " \n " + selectedClient.getName());
+		context.addMessage(null, msg);
+		
 		selectedClient = null;
 	}
 

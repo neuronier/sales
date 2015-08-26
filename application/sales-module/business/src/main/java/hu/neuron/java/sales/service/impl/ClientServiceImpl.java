@@ -118,4 +118,9 @@ public class ClientServiceImpl implements ClientServiceRemote, Serializable{
 		return (int) clientDAO.count();
 	}
 
+	@Override
+	public void updateClient(ClientVO client) {
+		clientDAO.save(clientConverter.toEntity(client));
+	}
+
 }

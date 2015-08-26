@@ -19,6 +19,8 @@ public interface ClientServiceRemote {
 	
 	public void removeClient(String clientId);
 	
+	public void updateClient(ClientVO client);
+	
 	public List<ClientVO> findAll();
 
 	public int findNumberOfClientsBeforeDate(Date date);
