@@ -37,5 +37,7 @@ public interface OfferServiceRemote {
 	public void removeAllProductTypeFromOffer(OfferVO offer);
 	
 	public int findQuantityToOfferProductType(OfferVO offer, ProductTypeVO productType);
+	
+	public List<OfferVO> findTopOffers(int limit) throws Exception;
 }
 

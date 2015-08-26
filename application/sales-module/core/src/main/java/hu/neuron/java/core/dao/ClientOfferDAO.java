@@ -1,9 +1,9 @@
 package hu.neuron.java.core.dao;
 
+import hu.neuron.java.core.entity.ClientOffer;
+
 import java.util.Date;
 import java.util.List;
-
-import hu.neuron.java.core.entity.ClientOffer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +24,18 @@ public interface ClientOfferDAO extends JpaRepository<ClientOffer, Long>{
 	
 	ClientOffer findClientOfferByClientIdAndDate(String clientId, Date date)throws Exception;
 	
+	@Query("select COUNT(co) from ClientOffer co where YEAR(co.date) = ?1 AND MONTH(co.date) = ?2")
+	int findCountByMonth(int year, int month);
+	
+	@Query("select co from ClientOffer co where YEAR(co.date) = ?1 AND MONTH(co.date) = ?2")
+	List<ClientOffer> findByMonth(int year, int month);
+
+	@Query(value = "select * from clientoffer group by offerId order by count(*) desc limit ?1", nativeQuery = true)
+	List<ClientOffer> findTopOffers(int limit);
+
+	@Query("select COUNT(co) from ClientOffer co where co.offerId = ?1")
+	int findCountByOfferId(String offerId);
+	
+	@Query(value = "select IFNULL(SUM(o.offerPrice),0) from clientoffer co INNER JOIN offer o ON co.offerId = o.offerId;", nativeQuery = true)
+	int findTotalIncome();
 }

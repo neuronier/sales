@@ -2,10 +2,12 @@ package hu.neuron.java.sales.web.controllers.report;
 
 import java.util.Date;
 
-public class AdminRegNumberElement {
+public class ReportElement {
 
+	private String name;
 	private Date date;
 	private int number;
+	private int value;
 
 	public Date getDate() {
 		return date;
@@ -22,5 +24,20 @@ public class AdminRegNumberElement {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
 }

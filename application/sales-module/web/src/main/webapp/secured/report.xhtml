@@ -5,125 +5,182 @@
 	<ui:define name="pageTitle">#{out.admin_title}</ui:define>
 	<ui:define name="header">#{out.admin_title}</ui:define>
 	<ui:define name="head-extra">
+		<style>
+.ui-tabs .ui-tabs-panel {
+	padding: 0px !important;
+	border: transparent;
+}
 
+#reportForm\:innerSalesTabView\:topOfferGrid tr {
+	vertical-align: top !important;
+	border: transparent;
+}
+
+.intervalGrid tr {
+	border: transparent;
+}
+</style>
 	</ui:define>
 
 	<ui:define name="content">
 		<h:form id="reportForm">
-			<p:panel id="report" header="Report">
+			<p:panel id="report" header="#{out.report_report}">
 
-				<p:tabView id="tabView" dynamic="true" cache="false">
+				<p:tabView orientation="left" id="innerSalesTabView" dynamic="true" cache="false">
 					<p:ajax event="tabChange" listener="#{reportController.onTabChange}" />
 
-					<p:tab title="Sales" id="tabSales">
+					<!-- ######################################Total product############################################################### -->
 
-						<p:tabView orientation="left" id="innerSalesTabView" dynamic="true" cache="false">
-							<p:ajax event="tabChange" listener="#{reportController.salesOnTabChange}" />
+					<p:tab title="#{out.report_monthly_product_report}" id="monthlyProductSales">
+						<p:panelGrid columns="5" styleClass="intervalGrid">
+							<p:outputLabel for="productFrom" value="#{out.report_from}: " />
+							<p:calendar id="productFrom" value="#{reportController.reportFrom}" />
 
-							<p:tab title="Product" id="product">
-								<p:panelGrid columns="5">
-									<p:outputLabel for="productFrom" value="From: " />
-									<p:calendar id="productFrom" value="#{reportController.reportFrom}" />
+							<p:outputLabel for="productTo" value="#{out.report_to}: " />
+							<p:calendar id="productTo" value="#{reportController.reportTo}" />
 
-									<p:outputLabel for="productTo" value="To: " />
-									<p:calendar id="productTo" value="#{reportController.reportTo}" />
+							<p:commandButton value="#{out.report_generate}" action="#{reportController.productReportGenerateBtnAction()}" update="@form" />
+						</p:panelGrid>
+						<p:spacer height="20" />
+						<p:dataTable value="">
+							<p:columns value="#{reportController.monthlySalesDetailsList}" var="element">
+								<f:facet name="header">
+									<h:outputText value="#{element.date}">
+										<f:convertDateTime pattern="yyyy.MM" />
+									</h:outputText>
+								</f:facet>
+								<h:outputText value="#{element.number}" />
+							</p:columns>
+						</p:dataTable>
 
-									<p:commandButton value="Generate" action="#{reportController.productReportGenerateBtnAction()}" update="@form" />
-								</p:panelGrid>
+						<p:spacer height="20" />
 
-
-							</p:tab>
-
-							<p:tab title="Income" id="income">
-
-							</p:tab>
-
-							<p:tab title="Top offers" id="topOffers">
-
-							</p:tab>
-						</p:tabView>
+						<p:chart type="bar" model="#{reportController.monthlySalesBarChart}" style="height:300px" />
 					</p:tab>
 
-					<p:tab title="Sales point" id="tabSalesPoint">
-						<p:tabView orientation="left">
-							<p:tab title="Product">
+					<!-- ##########################################Total income################################################################## -->
 
-							</p:tab>
+					<p:tab title="#{out.report_monthly_income_report}" id="monthlyIncome">
+						<p:panelGrid columns="5" styleClass="intervalGrid">
+							<p:outputLabel for="incomeFrom" value="#{out.report_from}: " />
+							<p:calendar id="incomeFrom" value="#{reportController.reportFrom}" />
 
-							<p:tab title="Income">
+							<p:outputLabel for="incomeTo" value="#{out.report_to}: " />
+							<p:calendar id="incomeTo" value="#{reportController.reportTo}" />
 
-							</p:tab>
+							<p:commandButton value="#{out.report_generate}" action="#{reportController.incomeReportGenerateBtnAction()}" update="@form" />
+						</p:panelGrid>
+						<p:spacer height="20" />
+						<p:dataTable value="">
+							<p:columns value="#{reportController.monthlyIncomeDetailsList}" var="element">
+								<f:facet name="header">
+									<h:outputText value="#{element.date}">
+										<f:convertDateTime pattern="yyyy.MM" />
+									</h:outputText>
+								</f:facet>
+								<h:outputText value="#{element.number}" />
+							</p:columns>
+						</p:dataTable>
 
-							<p:tab title="Top offers">
+						<p:spacer height="20" />
 
-							</p:tab>
-						</p:tabView>
+						<p:chart type="bar" model="#{reportController.monthlyIncomeBarChart}" style="height:300px" />
 					</p:tab>
 
-					<p:tab title="Administraition" id="tabAdministration">
+					<!-- ###########################################Top offers########################################################################## -->
 
-						<p:tabView id="innerTabView" orientation="left" dynamic="true" cache="false">
-							<p:ajax event="tabChange" listener="#{reportController.adminOnTabChange}" />
-
-							<p:tab title="Number of users" id="adminUserNumber">
-
-								<p:panelGrid columns="5">
-									<p:outputLabel for="adminFrom" value="From: " />
-									<p:calendar id="adminFrom" value="#{reportController.reportFrom}" />
-
-									<p:outputLabel for="adminTo" value="To: " />
-									<p:calendar id="adminTo" value="#{reportController.reportTo}" />
-
-									<p:commandButton value="Generate" action="#{reportController.adminUserNumGenerateBtnAction()}" update="@form" />
-
-								</p:panelGrid>
-
-								<p:dataTable value="">
-									<p:columns value="#{reportController.adminUserRegNumberDetailsList}" var="element">
+					<p:tab title="#{out.report_top_offers}" id="topOffers">
+						<p:panelGrid style="width: 100%;" id="topOfferGrid">
+							<p:row>
+								<p:column style="width:40%; padding-top: 15px;">
+									<p:dataTable value="#{reportController.topOffersDetailsList}" var="element" rowIndexVar="index">
 										<f:facet name="header">
-											<h:outputText value="#{element.date}">
-												<f:convertDateTime pattern="yyyy.MM" />
-											</h:outputText>
+											<h:outputText value="#{out.report_top_offers}" />
 										</f:facet>
-										<h:outputText value="#{element.number}" />
-									</p:columns>
-								</p:dataTable>
-
-								<p:chart type="line" model="#{reportController.adminUserNumberLineChart}" style="height:300px;" />
-							</p:tab>
-
-							<p:tab title="Number of clients" id="adminClientNumber">
-								<p:panelGrid columns="5">
-									<p:outputLabel for="adminClientFrom" value="From: " />
-									<p:calendar id="adminClientFrom" value="#{reportController.reportFrom}" />
-
-									<p:outputLabel for="adminClientTo" value="To: " />
-									<p:calendar id="adminClientTo" value="#{reportController.reportTo}" />
-
-									<p:commandButton value="Generate" action="#{reportController.adminClientNumGenerateBtnAction()}" update="@form" />
-
-								</p:panelGrid>
-
-								<p:dataTable value="">
-									<p:columns value="#{reportController.adminClientRegNumberDetailsList}" var="element">
-										<f:facet name="header">
-											<h:outputText value="#{element.date}">
-												<f:convertDateTime pattern="yyyy.MM" />
-											</h:outputText>
-										</f:facet>
-										<h:outputText value="#{element.number}" />
-									</p:columns>
-								</p:dataTable>
-
-								<p:chart type="line" model="#{reportController.adminClientNumberLineChart}" style="height:300px;" />
-
-							</p:tab>
-
-							<p:tab title="Issue" id="adminIssue">
-
-							</p:tab>
-						</p:tabView>
+										<p:column headerText="#" width="5%" >
+											<h:outputText value="#{index + 1}." />
+										</p:column>
+										<p:column headerText="#{out.report_name}" width="60%">
+											<h:outputText value="#{element.name}" />
+										</p:column>
+										<p:column headerText="#{out.report_order_times}" width="20%">
+											<h:outputText value="#{element.number}" />
+										</p:column>
+										<p:column headerText="#{out.report_income} (HUF)" width="15%">
+											<h:outputText value="#{element.value}" />
+										</p:column>
+									</p:dataTable>
+								</p:column>
+								<p:column style="width:60%; text-align:center">
+									<p:chart type="donut" model="#{reportController.topOffersPieChart}" style="width:550px;height:400px" />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
 					</p:tab>
+
+					<!-- #########################################Number of users##################################################################### -->
+
+					<p:tab title="#{out.report_users_report}" id="adminUserNumber">
+
+						<p:panelGrid columns="5" styleClass="intervalGrid">
+							<p:outputLabel for="adminFrom" value="#{out.report_from}: " />
+							<p:calendar id="adminFrom" value="#{reportController.reportFrom}" />
+
+							<p:outputLabel for="adminTo" value="#{out.report_to}: " />
+							<p:calendar id="adminTo" value="#{reportController.reportTo}" />
+
+							<p:commandButton value="#{out.report_generate}" action="#{reportController.adminUserNumGenerateBtnAction()}" update="@form" />
+
+						</p:panelGrid>
+						<p:spacer height="20" />
+						<p:dataTable value="">
+							<p:columns value="#{reportController.adminUserRegNumberDetailsList}" var="element">
+								<f:facet name="header">
+									<h:outputText value="#{element.date}">
+										<f:convertDateTime pattern="yyyy.MM" />
+									</h:outputText>
+								</f:facet>
+								<h:outputText value="#{element.number}" />
+							</p:columns>
+						</p:dataTable>
+
+						<p:spacer height="20" />
+
+						<p:chart type="line" model="#{reportController.adminUserNumberLineChart}" style="height:300px;" />
+					</p:tab>
+
+					<!-- ######################################Number of clients################################################################## -->
+
+					<p:tab title="#{out.report_client_report}" id="adminClientNumber">
+						<p:panelGrid columns="5" styleClass="intervalGrid">
+							<p:outputLabel for="adminClientFrom" value="#{out.report_from}: " />
+							<p:calendar id="adminClientFrom" value="#{reportController.reportFrom}" />
+
+							<p:outputLabel for="adminClientTo" value="#{out.report_to}: " />
+							<p:calendar id="adminClientTo" value="#{reportController.reportTo}" />
+
+							<p:commandButton value="#{out.report_generate}" action="#{reportController.adminClientNumGenerateBtnAction()}" update="@form" />
+
+						</p:panelGrid>
+						<p:spacer height="20" />
+						<p:dataTable value="">
+							<p:columns value="#{reportController.adminClientRegNumberDetailsList}" var="element">
+								<f:facet name="header">
+									<h:outputText value="#{element.date}">
+										<f:convertDateTime pattern="yyyy.MM" />
+									</h:outputText>
+								</f:facet>
+								<h:outputText value="#{element.number}" />
+							</p:columns>
+						</p:dataTable>
+
+						<p:spacer height="20" />
+
+						<p:chart type="line" model="#{reportController.adminClientNumberLineChart}" style="height:300px;" />
+
+					</p:tab>
+
+					<!-- ######################################################################################################################## -->
 				</p:tabView>
 			</p:panel>
 		</h:form>

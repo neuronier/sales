@@ -20,4 +20,15 @@ public interface ClientOfferServiceRemote {
 	public List<ClientOfferVO> findClientOfferByClientId(String clientID);
 	
 	public List<ClientOfferVO> findClientOfferByOfferId(String offerID);
+	
+	public int findCountByMonth(int year, int month);
+	
+	public int findIncomeByMonth(int year, int month) throws Exception;
+	
+	public int findCountByOfferId(String offerId);
+	
+	public int count();
+	
+	public int findTotalIncome();
+
 }
