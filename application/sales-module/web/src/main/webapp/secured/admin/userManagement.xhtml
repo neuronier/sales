@@ -2,8 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" template="/templates/masterLayout.xhtml"
 	xmlns:sec="http://www.springframework.org/security/tags">
 
-	<ui:define name="pageTitle">#{out.admin_title}</ui:define>
-	<ui:define name="header">#{out.admin_title}</ui:define>
+	<ui:define name="pageTitle">#{out.user_user_management}</ui:define>
 	<ui:define name="head-extra">
 		<style>
 .dataTableContainer tr {
@@ -12,12 +11,12 @@
 
 #userDetailsCell {
 	width: 70%;
-	padding: 40px;
+	padding: 20px;
 }
 
 #roleDetailsCell {
 	width: 30%;
-	padding: 40px;
+	padding: 20px;
 }
 </style>
 	</ui:define>
@@ -29,64 +28,66 @@
 		<table class="dataTableContainer">
 			<tr>
 				<td id="userDetailsCell"><h:form id="userForm">
+						<p:fieldset legend="#{out.user_users}">
 
-						<p:dataTable id="userDT" value="#{userController.lazyUserModel}" var="user" selectionMode="single" selection="#{userController.selectedUser}"
-							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-							rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" rows="10" emptyMessage="#{out.empty_message}">
+							<p:dataTable id="userDT" value="#{userController.lazyUserModel}" var="user" selectionMode="single" selection="#{userController.selectedUser}"
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+								rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" rows="10" emptyMessage="#{out.empty_message}">
 
-							<p:ajax event="rowSelect" update=":userForm:btnPanel" />
+								<p:ajax event="rowSelect" update=":userForm:btnPanel" />
 
-							<p:column headerText="#{out.user_name}" sortBy="#{user.name}" filterBy="#{user.name}" filterStyle="width:80%;">
-								<h:outputText value="#{user.name}" />
-							</p:column>
+								<p:column headerText="#{out.user_name}" sortBy="#{user.name}" filterBy="#{user.name}" filterStyle="width:80%;">
+									<h:outputText value="#{user.name}" />
+								</p:column>
 
-							<p:column headerText="#{out.user_user_name}" sortBy="#{user.userName}" filterBy="#{user.userName}" filterStyle="width:80%;">
-								<h:outputText value="#{user.userName}" />
-							</p:column>
+								<p:column headerText="#{out.user_user_name}" sortBy="#{user.userName}" filterBy="#{user.userName}" filterStyle="width:80%;">
+									<h:outputText value="#{user.userName}" />
+								</p:column>
 
-							<p:column headerText="#{out.user_email}" sortBy="#{user.email}" filterBy="#{user.email}" filterStyle="width:80%;">
-								<h:outputText value="#{user.email}" />
-							</p:column>
+								<p:column headerText="#{out.user_email}" sortBy="#{user.email}" filterBy="#{user.email}" filterStyle="width:80%;">
+									<h:outputText value="#{user.email}" />
+								</p:column>
 
-							<p:column headerText="#{out.user_phone_number}" filterBy="#{user.phoneNumber}" filterStyle="width:80%;">
-								<h:outputText value="#{user.phoneNumber}" />
-							</p:column>
+								<p:column headerText="#{out.user_phone_number}" filterBy="#{user.phoneNumber}" filterStyle="width:80%;">
+									<h:outputText value="#{user.phoneNumber}" />
+								</p:column>
 
-						</p:dataTable>
+							</p:dataTable>
 
-						<p:panelGrid id="btnPanel" columns="3">
-							<p:commandButton value="#{out.user_add_new}" action="#{userController.addNewUserBtnAction}" update=":addNewUserDialogForm"
-								oncomplete="PF('addNewUserDialog').show()" />
-							<p:commandButton value="#{out.user_edit}" action="#{userController.editUserBtnAction}" update=":editUserDialogForm"
-								onclick="PF('editUserDialog').show()" disabled="#{userController.selectedUser == null}" />
-							<p:commandButton value="#{out.user_remove}" actionListener="#{userController.removeUser}" update="userDT"
-								disabled="#{userController.selectedUser == null}" />
-						</p:panelGrid>
-
+							<p:panelGrid id="btnPanel" columns="3">
+								<p:commandButton value="#{out.user_add_new}" action="#{userController.addNewUserBtnAction}" update=":addNewUserDialogForm"
+									oncomplete="PF('addNewUserDialog').show()" />
+								<p:commandButton value="#{out.user_edit}" action="#{userController.editUserBtnAction}" update=":editUserDialogForm"
+									onclick="PF('editUserDialog').show()" disabled="#{userController.selectedUser == null}" />
+								<p:commandButton value="#{out.user_remove}" actionListener="#{userController.removeUser}" update="userDT"
+									disabled="#{userController.selectedUser == null}" />
+							</p:panelGrid>
+						</p:fieldset>
 					</h:form></td>
 				<td id="roleDetailsCell"><h:form id="roleForm">
+						<p:fieldset legend="#{out.user_roles}">
 
-						<p:dataTable id="roleDT" value="#{roleController.lazyRoleModel}" var="role" selectionMode="single" selection="#{roleController.selectedRole}"
-							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-							rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" rows="10" emptyMessage="#{out.empty_message}">
+							<p:dataTable id="roleDT" value="#{roleController.lazyRoleModel}" var="role" selectionMode="single" selection="#{roleController.selectedRole}"
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+								rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" rows="10" emptyMessage="#{out.empty_message}">
 
-							<p:ajax event="rowSelect" update=":roleForm:roleBtnPanel" />
+								<p:ajax event="rowSelect" update=":roleForm:roleBtnPanel" />
 
-							<p:column headerText="#{out.user_role}" sortBy="#{role.name}" filterBy="#{role.name}" filterStyle="width:80%;">
-								<h:outputText value="#{role.name}" />
-							</p:column>
+								<p:column headerText="#{out.user_role}" sortBy="#{role.name}" filterBy="#{role.name}" filterStyle="width:80%;">
+									<h:outputText value="#{role.name}" />
+								</p:column>
 
-						</p:dataTable>
+							</p:dataTable>
 
-						<p:panelGrid id="roleBtnPanel" columns="3">
-							<p:commandButton value="#{out.user_add_new}" action="#{roleController.addNewRoleBtnAction}" update=":addNewRoleDialogForm"
-								oncomplete="PF('addNewRoleDialog').show()" />
-							<p:commandButton value="#{out.user_edit}" update=":editRoleDialogForm" onclick="PF('editRoleDialog').show()"
-								disabled="#{roleController.selectedRole == null}" />
-							<p:commandButton value="#{out.user_remove}" actionListener="#{roleController.removeRole}" update="roleDT"
-								disabled="#{roleController.selectedRole == null}" />
-						</p:panelGrid>
-
+							<p:panelGrid id="roleBtnPanel" columns="3">
+								<p:commandButton value="#{out.user_add_new}" action="#{roleController.addNewRoleBtnAction}" update=":addNewRoleDialogForm"
+									oncomplete="PF('addNewRoleDialog').show()" />
+								<p:commandButton value="#{out.user_edit}" update=":editRoleDialogForm" onclick="PF('editRoleDialog').show()"
+									disabled="#{roleController.selectedRole == null}" />
+								<p:commandButton value="#{out.user_remove}" actionListener="#{roleController.removeRole}" update="roleDT"
+									disabled="#{roleController.selectedRole == null}" />
+							</p:panelGrid>
+						</p:fieldset>
 					</h:form></td>
 			</tr>
 
