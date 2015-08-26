@@ -138,7 +138,7 @@
 					<p:inputText value="#{userController.selectedUser.name}" />
 
 					<p:outputLabel value="#{out.user_user_name}: " />
-					<p:inputText value="#{userController.selectedUser.userName}" />
+					<p:inputText value="#{userController.selectedUser.userName}" readonly="true" disabled="true"/>
 
 					<p:outputLabel value="#{out.user_email}: " />
 					<p:inputText value="#{userController.selectedUser.email}" validatorMessage="#{out.user_invalid_email_format}">

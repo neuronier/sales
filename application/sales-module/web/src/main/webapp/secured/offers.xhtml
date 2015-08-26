@@ -166,7 +166,7 @@
 
 											<p:ajax event="rowSelect"
 												listener="#{offerController.onOfferProductTypeRowSelect}"
-												update=":form2:removeButton" />
+												update=":form2:addButton, :form2:removeButton" />
 											<p:column headerText="Name">
 												<h:outputText value="#{offerProductType.name}" />
 											</p:column>
