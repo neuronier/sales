@@ -22,7 +22,7 @@ public interface ClientOfferDAO extends JpaRepository<ClientOffer, Long>{
 	@Query("select co from ClientOffer co where co.clientId=?1 and co.offerId=?2")
 	List<ClientOffer> findClientOfferByClientIdAndOfferId(String clientId, String offerId)throws Exception;
 	
-	ClientOffer findClientOfferByClientIdAndDate(String clientId, Date date)throws Exception;
+	List<ClientOffer> findClientOfferByClientIdAndDate(String clientId, Date date)throws Exception;
 	
 	@Query("select COUNT(co) from ClientOffer co where YEAR(co.date) = ?1 AND MONTH(co.date) = ?2")
 	int findCountByMonth(int year, int month);

@@ -1,27 +1,24 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ClientOfferVO implements Serializable{
 	
 	private static final long serialVersionUID = 8536677031967485872L;
+	
+	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
-	private String purchaseId;
+	private String clientOfferId;
 
 	private ClientVO client;
 
-	private String offerId;
+	private OfferVO offer;
 	
-	private Date purchaseDate;
-
-	public String getPurchaseId() {
-		return purchaseId;
-	}
-
-	public void setPurchaseId(String purchaseId) {
-		this.purchaseId = purchaseId;
-	}
+	private Date date;
+	
+	public ClientOfferVO(){}
 
 	public ClientVO getClient() {
 		return client;
@@ -30,20 +27,37 @@ public class ClientOfferVO implements Serializable{
 	public void setClient(ClientVO client) {
 		this.client = client;
 	}
-
-	public Date getPurchaseDate() {
-		return purchaseDate;
+	
+	public String getClientOfferId() {
+		return clientOfferId;
 	}
 
-	public void setPurchaseDate(Date purchaseDate) {
-		this.purchaseDate = purchaseDate;
+	public void setClientOfferId(String clientOfferId) {
+		this.clientOfferId = clientOfferId;
 	}
 
-	public String getOfferId() {
-		return offerId;
+	public OfferVO getOffer() {
+		return offer;
 	}
 
-	public void setOfferId(String offerId) {
-		this.offerId = offerId;
+	public void setOffer(OfferVO offer) {
+		this.offer = offer;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public void createId(){
+		if(date == null) {
+			throw new NullPointerException("No Date was set for a new ClientOfferVO so no ID was generated for it");
+		} else {
+			String systime = format.format(date);
+			setClientOfferId("PURCHASE_" + systime);
+		}
 	}
 }

@@ -3,6 +3,7 @@ package hu.neuron.java.sales.service.test;
 import hu.neuron.java.sales.service.OrderServiceRemote;
 import hu.neuron.java.sales.service.vo.OrderVO;
 import hu.neuron.java.sales.service.vo.ProductTypeVO;
+import hu.neuron.java.sales.service.vo.WarehouseVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,7 @@ public class OrderServiceTest {
 		vo.setOrderId("orderId");
 		vo.setStatus("status");
 		vo.setQuantity("10");
+		vo.setWarehouse(new WarehouseVO());
 		
 		orderService.saveOrder(vo);
 		

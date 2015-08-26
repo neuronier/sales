@@ -7,19 +7,17 @@ import hu.neuron.java.sales.service.vo.ClientOfferVO;
 
 public interface ClientOfferServiceRemote {
 	
-	public void saveClientOffer(ClientOfferVO purchase);
+	public void saveClientOffer(ClientOfferVO purchase) throws Exception;
 	
-	public void updateClientOffer(ClientOfferVO purchase);
+	public void updateClientOffer(ClientOfferVO purchase) throws Exception;
 	
-	public void removeClientOffer(ClientOfferVO purchase);
+	public void removeClientOffer(ClientOfferVO purchase) throws Exception;
 	
-	public List<ClientOfferVO> findAll();
+	public List<ClientOfferVO> findAll() throws Exception;
 	
-	public ClientOfferVO findClientOfferByClientIdAndDate(String clientID, Date date);
+	public List<ClientOfferVO> findClientOfferByClientIdAndDate(String clientId, Date date) throws Exception;
 	
-	public List<ClientOfferVO> findClientOfferByClientId(String clientID);
-	
-	public List<ClientOfferVO> findClientOfferByOfferId(String offerID);
+	public List<ClientOfferVO> findClientOfferByClientIdAndOfferId(String clientId, String offerId) throws Exception;
 	
 	public int findCountByMonth(int year, int month);
 	
@@ -31,4 +29,7 @@ public interface ClientOfferServiceRemote {
 	
 	public int findTotalIncome();
 
+	public List<ClientOfferVO> findClientOfferByClientId(String clientId) throws Exception;
+	
+	public List<ClientOfferVO> findClientOfferByOfferId(String offerId) throws Exception;
 }

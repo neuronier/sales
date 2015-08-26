@@ -5,6 +5,7 @@ import hu.neuron.java.core.dao.OfferDAO;
 import hu.neuron.java.core.entity.ClientOffer;
 import hu.neuron.java.core.entity.OfferEntity;
 import hu.neuron.java.sales.service.ClientOfferServiceRemote;
+import hu.neuron.java.sales.service.converter.ClientOfferConverter;
 import hu.neuron.java.sales.service.vo.ClientOfferVO;
 
 import java.io.Serializable;
@@ -26,54 +27,64 @@ import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 @Interceptors(SpringBeanAutowiringInterceptor.class)
 public class ClientOfferServiceImpl implements ClientOfferServiceRemote, Serializable {
 
+	private static final long serialVersionUID = -181586732036315166L;
+	
 	@Autowired
 	ClientOfferDAO clientOfferDAO;
 	
 	@Autowired
 	OfferDAO offerDAO;
 
-	private static final long serialVersionUID = -181586732036315166L;
-
+	@Autowired
+	ClientOfferConverter coConv;
+	
+	@Autowired
+	ClientOfferDAO coDao;
+	
+	
 	@Override
 	public void saveClientOffer(ClientOfferVO purchase) {
-		// TODO Auto-generated method stub
-
+		purchase.createId();
+		coDao.save(coConv.toEntity(purchase));
 	}
 
 	@Override
 	public void updateClientOffer(ClientOfferVO purchase) {
-		// TODO Auto-generated method stub
-
+		saveClientOffer(purchase);
 	}
 
 	@Override
 	public void removeClientOffer(ClientOfferVO purchase) {
-		// TODO Auto-generated method stub
-
+		coDao.delete(coConv.toEntity(purchase));
 	}
 
 	@Override
 	public List<ClientOfferVO> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return coConv.toVO(coDao.findAll());
 	}
 
 	@Override
-	public ClientOfferVO findClientOfferByClientIdAndDate(String clientID, Date date) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ClientOfferVO> findClientOfferByClientIdAndDate(String clientId,
+			Date date) throws Exception {
+		
+		return coConv.toVO(coDao.findClientOfferByClientIdAndDate(clientId, date));
 	}
 
 	@Override
-	public List<ClientOfferVO> findClientOfferByClientId(String clientID) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ClientOfferVO> findClientOfferByClientId(String clientId) throws Exception {
+		return coConv.toVO(coDao.findClientOfferByClientId(clientId));
 	}
 
 	@Override
-	public List<ClientOfferVO> findClientOfferByOfferId(String offerID) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ClientOfferVO> findClientOfferByOfferId(String offerId) throws Exception {
+		return coConv.toVO(coDao.findClientOfferByOfferId(offerId));
+	}
+
+	@Override
+	public List<ClientOfferVO> findClientOfferByClientIdAndOfferId(String clientId,
+			String offerId) throws Exception {
+		
+		return coConv.toVO(coDao.findClientOfferByClientIdAndOfferId(clientId, offerId));
 	}
 
 	@Override

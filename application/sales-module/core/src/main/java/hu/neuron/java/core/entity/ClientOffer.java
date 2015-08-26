@@ -1,8 +1,6 @@
 package hu.neuron.java.core.entity;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -11,8 +9,6 @@ import javax.persistence.Table;
 public class ClientOffer extends Base {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 	
 	private String clientOfferId;
 
@@ -30,11 +26,6 @@ public class ClientOffer extends Base {
 
 	public void setClientOfferId(String clientOfferId) {
 		this.clientOfferId = clientOfferId;
-	}
-	
-	public void createId(){
-		String systime = format.format(new Date(System.currentTimeMillis()));
-		setClientOfferId("PURCHASE_" + systime);
 	}
 
 	public String getClientId() {

@@ -165,7 +165,9 @@ public class SalesPointController implements Serializable {
 			addressService.removeAddressById(addr.getAddressId());
 			List<UserVO> allUsers = userService.findAll();
 			for(UserVO user : allUsers){
-				if(user.getSalesPoint().getSalePointId().equals(selectedSalesPoint.getSalePointId())){
+				if(user.getSalesPoint() != null &&
+						user.getSalesPoint().getSalePointId().equals
+							(selectedSalesPoint.getSalePointId())){
 					user.setSalesPoint(null);
 					userService.updateUser(user);
 				}
@@ -182,6 +184,7 @@ public class SalesPointController implements Serializable {
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
 							"Deleted: "));
+			e.printStackTrace();
 		}
 	}
 
