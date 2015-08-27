@@ -13,9 +13,9 @@ public interface AddressServiceRemote {
 	public List<AddressVO> getAddresses(int i, int pageSize,
 			String sortField, int dir, String filter, String filterColumnName);
 
-	public void saveAddress(AddressVO address);
+	public AddressVO saveAddress(AddressVO address);
 
-	public void updateAddress(AddressVO address);
+	public AddressVO updateAddress(AddressVO address);
 
 	public void removeAddress(AddressVO address);
 

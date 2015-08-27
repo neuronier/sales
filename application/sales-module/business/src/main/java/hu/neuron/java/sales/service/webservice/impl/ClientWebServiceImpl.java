@@ -1,8 +1,11 @@
 package hu.neuron.java.sales.service.webservice.impl;
 
+import hu.neuron.java.sales.service.AddressServiceRemote;
 import hu.neuron.java.sales.service.ClientServiceRemote;
+import hu.neuron.java.sales.service.vo.AddressVO;
 import hu.neuron.java.sales.service.vo.ClientVO;
 import hu.neuron.java.sales.service.webservice.ClientWebService;
+import hu.neuron.java.sales.service.webservice.vo.AddressWebServiceVO;
 import hu.neuron.java.sales.service.webservice.vo.ClientListWebServiceVO;
 import hu.neuron.java.sales.service.webservice.vo.ClientWebServiceVO;
 
@@ -36,7 +39,7 @@ public class ClientWebServiceImpl implements ClientWebService {
 	Mapper mapper;
 
 	ClientServiceRemote clientService;
-	//OrderServiceRemote orderService;
+	AddressServiceRemote addressService;
 
 	public void initEJB() {
 		try {
@@ -60,7 +63,7 @@ public class ClientWebServiceImpl implements ClientWebService {
 			ctx = new InitialContext(env);
 			System.out.println("ctx  = " + ctx);
 			clientService = (ClientServiceRemote) ctx.lookup("ClientService#hu.neuron.java.sales.service.ClientServiceRemote");
-			//orderService = (OrderServiceRemote) ctx.lookup("OrderServiceRemote#hu.neuron.java.sales.service.OrderServiceRemote");
+			addressService = (AddressServiceRemote) ctx.lookup("AddressServiceRemote#hu.neuron.java.sales.service.AddressServiceRemote");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
@@ -85,28 +88,8 @@ public class ClientWebServiceImpl implements ClientWebService {
 		return mapper.map(clientService.findByClientId(clientId), ClientWebServiceVO.class);
 	}
 
-//	@Override
-//	public OrderListWebServiceVO getOrderListByClientIdWebMethod(String clientId) {
-//		initEJB();
-//		List<OrderVO> orderVOs;
-//		OrderListWebServiceVO rv = new OrderListWebServiceVO();
-//		try {
-//			orderVOs = orderService.findOrdersByClientId(clientId);
-//			rv.setList(new ArrayList<OrderWebServiceVO>());
-//			for (OrderVO orderVO : orderVOs) {
-//				rv.getList().add(mapper.map(orderVO, OrderWebServiceVO.class));
-//			}
-//
-//			return rv;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return rv;
-//		}
-//		
-//	}
-
 	@Override
-	public ClientWebServiceVO createClientWebMethod(String name, String userName, String password, String email, String phoneNumber) {
+	public ClientWebServiceVO createClientWebMethod(String name, String userName, String password, String email, String phoneNumber, String addressId) {
 		initEJB();
 		
 		ClientVO newClient = new ClientVO();
@@ -123,7 +106,7 @@ public class ClientWebServiceImpl implements ClientWebService {
 	}
 
 	@Override
-	public ClientWebServiceVO modifyClientByClientIdWebMethod(String clientId, String name, String userName, String password, String email,	String phoneNumber) {
+	public ClientWebServiceVO modifyClientByClientIdWebMethod(String clientId, String name, String userName, String password, String email,	String phoneNumber, String addressId) {
 		initEJB();
 		
 		ClientVO client = clientService.findByClientId(clientId);
@@ -141,6 +124,41 @@ public class ClientWebServiceImpl implements ClientWebService {
 	public void removeClientByClientIdWebMethod(String clientId) {
 		initEJB();
 		clientService.removeClient(clientId);
+	}
+
+	@Override
+	public AddressWebServiceVO createAddressWebMethod(String zipCode, String city, String street, String houseNumber) {
+		initEJB();
+		
+		AddressVO address = new AddressVO();
+		address.setCity(city);
+		address.setHouseNumber(houseNumber);
+		address.setStreet(street);
+		address.setZipCode(zipCode);
+		
+		address = addressService.saveAddress(address);
+		return mapper.map(address, AddressWebServiceVO.class);
+	}
+
+	@Override
+	public AddressWebServiceVO modifyAddressWebMethod(String addressId, String zipCode, String city, String street, String houseNumber) {
+		initEJB();
+		
+		AddressVO address;
+		try {
+			address = addressService.findAddressByAddressId(addressId);
+			address.setCity(city);
+			address.setHouseNumber(houseNumber);
+			address.setStreet(street);
+			address.setZipCode(zipCode);
+			
+			address = addressService.updateAddress(address);
+			return mapper.map(address, AddressWebServiceVO.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }

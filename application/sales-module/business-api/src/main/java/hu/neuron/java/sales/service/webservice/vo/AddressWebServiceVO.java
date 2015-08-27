@@ -1,23 +1,23 @@
-package hu.neuron.java.sales.service.vo;
+package hu.neuron.java.sales.service.webservice.vo;
 
 import java.io.Serializable;
-import java.util.UUID;
 
-public class AddressVO implements Serializable{
+import javax.xml.bind.annotation.XmlRootElement;
 
-	private static final long serialVersionUID = 4037424070007872953L;
-	
+@XmlRootElement(name = "Address")
+public class AddressWebServiceVO implements Serializable {
+
+	private static final long serialVersionUID = -3976991698427414101L;
+
 	private String zipCode;
-	
+
 	private String city;
-	
+
 	private String street;
-	
+
 	private String houseNumber;
-	
+
 	private String addressId;
-	
-	public AddressVO() {}
 
 	public String getZipCode() {
 		return zipCode;
@@ -55,19 +55,8 @@ public class AddressVO implements Serializable{
 		return addressId;
 	}
 
-	public void setAddressId(String addresId) {
-		this.addressId = addresId;
-	}
-	
-	public void generateAddressId(){
-		this.addressId = UUID.randomUUID().toString();
+	public void setAddressId(String addressId) {
+		this.addressId = addressId;
 	}
 
-	@Override
-	public String toString() {
-		return zipCode + ", " + city + " " + street + " " + houseNumber + ".";
-	}
-	
-	
-	
 }

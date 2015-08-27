@@ -21,6 +21,8 @@ public class Client extends Base {
 	private String password;
 
 	private String emailAddress;
+	
+	private String addressId;
 
 	private String phoneNumber;
 	
@@ -87,4 +89,11 @@ public class Client extends Base {
 		this.registrationDate = registrationDate;
 	}
 
+	public String getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(String addressId) {
+		this.addressId = addressId;
+	}
 }

@@ -24,6 +24,8 @@ public class ClientVO implements Serializable {
 	
 	private Date registrationDate;
 	
+	private AddressVO address;
+	
 	public ClientVO(){
 		super();
 		setClientId(UUID.randomUUID().toString());
@@ -96,6 +98,14 @@ public class ClientVO implements Serializable {
 		this.registrationDate = registrationDate;
 	}
 
+	public AddressVO getAddress() {
+		return address;
+	}
+	
+	public void setAddress(AddressVO address) {
+		this.address = address;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
