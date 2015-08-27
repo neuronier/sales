@@ -16,6 +16,8 @@ public class ClientOffer extends Base {
 
 	private String offerId;
 	
+	private Long quantity;
+	
 	private Date date;
 	
 	public ClientOffer(){}
@@ -50,5 +52,13 @@ public class ClientOffer extends Base {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public Long getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
 	}
 }

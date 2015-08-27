@@ -83,7 +83,7 @@
 			<dependency>
 				<groupId>org.primefaces</groupId>
 				<artifactId>primefaces</artifactId>
-				<version>5.0</version>
+				<version>5.1</version>
 			</dependency>
 			<!-- HSQL -->
 			<dependency>
@@ -101,7 +101,7 @@
 
 			<dependency>
 				<groupId>org.primefaces.themes</groupId>
-				<artifactId>dot-luv</artifactId>
+				<artifactId>redmond</artifactId>
 				<version>1.0.10</version>
 			</dependency>
 

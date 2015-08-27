@@ -104,7 +104,7 @@
 
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
-			<artifactId>dot-luv</artifactId>
+			<artifactId>redmond</artifactId>
 		</dependency>
 
 		<dependency>
