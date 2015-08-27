@@ -1,5 +1,12 @@
 package hu.neuron.java.sales.service.impl;
 
+import hu.neuron.java.sales.service.ProductTypeServiceRemote;
+import hu.neuron.java.sales.service.ProductTypeWebClient;
+import hu.neuron.java.sales.service.vo.ProductTypeVO;
+import hu.neuron.java.warehouse.whweb.web.service.WareWebService;
+import hu.neuron.java.warehouse.whweb.web.service.WareWebServiceImplService;
+import hu.neuron.java.warehouse.whweb.web.service.WareWebVO;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -14,14 +21,6 @@ import javax.xml.namespace.QName;
 
 import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
-import hu.neuron.java.sales.service.ProductTypeServiceRemote;
-import hu.neuron.java.sales.service.ProductTypeWebClient;
-import hu.neuron.java.sales.service.RoleServiceRemote;
-import hu.neuron.java.sales.service.vo.ProductTypeVO;
-import hu.neuron.java.warehouse.whweb.web.service.WareWebService;
-import hu.neuron.java.warehouse.whweb.web.service.WareWebServiceImplService;
-import hu.neuron.java.warehouse.whweb.web.service.WareWebVO;
-
 
 @Stateless(name = "ProductTypeWebClient", mappedName = "ProductTypeWebClient")
 @Remote(ProductTypeWebClient.class)
@@ -34,7 +33,7 @@ public class ProductTypeWebClientImpl implements ProductTypeWebClient {
 	ProductTypeServiceRemote productTypeService;
 
 	@Override
-	public void refressh() {
+	public void refreshProductTypes() {
 		URL wsdl = null;
 		try {
 			wsdl = new URL(

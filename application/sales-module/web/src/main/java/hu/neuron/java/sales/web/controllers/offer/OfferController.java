@@ -73,8 +73,8 @@ public class OfferController implements Serializable {
 		return selectOneMenuOfferProductTypeList;
 	}
 	
-	public void refressh(){
-		productTypeWebClient.refressh();
+	public void refresshProductsList(){
+		productTypeWebClient.refreshProductTypes();
 	}
 
 	public void setSelectOneMenuOfferProductTypeList(
