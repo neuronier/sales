@@ -78,9 +78,8 @@ public class AddressServiceImpl implements AddressServiceRemote, Serializable {
 	}
 
 	@Override
-	public void saveAddress(AddressVO address) {
-		addressDao.save(adConv.toEntity(address));
-
+	public AddressVO saveAddress(AddressVO address) {
+		return adConv.toVO(addressDao.save(adConv.toEntity(address)));
 	}
 
 	@Override
@@ -94,13 +93,13 @@ public class AddressServiceImpl implements AddressServiceRemote, Serializable {
 	}
 
 	@Override
-	public void updateAddress(AddressVO address) {
+	public AddressVO updateAddress(AddressVO address) {
 		try {
 			addressDao.delete(addressDao.findAddressByAddressId(address.getAddressId()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		saveAddress(address);
+		return saveAddress(address);
 	}
 
 	@Override

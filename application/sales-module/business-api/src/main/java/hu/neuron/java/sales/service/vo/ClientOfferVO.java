@@ -81,4 +81,5 @@ public class ClientOfferVO implements Serializable{
 		this.id = id;
 	}
 	
+	
 }

@@ -1,5 +1,9 @@
 package hu.neuron.java.sales.service.converter;
 
+import hu.neuron.java.core.dao.OfferDAO;
+import hu.neuron.java.core.entity.ClientOffer;
+import hu.neuron.java.sales.service.vo.ClientOfferVO;
+
 import java.util.ArrayList;
 import java.util.List;
 

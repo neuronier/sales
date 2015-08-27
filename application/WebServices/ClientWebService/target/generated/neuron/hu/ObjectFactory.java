@@ -24,18 +24,23 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _RemoveClientByClientId_QNAME = new QName("http://hu.neuron", "removeClientByClientId");
     private final static QName _GetClientList_QNAME = new QName("http://hu.neuron", "getClientList");
-    private final static QName _ModifyClientByClientIdResponse_QNAME = new QName("http://hu.neuron", "modifyClientByClientIdResponse");
-    private final static QName _CreateClientResponse_QNAME = new QName("http://hu.neuron", "createClientResponse");
+    private final static QName _RemoveClientByClientId_QNAME = new QName("http://hu.neuron", "removeClientByClientId");
     private final static QName _ClientList_QNAME = new QName("http://hu.neuron", "ClientList");
     private final static QName _GetClientByClientId_QNAME = new QName("http://hu.neuron", "getClientByClientId");
     private final static QName _GetClientByClientIdResponse_QNAME = new QName("http://hu.neuron", "getClientByClientIdResponse");
-    private final static QName _GetClientListResponse_QNAME = new QName("http://hu.neuron", "getClientListResponse");
-    private final static QName _CreateClient_QNAME = new QName("http://hu.neuron", "createClient");
-    private final static QName _RemoveClientByClientIdResponse_QNAME = new QName("http://hu.neuron", "removeClientByClientIdResponse");
-    private final static QName _Client_QNAME = new QName("http://hu.neuron", "Client");
+    private final static QName _ModifyAddressByAddressId_QNAME = new QName("http://hu.neuron", "modifyAddressByAddressId");
+    private final static QName _ModifyAddressByAddressIdResponse_QNAME = new QName("http://hu.neuron", "modifyAddressByAddressIdResponse");
     private final static QName _ModifyClientByClientId_QNAME = new QName("http://hu.neuron", "modifyClientByClientId");
+    private final static QName _ModifyClientByClientIdResponse_QNAME = new QName("http://hu.neuron", "modifyClientByClientIdResponse");
+    private final static QName _CreateClientResponse_QNAME = new QName("http://hu.neuron", "createClientResponse");
+    private final static QName _Address_QNAME = new QName("http://hu.neuron", "Address");
+    private final static QName _CreateAddressResponse_QNAME = new QName("http://hu.neuron", "createAddressResponse");
+    private final static QName _CreateAddress_QNAME = new QName("http://hu.neuron", "createAddress");
+    private final static QName _GetClientListResponse_QNAME = new QName("http://hu.neuron", "getClientListResponse");
+    private final static QName _RemoveClientByClientIdResponse_QNAME = new QName("http://hu.neuron", "removeClientByClientIdResponse");
+    private final static QName _CreateClient_QNAME = new QName("http://hu.neuron", "createClient");
+    private final static QName _Client_QNAME = new QName("http://hu.neuron", "Client");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: neuron.hu
@@ -45,11 +50,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetClientByClientId }
+     * Create an instance of {@link GetClientList }
      * 
      */
-    public GetClientByClientId createGetClientByClientId() {
-        return new GetClientByClientId();
+    public GetClientList createGetClientList() {
+        return new GetClientList();
+    }
+
+    /**
+     * Create an instance of {@link ModifyAddressByAddressId }
+     * 
+     */
+    public ModifyAddressByAddressId createModifyAddressByAddressId() {
+        return new ModifyAddressByAddressId();
+    }
+
+    /**
+     * Create an instance of {@link AddressVO }
+     * 
+     */
+    public AddressVO createAddressVO() {
+        return new AddressVO();
     }
 
     /**
@@ -61,11 +82,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ClientListWebServiceVO }
+     * Create an instance of {@link CreateAddress }
      * 
      */
-    public ClientListWebServiceVO createClientListWebServiceVO() {
-        return new ClientListWebServiceVO();
+    public CreateAddress createCreateAddress() {
+        return new CreateAddress();
+    }
+
+    /**
+     * Create an instance of {@link AddressWebServiceVO }
+     * 
+     */
+    public AddressWebServiceVO createAddressWebServiceVO() {
+        return new AddressWebServiceVO();
     }
 
     /**
@@ -77,11 +106,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetClientList }
+     * Create an instance of {@link GetClientByClientId }
      * 
      */
-    public GetClientList createGetClientList() {
-        return new GetClientList();
+    public GetClientByClientId createGetClientByClientId() {
+        return new GetClientByClientId();
+    }
+
+    /**
+     * Create an instance of {@link CreateClientResponse }
+     * 
+     */
+    public CreateClientResponse createCreateClientResponse() {
+        return new CreateClientResponse();
     }
 
     /**
@@ -109,6 +146,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link RemoveClientByClientIdResponse }
+     * 
+     */
+    public RemoveClientByClientIdResponse createRemoveClientByClientIdResponse() {
+        return new RemoveClientByClientIdResponse();
+    }
+
+    /**
      * Create an instance of {@link ClientWebServiceVO }
      * 
      */
@@ -117,19 +162,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CreateClientResponse }
+     * Create an instance of {@link ClientListWebServiceVO }
      * 
      */
-    public CreateClientResponse createCreateClientResponse() {
-        return new CreateClientResponse();
-    }
-
-    /**
-     * Create an instance of {@link RemoveClientByClientIdResponse }
-     * 
-     */
-    public RemoveClientByClientIdResponse createRemoveClientByClientIdResponse() {
-        return new RemoveClientByClientIdResponse();
+    public ClientListWebServiceVO createClientListWebServiceVO() {
+        return new ClientListWebServiceVO();
     }
 
     /**
@@ -141,12 +178,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RemoveClientByClientId }{@code >}}
+     * Create an instance of {@link ModifyAddressByAddressIdResponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://hu.neuron", name = "removeClientByClientId")
-    public JAXBElement<RemoveClientByClientId> createRemoveClientByClientId(RemoveClientByClientId value) {
-        return new JAXBElement<RemoveClientByClientId>(_RemoveClientByClientId_QNAME, RemoveClientByClientId.class, null, value);
+    public ModifyAddressByAddressIdResponse createModifyAddressByAddressIdResponse() {
+        return new ModifyAddressByAddressIdResponse();
+    }
+
+    /**
+     * Create an instance of {@link CreateAddressResponse }
+     * 
+     */
+    public CreateAddressResponse createCreateAddressResponse() {
+        return new CreateAddressResponse();
     }
 
     /**
@@ -159,21 +203,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ModifyClientByClientIdResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link RemoveClientByClientId }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://hu.neuron", name = "modifyClientByClientIdResponse")
-    public JAXBElement<ModifyClientByClientIdResponse> createModifyClientByClientIdResponse(ModifyClientByClientIdResponse value) {
-        return new JAXBElement<ModifyClientByClientIdResponse>(_ModifyClientByClientIdResponse_QNAME, ModifyClientByClientIdResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link CreateClientResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://hu.neuron", name = "createClientResponse")
-    public JAXBElement<CreateClientResponse> createCreateClientResponse(CreateClientResponse value) {
-        return new JAXBElement<CreateClientResponse>(_CreateClientResponse_QNAME, CreateClientResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://hu.neuron", name = "removeClientByClientId")
+    public JAXBElement<RemoveClientByClientId> createRemoveClientByClientId(RemoveClientByClientId value) {
+        return new JAXBElement<RemoveClientByClientId>(_RemoveClientByClientId_QNAME, RemoveClientByClientId.class, null, value);
     }
 
     /**
@@ -204,21 +239,84 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ModifyAddressByAddressId }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://hu.neuron", name = "modifyAddressByAddressId")
+    public JAXBElement<ModifyAddressByAddressId> createModifyAddressByAddressId(ModifyAddressByAddressId value) {
+        return new JAXBElement<ModifyAddressByAddressId>(_ModifyAddressByAddressId_QNAME, ModifyAddressByAddressId.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ModifyAddressByAddressIdResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://hu.neuron", name = "modifyAddressByAddressIdResponse")
+    public JAXBElement<ModifyAddressByAddressIdResponse> createModifyAddressByAddressIdResponse(ModifyAddressByAddressIdResponse value) {
+        return new JAXBElement<ModifyAddressByAddressIdResponse>(_ModifyAddressByAddressIdResponse_QNAME, ModifyAddressByAddressIdResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ModifyClientByClientId }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://hu.neuron", name = "modifyClientByClientId")
+    public JAXBElement<ModifyClientByClientId> createModifyClientByClientId(ModifyClientByClientId value) {
+        return new JAXBElement<ModifyClientByClientId>(_ModifyClientByClientId_QNAME, ModifyClientByClientId.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ModifyClientByClientIdResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://hu.neuron", name = "modifyClientByClientIdResponse")
+    public JAXBElement<ModifyClientByClientIdResponse> createModifyClientByClientIdResponse(ModifyClientByClientIdResponse value) {
+        return new JAXBElement<ModifyClientByClientIdResponse>(_ModifyClientByClientIdResponse_QNAME, ModifyClientByClientIdResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateClientResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://hu.neuron", name = "createClientResponse")
+    public JAXBElement<CreateClientResponse> createCreateClientResponse(CreateClientResponse value) {
+        return new JAXBElement<CreateClientResponse>(_CreateClientResponse_QNAME, CreateClientResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AddressWebServiceVO }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://hu.neuron", name = "Address")
+    public JAXBElement<AddressWebServiceVO> createAddress(AddressWebServiceVO value) {
+        return new JAXBElement<AddressWebServiceVO>(_Address_QNAME, AddressWebServiceVO.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateAddressResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://hu.neuron", name = "createAddressResponse")
+    public JAXBElement<CreateAddressResponse> createCreateAddressResponse(CreateAddressResponse value) {
+        return new JAXBElement<CreateAddressResponse>(_CreateAddressResponse_QNAME, CreateAddressResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateAddress }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://hu.neuron", name = "createAddress")
+    public JAXBElement<CreateAddress> createCreateAddress(CreateAddress value) {
+        return new JAXBElement<CreateAddress>(_CreateAddress_QNAME, CreateAddress.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetClientListResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://hu.neuron", name = "getClientListResponse")
     public JAXBElement<GetClientListResponse> createGetClientListResponse(GetClientListResponse value) {
         return new JAXBElement<GetClientListResponse>(_GetClientListResponse_QNAME, GetClientListResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link CreateClient }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://hu.neuron", name = "createClient")
-    public JAXBElement<CreateClient> createCreateClient(CreateClient value) {
-        return new JAXBElement<CreateClient>(_CreateClient_QNAME, CreateClient.class, null, value);
     }
 
     /**
@@ -231,21 +329,21 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateClient }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://hu.neuron", name = "createClient")
+    public JAXBElement<CreateClient> createCreateClient(CreateClient value) {
+        return new JAXBElement<CreateClient>(_CreateClient_QNAME, CreateClient.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ClientWebServiceVO }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://hu.neuron", name = "Client")
     public JAXBElement<ClientWebServiceVO> createClient(ClientWebServiceVO value) {
         return new JAXBElement<ClientWebServiceVO>(_Client_QNAME, ClientWebServiceVO.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ModifyClientByClientId }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://hu.neuron", name = "modifyClientByClientId")
-    public JAXBElement<ModifyClientByClientId> createModifyClientByClientId(ModifyClientByClientId value) {
-        return new JAXBElement<ModifyClientByClientId>(_ModifyClientByClientId_QNAME, ModifyClientByClientId.class, null, value);
     }
 
 }

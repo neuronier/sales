@@ -1,5 +1,7 @@
 package hu.neuron.java.sales.service.webservice.vo;
 
+import hu.neuron.java.sales.service.vo.AddressVO;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,6 +20,8 @@ public class ClientWebServiceVO implements Serializable{
 
 	private String password;
 
+	private AddressVO address;
+	
 	private String emailAddress;
 
 	private String phoneNumber;
@@ -80,4 +84,11 @@ public class ClientWebServiceVO implements Serializable{
 		this.registrationDate = registrationDate;
 	}
 
+	public AddressVO getAddress() {
+		return address;
+	}
+
+	public void setAddress(AddressVO address) {
+		this.address = address;
+	}
 }

@@ -1,5 +1,6 @@
 package hu.neuron.java.sales.service.converter;
 
+import hu.neuron.java.core.dao.AddressDAO;
 import hu.neuron.java.core.entity.Client;
 import hu.neuron.java.sales.service.vo.ClientVO;
 
@@ -23,6 +24,12 @@ public class ClientConverter {
 	@Qualifier("mapper")
 	Mapper mapper;
 
+	@Autowired
+	AddressConverter addressConverter;
+	
+	@Autowired
+	AddressDAO addressDao;
+	
 	@PostConstruct
 	void init() {
 
@@ -33,7 +40,16 @@ public class ClientConverter {
 		if (dto == null) {
 			return null;
 		}
-		return mapper.map(dto, ClientVO.class);
+		
+		ClientVO client = mapper.map(dto, ClientVO.class);
+		
+		try {
+			client.setAddress(addressConverter.toVO(addressDao.findAddressByAddressId(dto.getAddressId())));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return client;
 	}
 
 	public Client toEntity(ClientVO vo) {
