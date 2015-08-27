@@ -12,6 +12,8 @@ public class OfferWebVO implements Serializable{
 
 	private String offerName;
 	
+	private OfferVO offerVo;
+	
 	private Long offerPrice;
 	
 	private Long quantity;
@@ -23,6 +25,7 @@ public class OfferWebVO implements Serializable{
 			setOfferId(offer.getOfferId());
 			setOfferName(offer.getName());
 			setOfferPrice(offer.getOfferPrice());
+			setOfferVo(offer);
 		}
 		quantity = 1L;
 	}
@@ -57,6 +60,14 @@ public class OfferWebVO implements Serializable{
 
 	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
+	}
+
+	public OfferVO getOfferVo() {
+		return offerVo;
+	}
+
+	public void setOfferVo(OfferVO offerVo) {
+		this.offerVo = offerVo;
 	}
 	
 	

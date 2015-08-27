@@ -17,7 +17,7 @@ public class OfferAutoCompleteView {
 
 	private String offer;
 
-	private ClientVO selectedClient;
+	private static ClientVO selectedClient;
 
 	public List<String> completeText(String query) {
 		selectedClient = new ClientVO();
@@ -55,6 +55,14 @@ public class OfferAutoCompleteView {
 	}
 
 	public void setSelectedClient(ClientVO selectedClient) {
-		this.selectedClient = selectedClient;
+		OfferAutoCompleteView.selectedClient = selectedClient;
+	}
+	
+	public static ClientVO getStaticClient(){
+		return selectedClient;
+	}
+	
+	public static void setStaticSelectedClient(ClientVO client){
+		selectedClient = client;
 	}
 }

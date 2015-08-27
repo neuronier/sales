@@ -8,7 +8,7 @@ public class ClientOfferVO implements Serializable{
 	
 	private static final long serialVersionUID = 8536677031967485872L;
 	
-	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private String clientOfferId;
 
@@ -18,7 +18,9 @@ public class ClientOfferVO implements Serializable{
 	
 	private Date date;
 	
-	private Long offerQuantity;
+	private Long quantity;
+	
+	private Long id;
 	
 	public ClientOfferVO(){}
 
@@ -59,16 +61,24 @@ public class ClientOfferVO implements Serializable{
 			throw new NullPointerException("No Date was set for a new ClientOfferVO so no ID was generated for it");
 		} else {
 			String systime = format.format(date);
-			setClientOfferId("PURCHASE_" + systime);
+			setClientOfferId("PURCHASE_" + client.getName().toUpperCase() + "_" + systime);
 		}
 	}
 
-	public Long getOfferQuantity() {
-		return offerQuantity;
+	public Long getQuantity() {
+		return quantity;
 	}
 
-	public void setOfferQuantity(Long offerQuantity) {
-		this.offerQuantity = offerQuantity;
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 }

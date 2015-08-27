@@ -27,4 +27,6 @@ public interface ClientDAO extends JpaRepository<Client, Long> {
 	
 	@Query("select COUNT(c) from Client c where c.registrationDate < ?1")
 	int findNumberOfCliensBeforeDate(Date date);
+
+	Client findClientByClientId(String clientId) throws Exception;
 }

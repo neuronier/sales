@@ -44,7 +44,6 @@ public class ClientOfferServiceImpl implements ClientOfferServiceRemote, Seriali
 	
 	@Override
 	public void saveClientOffer(ClientOfferVO purchase) {
-		purchase.createId();
 		coDao.save(coConv.toEntity(purchase));
 	}
 

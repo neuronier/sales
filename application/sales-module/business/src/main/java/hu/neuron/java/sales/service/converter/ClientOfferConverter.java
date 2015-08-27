@@ -3,32 +3,64 @@ package hu.neuron.java.sales.service.converter;
 import java.util.ArrayList;
 import java.util.List;
 
+import hu.neuron.java.core.dao.ClientDAO;
+import hu.neuron.java.core.dao.OfferDAO;
 import hu.neuron.java.core.entity.ClientOffer;
 import hu.neuron.java.sales.service.vo.ClientOfferVO;
-import org.dozer.Mapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ClientOfferConverter {
 	
 	@Autowired
-	@Qualifier("mapper")
-	Mapper mapper;
+	ClientDAO clientDao;
+	
+	@Autowired
+	ClientConverter clientConv;
+	
+	@Autowired
+	OfferDAO offerDao;
+	
+	@Autowired
+	OfferConverter offerConv;
 	
 	public ClientOfferVO toVO(ClientOffer dto) {
 		if (dto == null) {
 			return null;
 		}
-		return mapper.map(dto, ClientOfferVO.class);
+		ClientOfferVO co = new ClientOfferVO();
+		try {
+			co.setClient(clientConv.toVO(clientDao.findClientByClientId(dto.getClientId())));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		co.setClientOfferId(dto.getClientOfferId());
+		co.setDate(dto.getDate());
+		try {
+			co.setOffer(offerConv.toVO(offerDao.findOfferEntityByOfferId(dto.getOfferId())));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		co.setQuantity(dto.getQuantity());
+		co.setId(dto.getId());
+		
+		return co;
 	}
 
 	public ClientOffer toEntity(ClientOfferVO vo) {
 		if (vo == null) {
 			return null;
 		}
-		return mapper.map(vo, ClientOffer.class);
+		ClientOffer co = new ClientOffer();
+		co.setClientId(vo.getClient().getClientId());
+		co.setClientOfferId(vo.getClientOfferId());
+		co.setDate(vo.getDate());
+		co.setId(vo.getId());
+		co.setOfferId(vo.getOffer().getOfferId());
+		co.setQuantity(vo.getQuantity());
+		return co;
 	}
 
 	public List<ClientOfferVO> toVO(List<ClientOffer> dtos) {

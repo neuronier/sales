@@ -1,9 +1,13 @@
 package hu.neuron.java.sales.web.controllers.sell;
 
+import hu.neuron.java.sales.service.ClientOfferServiceRemote;
 import hu.neuron.java.sales.service.OfferServiceRemote;
+import hu.neuron.java.sales.service.vo.ClientOfferVO;
 import hu.neuron.java.sales.service.vo.OfferVO;
+import hu.neuron.java.web.autocomplete.OfferAutoCompleteView;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,6 +40,9 @@ public class SellController implements Serializable {
 	
 	@EJB(name = "OfferService", mappedName = "OfferService")
 	private OfferServiceRemote offerService;
+	
+	@EJB(name = "ClientOfferService", mappedName = "ClientOfferService")
+	private ClientOfferServiceRemote clientOfferService;
 
 	@PostConstruct
 	public void init() {
@@ -116,5 +123,22 @@ public class SellController implements Serializable {
 		SellController.availableOffers = availableOffers;
 	}
 	
-	
+	public void sell(){
+		Date now = new Date(System.currentTimeMillis());
+		if(OfferAutoCompleteView.getStaticClient()!= null && selectedOffers.size() > 0){
+			for(OfferWebVO owv : selectedOffers){
+				ClientOfferVO purchase = new ClientOfferVO();
+				purchase.setClient(OfferAutoCompleteView.getStaticClient());
+				purchase.setOffer(owv.getOfferVo());
+				purchase.setQuantity(owv.getQuantity());
+				purchase.setDate(now);
+				purchase.createId();
+				try {
+					clientOfferService.saveClientOffer(purchase);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 }
