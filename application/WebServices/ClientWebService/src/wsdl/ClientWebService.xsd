@@ -1,37 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2.8-b13937 svn-revision#13942.--><xsd:schema targetNamespace="http://hu.neuron" xmlns:ns0="http://hu.neuron" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <xsd:complexType name="createClientResponse">
-    <xsd:sequence>
-      <xsd:element name="createClient" type="ns0:clientWebServiceVO" minOccurs="0"/>
-    </xsd:sequence>
-  </xsd:complexType>
-  <xsd:complexType name="modifyClientByClientIdResponse">
-    <xsd:sequence>
-      <xsd:element name="modifyClientByClientId" type="ns0:clientWebServiceVO" minOccurs="0"/>
-    </xsd:sequence>
-  </xsd:complexType>
+  <xsd:complexType name="getClientList"/>
   <xsd:complexType name="removeClientByClientId">
     <xsd:sequence>
       <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
     </xsd:sequence>
   </xsd:complexType>
-  <xsd:complexType name="getClientList"/>
-  <xsd:complexType name="getClientListResponse">
-    <xsd:sequence>
-      <xsd:element name="getClientList" type="ns0:clientListWebServiceVO" minOccurs="0"/>
-    </xsd:sequence>
-  </xsd:complexType>
-  <xsd:complexType name="getClientByClientIdResponse">
-    <xsd:sequence>
-      <xsd:element name="getClientByClientId" type="ns0:clientWebServiceVO" minOccurs="0"/>
-    </xsd:sequence>
-  </xsd:complexType>
-  <xsd:complexType name="getClientByClientId">
-    <xsd:sequence>
-      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
-    </xsd:sequence>
-  </xsd:complexType>
-  <xsd:complexType name="createClient">
+  <xsd:complexType name="modifyAddressByAddressId">
     <xsd:sequence>
       <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
       <xsd:element name="arg1" type="xsd:string" minOccurs="0"/>
@@ -40,9 +15,28 @@
       <xsd:element name="arg4" type="xsd:string" minOccurs="0"/>
     </xsd:sequence>
   </xsd:complexType>
-  <xsd:complexType name="removeClientByClientIdResponse"/>
+  <xsd:complexType name="getClientByClientIdResponse">
+    <xsd:sequence>
+      <xsd:element name="getClientByClientId" type="ns0:clientWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="addressWebServiceVO">
+    <xsd:sequence>
+      <xsd:element name="addressId" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="city" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="houseNumber" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="street" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="zipCode" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="getClientByClientId">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
   <xsd:complexType name="clientWebServiceVO">
     <xsd:sequence>
+      <xsd:element name="address" type="ns0:addressVO" minOccurs="0"/>
       <xsd:element name="clientId" type="xsd:string" minOccurs="0"/>
       <xsd:element name="emailAddress" type="xsd:string" minOccurs="0"/>
       <xsd:element name="name" type="xsd:string" minOccurs="0"/>
@@ -50,6 +44,11 @@
       <xsd:element name="phoneNumber" type="xsd:string" minOccurs="0"/>
       <xsd:element name="registrationDate" type="xsd:dateTime" minOccurs="0"/>
       <xsd:element name="userName" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="modifyAddressByAddressIdResponse">
+    <xsd:sequence>
+      <xsd:element name="modifyAddressByAddressId" type="ns0:addressWebServiceVO" minOccurs="0"/>
     </xsd:sequence>
   </xsd:complexType>
   <xsd:complexType name="modifyClientByClientId">
@@ -60,6 +59,7 @@
       <xsd:element name="arg3" type="xsd:string" minOccurs="0"/>
       <xsd:element name="arg4" type="xsd:string" minOccurs="0"/>
       <xsd:element name="arg5" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg6" type="xsd:string" minOccurs="0"/>
     </xsd:sequence>
   </xsd:complexType>
   <xsd:complexType name="clientListWebServiceVO">
@@ -67,16 +67,69 @@
       <xsd:element name="clients" type="ns0:clientWebServiceVO" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
-  <xsd:element name="createClientResponse" type="ns0:createClientResponse"/>
-  <xsd:element name="modifyClientByClientIdResponse" type="ns0:modifyClientByClientIdResponse"/>
-  <xsd:element name="removeClientByClientId" type="ns0:removeClientByClientId"/>
+  <xsd:complexType name="createClientResponse">
+    <xsd:sequence>
+      <xsd:element name="createClient" type="ns0:clientWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="modifyClientByClientIdResponse">
+    <xsd:sequence>
+      <xsd:element name="modifyClientByClientId" type="ns0:clientWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="getClientListResponse">
+    <xsd:sequence>
+      <xsd:element name="getClientList" type="ns0:clientListWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="addressVO">
+    <xsd:sequence>
+      <xsd:element name="addressId" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="city" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="houseNumber" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="street" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="zipCode" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="createAddressResponse">
+    <xsd:sequence>
+      <xsd:element name="createAddress" type="ns0:addressWebServiceVO" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="createAddress">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg1" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg2" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg3" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="removeClientByClientIdResponse"/>
+  <xsd:complexType name="createClient">
+    <xsd:sequence>
+      <xsd:element name="arg0" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg1" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg2" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg3" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg4" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="arg5" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
   <xsd:element name="getClientList" type="ns0:getClientList"/>
-  <xsd:element name="getClientListResponse" type="ns0:getClientListResponse"/>
+  <xsd:element name="removeClientByClientId" type="ns0:removeClientByClientId"/>
+  <xsd:element name="modifyAddressByAddressId" type="ns0:modifyAddressByAddressId"/>
   <xsd:element name="getClientByClientIdResponse" type="ns0:getClientByClientIdResponse"/>
   <xsd:element name="ClientList" type="ns0:clientListWebServiceVO"/>
   <xsd:element name="getClientByClientId" type="ns0:getClientByClientId"/>
-  <xsd:element name="createClient" type="ns0:createClient"/>
-  <xsd:element name="removeClientByClientIdResponse" type="ns0:removeClientByClientIdResponse"/>
+  <xsd:element name="modifyAddressByAddressIdResponse" type="ns0:modifyAddressByAddressIdResponse"/>
   <xsd:element name="modifyClientByClientId" type="ns0:modifyClientByClientId"/>
+  <xsd:element name="createClientResponse" type="ns0:createClientResponse"/>
+  <xsd:element name="modifyClientByClientIdResponse" type="ns0:modifyClientByClientIdResponse"/>
+  <xsd:element name="getClientListResponse" type="ns0:getClientListResponse"/>
+  <xsd:element name="Address" type="ns0:addressWebServiceVO"/>
+  <xsd:element name="createAddressResponse" type="ns0:createAddressResponse"/>
+  <xsd:element name="createAddress" type="ns0:createAddress"/>
+  <xsd:element name="removeClientByClientIdResponse" type="ns0:removeClientByClientIdResponse"/>
+  <xsd:element name="createClient" type="ns0:createClient"/>
   <xsd:element name="Client" type="ns0:clientWebServiceVO"/>
 </xsd:schema>

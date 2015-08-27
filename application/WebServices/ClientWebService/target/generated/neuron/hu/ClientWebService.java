@@ -25,6 +25,78 @@ public interface ClientWebService {
 
     /**
      * 
+     * @param arg5
+     * @param arg4
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @param arg6
+     * @return
+     *     returns neuron.hu.ClientWebServiceVO
+     */
+    @WebMethod
+    @WebResult(name = "modifyClientByClientId", targetNamespace = "")
+    @RequestWrapper(localName = "modifyClientByClientId", targetNamespace = "http://hu.neuron", className = "neuron.hu.ModifyClientByClientId")
+    @ResponseWrapper(localName = "modifyClientByClientIdResponse", targetNamespace = "http://hu.neuron", className = "neuron.hu.ModifyClientByClientIdResponse")
+    public ClientWebServiceVO modifyClientByClientId(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3,
+        @WebParam(name = "arg4", targetNamespace = "")
+        String arg4,
+        @WebParam(name = "arg5", targetNamespace = "")
+        String arg5,
+        @WebParam(name = "arg6", targetNamespace = "")
+        String arg6);
+
+    /**
+     * 
+     * @param arg0
+     */
+    @WebMethod
+    @RequestWrapper(localName = "removeClientByClientId", targetNamespace = "http://hu.neuron", className = "neuron.hu.RemoveClientByClientId")
+    @ResponseWrapper(localName = "removeClientByClientIdResponse", targetNamespace = "http://hu.neuron", className = "neuron.hu.RemoveClientByClientIdResponse")
+    public void removeClientByClientId(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
+     * @param arg5
+     * @param arg4
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns neuron.hu.ClientWebServiceVO
+     */
+    @WebMethod
+    @WebResult(name = "createClient", targetNamespace = "")
+    @RequestWrapper(localName = "createClient", targetNamespace = "http://hu.neuron", className = "neuron.hu.CreateClient")
+    @ResponseWrapper(localName = "createClientResponse", targetNamespace = "http://hu.neuron", className = "neuron.hu.CreateClientResponse")
+    public ClientWebServiceVO createClient(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3,
+        @WebParam(name = "arg4", targetNamespace = "")
+        String arg4,
+        @WebParam(name = "arg5", targetNamespace = "")
+        String arg5);
+
+    /**
+     * 
      * @return
      *     returns neuron.hu.ClientListWebServiceVO
      */
@@ -56,13 +128,13 @@ public interface ClientWebService {
      * @param arg1
      * @param arg0
      * @return
-     *     returns neuron.hu.ClientWebServiceVO
+     *     returns neuron.hu.AddressWebServiceVO
      */
     @WebMethod
-    @WebResult(name = "createClient", targetNamespace = "")
-    @RequestWrapper(localName = "createClient", targetNamespace = "http://hu.neuron", className = "neuron.hu.CreateClient")
-    @ResponseWrapper(localName = "createClientResponse", targetNamespace = "http://hu.neuron", className = "neuron.hu.CreateClientResponse")
-    public ClientWebServiceVO createClient(
+    @WebResult(name = "modifyAddressByAddressId", targetNamespace = "")
+    @RequestWrapper(localName = "modifyAddressByAddressId", targetNamespace = "http://hu.neuron", className = "neuron.hu.ModifyAddressByAddressId")
+    @ResponseWrapper(localName = "modifyAddressByAddressIdResponse", targetNamespace = "http://hu.neuron", className = "neuron.hu.ModifyAddressByAddressIdResponse")
+    public AddressWebServiceVO modifyAddressByAddressId(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")
@@ -76,31 +148,18 @@ public interface ClientWebService {
 
     /**
      * 
-     * @param arg0
-     */
-    @WebMethod
-    @RequestWrapper(localName = "removeClientByClientId", targetNamespace = "http://hu.neuron", className = "neuron.hu.RemoveClientByClientId")
-    @ResponseWrapper(localName = "removeClientByClientIdResponse", targetNamespace = "http://hu.neuron", className = "neuron.hu.RemoveClientByClientIdResponse")
-    public void removeClientByClientId(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
-
-    /**
-     * 
-     * @param arg5
-     * @param arg4
      * @param arg3
      * @param arg2
      * @param arg1
      * @param arg0
      * @return
-     *     returns neuron.hu.ClientWebServiceVO
+     *     returns neuron.hu.AddressWebServiceVO
      */
     @WebMethod
-    @WebResult(name = "modifyClientByClientId", targetNamespace = "")
-    @RequestWrapper(localName = "modifyClientByClientId", targetNamespace = "http://hu.neuron", className = "neuron.hu.ModifyClientByClientId")
-    @ResponseWrapper(localName = "modifyClientByClientIdResponse", targetNamespace = "http://hu.neuron", className = "neuron.hu.ModifyClientByClientIdResponse")
-    public ClientWebServiceVO modifyClientByClientId(
+    @WebResult(name = "createAddress", targetNamespace = "")
+    @RequestWrapper(localName = "createAddress", targetNamespace = "http://hu.neuron", className = "neuron.hu.CreateAddress")
+    @ResponseWrapper(localName = "createAddressResponse", targetNamespace = "http://hu.neuron", className = "neuron.hu.CreateAddressResponse")
+    public AddressWebServiceVO createAddress(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")
@@ -108,10 +167,6 @@ public interface ClientWebService {
         @WebParam(name = "arg2", targetNamespace = "")
         String arg2,
         @WebParam(name = "arg3", targetNamespace = "")
-        String arg3,
-        @WebParam(name = "arg4", targetNamespace = "")
-        String arg4,
-        @WebParam(name = "arg5", targetNamespace = "")
-        String arg5);
+        String arg3);
 
 }

@@ -18,7 +18,7 @@ public class ClientOfferVO implements Serializable{
 	
 	private Date date;
 	
-	private Long offerQuantity;
+	private Long quantity;
 	
 	public ClientOfferVO(){}
 
@@ -63,12 +63,14 @@ public class ClientOfferVO implements Serializable{
 		}
 	}
 
-	public Long getOfferQuantity() {
-		return offerQuantity;
+	public Long getQuantity() {
+		return quantity;
 	}
 
-	public void setOfferQuantity(Long offerQuantity) {
-		this.offerQuantity = offerQuantity;
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
 	}
+
+	
 	
 }

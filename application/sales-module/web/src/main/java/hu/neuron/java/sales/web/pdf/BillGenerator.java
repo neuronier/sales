@@ -1,6 +1,5 @@
 package hu.neuron.java.sales.web.pdf;
 
-import hu.neuron.java.sales.service.OfferServiceRemote;
 import hu.neuron.java.sales.service.vo.ClientOfferVO;
 import hu.neuron.java.sales.service.vo.ClientVO;
 import hu.neuron.java.sales.service.vo.OfferVO;
@@ -18,10 +17,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import javax.ejb.EJB;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -33,16 +28,11 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-@ApplicationScoped
-@ManagedBean(name = "billGenerator")
 public class BillGenerator implements Serializable {
 
 	private static final long serialVersionUID = -7194025880360831814L;
-	
-	@EJB(name = "OfferService", mappedName = "OfferService")
-	private OfferServiceRemote offerService;	
 
-	public ByteArrayInputStream createBill(ClientVO client, List<ClientOfferVO> clientOffers, Date date, SalesPointVO salesPoint)
+	public static ByteArrayInputStream createBill(ClientVO client, List<ClientOfferVO> clientOffers, Date date, SalesPointVO salesPoint)
 			throws DocumentException, IOException {
 
 		Document document = new Document();
@@ -80,7 +70,7 @@ public class BillGenerator implements Serializable {
 
 	}
 
-	private PdfPTable createCustomerTable(ClientVO client) throws DocumentException {
+	private static PdfPTable createCustomerTable(ClientVO client) throws DocumentException {
 
 		PdfPTable table = new PdfPTable(2);
 		table.setWidthPercentage(100);
@@ -110,7 +100,7 @@ public class BillGenerator implements Serializable {
 		return table;
 	}
 
-	private PdfPTable createSalesPointTable(SalesPointVO sp) throws DocumentException {
+	private static PdfPTable createSalesPointTable(SalesPointVO sp) throws DocumentException {
 
 		PdfPTable table = new PdfPTable(2);
 		table.setWidthPercentage(100);
@@ -139,7 +129,7 @@ public class BillGenerator implements Serializable {
 		return table;
 	}
 
-	private PdfPTable createOfferTable(List<ClientOfferVO> clientOffers) throws DocumentException {
+	private static PdfPTable createOfferTable(List<ClientOfferVO> clientOffers) throws DocumentException {
 
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.UK);
 		DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
@@ -183,7 +173,7 @@ public class BillGenerator implements Serializable {
 		int index = 1;
 		long totalPrice = 0;
 		for (ClientOfferVO clientOfferVO : clientOffers) {
-			OfferVO offerVO = offerService.findOfferEntityByOfferId(clientOfferVO.getClientOfferId());
+			OfferVO offerVO = clientOfferVO.getOffer();
 			
 			cell = new PdfPCell(new Phrase(index + "."));
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -193,7 +183,7 @@ public class BillGenerator implements Serializable {
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			table.addCell(cell);
 
-			int count = 1;
+			long count = clientOfferVO.getQuantity();
 			cell = new PdfPCell(new Phrase(count + " db"));
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(cell);

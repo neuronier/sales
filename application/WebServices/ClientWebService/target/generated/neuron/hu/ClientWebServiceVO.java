@@ -18,6 +18,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="address" type="{http://hu.neuron}addressVO" minOccurs="0"/>
  *         &lt;element name="clientId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="emailAddress" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -35,6 +36,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "clientWebServiceVO", propOrder = {
+    "address",
     "clientId",
     "emailAddress",
     "name",
@@ -45,6 +47,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 })
 public class ClientWebServiceVO {
 
+    protected AddressVO address;
     protected String clientId;
     protected String emailAddress;
     protected String name;
@@ -53,6 +56,30 @@ public class ClientWebServiceVO {
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar registrationDate;
     protected String userName;
+
+    /**
+     * Gets the value of the address property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link AddressVO }
+     *     
+     */
+    public AddressVO getAddress() {
+        return address;
+    }
+
+    /**
+     * Sets the value of the address property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link AddressVO }
+     *     
+     */
+    public void setAddress(AddressVO value) {
+        this.address = value;
+    }
 
     /**
      * Gets the value of the clientId property.

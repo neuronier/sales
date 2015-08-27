@@ -17,7 +17,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -42,10 +41,7 @@ public class UserProfileController {
 	
 	@EJB(name = "ClientOfferService", mappedName = "ClientOfferService")
 	private ClientOfferServiceRemote clientOfferService;
-	
-	@ManagedProperty(value="#{billGenerator}")
-	private BillGenerator billGenerator;
-	
+
 	private UserVO currentUser;
 	private String name;
 	private String userName;
@@ -77,9 +73,8 @@ public class UserProfileController {
 			ClientVO client = clientService.findAll().get(0);
 			SalesPointVO sp = spService.findAll().get(0);
 			List<ClientOfferVO> offers = clientOfferService.findClientOfferByClientId(client.getClientId());
-			pdf = new DefaultStreamedContent(billGenerator.createBill(client, offers, new Date(), sp), "pdf", "teszt.pdf");
+			pdf = new DefaultStreamedContent(BillGenerator.createBill(client, offers, new Date(), sp), "pdf", "teszt.pdf");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -160,15 +155,5 @@ public class UserProfileController {
 	public void setPdf(StreamedContent pdf) {
 		this.pdf = pdf;
 	}
-
-	public BillGenerator getBillGenerator() {
-		return billGenerator;
-	}
-
-	public void setBillGenerator(BillGenerator billGenerator) {
-		this.billGenerator = billGenerator;
-	}
-	
-	
 
 }
