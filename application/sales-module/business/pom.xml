@@ -32,6 +32,11 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>hu.neuron.java.warehouse</groupId>
+			<artifactId>ware-webservice</artifactId>
+			<version>1.0</version>
+		</dependency>
 		<dependency><!-- this one will be first on the test classpath -->
 			<groupId>org.apache.openejb</groupId>
 			<artifactId>javaee-api</artifactId>

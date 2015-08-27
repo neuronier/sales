@@ -2,6 +2,7 @@ package hu.neuron.java.sales.web.controllers.offer;
 
 import hu.neuron.java.sales.service.OfferServiceRemote;
 import hu.neuron.java.sales.service.ProductTypeServiceRemote;
+import hu.neuron.java.sales.service.ProductTypeWebClient;
 import hu.neuron.java.sales.service.vo.OfferVO;
 import hu.neuron.java.sales.service.vo.ProductTypeVO;
 import hu.neuron.java.sales.web.controllers.producttype.LazyProductTypeModel;
@@ -41,6 +42,9 @@ public class OfferController implements Serializable {
 	List<ProductTypeVO> existingPts = new ArrayList<ProductTypeVO>();
 	
 	List<ProductTypeVO> trashProductTypeList = new ArrayList<ProductTypeVO>();
+	
+	@EJB(name = "ProductTypeWebClient", mappedName = "ProductTypeWebClient")
+	ProductTypeWebClient productTypeWebClient;
 
 	private String newOfferName;
 
@@ -67,6 +71,10 @@ public class OfferController implements Serializable {
 	
 	public List<ProductTypeVO> getSelectOneMenuOfferProductTypeList() {
 		return selectOneMenuOfferProductTypeList;
+	}
+	
+	public void refressh(){
+		productTypeWebClient.refressh();
 	}
 
 	public void setSelectOneMenuOfferProductTypeList(
