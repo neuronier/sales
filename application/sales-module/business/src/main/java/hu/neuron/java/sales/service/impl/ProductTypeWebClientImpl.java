@@ -9,6 +9,7 @@ import hu.neuron.java.warehouse.whweb.web.service.WareWebVO;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -33,8 +34,9 @@ public class ProductTypeWebClientImpl implements ProductTypeWebClient {
 	ProductTypeServiceRemote productTypeService;
 
 	@Override
-	public void refreshProductTypes() {
+	public List<ProductTypeVO> refreshProductTypes() {
 		URL wsdl = null;
+		List<ProductTypeVO> productTypeList = new ArrayList<ProductTypeVO>();
 		try {
 			wsdl = new URL(
 					"http://flyertest.neuron.hu/warehouseApp/WareWebServiceImplService?wsdl");
@@ -54,10 +56,12 @@ public class ProductTypeWebClientImpl implements ProductTypeWebClient {
 			ProductTypeVO productType = new ProductTypeVO();
 			productType.setName(wareWebVO.getWareName());
 			productType.setProductTypeId(String.valueOf(wareWebVO.getItemNumber()));
-			productTypeService.saveProductType(productType);
+			if(productTypeService.findProductTypeByName(productType.getName()) == null){
+				productTypeService.saveProductType(productType);
+				productTypeList.add(productType);
+			}
 		}
-		
-		
+		 return productTypeList;
 	}
-
 }
+
