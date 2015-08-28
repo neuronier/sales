@@ -5,6 +5,7 @@ import hu.neuron.java.sales.service.vo.ClientVO;
 import hu.neuron.java.sales.web.LocalizationsUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -22,13 +23,14 @@ public class OfferAutoCompleteView {
 	private String offer;
 
 	private boolean checkBox;
-	
+
 	private boolean helper;
 
 	private static ClientVO selectedClient;
 
 	@PostConstruct
 	public void init() {
+
 		checkBox = false;
 	}
 
@@ -77,7 +79,24 @@ public class OfferAutoCompleteView {
 	}
 
 	public void registerClient() {
-		System.out.println(selectedClient.getName());
+		selectedClient.setRegistrationDate(new Date());
+		clientService.saveClient(selectedClient);
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				LocalizationsUtils.getText("user_info", context),
+				LocalizationsUtils.getText("customer_registered", context)
+						+ " \n " + selectedClient.getName());
+		context.addMessage(null, msg);
+		
+		checkBox = false;
+		helper = true;
+		
+		try {
+			ClientVO c = clientService.findClientByName(selectedClient.getName());
+			selectedClient = c;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void addMessage() {
