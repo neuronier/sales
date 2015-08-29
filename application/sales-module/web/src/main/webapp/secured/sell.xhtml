@@ -119,14 +119,17 @@
 							<div>
 								<h:panelGrid columns="3" cellpadding="5"
 									style="display:inline-block;">
-									<p:outputLabel value="Find Customer" for="quickClient" />
+									<p:outputLabel value="#{out.customer}" for="quickClient" />
 									<p:autoComplete id="quickClient" size="25"
 										value="#{offerAutoCompleteView.offer}"
-										completeMethod="#{offerAutoCompleteView.completeText}" />
-									<p:commandButton update="customerForm" value="OK"
+										completeMethod="#{offerAutoCompleteView.completeText}">
+										
+									</p:autoComplete>
+									<p:commandButton update="customerForm" id="find"
+										value="#{out.customer_find}"
 										disabled="#{offerAutoCompleteView.checkBox}"
 										actionListener="#{offerAutoCompleteView.completeClientData}" />
-									<p:outputLabel value="New Customer" for="quickClient" />
+									<p:outputLabel value="#{out.customer_new}" for="quickClient" />
 									<p:selectBooleanCheckbox
 										value="#{offerAutoCompleteView.checkBox}">
 										<p:ajax update=":customerForm"
@@ -136,20 +139,20 @@
 								</h:panelGrid>
 							</div>
 
-							<p:panel id="customerDetails" header="Customer Details"
+							<p:panel id="customerDetails" header="#{out.customer_data}"
 								style="clear:right;" visible="#{offerAutoCompleteView.checkBox}">
 								<div class="ui-grid ui-grid-responsive"
 									style="margin-bottom: 15px;">
 									<div class="ui-grid-row">
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="Name:" for="nameInput"
+											<p:outputLabel value="#{out.user_name}" for="nameInput"
 												style="display: inline-block; min-width:110px;" />
 											<p:inputText id="nameInput" size="25"
 												value="#{offerAutoCompleteView.selectedClient.name}">
 											</p:inputText>
 										</div>
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="Email:" for="emailInput"
+											<p:outputLabel value="#{out.user_email}" for="emailInput"
 												style="display: inline-block; min-width:110px;" />
 											<p:inputText id="emailInput" size="25"
 												value="#{offerAutoCompleteView.selectedClient.emailAddress}" />
@@ -160,7 +163,7 @@
 									style="margin-bottom: 15px;">
 									<div class="ui-grid-row">
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="Username:" for="userNameInput"
+											<p:outputLabel value="#{out.user_user_name}" for="userNameInput"
 												style="display: inline-block; min-width:110px;" />
 											<p:inputText id="userNameInput" size="25"
 												value="#{offerAutoCompleteView.selectedClient.userName}" />
@@ -172,28 +175,27 @@
 									style="margin-bottom: 15px;">
 									<div class="ui-grid-row">
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="Phone number:" for="phoneNumberInput"
+											<p:outputLabel value="#{out.user_phone_number}" for="phoneNumberInput"
 												style="display: inline-block; min-width:110px;" />
 											<p:inputText id="phoneNumberInput" size="25"
 												value="#{offerAutoCompleteView.selectedClient.phoneNumber}" />
 										</div>
-
 									</div>
 								</div>
-								<p:commandButton update=":customerForm" value="Register New"
+								<p:commandButton update=":customerForm" value="#{out.signup}"
 									actionListener="#{offerAutoCompleteView.registerClient}"
 									style="margin-top:16px; margin-bottom:10px; float:right;" />
 							</p:panel>
 
 
-							<p:panel id="customerDetails2" header="Customer Details"
+							<p:panel id="customerDetails2" header="#{out.customer_data}"
 								style="clear:right;"
 								visible="#{offerAutoCompleteView.helper == true and offerAutoCompleteView.checkBox == false}">
 								<div class="ui-grid ui-grid-responsive"
 									style="margin-bottom: 15px;">
 									<div class="ui-grid-row">
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="Name:" for="nameInput"
+											<p:outputLabel value="#{out.user_name}" for="nameInput"
 												style="display: inline-block; min-width:110px;" />
 											<p:inputText id="nameInput2" size="25"
 												value="#{offerAutoCompleteView.selectedClient.name}"
@@ -201,7 +203,7 @@
 											</p:inputText>
 										</div>
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="Email:" for="emailInput"
+											<p:outputLabel value="#{out.user_email}" for="emailInput"
 												style="display: inline-block; min-width:110px;" />
 											<p:inputText id="emailInput2" disabled="true" size="25"
 												value="#{offerAutoCompleteView.selectedClient.emailAddress}" />
@@ -212,13 +214,13 @@
 									style="margin-bottom: 15px;">
 									<div class="ui-grid-row">
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="Username:" for="userNameInput"
+											<p:outputLabel value="#{out.user_user_name}" for="userNameInput"
 												style="display: inline-block; min-width:110px;" />
 											<p:inputText id="userNameInput2" disabled="true" size="25"
 												value="#{offerAutoCompleteView.selectedClient.userName}" />
 										</div>
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="Registration:"
+											<p:outputLabel value="#{out.customer_reg}"
 												for="registrationDateInput"
 												style="display: inline-block; min-width:110px;" />
 											<p:inputText id="registrationDateInput" disabled="true"
@@ -231,7 +233,7 @@
 									style="margin-bottom: 15px;">
 									<div class="ui-grid-row">
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="Phone number:" for="phoneNumberInput"
+											<p:outputLabel value="#{out.user_phone_number}" for="phoneNumberInput"
 												style="display: inline-block; min-width:110px;" />
 											<p:inputText id="phoneNumberInput2" disabled="true" size="25"
 												value="#{offerAutoCompleteView.selectedClient.phoneNumber}" />

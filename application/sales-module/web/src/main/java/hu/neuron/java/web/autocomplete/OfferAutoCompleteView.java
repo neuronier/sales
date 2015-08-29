@@ -14,6 +14,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 @ManagedBean
 public class OfferAutoCompleteView {
 
@@ -30,7 +32,7 @@ public class OfferAutoCompleteView {
 
 	@PostConstruct
 	public void init() {
-
+		offer = null ;
 		checkBox = false;
 	}
 
@@ -54,48 +56,76 @@ public class OfferAutoCompleteView {
 
 	// Properties!
 	public void completeClientData() {
-		List<ClientVO> list = clientService.findAll();
-		try {
-			ClientVO c = clientService.findClientByName(offer);
-			if (list.contains(c)) {
-				setSelectedClient(c);
-				helper = true;
-				FacesContext context = FacesContext.getCurrentInstance();
-				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						LocalizationsUtils.getText("user_info", context),
-						LocalizationsUtils.getText("user_info", context));
-				context.addMessage(null, msg);
-			} else {
-				FacesContext context = FacesContext.getCurrentInstance();
-				FacesMessage msg = new FacesMessage(
-						FacesMessage.SEVERITY_ERROR,
-						LocalizationsUtils.getText("error", context),
-						LocalizationsUtils.getText("error", context));
-				context.addMessage(null, msg);
+		if (offer == null) {
+		} else {
+
+			List<ClientVO> list = clientService.findAll();
+			try {
+				ClientVO c = clientService.findClientByName(offer);
+				if (list.contains(c)) {
+					setSelectedClient(c);
+					helper = true;
+					offer = "";
+					FacesContext context = FacesContext.getCurrentInstance();
+					FacesMessage msg = new FacesMessage(
+							FacesMessage.SEVERITY_INFO,
+							LocalizationsUtils.getText("user_info", context),
+							LocalizationsUtils.getText("customer_selected",
+									context) + " " + selectedClient.getName());
+					context.addMessage(null, msg);
+				} else {
+					FacesContext context = FacesContext.getCurrentInstance();
+					FacesMessage msg = new FacesMessage(
+							FacesMessage.SEVERITY_ERROR,
+							LocalizationsUtils.getText("error", context),
+							LocalizationsUtils.getText("customer_notexist",
+									context) + " " + offer);
+					context.addMessage(null, msg);
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
 			}
-		} catch (Exception e1) {
-			e1.printStackTrace();
 		}
 	}
 
 	public void registerClient() {
-		selectedClient.setRegistrationDate(new Date());
-		clientService.saveClient(selectedClient);
-		FacesContext context = FacesContext.getCurrentInstance();
-		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-				LocalizationsUtils.getText("user_info", context),
-				LocalizationsUtils.getText("customer_registered", context)
-						+ " \n " + selectedClient.getName());
-		context.addMessage(null, msg);
-		
-		checkBox = false;
-		helper = true;
-		
-		try {
-			ClientVO c = clientService.findClientByName(selectedClient.getName());
-			selectedClient = c;
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (selectedClient.getName().equals("")
+				|| selectedClient.getUserName().equals("")
+				|| selectedClient.getPhoneNumber().equals("")
+				|| selectedClient.getEmailAddress().equals("")) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					LocalizationsUtils.getText("error", context),
+					LocalizationsUtils.getText("customer_required", context));
+			context.addMessage(null, msg);
+		} else {
+
+			CharSequence defaultPassword = "welcome1";
+			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+			String encPassword = bCryptPasswordEncoder.encode(defaultPassword);
+
+			selectedClient.setPassword(encPassword);
+			selectedClient.setRegistrationDate(new Date());
+
+			clientService.saveClient(selectedClient);
+
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					LocalizationsUtils.getText("user_info", context),
+					LocalizationsUtils.getText("customer_registered", context)
+							+ " \n " + selectedClient.getName());
+			context.addMessage(null, msg);
+
+			checkBox = false;
+			helper = true;
+
+			try {
+				ClientVO c = clientService.findClientByName(selectedClient
+						.getName());
+				selectedClient = c;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
