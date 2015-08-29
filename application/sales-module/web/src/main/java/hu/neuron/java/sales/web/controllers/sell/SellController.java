@@ -30,11 +30,9 @@ public class SellController implements Serializable {
 	
 	private static OfferVO selectedAvailableOffer;
 	
-	private static List<OfferVO> offers;
-	
-	private static List<OfferVO> availableOffers;
-	
 	private static List<OfferWebVO> selectedOffers;
+	
+	private Long total;
 	
 	private LazySellModel lazySellModel;
 	
@@ -48,21 +46,12 @@ public class SellController implements Serializable {
 	public void init() {
 		setLazySellModel(new LazySellModel(offerService));
 		selectedOffers = new LinkedList<>();
-		offers = new LinkedList<>();
 	}
 
 	public void onRowSelect(SelectEvent event) {
 
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Idejön valami"));
-	}
-
-	public List<OfferVO> getOffers() {
-		return offers;
-	}
-
-	public void setOffers(List<OfferVO> offers) {
-		SellController.offers = offers;
 	}
 
 	public LazySellModel getLazySellModel() {
@@ -114,21 +103,13 @@ public class SellController implements Serializable {
 	public void setSelectedWebOffer(OfferWebVO selectedWebOffer) {
 		SellController.selectedWebOffer = selectedWebOffer;
 	}
-
-	public List<OfferVO> getAvailableOffers() {
-		return availableOffers;
-	}
-
-	public void setAvailableOffers(List<OfferVO> availableOffers) {
-		SellController.availableOffers = availableOffers;
-	}
 	
 	public void sell(){
 		Date now = new Date(System.currentTimeMillis());
-		if(OfferAutoCompleteView.getStaticClient()!= null && selectedOffers.size() > 0){
+		if(OfferAutoCompleteView.getStaticSelectedClient()!= null && selectedOffers.size() > 0){
 			for(OfferWebVO owv : selectedOffers){
 				ClientOfferVO purchase = new ClientOfferVO();
-				purchase.setClient(OfferAutoCompleteView.getStaticClient());
+				purchase.setClient(OfferAutoCompleteView.getStaticSelectedClient());
 				purchase.setOffer(owv.getOfferVo());
 				purchase.setQuantity(owv.getQuantity());
 				purchase.setDate(now);
@@ -140,5 +121,21 @@ public class SellController implements Serializable {
 				}
 			}
 		}
+		selectedOffers.clear();
+		OfferAutoCompleteView.setStaticSelectedClient(null);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage
+				(FacesMessage.SEVERITY_INFO, "Success", "The system processed the sale"));
+	}
+
+	public Long getTotal() {
+		total = 0L;
+		for(OfferWebVO owv : selectedOffers){
+			total += owv.getOfferPrice() * owv.getQuantity();
+		}
+		return total;
+	}
+
+	public void setTotal(Long total) {
+		this.total = total;
 	}
 }

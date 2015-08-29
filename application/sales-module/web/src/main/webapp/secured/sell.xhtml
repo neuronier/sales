@@ -10,10 +10,10 @@
 	<ui:define name="header">#{out.sell_title}</ui:define>
 	<ui:define name="head-extra">
 		<style>
-.ui-wizard-step-title {
-	font-size: 90% !important;
-}
-</style>
+			.ui-wizard-step-title {
+				font-size: 90% !important;
+			}
+		</style>
 	</ui:define>
 	<ui:define name="content">
 
@@ -78,7 +78,7 @@
 						        <f:facet name="header">
 						            The offers that are going to be sold
 						        </f:facet>
-						        <p:ajax event="cellEdit" update=":selectForm:selectedTable" />
+						        <p:ajax event="cellEdit" update=":selectForm:selectedTable"/>
 						        <p:column headerText="Name">
 						            <h:outputText value="#{offerWebVO.offerName}" />
 						        </p:column>
@@ -88,9 +88,19 @@
 						        <p:column headerText="Quantity">
 						        	<p:cellEditor>
 						        		<f:facet name="output"><h:outputText id="outputQuantity" value="#{offerWebVO.quantity}" /></f:facet>
-	                  					<f:facet name="input"> <p:spinner id="basic" value="#{offerWebVO.quantity}" /></f:facet>
+	                  					<f:facet name="input">
+	                  						<p:spinner id="basic" value="#{offerWebVO.quantity}" >
+	                  							<p:ajax event="blur" update=":selectForm:selectedTable"/>
+	                  						</p:spinner>
+	                  					</f:facet>
 						            </p:cellEditor>
 						        </p:column>
+						        <p:columnGroup type="footer">
+						            <p:row>
+						                <p:column colspan="2" style="text-align:right" footerText="Total:" />
+						                <p:column id="sumCol" footerText="#{sellController.total}" />
+						            </p:row>
+						        </p:columnGroup>
 						        <f:facet name="footer">
 						            <p:commandButton update=":selectForm:selectedTable" value="Remove" />
 						        </f:facet>
@@ -178,13 +188,11 @@
 									<h4 style="display: inline; margin-right: 5px;">Sell the
 										selected offers:</h4>
 									<p:commandButton
-										update=":selectForm:selectedTable" value="Finish" actionListener="#{sellController.sell}"/>
+										update=":selectForm:selectedTable, :customerForm" value="Finish" actionListener="#{sellController.sell}"/>
 								</p:panel>
 							</div>
 						</div>
 					</div>
-
-
 				</div>
 			</div>
 		</div>

@@ -58,7 +58,7 @@ public class OfferAutoCompleteView {
 		OfferAutoCompleteView.selectedClient = selectedClient;
 	}
 	
-	public static ClientVO getStaticClient(){
+	public static ClientVO getStaticSelectedClient(){
 		return selectedClient;
 	}
 	

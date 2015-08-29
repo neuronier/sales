@@ -104,7 +104,7 @@
 
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
-			<artifactId>redmond</artifactId>
+			<artifactId>aristo</artifactId>
 		</dependency>
 
 		<dependency>
