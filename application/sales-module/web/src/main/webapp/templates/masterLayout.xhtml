@@ -13,7 +13,22 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 		<title><ui:insert name="pageTitle"></ui:insert></title>
 		<ui:insert name="head-extra" />
+		<script>
+			$(document).ready(
+					function() {
 
+						$('.ui-menuitem-link')
+								.each(
+										function() {
+											if (window.location.pathname
+													.indexOf($(this).attr(
+															'href')) != -1) {
+												$(this).css('background',
+														'#F1F1F1');//or add class
+											}
+										});
+					})
+		</script>
 		<style>
 .ui-layout-north {
 	z-index: 100 !important;
@@ -58,9 +73,9 @@ body {
 
 					</p:menubar>
 					<p:breadCrumb style="max-width:300px; margin-top: 5px;">
-					<p:menuitem>#{navigationController.getPosition(view.viewId)}</p:menuitem>
+						<p:menuitem>#{navigationController.getPosition(view.viewId)}</p:menuitem>
 					</p:breadCrumb>
-	
+
 				</h:form>
 			</p:layoutUnit>
 			<p:layoutUnit position="center" style="z-index: -1;">

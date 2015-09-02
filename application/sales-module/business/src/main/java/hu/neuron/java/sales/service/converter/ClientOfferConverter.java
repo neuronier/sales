@@ -1,16 +1,12 @@
 package hu.neuron.java.sales.service.converter;
 
+import hu.neuron.java.core.dao.ClientDAO;
 import hu.neuron.java.core.dao.OfferDAO;
 import hu.neuron.java.core.entity.ClientOffer;
 import hu.neuron.java.sales.service.vo.ClientOfferVO;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import hu.neuron.java.core.dao.ClientDAO;
-import hu.neuron.java.core.dao.OfferDAO;
-import hu.neuron.java.core.entity.ClientOffer;
-import hu.neuron.java.sales.service.vo.ClientOfferVO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
