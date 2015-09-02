@@ -63,7 +63,9 @@ body {
 						<p:menuitem value="Sell" url="/secured/sell.xhtml" />
 						<p:menuitem value="Orders" url="/secured/order.xhtml" />
 						<p:menuitem value="Reports" url="/secured/report.xhtml" />
-						<p:menuitem value="User Management" url="/secured/admin/userManagement.xhtml" />
+						<sec:authorize access="hasAnyRole('ROLE_USERMANAGER_ROLE_READ', 'ROLE_USERMANAGER_USER_READ')">
+							<p:menuitem value="User Management" url="/secured/admin/userManagement.xhtml" />
+						</sec:authorize>
 						<p:menuitem value="Issue Management" url="/secured/issueManagement.xhtml" />
 						<p:menuitem value="Refresh" url="/secured/refresh.xhtml" />
 						<f:facet name="options">
