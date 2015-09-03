@@ -18,8 +18,8 @@
 
 
 	<ui:define name="content">
-		<h1>#{out.salespoint_header}</h1>
-		<h2 style="text-align:center;">#{out.salespoint_list}</h2>
+		
+		<p:fieldset legend="#{out.salespoint_header}">
 		<h:form id="form"
 			style="max-width: 85%; margin-top: 45px; margin-left: auto; margin-right: auto;">
 			<p:dataTable var="salesPoint"
@@ -78,6 +78,7 @@
 			</div>
 
 		</h:form>
+		</p:fieldset>
 		<p:dialog id="adder" header="#{out.popupnewsalepoint}"
 			widgetVar="createSalesPoint" hideEffect="slide"
 			mheight="100" modal="true" appendTo="@(body)" style="max-width:80%;">

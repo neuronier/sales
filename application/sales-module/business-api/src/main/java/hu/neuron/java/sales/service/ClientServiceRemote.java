@@ -11,6 +11,8 @@ public interface ClientServiceRemote {
 	
 	public ClientVO findByUserName(String userName);
 	
+	public List<ClientVO> findByNameStartsWith(String filter);
+	
 	public ClientVO findByClientId(String clientId);
 
 	public List<ClientVO> getClientList(int i, int pageSize, String sortField, int dir, String filter, String filterColumnName);
