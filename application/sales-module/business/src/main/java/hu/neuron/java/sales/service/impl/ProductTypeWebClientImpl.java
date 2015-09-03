@@ -55,7 +55,6 @@ public class ProductTypeWebClientImpl implements ProductTypeWebClient {
 			 
 			ProductTypeVO productType = new ProductTypeVO();
 			productType.setName(wareWebVO.getWareName());
-			productType.setProductTypeId(String.valueOf(wareWebVO.getItemNumber()));
 			if(productTypeService.findProductTypeByName(productType.getName()) == null){
 				productTypeService.saveProductType(productType);
 				productTypeList.add(productType);
