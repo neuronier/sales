@@ -13,7 +13,22 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 		<title><ui:insert name="pageTitle"></ui:insert></title>
 		<ui:insert name="head-extra" />
+		<script>
+			$(document).ready(
+					function() {
 
+						$('.ui-menuitem-link')
+								.each(
+										function() {
+											if (window.location.pathname
+													.indexOf($(this).attr(
+															'href')) != -1) {
+												$(this).css('background',
+														'#F1F1F1');//or add class
+											}
+										});
+					})
+		</script>
 		<style>
 			.ui-layout-north {
 				z-index: 100 !important;
@@ -48,7 +63,9 @@
 						<p:menuitem value="Sell" url="/secured/sell.xhtml" />
 						<p:menuitem value="Orders" url="/secured/order.xhtml" />
 						<p:menuitem value="Reports" url="/secured/report.xhtml" />
-						<p:menuitem value="User Management" url="/secured/admin/userManagement.xhtml" />
+						<sec:authorize access="hasAnyRole('ROLE_USERMANAGER_ROLE_READ', 'ROLE_USERMANAGER_USER_READ')">
+							<p:menuitem value="User Management" url="/secured/admin/userManagement.xhtml" />
+						</sec:authorize>
 						<p:menuitem value="Issue Management" url="/secured/issueManagement.xhtml" />
 						<p:menuitem value="Refresh" url="/secured/refresh.xhtml" />
 						<f:facet name="options">

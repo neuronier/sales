@@ -119,6 +119,19 @@ public class userController {
 	public void editUser() {
 		userServiceRemote.saveUser(selectedUser);
 		
+		List<String> target = roleList.getTarget();
+
+		for (String roleName : target) {
+			RoleVO role = null;
+			try {
+				role = roleServiceRemote.getRoleByName(roleName);
+			} catch (Exception e) {
+				// Nincs ilyen role
+				e.printStackTrace();
+			}
+			userServiceRemote.addRoleToUser(selectedUser, role);
+		}
+		
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, LocalizationsUtils.getText("user_info", context), LocalizationsUtils.getText(
 				"user_user_edited_successfuly", context) + ": " + selectedUser.getUserName());

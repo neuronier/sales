@@ -139,12 +139,14 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 
 	@Override
 	public void addRoleToUser(UserVO user, RoleVO role) {
-		UserRole userRole = new UserRole();
-		userRole.setRoleId(role.getRoleId());
-		userRole.setUserId(user.getUserId());
+		UserRole ur = userRoleDao.findUserRoleByUserIdAndRoleId(user.getUserId(), role.getRoleId());
+		if(ur == null){
+			UserRole userRole = new UserRole();
+			userRole.setRoleId(role.getRoleId());
+			userRole.setUserId(user.getUserId());
 
-		userRoleDao.save(userRole);
-
+			userRoleDao.save(userRole);
+		}		
 	}
 
 	@Override

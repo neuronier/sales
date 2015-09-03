@@ -55,13 +55,16 @@
 							</p:dataTable>
 
 							<p:panelGrid id="btnPanel" columns="3">
-								<p:commandButton value="#{out.user_add_new}" action="#{userController.addNewUserBtnAction}" update=":addNewUserDialogForm"
-									oncomplete="PF('addNewUserDialog').show()" />
-								<p:commandButton value="#{out.user_edit}" action="#{userController.editUserBtnAction}" update=":editUserDialogForm"
-									onclick="PF('editUserDialog').show()" disabled="#{userController.selectedUser == null}" />
-								<p:commandButton value="#{out.user_remove}" actionListener="#{userController.removeUser}" update="userDT"
-									disabled="#{userController.selectedUser == null}" />
+								<sec:authorize access="hasAnyRole('ROLE_USERMANAGER_USER_EDIT')">
+									<p:commandButton value="#{out.user_add_new}" action="#{userController.addNewUserBtnAction}" update=":addNewUserDialogForm"
+										oncomplete="PF('addNewUserDialog').show()" />
+									<p:commandButton value="#{out.user_edit}" action="#{userController.editUserBtnAction}" update=":editUserDialogForm"
+										onclick="PF('editUserDialog').show()" disabled="#{userController.selectedUser == null}" />
+									<p:commandButton value="#{out.user_remove}" actionListener="#{userController.removeUser}" update="userDT"
+										disabled="#{userController.selectedUser == null}" />
+								</sec:authorize>
 							</p:panelGrid>
+
 						</p:fieldset>
 					</h:form></td>
 				<td id="roleDetailsCell"><h:form id="roleForm">
@@ -80,13 +83,16 @@
 							</p:dataTable>
 
 							<p:panelGrid id="roleBtnPanel" columns="3">
-								<p:commandButton value="#{out.user_add_new}" action="#{roleController.addNewRoleBtnAction}" update=":addNewRoleDialogForm"
-									oncomplete="PF('addNewRoleDialog').show()" />
-								<p:commandButton value="#{out.user_edit}" update=":editRoleDialogForm" onclick="PF('editRoleDialog').show()"
-									disabled="#{roleController.selectedRole == null}" />
-								<p:commandButton value="#{out.user_remove}" actionListener="#{roleController.removeRole}" update="roleDT"
-									disabled="#{roleController.selectedRole == null}" />
+								<sec:authorize access="hasAnyRole('ROLE_USERMANAGER_ROLE_EDIT')">
+									<p:commandButton value="#{out.user_add_new}" action="#{roleController.addNewRoleBtnAction}" update=":addNewRoleDialogForm"
+										oncomplete="PF('addNewRoleDialog').show()" />
+									<p:commandButton value="#{out.user_edit}" update=":editRoleDialogForm" onclick="PF('editRoleDialog').show()"
+										disabled="#{roleController.selectedRole == null}" />
+									<p:commandButton value="#{out.user_remove}" actionListener="#{roleController.removeRole}" update="roleDT"
+										disabled="#{roleController.selectedRole == null}" />
+								</sec:authorize>
 							</p:panelGrid>
+
 						</p:fieldset>
 					</h:form></td>
 			</tr>
@@ -138,7 +144,7 @@
 					<p:inputText value="#{userController.selectedUser.name}" />
 
 					<p:outputLabel value="#{out.user_user_name}: " />
-					<p:inputText value="#{userController.selectedUser.userName}" readonly="true" disabled="true"/>
+					<p:inputText value="#{userController.selectedUser.userName}" readonly="true" disabled="true" />
 
 					<p:outputLabel value="#{out.user_email}: " />
 					<p:inputText value="#{userController.selectedUser.email}" validatorMessage="#{out.user_invalid_email_format}">

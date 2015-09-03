@@ -142,13 +142,13 @@
 								</p:commandButton>
 							</div>
 
-							<p:panel id="customerDetails" header="Customer Details"
+							<p:panel id="customerDetails" header="#{out.customer_data}"
 								style="clear:right;">
 								<div class="ui-grid ui-grid-responsive"
 									style="margin-bottom: 15px;">
 									<div class="ui-grid-row">
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="Name:" for="nameInput"
+											<p:outputLabel value="#{out.user_name}" for="nameInput"
 												style="display: inline-block; min-width:110px;" />
 											<p:inputText id="nameInput" size="25" required="#{sellController.required}"
 												value="#{customerAutoCompleteView.selectedClient.name}"
@@ -175,7 +175,7 @@
 												value="#{customerAutoCompleteView.selectedClient.emailAddress}" />
 										</div>
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="Phone number:" for="phoneNumberInput"
+											<p:outputLabel value="#{out.user_phone_number}" for="phoneNumberInput"
 												style="display: inline-block; min-width:110px;" />
 											<p:inputText id="phoneNumberInput" disabled="#{sellController.disabled}" 
 												size="25" required="#{sellController.required}"
@@ -187,7 +187,7 @@
 									style="margin-bottom: 15px;">
 									<div class="ui-grid-row">
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="Registration:"
+											<p:outputLabel value="#{out.customer_reg}"
 												for="registrationDateInput"
 												style="display: inline-block; min-width:110px;" />
 											<p:inputText id="registrationDateInput" disabled="true" size="25"
