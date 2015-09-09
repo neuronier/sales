@@ -119,7 +119,7 @@ public class IssueThreadServiceImpl implements IssueThreadServiceRemote, Seriali
 	}
 
 	private List<String> getClientIdsByUserName(String userName) {
-		List<Client> clients = clientDAO.findByuserNameStartsWith(userName);
+		List<Client> clients = clientDAO.findByNameStartsWith(userName);
 		List<String> clientIds = new ArrayList<>();
 		for (Client client : clients) {
 			clientIds.add(client.getClientId());

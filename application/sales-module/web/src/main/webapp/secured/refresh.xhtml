@@ -22,7 +22,7 @@
 								<p:row>
 									<p:column>
 										<p:dataTable id="productTypeTable" var="productType"
-											value="#{refresh.productTypeList}"
+											value="#{refreshController.productTypeList}"
 											rowKey="#{productType.name}"
 											emptyMessage="#{out.refresh_empty_message_product_types}">
 											<f:facet name="header">
@@ -51,7 +51,7 @@
 							<p:row>
 									<p:column>
 										<p:dataTable id="warehouseTable" var="warehouse"
-											value="#{refresh.warehouseList}"
+											value="#{refreshController.warehouseList}"
 											rowKey="#{warehouse.warehouseName}"
 											emptyMessage="#{out.refresh_empty_message_warehouses}">
 											<f:facet name="header">
@@ -74,13 +74,13 @@
 									</p:column>
 								</p:row>
 						</h:panelGrid>
-					</p:tab>
+					</p:tab> 
 					<p:tab title="#{out.refresh_tab_clients}">
 						<h:panelGrid>
 							<p:row>
 									<p:column>
 										<p:dataTable id="clientTable" var="client"
-											value="#{refresh.clientList}"
+											value="#{refreshController.clientList}"
 											rowKey="#{client.name}"
 											emptyMessage="#{out.refresh_empty_message_clients}">
 											<f:facet name="header">

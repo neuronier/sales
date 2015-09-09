@@ -21,7 +21,7 @@ public interface ClientDAO extends JpaRepository<Client, Long> {
 	
 	Client findByClientId(String clientId);
 
-	List<Client> findByuserNameStartsWith(String filter);
+	List<Client> findByNameStartsWith(String filter);
 	
 	List<Client> findByRegistrationDateBetween(Date from, Date to);
 	

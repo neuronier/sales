@@ -30,23 +30,23 @@
 					})
 		</script>
 		<style>
-.ui-layout-north {
-	z-index: 100 !important;
-	overflow: visible;
-}
+			.ui-layout-north {
+				z-index: 100 !important;
+				overflow: visible;
+			}
+			
+			.ui-layout-north .ui-layout-unit-content {
+				overflow: visible;
+			}
+			
+			.ui-layout-south {
+				font-size: 0.9em;
+			}
 
-.ui-layout-north .ui-layout-unit-content {
-	overflow: visible;
-}
-
-.ui-layout-south {
-	font-size: 0.9em;
-}
-
-body {
-	background-color: grey;
-}
-</style>
+			body {
+				background-color: grey;
+			}
+		</style>
 	</h:head>
 
 	<h:body>
@@ -75,10 +75,6 @@ body {
 						</f:facet>
 
 					</p:menubar>
-					<p:breadCrumb style="max-width:300px; margin-top: 5px;">
-						<p:menuitem>#{navigationController.getPosition(view.viewId)}</p:menuitem>
-					</p:breadCrumb>
-
 				</h:form>
 			</p:layoutUnit>
 			<p:layoutUnit position="center" style="z-index: -1;">

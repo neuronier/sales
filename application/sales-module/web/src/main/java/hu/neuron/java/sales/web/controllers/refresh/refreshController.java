@@ -1,5 +1,6 @@
 package hu.neuron.java.sales.web.controllers.refresh;
 
+import hu.neuron.java.sales.service.ClientWebClient;
 import hu.neuron.java.sales.service.ProductTypeWebClient;
 import hu.neuron.java.sales.service.WarehouseWebClient;
 import hu.neuron.java.sales.service.vo.ClientVO;
@@ -26,6 +27,9 @@ public class refreshController implements Serializable {
 	@EJB(name="WarehouseWebClient",mappedName = "WarehouseWebClient")
 	WarehouseWebClient warehouseWebClient;
 	
+	@EJB(name="ClientWebClient", mappedName = "ClientWebClient")
+	ClientWebClient clientWebClient;
+	
 	List<ProductTypeVO> productTypeList = new ArrayList<ProductTypeVO>();
 	
 	List<WarehouseVO> warehouseList = new ArrayList<WarehouseVO>();
@@ -37,11 +41,19 @@ public class refreshController implements Serializable {
 	}
 	
 	public void refreshWarehouseList() throws Exception{
-		warehouseWebClient.refreshWarehouses();
+		warehouseList = warehouseWebClient.refreshWarehouses();
 	}
 	
 	public void refreshClientList(){
+//		clientList = clientWebClient.refreshClients();
+	}
 	
+	public ClientWebClient getClientWebClient() {
+		return clientWebClient;
+	}
+
+	public void setClientWebClient(ClientWebClient clientWebClient) {
+		this.clientWebClient = clientWebClient;
 	}
 
 	public ProductTypeWebClient getProductTypeWebClient() {

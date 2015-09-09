@@ -123,4 +123,9 @@ public class ClientServiceImpl implements ClientServiceRemote, Serializable{
 		clientDAO.save(clientConverter.toEntity(client));
 	}
 
+	@Override
+	public List<ClientVO> findByNameStartsWith(String filter) {
+		return clientConverter.toVO(clientDAO.findByNameStartsWith(filter));
+	}
+
 }

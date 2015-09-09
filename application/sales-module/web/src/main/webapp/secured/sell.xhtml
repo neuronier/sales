@@ -10,10 +10,10 @@
 	<ui:define name="header">#{out.sell_title}</ui:define>
 	<ui:define name="head-extra">
 		<style>
-.ui-wizard-step-title {
-	font-size: 90% !important;
-}
-</style>
+			.ui-wizard-step-title {
+				font-size: 90% !important;
+			}
+		</style>
 	</ui:define>
 	<ui:define name="content">
 
@@ -25,8 +25,8 @@
 						<h:panelGrid columns="3" cellpadding="5">
 							<p:outputLabel value="#{out.quick_offers}" for="quickOffers" />
 							<p:autoComplete id="quickOffers" minQueryLength="3" effect="fade"
-								value="#{offerAutoCompleteView.offer}"
-								completeMethod="#{offerAutoCompleteView.completeText}" />
+								value="#{customerAutoCompleteView.customerName}"
+								completeMethod="#{customerAutoCompleteView.completeText}" />
 							<p:commandButton update=":selectForm:selectedTable" value="Add" />
 						</h:panelGrid>
 
@@ -36,7 +36,7 @@
 								update=" :selectForm:selectedTable" />
 							<p:outputLabel value="Available Offers:" for="availableTable"
 								style="margin-left:7px;" />
-							<p:dataTable var="availableOffer"
+							<p:dataTable var="availableOffer" paginatorPosition="top"
 								value="#{sellController.lazySellModel}"
 								widgetVar="availableOffers" id="availableTable" lazy="true"
 								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -85,77 +85,82 @@
 								<f:facet name="header">
 						            The offers that are going to be sold
 						        </f:facet>
-								<p:ajax event="cellEdit" update=":selectForm:selectedTable" />
-								<p:column headerText="Name">
-									<h:outputText value="#{offerWebVO.offerName}" />
-								</p:column>
-								<p:column headerText="Price">
-									<h:outputText value="#{offerWebVO.offerPrice}" />
-								</p:column>
-								<p:column headerText="Quantity">
-									<p:cellEditor>
-										<f:facet name="output">
-											<h:outputText id="outputQuantity"
-												value="#{offerWebVO.quantity}" />
-										</f:facet>
-										<f:facet name="input">
-											<p:spinner id="basic" value="#{offerWebVO.quantity}" />
-										</f:facet>
-									</p:cellEditor>
-								</p:column>
-								<f:facet name="footer">
-									<p:commandButton update=":selectForm:selectedTable"
-										value="Remove" />
-								</f:facet>
-							</p:dataTable>
-						</h:form>
+						        <p:ajax event="cellEdit" update=":selectForm:selectedTable"/>
+						        <p:column headerText="Name">
+						            <h:outputText value="#{offerWebVO.offerName}" />
+						        </p:column>
+						        <p:column headerText="Price">
+						            <h:outputText value="#{offerWebVO.offerPrice}" />
+						        </p:column>
+						        <p:column headerText="Quantity">
+						        	<p:cellEditor>
+						        		<f:facet name="output"><h:outputText id="outputQuantity" 
+						        				 value="#{offerWebVO.quantity}"/>
+						        		</f:facet>
+	                  					<f:facet name="input">
+	                  						<p:spinner id="basic" value="#{offerWebVO.quantity}" >
+	                  							<p:ajax event="blur" update=":selectForm:selectedTable"/>
+	                  						</p:spinner>
+	                  					</f:facet>
+						            </p:cellEditor>
+						        </p:column>
+						        <p:columnGroup type="footer">
+						            <p:row>
+						                <p:column colspan="2" style="text-align:right" footerText="Total:" />
+						                <p:column id="sumCol" footerText="#{sellController.total}" />
+						            </p:row>
+						        </p:columnGroup>
+						        <f:facet name="footer">
+						            <p:commandButton update=":selectForm:selectedTable" value="#{out.sell_offer_remove}" />
+						        </f:facet>
+						    </p:dataTable>
+					    </h:form>
 					</p:fieldset>
 				</div>
 				<div class="ui-grid-col-6">
-
-
 					<h:form id="customerForm">
 						<p:fieldset legend="#{out.client_panel}">
 							<div>
 								<h:panelGrid columns="3" cellpadding="5"
 									style="display:inline-block;">
-									<p:outputLabel value="#{out.customer}" for="quickClient" />
-									<p:autoComplete id="quickClient" size="25"
-										value="#{offerAutoCompleteView.offer}"
-										completeMethod="#{offerAutoCompleteView.completeText}">
-										
-									</p:autoComplete>
-									<p:commandButton update="customerForm" id="find"
-										value="#{out.customer_find}"
-										disabled="#{offerAutoCompleteView.checkBox}"
-										actionListener="#{offerAutoCompleteView.completeClientData}" />
-									<p:outputLabel value="#{out.customer_new}" for="quickClient" />
-									<p:selectBooleanCheckbox
-										value="#{offerAutoCompleteView.checkBox}">
-										<p:ajax update=":customerForm"
-											listener="#{offerAutoCompleteView.addMessage}" />
-									</p:selectBooleanCheckbox>
-
+									<p:outputLabel value="#{out.find_customer}" for="quickClient" />
+									<p:autoComplete id="quickClient" size="25"  
+										value="#{customerAutoCompleteView.customerName}"
+										completeMethod="#{customerAutoCompleteView.completeText}" />
+									<p:commandButton update="customerForm" value="#{out.customer_select}" 
+										disabled="#{!sellController.disabled}"
+										actionListener="#{customerAutoCompleteView.completeClientData}" />
 								</h:panelGrid>
+								<p:commandButton update="customerForm" value="#{out.cancel}"
+									style="margin-top:8px; margin-bottom:10px; float:right;"  
+									id="cancelButton" actionListener="#{sellController.cancelRegister}"
+									rendered="#{!sellController.disabled}" immediate="true">
+								</p:commandButton>
+								<p:commandButton update="customerForm" value="#{out.register_button}"
+									style="margin-top:8px; margin-bottom:10px; float:right;"  
+									id="newCustomerButton" actionListener="#{sellController.registerPressed}">
+								</p:commandButton>
 							</div>
 
 							<p:panel id="customerDetails" header="#{out.customer_data}"
-								style="clear:right;" visible="#{offerAutoCompleteView.checkBox}">
+								style="clear:right;">
 								<div class="ui-grid ui-grid-responsive"
 									style="margin-bottom: 15px;">
 									<div class="ui-grid-row">
 										<div class="ui-grid-col-6">
 											<p:outputLabel value="#{out.user_name}" for="nameInput"
 												style="display: inline-block; min-width:110px;" />
-											<p:inputText id="nameInput" size="25"
-												value="#{offerAutoCompleteView.selectedClient.name}">
+											<p:inputText id="nameInput" size="25" required="#{sellController.required}"
+												value="#{customerAutoCompleteView.selectedClient.name}"
+												disabled="#{sellController.disabled}">
 											</p:inputText>
 										</div>
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="#{out.user_email}" for="emailInput"
+											<p:outputLabel value="Username:" for="userNameInput"
 												style="display: inline-block; min-width:110px;" />
-											<p:inputText id="emailInput" size="25"
-												value="#{offerAutoCompleteView.selectedClient.emailAddress}" />
+											<p:inputText id="userNameInput" disabled="#{sellController.disabled}" 
+												size="25" required="#{sellController.required}"
+												value="#{customerAutoCompleteView.selectedClient.userName}" />
 										</div>
 									</div>
 								</div>
@@ -163,104 +168,50 @@
 									style="margin-bottom: 15px;">
 									<div class="ui-grid-row">
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="#{out.user_user_name}" for="userNameInput"
+										<p:outputLabel value="Email:" for="emailInput"
 												style="display: inline-block; min-width:110px;" />
-											<p:inputText id="userNameInput" size="25"
-												value="#{offerAutoCompleteView.selectedClient.userName}" />
+											<p:inputText id="emailInput" disabled="#{sellController.disabled}" 
+												size="25" required="#{sellController.required}"
+												value="#{customerAutoCompleteView.selectedClient.emailAddress}" />
 										</div>
-
-									</div>
-								</div>
-								<div class="ui-grid ui-grid-responsive"
-									style="margin-bottom: 15px;">
-									<div class="ui-grid-row">
 										<div class="ui-grid-col-6">
 											<p:outputLabel value="#{out.user_phone_number}" for="phoneNumberInput"
 												style="display: inline-block; min-width:110px;" />
-											<p:inputText id="phoneNumberInput" size="25"
-												value="#{offerAutoCompleteView.selectedClient.phoneNumber}" />
-										</div>
-									</div>
-								</div>
-								<p:commandButton update=":customerForm" value="#{out.signup}"
-									actionListener="#{offerAutoCompleteView.registerClient}"
-									style="margin-top:16px; margin-bottom:10px; float:right;" />
-							</p:panel>
-
-
-							<p:panel id="customerDetails2" header="#{out.customer_data}"
-								style="clear:right;"
-								visible="#{offerAutoCompleteView.helper == true and offerAutoCompleteView.checkBox == false}">
-								<div class="ui-grid ui-grid-responsive"
-									style="margin-bottom: 15px;">
-									<div class="ui-grid-row">
-										<div class="ui-grid-col-6">
-											<p:outputLabel value="#{out.user_name}" for="nameInput"
-												style="display: inline-block; min-width:110px;" />
-											<p:inputText id="nameInput2" size="25"
-												value="#{offerAutoCompleteView.selectedClient.name}"
-												disabled="true">
-											</p:inputText>
-										</div>
-										<div class="ui-grid-col-6">
-											<p:outputLabel value="#{out.user_email}" for="emailInput"
-												style="display: inline-block; min-width:110px;" />
-											<p:inputText id="emailInput2" disabled="true" size="25"
-												value="#{offerAutoCompleteView.selectedClient.emailAddress}" />
+											<p:inputText id="phoneNumberInput" disabled="#{sellController.disabled}" 
+												size="25" required="#{sellController.required}"
+												value="#{customerAutoCompleteView.selectedClient.phoneNumber}" />
 										</div>
 									</div>
 								</div>
 								<div class="ui-grid ui-grid-responsive"
 									style="margin-bottom: 15px;">
 									<div class="ui-grid-row">
-										<div class="ui-grid-col-6">
-											<p:outputLabel value="#{out.user_user_name}" for="userNameInput"
-												style="display: inline-block; min-width:110px;" />
-											<p:inputText id="userNameInput2" disabled="true" size="25"
-												value="#{offerAutoCompleteView.selectedClient.userName}" />
-										</div>
 										<div class="ui-grid-col-6">
 											<p:outputLabel value="#{out.customer_reg}"
 												for="registrationDateInput"
 												style="display: inline-block; min-width:110px;" />
-											<p:inputText id="registrationDateInput" disabled="true"
-												size="25"
-												value="#{offerAutoCompleteView.selectedClient.registrationDate}" />
+											<p:inputText id="registrationDateInput" disabled="true" size="25"
+												value="#{customerAutoCompleteView.selectedClient.registrationDate}" />
 										</div>
-									</div>
-								</div>
-								<div class="ui-grid ui-grid-responsive"
-									style="margin-bottom: 15px;">
-									<div class="ui-grid-row">
-										<div class="ui-grid-col-6">
-											<p:outputLabel value="#{out.user_phone_number}" for="phoneNumberInput"
-												style="display: inline-block; min-width:110px;" />
-											<p:inputText id="phoneNumberInput2" disabled="true" size="25"
-												value="#{offerAutoCompleteView.selectedClient.phoneNumber}" />
-										</div>
-
 									</div>
 								</div>
 							</p:panel>
 						</p:fieldset>
 					</h:form>
-
-
 					<div class="ui-grid ui-grid-responsive"
 						style="margin-left: 2px; margin-top: 5px;">
 						<div class="ui-grid-row">
 							<div class="ui-grid-col-12">
 								<p:panel>
-									<h4 style="display: inline; margin-right: 5px;">Sell the
-										selected offers:</h4>
-									<p:commandButton update=":selectForm:selectedTable"
-										value="Finish" actionListener="#{sellController.sell}" />
+									<h4 style="display: inline; margin-right: 5px;">#{out.sell_finish_text}</h4>
+									<p:commandButton
+										update=":selectForm:selectedTable,:customerForm,:customerForm:quickClient" 
+										value="#{out.sell_finish_button}" actionListener="#{sellController.sell}">
+									</p:commandButton>
 								</p:panel>
 							</div>
 						</div>
 					</div>
-
-
 				</div>
 			</div>
 		</div>
