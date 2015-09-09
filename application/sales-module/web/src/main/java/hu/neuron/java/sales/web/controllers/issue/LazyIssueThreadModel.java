@@ -48,7 +48,6 @@ public class LazyIssueThreadModel extends LazyDataModel<IssueThreadVO> {
 	public List<IssueThreadVO> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 		List<String> filter = new ArrayList<>();
 		String filterColumnName = "";
-		System.out.println("size: " + filters.keySet().size());
 		
 		if(filters.keySet().size() == 1){
 			//Ha egy a mérete akkor biztos a status oszlopon van a filter
@@ -66,10 +65,6 @@ public class LazyIssueThreadModel extends LazyDataModel<IssueThreadVO> {
 			filterColumnName = filters.keySet().iterator().next();
 			filter.add((String) filters.get(filterColumnName));		
 		}
-		
-		
-		System.out.println("cname:" + filterColumnName);
-		System.out.println("filter: " + filter);
 		
 		if (sortField == null) {
 			sortField = "clientId";

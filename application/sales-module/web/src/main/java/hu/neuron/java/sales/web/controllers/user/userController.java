@@ -9,6 +9,7 @@ import hu.neuron.java.sales.web.LocalizationsUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.MissingResourceException;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -144,7 +145,6 @@ public class userController {
 		try {
 			userServiceRemote.removeUser(selectedUser);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -169,6 +169,17 @@ public class userController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+	
+	public String getLocalizedRole(String role){
+		FacesContext context = FacesContext.getCurrentInstance();
+		String rv;
+		try {
+			rv = LocalizationsUtils.getText("user_"+role.toLowerCase(), context);
+			return rv;
+		}catch(MissingResourceException ex){
+			return role;
 		}
 	}
 

@@ -161,7 +161,7 @@ public class ReportController {
 		for (ReportElement element : generateSalesDetails()) {
 			String date;
 			if(calibration.equals("Month")){
-				date = new SimpleDateFormat("yyyy-MM").format(element.getDate());	
+				date = new SimpleDateFormat("yyyy.MM").format(element.getDate());	
 			}else{
 				date = new SimpleDateFormat("yyyy").format(element.getDate());
 			}
@@ -241,7 +241,7 @@ public class ReportController {
 		for (ReportElement element : generateIncomeDetails()) {
 			String date;
 			if(calibration.equals("Month")){
-				date = new SimpleDateFormat("yyyy-MM").format(element.getDate());	
+				date = new SimpleDateFormat("yyyy.MM").format(element.getDate());	
 			}else{
 				date = new SimpleDateFormat("yyyy").format(element.getDate());
 			}
