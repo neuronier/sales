@@ -65,7 +65,7 @@ public class SalesPointConverter {
 		if(vo.getWarehouse() != null){
 			rv.setWareHouseId(vo.getWarehouse().getWarehouseId());
 		}
-		rv.setId(vo.getId());;
+		rv.setId(vo.getId());
 		return rv;
 	}
 

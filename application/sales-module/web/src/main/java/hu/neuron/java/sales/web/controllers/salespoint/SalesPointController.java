@@ -85,7 +85,6 @@ public class SalesPointController implements Serializable {
 		try {
 			addressCheck = addressService.findAddressByEquals(addressVO);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (addressCheck == null) {
@@ -104,7 +103,6 @@ public class SalesPointController implements Serializable {
 					.findWarehouseByWarehouseName(WarehouseSelectOneMenuView
 							.getStaticWarehouseName());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (warehouseCheck == null) {

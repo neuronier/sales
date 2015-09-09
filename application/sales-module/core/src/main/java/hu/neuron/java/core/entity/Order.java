@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-//Mivel a diagramból és a dokumentációból nem derült ki rendesen, hogy milyen mezői legyenek az entitásnak lehet h ezt még BŐVITENI kell! (Roli)
 @Entity
 @Table(name = "Orders")
 public class Order extends Base {
@@ -15,7 +14,7 @@ public class Order extends Base {
 	private String orderId;
 	
 	private String warehouseId;
-
+ 
 	private String name;
 
 	private String status;

@@ -27,7 +27,8 @@
 							<p:autoComplete id="quickOffers" minQueryLength="3" effect="fade"
 								value="#{customerAutoCompleteView.customerName}"
 								completeMethod="#{customerAutoCompleteView.completeText}" />
-							<p:commandButton update=":selectForm:selectedTable" value="Add" />
+							<p:commandButton update=":selectForm:selectedTable" 
+								value="#{out.add}" />
 						</h:panelGrid>
 
 						<h:form>
@@ -61,10 +62,10 @@
 									</h:outputText>
 								</p:column>
 
-								<p:column headerText="Add"
+								<p:column headerText="#{out.sell_add}"
 									style="width:32px; text-align: center">
 									<p:commandButton update=" :selectForm:selectedTable"
-										title="Add" icon="ui-icon-circle-plus"
+										title="#{out.add}" icon="ui-icon-circle-plus"
 										oncomplete="selectionHandler();">
 										<f:setPropertyActionListener value="#{availableOffer}"
 											target="#{sellController.selectedAvailableOffer}" />
