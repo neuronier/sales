@@ -13,7 +13,6 @@ import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,9 +54,6 @@ public class ReportController {
 	@EJB(name = "SalesPointService", mappedName = "SalesPointService")
 	private SalesPointServiceRemote salePointService;
 
-	private Date reportFrom;
-	private Date reportTo;
-
 	private SalesPointVO selectedSalesPoint1;
 	private SalesPointVO selectedSalesPoint2;
 	private List<SalesPointVO> salesPointList;
@@ -92,13 +88,6 @@ public class ReportController {
 			monthsList.put(months[i - 1], i);
 		}
 
-		Calendar cal = Calendar.getInstance();
-
-		cal.set(2015, 1, 1);
-		reportFrom = cal.getTime();
-
-		cal.set(2016, 5, 1);
-		reportTo = cal.getTime();
 
 		adminUserRegNumberDetailsList = new ArrayList<>();
 		adminClientRegNumberDetailsList = new ArrayList<>();
@@ -732,16 +721,6 @@ public class ReportController {
 			incomeReportGenerateBtnAction();
 			break;
 		case "salesPointIncome":
-			salesPointList = salePointService.findAll();
-			selectedSalesPoint1 = salesPointList.get(0);
-			selectedSalesPoint2 = salesPointList.get(1);
-
-			yearStart = 2014;
-			monthStart = 1;
-			yearEnd = 2016;
-			monthEnd = 2;
-			calibration = "Month";
-
 			salesPointIncomeReportGenerateBtnAction();
 			break;
 		case "topOffers":
@@ -769,22 +748,6 @@ public class ReportController {
 	// ////////////////////////////////////////////////////////////////////////
 	// --------------------------Getters & Setters---------------------------//
 	// ////////////////////////////////////////////////////////////////////////
-
-	public Date getReportFrom() {
-		return reportFrom;
-	}
-
-	public void setReportFrom(Date reportFrom) {
-		this.reportFrom = reportFrom;
-	}
-
-	public Date getReportTo() {
-		return reportTo;
-	}
-
-	public void setReportTo(Date reportTo) {
-		this.reportTo = reportTo;
-	}
 
 	public List<ReportElement> getAdminUserRegNumberDetailsList() {
 		return adminUserRegNumberDetailsList;
