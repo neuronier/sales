@@ -28,20 +28,19 @@ import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 public class ClientOfferServiceImpl implements ClientOfferServiceRemote, Serializable {
 
 	private static final long serialVersionUID = -181586732036315166L;
-	
+
 	@Autowired
 	ClientOfferDAO clientOfferDAO;
-	
+
 	@Autowired
 	OfferDAO offerDAO;
 
 	@Autowired
 	ClientOfferConverter coConv;
-	
+
 	@Autowired
 	ClientOfferDAO coDao;
-	
-	
+
 	@Override
 	public void saveClientOffer(ClientOfferVO purchase) {
 		coDao.save(coConv.toEntity(purchase));
@@ -63,9 +62,8 @@ public class ClientOfferServiceImpl implements ClientOfferServiceRemote, Seriali
 	}
 
 	@Override
-	public List<ClientOfferVO> findClientOfferByClientIdAndDate(String clientId,
-			Date date) throws Exception {
-		
+	public List<ClientOfferVO> findClientOfferByClientIdAndDate(String clientId, Date date) throws Exception {
+
 		return coConv.toVO(coDao.findClientOfferByClientIdAndDate(clientId, date));
 	}
 
@@ -80,9 +78,8 @@ public class ClientOfferServiceImpl implements ClientOfferServiceRemote, Seriali
 	}
 
 	@Override
-	public List<ClientOfferVO> findClientOfferByClientIdAndOfferId(String clientId,
-			String offerId) throws Exception {
-		
+	public List<ClientOfferVO> findClientOfferByClientIdAndOfferId(String clientId, String offerId) throws Exception {
+
 		return coConv.toVO(coDao.findClientOfferByClientIdAndOfferId(clientId, offerId));
 	}
 
@@ -94,13 +91,13 @@ public class ClientOfferServiceImpl implements ClientOfferServiceRemote, Seriali
 	@Override
 	public int findIncomeByMonth(int year, int month) throws Exception {
 		List<ClientOffer> clientOffers = clientOfferDAO.findByMonth(year, month);
-		
+
 		int sum = 0;
 		for (ClientOffer clientOffer : clientOffers) {
 			OfferEntity offer = offerDAO.findOfferEntityByOfferId(clientOffer.getOfferId());
-			sum += (int)offer.getOfferPrice();
+			sum += (int) offer.getOfferPrice();
 		}
-		
+
 		return sum;
 	}
 
@@ -111,12 +108,43 @@ public class ClientOfferServiceImpl implements ClientOfferServiceRemote, Seriali
 
 	@Override
 	public int count() {
-		return (int)clientOfferDAO.count();
+		return (int) clientOfferDAO.count();
 	}
 
 	@Override
 	public int findTotalIncome() {
 		return clientOfferDAO.findTotalIncome();
+	}
+
+	@Override
+	public int findIncomeBySalesPointIdInDateInterval(String salesPointId, Date from, Date to) throws Exception {
+		List<ClientOffer> clientOffers = clientOfferDAO.findBySalesPointIdAndDateInterval(salesPointId, from, to);
+
+		int sum = 0;
+		for (ClientOffer clientOffer : clientOffers) {
+			OfferEntity offer = offerDAO.findOfferEntityByOfferId(clientOffer.getOfferId());
+			sum += (int) offer.getOfferPrice();
+		}
+
+		return sum;
+	}
+
+	@Override
+	public int findCountByInterval(Date from, Date to) {
+		return clientOfferDAO.findCountByIntervall(from, to);
+	}
+
+	@Override
+	public int findIncomeByInterval(Date from, Date to) throws Exception {
+		List<ClientOffer> clientOffers = clientOfferDAO.findInInterval(from, to);
+
+		int sum = 0;
+		for (ClientOffer clientOffer : clientOffers) {
+			OfferEntity offer = offerDAO.findOfferEntityByOfferId(clientOffer.getOfferId());
+			sum += (int) offer.getOfferPrice();
+		}
+
+		return sum;
 	}
 
 }

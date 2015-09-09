@@ -18,6 +18,8 @@ public class ClientOfferVO implements Serializable{
 	
 	private Date date;
 	
+	private String salesPointId;
+	
 	private Long quantity;
 	
 	private Long id;
@@ -80,6 +82,13 @@ public class ClientOfferVO implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
+	public String getSalesPointId() {
+		return salesPointId;
+	}
+
+	public void setSalesPointId(String salesPointId) {
+		this.salesPointId = salesPointId;
+	}
 	
 }

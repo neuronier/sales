@@ -18,12 +18,18 @@
 	width: 30%;
 	padding: 20px;
 }
+
+.btnGrid {
+	margin-top: 10px;
+}
+
+.btnGrid tr{
+	border: transparent;
+}
 </style>
 	</ui:define>
 
 	<ui:define name="content">
-
-
 
 		<table class="dataTableContainer">
 			<tr>
@@ -54,7 +60,7 @@
 
 							</p:dataTable>
 
-							<p:panelGrid id="btnPanel" columns="3">
+							<p:panelGrid id="btnPanel" columns="3" styleClass="btnGrid">
 								<sec:authorize access="hasAnyRole('ROLE_USERMANAGER_USER_EDIT')">
 									<p:commandButton value="#{out.user_add_new}" action="#{userController.addNewUserBtnAction}" update=":addNewUserDialogForm"
 										oncomplete="PF('addNewUserDialog').show()" />
@@ -82,7 +88,7 @@
 
 							</p:dataTable>
 
-							<p:panelGrid id="roleBtnPanel" columns="3">
+							<p:panelGrid id="roleBtnPanel" columns="3" styleClass="btnGrid">
 								<sec:authorize access="hasAnyRole('ROLE_USERMANAGER_ROLE_EDIT')">
 									<p:commandButton value="#{out.user_add_new}" action="#{roleController.addNewRoleBtnAction}" update=":addNewRoleDialogForm"
 										oncomplete="PF('addNewRoleDialog').show()" />
@@ -133,7 +139,7 @@
 				</p:panelGrid>
 
 				<p:commandButton value="#{out.user_save}" actionListener="#{userController.addNewUser}" update=":userForm :addNewUserDialogForm"
-					oncomplete="if (args &amp;&amp; !args.validationFailed) PF('addNewUserDialog').hide()" validateClient="true" />
+					oncomplete="if (args &amp;&amp; !args.validationFailed) PF('addNewUserDialog').hide()" validateClient="true" style="margin-top: 15px;"/>
 			</h:form>
 		</p:dialog>
 
@@ -166,7 +172,7 @@
 					</p:pickList>
 				</p:panelGrid>
 
-				<p:commandButton value="#{out.user_save}" actionListener="#{userController.editUser}" update=":userForm" oncomplete="PF('editUserDialog').hide()" />
+				<p:commandButton value="#{out.user_save}" actionListener="#{userController.editUser}" update=":userForm, :editUserDialogForm" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('editUserDialog').hide()" style="margin-top: 15px;"/>
 			</h:form>
 		</p:dialog>
 

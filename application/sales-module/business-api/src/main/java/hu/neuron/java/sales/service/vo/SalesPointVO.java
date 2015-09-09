@@ -88,7 +88,32 @@ public class SalesPointVO implements Serializable{
 	
 	private void generateSalePointId() {
 		salePointId = UUID.randomUUID().toString();
-		
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((salePointId == null) ? 0 : salePointId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SalesPointVO other = (SalesPointVO) obj;
+		if (salePointId == null) {
+			if (other.salePointId != null)
+				return false;
+		} else if (!salePointId.equals(other.salePointId))
+			return false;
+		return true;
+	}
+
+	
 }

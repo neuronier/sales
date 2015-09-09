@@ -46,7 +46,7 @@
 
 		<p:dialog widgetVar="issueThreadViewerDialog" width="80%" resizable="false">
 			<h:form id="issueThreadViewerDialogForm">
-				<p:dataTable value="#{issueManagementController.issueMessageList}" var="issueMsg" scrollable="true" scrollHeight="150"
+				<p:dataTable value="#{issueManagementController.issueMessageList}" var="issueMsg" scrollable="true" scrollHeight="300" style="width:100%"
 					emptyMessage="#{out.empty_message}">
 
 					<p:column style="width:16px">
@@ -72,7 +72,7 @@
 				<p:editor id="editor" widgetVar="editorWidget" value="#{issueManagementController.comment}"
 					controls="bold italic underline color bullets numbering" />
 
-				<p:commandButton value="#{out.issue_send}" action="#{issueManagementController.sendMessage()}" update=":issueThreadViewerDialogForm" />
+				<p:commandButton value="#{out.issue_send}" action="#{issueManagementController.sendMessage()}" update=":issueThreadViewerDialogForm"  style="margin-top:15px; margin-right:10px;"/>
 				<p:commandButton value="#{out.issue_clear}" type="button" onclick="PF('editorWidget').clear();" />
 
 			</h:form>
