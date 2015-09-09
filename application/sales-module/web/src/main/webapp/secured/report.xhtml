@@ -30,22 +30,22 @@
 	vertical-align: middle !important;
 }
 
-.topOffersGrid th{
-	vertical-align:middle;
+.topOffersGrid th {
+	vertical-align: middle;
 }
 </style>
 	</ui:define>
 
 	<ui:define name="content">
-		<h:form id="reportForm">
-			<p:fieldset id="report" legend="#{out.report_report}">
+		<p:fieldset id="report" legend="#{out.report_report}">
 
-				<p:tabView orientation="left" id="innerSalesTabView" dynamic="true" cache="false">
-					<p:ajax event="tabChange" listener="#{reportController.onTabChange}" />
+			<p:tabView orientation="left" id="innerSalesTabView" dynamic="true" cache="false">
+				<p:ajax event="tabChange" listener="#{reportController.onTabChange}" />
 
-					<!-- ######################################Total product############################################################### -->
+				<!-- ######################################Total product############################################################### -->
 
-					<p:tab title="#{out.report_product_report}" id="monthlyProductSales">
+				<p:tab title="#{out.report_product_report}" id="monthlyProductSales">
+					<h:form>
 						<p:panelGrid id="intervalInputTotalSales" styleClass="intervalGrid">
 
 							<p:row>
@@ -54,27 +54,29 @@
 								</p:column>
 								<p:column>
 									<p:selectOneButton value="#{reportController.calibration}">
-										<p:ajax event="change" update="intervalInputTotalSales" />
+										<p:ajax event="change" update="intervalInputAtTotalProduct" />
 										<f:selectItem itemLabel="#{out.report_year}" itemValue="Year" />
 										<f:selectItem itemLabel="#{out.report_month}" itemValue="Month" />
 									</p:selectOneButton>
 								</p:column>
 
 								<p:column>
-									<p:spinner value="#{reportController.yearStart}" size="4" />
-									<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
-										<f:selectItems value="#{reportController.monthsList}" />
-									</p:selectOneMenu>
-									<h:outputText value=" - " />
+									<h:panelGroup id="intervalInputAtTotalProduct">
+										<p:spinner value="#{reportController.yearStart}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+										<h:outputText value=" - " />
 
-									<p:spinner value="#{reportController.yearEnd}" size="4" />
-									<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
-										<f:selectItems value="#{reportController.monthsList}" />
-									</p:selectOneMenu>
+										<p:spinner value="#{reportController.yearEnd}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
 								</p:column>
 
 								<p:column colspan="3">
-									<p:commandButton value="#{out.report_generate}" action="#{reportController.productReportGenerateBtnAction()}" update="@form" />
+									<p:commandButton value="#{out.report_generate}" action="#{reportController.productReportGenerateBtnAction()}" update="totalSalesChart" />
 								</p:column>
 							</p:row>
 
@@ -82,12 +84,14 @@
 
 						<p:spacer height="20" />
 
-						<p:chart type="bar" model="#{reportController.totalSalesBarChart}" style="height:300px" />
-					</p:tab>
+						<p:chart id="totalSalesChart" type="bar" model="#{reportController.totalSalesBarChart}" style="height:300px" />
+					</h:form>
+				</p:tab>
 
-					<!-- ##########################################Total income################################################################## -->
+				<!-- ##########################################Total income################################################################## -->
 
-					<p:tab title="#{out.report_income_report}" id="monthlyIncome">
+				<p:tab title="#{out.report_income_report}" id="monthlyIncome">
+					<h:form>
 						<p:panelGrid id="intervalInputTotalIncome" styleClass="intervalGrid">
 
 							<p:row>
@@ -96,27 +100,29 @@
 								</p:column>
 								<p:column>
 									<p:selectOneButton value="#{reportController.calibration}">
-										<p:ajax event="change" update="intervalInputTotalIncome" />
+										<p:ajax event="change" update="intervalInputAtTotalSales" />
 										<f:selectItem itemLabel="#{out.report_year}" itemValue="Year" />
 										<f:selectItem itemLabel="#{out.report_month}" itemValue="Month" />
 									</p:selectOneButton>
 								</p:column>
 
 								<p:column>
-									<p:spinner value="#{reportController.yearStart}" size="4" />
-									<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
-										<f:selectItems value="#{reportController.monthsList}" />
-									</p:selectOneMenu>
-									<h:outputText value=" - " />
+									<h:panelGroup id="intervalInputAtTotalSales">
+										<p:spinner value="#{reportController.yearStart}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+										<h:outputText value=" - " />
 
-									<p:spinner value="#{reportController.yearEnd}" size="4" />
-									<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
-										<f:selectItems value="#{reportController.monthsList}" />
-									</p:selectOneMenu>
+										<p:spinner value="#{reportController.yearEnd}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
 								</p:column>
 
 								<p:column colspan="3">
-									<p:commandButton value="#{out.report_generate}" action="#{reportController.incomeReportGenerateBtnAction()}" update="@form" />
+									<p:commandButton value="#{out.report_generate}" action="#{reportController.incomeReportGenerateBtnAction()}" update="totalIncomeChart" />
 								</p:column>
 							</p:row>
 
@@ -124,12 +130,14 @@
 
 						<p:spacer height="20" />
 
-						<p:chart type="bar" model="#{reportController.totalIncomeBarChart}" style="height:300px" />
-					</p:tab>
+						<p:chart id="totalIncomeChart" type="bar" model="#{reportController.totalIncomeBarChart}" style="height:300px" />
+					</h:form>
+				</p:tab>
 
-					<!-- ######################################SalesPoint income############################################################### -->
+				<!-- ######################################SalesPoint income############################################################### -->
 
-					<p:tab title="#{out.report_salespoint_income_report}" id="salesPointIncome">
+				<p:tab title="#{out.report_salespoint_income_report}" id="salesPointIncome">
+					<h:form>
 						<p:panelGrid id="intervalInput" styleClass="intervalGrid">
 
 							<p:row>
@@ -138,25 +146,25 @@
 								</p:column>
 								<p:column>
 									<p:selectOneButton value="#{reportController.calibration}">
-										<p:ajax event="change" update="intervalInput" />
+										<p:ajax event="change" update="intervalInputAtSalesPointIncome" />
 										<f:selectItem itemLabel="#{out.report_year}" itemValue="Year" />
 										<f:selectItem itemLabel="#{out.report_month}" itemValue="Month" />
 									</p:selectOneButton>
 								</p:column>
 
 								<p:column>
+									<h:panelGroup id="intervalInputAtSalesPointIncome">
+										<p:spinner value="#{reportController.yearStart}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+										<h:outputText value=" - " />
 
-
-									<p:spinner value="#{reportController.yearStart}" size="4" />
-									<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
-										<f:selectItems value="#{reportController.monthsList}" />
-									</p:selectOneMenu>
-									<h:outputText value=" - " />
-
-									<p:spinner value="#{reportController.yearEnd}" size="4" />
-									<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
-										<f:selectItems value="#{reportController.monthsList}" />
-									</p:selectOneMenu>
+										<p:spinner value="#{reportController.yearEnd}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
 								</p:column>
 							</p:row>
 
@@ -176,19 +184,22 @@
 							</p:row>
 							<p:row>
 								<p:column colspan="3">
-									<p:commandButton value="#{out.report_generate}" action="#{reportController.salesPointIncomeReportGenerateBtnAction}" update="@form" />
+									<p:commandButton value="#{out.report_generate}" action="#{reportController.salesPointIncomeReportGenerateBtnAction}"
+										update="salesPointIncomeChart" />
 								</p:column>
 							</p:row>
 
 						</p:panelGrid>
 						<p:spacer height="20" />
 
-						<p:chart type="line" model="#{reportController.incomeBySalesPointLineChart}" style="height:300px" />
-					</p:tab>
+						<p:chart id="salesPointIncomeChart" type="line" model="#{reportController.incomeBySalesPointLineChart}" style="height:300px" />
+					</h:form>
+				</p:tab>
 
-					<!-- ###########################################Top offers########################################################################## -->
+				<!-- ###########################################Top offers########################################################################## -->
 
-					<p:tab title="#{out.report_top_offers}" id="topOffers">
+				<p:tab title="#{out.report_top_offers}" id="topOffers">
+					<h:form>
 						<p:panelGrid style="width: 100%;" id="topOfferGrid">
 							<p:row>
 								<p:column style="width:40%; padding-top: 15px;">
@@ -215,12 +226,13 @@
 								</p:column>
 							</p:row>
 						</p:panelGrid>
-					</p:tab>
+					</h:form>
+				</p:tab>
 
-					<!-- #########################################Number of users##################################################################### -->
+				<!-- #########################################Number of users##################################################################### -->
 
-					<p:tab title="#{out.report_users_report}" id="adminUserNumber">
-
+				<p:tab title="#{out.report_users_report}" id="adminUserNumber">
+					<h:form>
 						<p:panelGrid id="intervalInputUser" styleClass="intervalGrid">
 
 							<p:row>
@@ -229,26 +241,28 @@
 								</p:column>
 								<p:column>
 									<p:selectOneButton value="#{reportController.calibration}">
-										<p:ajax event="change" update="intervalInputUser" />
+										<p:ajax event="change" update="intervalInputAtNumberOfUsers" />
 										<f:selectItem itemLabel="#{out.report_year}" itemValue="Year" />
 										<f:selectItem itemLabel="#{out.report_month}" itemValue="Month" />
 									</p:selectOneButton>
 								</p:column>
 								<p:column>
-									<p:spinner value="#{reportController.yearStart}" size="4" />
-									<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
-										<f:selectItems value="#{reportController.monthsList}" />
-									</p:selectOneMenu>
-									<h:outputText value=" - " />
+									<h:panelGroup id="intervalInputAtNumberOfUsers">
+										<p:spinner value="#{reportController.yearStart}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+										<h:outputText value=" - " />
 
-									<p:spinner value="#{reportController.yearEnd}" size="4" />
-									<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
-										<f:selectItems value="#{reportController.monthsList}" />
-									</p:selectOneMenu>
+										<p:spinner value="#{reportController.yearEnd}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
 								</p:column>
-							
+
 								<p:column colspan="3">
-									<p:commandButton value="#{out.report_generate}" action="#{reportController.adminUserNumGenerateBtnAction()}" update="@form" />
+									<p:commandButton value="#{out.report_generate}" action="#{reportController.adminUserNumGenerateBtnAction()}" update="userNumberChart" />
 								</p:column>
 							</p:row>
 
@@ -257,12 +271,14 @@
 
 						<p:spacer height="20" />
 
-						<p:chart type="line" model="#{reportController.adminUserNumberLineChart}" style="height:300px;" />
-					</p:tab>
+						<p:chart id="userNumberChart" type="line" model="#{reportController.adminUserNumberLineChart}" style="height:300px;" />
+					</h:form>
+				</p:tab>
 
-					<!-- ######################################Number of clients################################################################## -->
+				<!-- ######################################Number of clients################################################################## -->
 
-					<p:tab title="#{out.report_client_report}" id="adminClientNumber">
+				<p:tab title="#{out.report_client_report}" id="adminClientNumber">
+					<h:form>
 						<p:panelGrid id="intervalInputClient" styleClass="intervalGrid">
 
 							<p:row>
@@ -271,26 +287,28 @@
 								</p:column>
 								<p:column>
 									<p:selectOneButton value="#{reportController.calibration}">
-										<p:ajax event="change" update="intervalInputClient" />
+										<p:ajax event="change" update="intervalInputAtNumberOfClients" />
 										<f:selectItem itemLabel="#{out.report_year}" itemValue="Year" />
 										<f:selectItem itemLabel="#{out.report_month}" itemValue="Month" />
 									</p:selectOneButton>
 								</p:column>
 								<p:column>
-									<p:spinner value="#{reportController.yearStart}" size="4" />
-									<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
-										<f:selectItems value="#{reportController.monthsList}" />
-									</p:selectOneMenu>
-									<h:outputText value=" - " />
+									<h:panelGroup id="intervalInputAtNumberOfClients">
+										<p:spinner value="#{reportController.yearStart}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+										<h:outputText value=" - " />
 
-									<p:spinner value="#{reportController.yearEnd}" size="4" />
-									<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
-										<f:selectItems value="#{reportController.monthsList}" />
-									</p:selectOneMenu>
+										<p:spinner value="#{reportController.yearEnd}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
 								</p:column>
-							
+
 								<p:column colspan="3">
-									<p:commandButton value="#{out.report_generate}" action="#{reportController.adminClientNumGenerateBtnAction()}" update="@form" />
+									<p:commandButton value="#{out.report_generate}" action="#{reportController.adminClientNumGenerateBtnAction()}" update="clientNumberChart" />
 								</p:column>
 							</p:row>
 
@@ -298,14 +316,13 @@
 
 						<p:spacer height="20" />
 
-						<p:chart type="line" model="#{reportController.adminClientNumberLineChart}" style="height:300px;" />
+						<p:chart id="clientNumberChart" type="line" model="#{reportController.adminClientNumberLineChart}" style="height:300px;" />
+					</h:form>
+				</p:tab>
 
-					</p:tab>
-
-					<!-- ######################################################################################################################## -->
-				</p:tabView>
-			</p:fieldset>
-		</h:form>
+				<!-- ######################################################################################################################## -->
+			</p:tabView>
+		</p:fieldset>
 
 	</ui:define>
 </ui:composition>

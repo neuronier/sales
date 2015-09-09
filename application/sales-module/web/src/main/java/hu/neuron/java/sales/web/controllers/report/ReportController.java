@@ -183,7 +183,12 @@ public class ReportController {
 	}
 
 	public void salesReportGenerate() {
-		generateSalesDiagramms();
+		try{
+			generateSalesDiagramms();	
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		
 	}
 
 	/*********************************************************************************/
@@ -731,8 +736,6 @@ public class ReportController {
 			break;
 		case "adminClientNumber":
 			adminClientNumGenerateBtnAction();
-			break;
-		case "adminIssue":
 			break;
 		}
 	}
