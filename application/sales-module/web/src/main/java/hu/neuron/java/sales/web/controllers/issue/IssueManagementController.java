@@ -5,14 +5,18 @@ import hu.neuron.java.sales.service.IssueThreadServiceRemote;
 import hu.neuron.java.sales.service.IssueThreadServiceRemote.Status;
 import hu.neuron.java.sales.service.vo.IssueMessageVO;
 import hu.neuron.java.sales.service.vo.IssueThreadVO;
+import hu.neuron.java.sales.web.LocalizationsUtils;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -35,9 +39,17 @@ public class IssueManagementController {
 	
 	private String comment;
 	
+	private HashMap<String,String> statusList;
+	
 	
 	@PostConstruct
 	public void init() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		statusList = new LinkedHashMap<String,String>();
+		statusList.put(LocalizationsUtils.getText("issue_status_new", context), "New");
+		statusList.put(LocalizationsUtils.getText("issue_status_ongoing", context), "Ongoing");
+		statusList.put(LocalizationsUtils.getText("issue_status_resolved", context), "Resolved");
+		
 		setLazyIssueThreadModel(new LazyIssueThreadModel(issueThreadService));
 	}
 	
@@ -65,6 +77,11 @@ public class IssueManagementController {
 		issueThreadService.saveIssueThread(thread);
 		
 		issueMessageList = issueMessageService.findByThreadId(selectedIssueThread.getThreadId());
+	}
+	
+	public String getLocalizedStatus(String status){
+		FacesContext context = FacesContext.getCurrentInstance();
+		return LocalizationsUtils.getText("issue_status_"+status.toLowerCase(), context);
 	}
 	
 	public long getOngoingIssuesCount(){
@@ -102,5 +119,14 @@ public class IssueManagementController {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+
+	public HashMap<String, String> getStatusList() {
+		return statusList;
+	}
+
+	public void setStatusList(HashMap<String, String> statusList) {
+		this.statusList = statusList;
+	}
+
 	
 }

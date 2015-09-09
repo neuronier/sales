@@ -3,7 +3,6 @@ package hu.neuron.java.sales.service.impl;
 import hu.neuron.java.core.dao.ClientDAO;
 import hu.neuron.java.core.dao.IssueMessageDAO;
 import hu.neuron.java.core.dao.IssueThreadDAO;
-import hu.neuron.java.core.entity.Client;
 import hu.neuron.java.core.entity.IssueThread;
 import hu.neuron.java.sales.service.IssueThreadServiceRemote;
 import hu.neuron.java.sales.service.converter.IssueThreadConverter;
@@ -71,10 +70,9 @@ public class IssueThreadServiceImpl implements IssueThreadServiceRemote, Seriali
 	}
 
 	@Override
-	public List<IssueThreadVO> getIssueThreadList(int page, int size, String sortField, int sortOrder, String filter, String filterColumnName) {
+	public List<IssueThreadVO> getIssueThreadList(int page, int size, String sortField, int sortOrder, List<String> filter, String filterColumnName) {
 
 		boolean sortedByClientUserName = false;
-//		boolean sortedByLastUpdate = false;
 
 		if (sortField.equals("clientUserName")) {
 			sortedByClientUserName = true;
@@ -86,16 +84,24 @@ public class IssueThreadServiceImpl implements IssueThreadServiceRemote, Seriali
 		List<IssueThreadVO> ret = new ArrayList<IssueThreadVO>(size);
 		Page<IssueThread> entities;
 
-		if (filter.length() != 0 && filterColumnName.equals("clientUserName")) {
-			entities = issueThreadDAO.findByClientIdIn(getClientIdsByUserName(filter), pageRequest);
-		} else if (filter.length() != 0 && filterColumnName.equals("status")) {
-			entities = issueThreadDAO.findByStatusStartsWith(filter, pageRequest);
-		} else if (filter.length() != 0 && filterColumnName.equals("subject")) {
-			entities = issueThreadDAO.findBySubjectStartsWith(filter, pageRequest);
-		} else {
+		if(filter.size() > 0){
+			
+			if(filterColumnName.equals("status")){
+				entities = issueThreadDAO.findByStatusIn(filter, pageRequest);
+			}else {
+				String filterValue = filter.get(0);
+				if (filterValue.length() != 0 && filterColumnName.equals("clientUserName")) {
+					entities = issueThreadDAO.findByClientIdIn(getClientIdsByUserName(filterValue), pageRequest);
+				} else if (filterValue.length() != 0 && filterColumnName.equals("subject")) {
+					entities = issueThreadDAO.findBySubjectStartsWith(filterValue, pageRequest);
+				}else{
+					entities = issueThreadDAO.findAll(pageRequest);
+				}
+			}
+		}else{
 			entities = issueThreadDAO.findAll(pageRequest);
 		}
-
+		
 		if (entities != null && entities.getSize() > 0) {
 			List<IssueThread> contents = entities.getContent();
 			for (IssueThread m : contents) {
@@ -119,17 +125,15 @@ public class IssueThreadServiceImpl implements IssueThreadServiceRemote, Seriali
 	}
 
 	private List<String> getClientIdsByUserName(String userName) {
-		List<Client> clients = clientDAO.findByNameStartsWith(userName);
-		List<String> clientIds = new ArrayList<>();
-		for (Client client : clients) {
-			clientIds.add(client.getClientId());
+		List<String> rv = new ArrayList<>();
+		String clientId = clientDAO.findByUserNameStartsWith(userName).getClientId();
+		if(clientId != null){
+			rv.add(clientId);
+		}else{
+			rv.add("");
 		}
 		
-		if(clientIds.isEmpty()) {
-			clientIds.add("");
-		}
-		
-		return clientIds;
+		return rv;
 	}
 
 	private List<IssueThreadVO> sortByClientUserName(List<IssueThreadVO> issueThreads, int sortOrder) {

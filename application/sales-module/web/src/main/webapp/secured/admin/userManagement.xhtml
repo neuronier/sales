@@ -37,6 +37,7 @@
 						<p:fieldset legend="#{out.user_users}">
 
 							<p:dataTable id="userDT" value="#{userController.lazyUserModel}" var="user" selectionMode="single" selection="#{userController.selectedUser}"
+								currentPageReportTemplate="({currentPage} / {totalPages})"
 								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 								rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" rows="10" emptyMessage="#{out.empty_message}">
 
@@ -77,6 +78,7 @@
 						<p:fieldset legend="#{out.user_roles}">
 
 							<p:dataTable id="roleDT" value="#{roleController.lazyRoleModel}" var="role" selectionMode="single" selection="#{roleController.selectedRole}"
+								currentPageReportTemplate="({currentPage} / {totalPages})"
 								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 								rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" rows="10" emptyMessage="#{out.empty_message}">
 

@@ -29,6 +29,10 @@
 .monthDropDown {
 	vertical-align: middle !important;
 }
+
+.topOffersGrid th{
+	vertical-align:middle;
+}
 </style>
 	</ui:define>
 
@@ -188,7 +192,7 @@
 						<p:panelGrid style="width: 100%;" id="topOfferGrid">
 							<p:row>
 								<p:column style="width:40%; padding-top: 15px;">
-									<p:dataTable value="#{reportController.topOffersDetailsList}" var="element" rowIndexVar="index">
+									<p:dataTable value="#{reportController.topOffersDetailsList}" var="element" rowIndexVar="index" styleClass="topOffersGrid">
 										<f:facet name="header">
 											<h:outputText value="#{out.report_top_offers}" />
 										</f:facet>

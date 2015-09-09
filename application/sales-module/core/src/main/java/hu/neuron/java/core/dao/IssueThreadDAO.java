@@ -24,8 +24,10 @@ public interface IssueThreadDAO extends JpaRepository<IssueThread, Long>{
 	
 	Page<IssueThread> findByStatusStartsWith(String filter,Pageable pageable);
 	
+	Page<IssueThread> findByStatusIn(List<String> filter,Pageable pageable);
+	
 	Page<IssueThread> findBySubjectStartsWith(String filter,Pageable pageable);
-
+	
 	Page<IssueThread> findByClientIdIn(List<String> clientIdList,Pageable pageable);
 	
 	Long countByStatus(String status);
