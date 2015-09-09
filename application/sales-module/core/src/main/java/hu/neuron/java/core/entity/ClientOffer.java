@@ -20,6 +20,8 @@ public class ClientOffer extends Base {
 	
 	private Date date;
 	
+	private String salesPointId;
+	
 	public ClientOffer(){}
 
 	public String getClientOfferId() {
@@ -61,4 +63,13 @@ public class ClientOffer extends Base {
 	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
 	}
+
+	public String getSalesPointId() {
+		return salesPointId;
+	}
+
+	public void setSalesPointId(String salesPointId) {
+		this.salesPointId = salesPointId;
+	}
+	
 }

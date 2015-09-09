@@ -27,8 +27,14 @@ public interface ClientOfferDAO extends JpaRepository<ClientOffer, Long>{
 	@Query("select COUNT(co) from ClientOffer co where YEAR(co.date) = ?1 AND MONTH(co.date) = ?2")
 	int findCountByMonth(int year, int month);
 	
+	@Query("select COUNT(co) from ClientOffer co where co.date >= ?1 AND co.date <= ?2")
+	int findCountByIntervall(Date from, Date to);
+	
 	@Query("select co from ClientOffer co where YEAR(co.date) = ?1 AND MONTH(co.date) = ?2")
 	List<ClientOffer> findByMonth(int year, int month);
+	
+	@Query("select co from ClientOffer co where co.date >= ?1 AND co.date <= ?2")
+	List<ClientOffer> findInInterval(Date from, Date to);
 
 	@Query(value = "select * from clientoffer group by offerId order by count(*) desc limit ?1", nativeQuery = true)
 	List<ClientOffer> findTopOffers(int limit);
@@ -38,4 +44,7 @@ public interface ClientOfferDAO extends JpaRepository<ClientOffer, Long>{
 	
 	@Query(value = "select IFNULL(SUM(o.offerPrice),0) from clientoffer co INNER JOIN offer o ON co.offerId = o.offerId;", nativeQuery = true)
 	int findTotalIncome();
+	
+	@Query("SELECT co FROM ClientOffer co WHERE co.salesPointId = ?1 AND co.date >= ?2 AND co.date <= ?3")
+	List<ClientOffer> findBySalesPointIdAndDateInterval(String salesPointId, Date from, Date to);
 }

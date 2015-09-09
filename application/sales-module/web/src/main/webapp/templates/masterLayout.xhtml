@@ -42,6 +42,10 @@
 			.ui-layout-south {
 				font-size: 0.9em;
 			}
+			
+			#bottomLayout > div {
+				overflow:hidden;
+			}
 
 			body {
 				background-color: grey;
@@ -55,19 +59,19 @@
 				<h:outputStylesheet library="css" name="default.css" />
 				<h:form>
 					<p:growl id="growl" showDetail="true" autoUpdate="true" />
-					<p:menubar>
-						<p:menuitem value="Home" url="/secured/index.xhtml" />
-						<p:menuitem value="Sale Points" url="/secured/salepoint.xhtml" />
-						<p:menuitem value="Offers" url="/secured/offers.xhtml" />
-						<p:menuitem value="Customers" url="/secured/customer.xhtml" />
-						<p:menuitem value="Sell" url="/secured/sell.xhtml" />
-						<p:menuitem value="Orders" url="/secured/order.xhtml" />
-						<p:menuitem value="Reports" url="/secured/report.xhtml" />
+					<p:menubar style="width:99.4%">
+						<p:menuitem value="#{out.menu_home}" url="/secured/index.xhtml" />
+						<p:menuitem value="#{out.menu_sale_point}" url="/secured/salepoint.xhtml" />
+						<p:menuitem value="#{out.menu_offers}" url="/secured/offers.xhtml" />
+						<p:menuitem value="#{out.menu_customers}" url="/secured/customer.xhtml" />
+						<p:menuitem value="#{out.menu_sell}" url="/secured/sell.xhtml" />
+						<p:menuitem value="#{out.menu_orders}" url="/secured/order.xhtml" />
+						<p:menuitem value="#{out.menu_reports}" url="/secured/report.xhtml" />
 						<sec:authorize access="hasAnyRole('ROLE_USERMANAGER_ROLE_READ', 'ROLE_USERMANAGER_USER_READ')">
-							<p:menuitem value="User Management" url="/secured/admin/userManagement.xhtml" />
+							<p:menuitem value="#{out.menu_user_management}" url="/secured/admin/userManagement.xhtml" />
 						</sec:authorize>
-						<p:menuitem value="Issue Management" url="/secured/issueManagement.xhtml" />
-						<p:menuitem value="Refresh" url="/secured/refresh.xhtml" />
+						<p:menuitem value="#{out.menu_issue_management}" url="/secured/issueManagement.xhtml" />
+						<p:menuitem value="#{out.menu_refresh}" url="/secured/refresh.xhtml" />
 						<f:facet name="options">
 							<h:outputLabel value="#{out.logged_in_as}:" />
 							[<p:commandLink value="#{request.userPrincipal.name}" action="/secured/userProfile.xhml?faces-redirect=true" />]
@@ -89,7 +93,7 @@
 				</div>
 			</p:layoutUnit>
 
-			<p:layoutUnit position="south">
+			<p:layoutUnit id="bottomLayout" position="south">
 				<span>2015 - Integrált Értékesítési Rendszer - Értékesítési modul</span>
 				<div style="float: right">Support: sales.support@ier.hu</div>
 			</p:layoutUnit>

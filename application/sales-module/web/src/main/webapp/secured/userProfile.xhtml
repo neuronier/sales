@@ -10,8 +10,7 @@
 
 	<ui:define name="content">
 		<h:form>
-			<p:panel header="#{out.user_profile_personal_details}">
-
+		<p:fieldset legend="#{out.user_profile_personal_details}" style="margin-bottom:20px">
 				<table>
 					<tr>
 						<td><h:outputText value="#{out.user_profile_name}: " /></td>
@@ -53,8 +52,8 @@
 						<td><p:password id="pwd2" value="#{userProfileController.password}" label="#{out.user_profile_new_password_again}" /></td>
 					</tr>
 				</table>
-				<p:commandButton value="#{out.user_profile_save}" actionListener="#{userProfileController.saveChanges}" />
-			</p:panel>
+				<p:commandButton value="#{out.user_profile_save}" actionListener="#{userProfileController.saveChanges}" style="margin-top: 20px;"/>
+			</p:fieldset>
 		</h:form>
 
 		<h:form>

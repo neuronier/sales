@@ -37,7 +37,7 @@ public interface IssueThreadServiceRemote {
 
 	public int getIssueThreadCount();
 
-	public List<IssueThreadVO> getIssueThreadList(int i, int pageSize, String sortField, int dir, String filter, String filterColumnName);
+	public List<IssueThreadVO> getIssueThreadList(int i, int pageSize, String sortField, int dir, List<String> filter, String filterColumnName);
 
 	public long countOngoingIssueThread();
 

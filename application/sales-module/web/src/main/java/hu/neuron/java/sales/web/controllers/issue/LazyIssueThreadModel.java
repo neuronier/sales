@@ -3,8 +3,10 @@ package hu.neuron.java.sales.web.controllers.issue;
 import hu.neuron.java.sales.service.IssueThreadServiceRemote;
 import hu.neuron.java.sales.service.vo.IssueThreadVO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -44,12 +46,26 @@ public class LazyIssueThreadModel extends LazyDataModel<IssueThreadVO> {
 
 	@Override
 	public List<IssueThreadVO> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-		String filter = "";
+		List<String> filter = new ArrayList<>();
 		String filterColumnName = "";
-		if (filters.keySet().size() > 0) {
-			filter = (String) filters.values().toArray()[0];
+		
+		if(filters.keySet().size() == 1){
+			//Ha egy a mérete akkor biztos a status oszlopon van a filter
+			String[] statusFilter = (String[])filters.values().toArray()[0];
+			if(statusFilter.length>0){
+				for (String value : statusFilter) {
+					filter.add(value);					
+				}
+				filterColumnName = filters.keySet().iterator().next();
+			}
+		}else if(filters.keySet().size() > 1) {
+			//Ha a méret nagyobb mint 1 akkor a status mellett van más filter is. Azt veszem figyelembe
+			Set<String> keySet = filters.keySet();
+			keySet.remove("status");
 			filterColumnName = filters.keySet().iterator().next();
+			filter.add((String) filters.get(filterColumnName));		
 		}
+		
 		if (sortField == null) {
 			sortField = "clientId";
 		}

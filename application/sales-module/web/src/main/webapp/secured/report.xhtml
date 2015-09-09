@@ -9,8 +9,7 @@
 	padding: 0px !important;
 	border: transparent;
 }
-
-#reportForm\:innerSalesTabView\:topOfferGrid tr {
+#innerSalesTabView\:topOffersForm\:topOfferGrid tr {
 	vertical-align: top !important;
 	border: transparent;
 }
@@ -18,85 +17,196 @@
 .intervalGrid tr {
 	border: transparent;
 }
+
+.dateSpinnerBtn {
+	height: 26px;
+	vertical-align: middle;
+	width: 23px;
+	border-radius: 5px;
+}
+
+.monthDropDown {
+	vertical-align: middle !important;
+}
+
+.topOffersGrid th {
+	vertical-align: middle;
+}
 </style>
 	</ui:define>
 
 	<ui:define name="content">
-		<h:form id="reportForm">
-			<p:fieldset id="report" legend="#{out.report_report}">
+		<p:fieldset id="report" legend="#{out.report_report}">
 
-				<p:tabView orientation="left" id="innerSalesTabView" dynamic="true" cache="false">
-					<p:ajax event="tabChange" listener="#{reportController.onTabChange}" />
+			<p:tabView orientation="left" id="innerSalesTabView" dynamic="true" cache="false">
+				<p:ajax event="tabChange" listener="#{reportController.onTabChange}" />
 
-					<!-- ######################################Total product############################################################### -->
+				<!-- ######################################Total product############################################################### -->
 
-					<p:tab title="#{out.report_monthly_product_report}" id="monthlyProductSales">
-						<p:panelGrid columns="5" styleClass="intervalGrid">
-							<p:outputLabel for="productFrom" value="#{out.report_from}: " />
-							<p:calendar id="productFrom" value="#{reportController.reportFrom}" />
+				<p:tab title="#{out.report_product_report}" id="monthlyProductSales">
+					<h:form>
+						<p:panelGrid id="intervalInputTotalSales" styleClass="intervalGrid">
 
-							<p:outputLabel for="productTo" value="#{out.report_to}: " />
-							<p:calendar id="productTo" value="#{reportController.reportTo}" />
+							<p:row>
+								<p:column>
+									<h:outputText value="#{out.report_interval}: " />
+								</p:column>
+								<p:column>
+									<p:selectOneButton value="#{reportController.calibration}">
+										<p:ajax event="change" update="intervalInputAtTotalProduct" />
+										<f:selectItem itemLabel="#{out.report_year}" itemValue="Year" />
+										<f:selectItem itemLabel="#{out.report_month}" itemValue="Month" />
+									</p:selectOneButton>
+								</p:column>
 
-							<p:commandButton value="#{out.report_generate}" action="#{reportController.productReportGenerateBtnAction()}" update="@form" />
+								<p:column>
+									<h:panelGroup id="intervalInputAtTotalProduct">
+										<p:spinner value="#{reportController.yearStart}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+										<h:outputText value=" - " />
+
+										<p:spinner value="#{reportController.yearEnd}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</p:column>
+
+								<p:column colspan="3">
+									<p:commandButton value="#{out.report_generate}" action="#{reportController.productReportGenerateBtnAction()}" update="totalSalesChart" />
+								</p:column>
+							</p:row>
+
+						</p:panelGrid>
+
+						<p:spacer height="20" />
+
+						<p:chart id="totalSalesChart" type="bar" model="#{reportController.totalSalesBarChart}" style="height:300px" />
+					</h:form>
+				</p:tab>
+
+				<!-- ##########################################Total income################################################################## -->
+
+				<p:tab title="#{out.report_income_report}" id="monthlyIncome">
+					<h:form>
+						<p:panelGrid id="intervalInputTotalIncome" styleClass="intervalGrid">
+
+							<p:row>
+								<p:column>
+									<h:outputText value="#{out.report_interval}: " />
+								</p:column>
+								<p:column>
+									<p:selectOneButton value="#{reportController.calibration}">
+										<p:ajax event="change" update="intervalInputAtTotalSales" />
+										<f:selectItem itemLabel="#{out.report_year}" itemValue="Year" />
+										<f:selectItem itemLabel="#{out.report_month}" itemValue="Month" />
+									</p:selectOneButton>
+								</p:column>
+
+								<p:column>
+									<h:panelGroup id="intervalInputAtTotalSales">
+										<p:spinner value="#{reportController.yearStart}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+										<h:outputText value=" - " />
+
+										<p:spinner value="#{reportController.yearEnd}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</p:column>
+
+								<p:column colspan="3">
+									<p:commandButton value="#{out.report_generate}" action="#{reportController.incomeReportGenerateBtnAction()}" update="totalIncomeChart" />
+								</p:column>
+							</p:row>
+
+						</p:panelGrid>
+
+						<p:spacer height="20" />
+
+						<p:chart id="totalIncomeChart" type="bar" model="#{reportController.totalIncomeBarChart}" style="height:300px" />
+					</h:form>
+				</p:tab>
+
+				<!-- ######################################SalesPoint income############################################################### -->
+
+				<p:tab title="#{out.report_salespoint_income_report}" id="salesPointIncome">
+					<h:form>
+						<p:panelGrid id="intervalInput" styleClass="intervalGrid">
+
+							<p:row>
+								<p:column>
+									<h:outputText value="#{out.report_interval}: " />
+								</p:column>
+								<p:column>
+									<p:selectOneButton value="#{reportController.calibration}">
+										<p:ajax event="change" update="intervalInputAtSalesPointIncome" />
+										<f:selectItem itemLabel="#{out.report_year}" itemValue="Year" />
+										<f:selectItem itemLabel="#{out.report_month}" itemValue="Month" />
+									</p:selectOneButton>
+								</p:column>
+
+								<p:column>
+									<h:panelGroup id="intervalInputAtSalesPointIncome">
+										<p:spinner value="#{reportController.yearStart}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+										<h:outputText value=" - " />
+
+										<p:spinner value="#{reportController.yearEnd}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</p:column>
+							</p:row>
+
+							<p:row>
+								<p:column>
+									<h:outputText value="#{out.report_salePoints}: " />
+								</p:column>
+								<p:column colspan="2">
+									<p:selectOneMenu value="#{reportController.selectedSalesPoint1}" styleClass="monthDropDown" converter="#{salesPointConverter}">
+										<f:selectItems value="#{reportController.salesPointList}" var="sp" itemLabel="#{sp.name}" itemValue="#{sp}" />
+									</p:selectOneMenu>
+									<h:outputText value=" - " />
+									<p:selectOneMenu value="#{reportController.selectedSalesPoint2}" styleClass="monthDropDown" converter="#{salesPointConverter}">
+										<f:selectItems value="#{reportController.salesPointList}" var="sp" itemLabel="#{sp.name}" itemValue="#{sp}" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column colspan="3">
+									<p:commandButton value="#{out.report_generate}" action="#{reportController.salesPointIncomeReportGenerateBtnAction}"
+										update="salesPointIncomeChart" />
+								</p:column>
+							</p:row>
+
 						</p:panelGrid>
 						<p:spacer height="20" />
-						<p:dataTable value="">
-							<p:columns value="#{reportController.monthlySalesDetailsList}" var="element">
-								<f:facet name="header">
-									<h:outputText value="#{element.date}">
-										<f:convertDateTime pattern="yyyy.MM" />
-									</h:outputText>
-								</f:facet>
-								<h:outputText value="#{element.number}" />
-							</p:columns>
-						</p:dataTable>
 
-						<p:spacer height="20" />
+						<p:chart id="salesPointIncomeChart" type="line" model="#{reportController.incomeBySalesPointLineChart}" style="height:300px" />
+					</h:form>
+				</p:tab>
 
-						<p:chart type="bar" model="#{reportController.monthlySalesBarChart}" style="height:300px" />
-					</p:tab>
+				<!-- ###########################################Top offers########################################################################## -->
 
-					<!-- ##########################################Total income################################################################## -->
-
-					<p:tab title="#{out.report_monthly_income_report}" id="monthlyIncome">
-						<p:panelGrid columns="5" styleClass="intervalGrid">
-							<p:outputLabel for="incomeFrom" value="#{out.report_from}: " />
-							<p:calendar id="incomeFrom" value="#{reportController.reportFrom}" />
-
-							<p:outputLabel for="incomeTo" value="#{out.report_to}: " />
-							<p:calendar id="incomeTo" value="#{reportController.reportTo}" />
-
-							<p:commandButton value="#{out.report_generate}" action="#{reportController.incomeReportGenerateBtnAction()}" update="@form" />
-						</p:panelGrid>
-						<p:spacer height="20" />
-						<p:dataTable value="">
-							<p:columns value="#{reportController.monthlyIncomeDetailsList}" var="element">
-								<f:facet name="header">
-									<h:outputText value="#{element.date}">
-										<f:convertDateTime pattern="yyyy.MM" />
-									</h:outputText>
-								</f:facet>
-								<h:outputText value="#{element.number}" />
-							</p:columns>
-						</p:dataTable>
-
-						<p:spacer height="20" />
-
-						<p:chart type="bar" model="#{reportController.monthlyIncomeBarChart}" style="height:300px" />
-					</p:tab>
-
-					<!-- ###########################################Top offers########################################################################## -->
-
-					<p:tab title="#{out.report_top_offers}" id="topOffers">
+				<p:tab title="#{out.report_top_offers}" id="topOffers">
+					<h:form id="topOffersForm">
 						<p:panelGrid style="width: 100%;" id="topOfferGrid">
 							<p:row>
 								<p:column style="width:40%; padding-top: 15px;">
-									<p:dataTable value="#{reportController.topOffersDetailsList}" var="element" rowIndexVar="index">
+									<p:dataTable value="#{reportController.topOffersDetailsList}" var="element" rowIndexVar="index" styleClass="topOffersGrid">
 										<f:facet name="header">
 											<h:outputText value="#{out.report_top_offers}" />
 										</f:facet>
-										<p:column headerText="#" width="5%" >
+										<p:column headerText="#" width="5%">
 											<h:outputText value="#{index + 1}." />
 										</p:column>
 										<p:column headerText="#{out.report_name}" width="60%">
@@ -115,74 +225,103 @@
 								</p:column>
 							</p:row>
 						</p:panelGrid>
-					</p:tab>
+					</h:form>
+				</p:tab>
 
-					<!-- #########################################Number of users##################################################################### -->
+				<!-- #########################################Number of users##################################################################### -->
 
-					<p:tab title="#{out.report_users_report}" id="adminUserNumber">
+				<p:tab title="#{out.report_users_report}" id="adminUserNumber">
+					<h:form>
+						<p:panelGrid id="intervalInputUser" styleClass="intervalGrid">
 
-						<p:panelGrid columns="5" styleClass="intervalGrid">
-							<p:outputLabel for="adminFrom" value="#{out.report_from}: " />
-							<p:calendar id="adminFrom" value="#{reportController.reportFrom}" />
+							<p:row>
+								<p:column>
+									<h:outputText value="#{out.report_interval}: " />
+								</p:column>
+								<p:column>
+									<p:selectOneButton value="#{reportController.calibration}">
+										<p:ajax event="change" update="intervalInputAtNumberOfUsers" />
+										<f:selectItem itemLabel="#{out.report_year}" itemValue="Year" />
+										<f:selectItem itemLabel="#{out.report_month}" itemValue="Month" />
+									</p:selectOneButton>
+								</p:column>
+								<p:column>
+									<h:panelGroup id="intervalInputAtNumberOfUsers">
+										<p:spinner value="#{reportController.yearStart}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+										<h:outputText value=" - " />
 
-							<p:outputLabel for="adminTo" value="#{out.report_to}: " />
-							<p:calendar id="adminTo" value="#{reportController.reportTo}" />
+										<p:spinner value="#{reportController.yearEnd}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</p:column>
 
-							<p:commandButton value="#{out.report_generate}" action="#{reportController.adminUserNumGenerateBtnAction()}" update="@form" />
-
-						</p:panelGrid>
-						<p:spacer height="20" />
-						<p:dataTable value="">
-							<p:columns value="#{reportController.adminUserRegNumberDetailsList}" var="element">
-								<f:facet name="header">
-									<h:outputText value="#{element.date}">
-										<f:convertDateTime pattern="yyyy.MM" />
-									</h:outputText>
-								</f:facet>
-								<h:outputText value="#{element.number}" />
-							</p:columns>
-						</p:dataTable>
-
-						<p:spacer height="20" />
-
-						<p:chart type="line" model="#{reportController.adminUserNumberLineChart}" style="height:300px;" />
-					</p:tab>
-
-					<!-- ######################################Number of clients################################################################## -->
-
-					<p:tab title="#{out.report_client_report}" id="adminClientNumber">
-						<p:panelGrid columns="5" styleClass="intervalGrid">
-							<p:outputLabel for="adminClientFrom" value="#{out.report_from}: " />
-							<p:calendar id="adminClientFrom" value="#{reportController.reportFrom}" />
-
-							<p:outputLabel for="adminClientTo" value="#{out.report_to}: " />
-							<p:calendar id="adminClientTo" value="#{reportController.reportTo}" />
-
-							<p:commandButton value="#{out.report_generate}" action="#{reportController.adminClientNumGenerateBtnAction()}" update="@form" />
+								<p:column colspan="3">
+									<p:commandButton value="#{out.report_generate}" action="#{reportController.adminUserNumGenerateBtnAction()}" update="userNumberChart" />
+								</p:column>
+							</p:row>
 
 						</p:panelGrid>
-						<p:spacer height="20" />
-						<p:dataTable value="">
-							<p:columns value="#{reportController.adminClientRegNumberDetailsList}" var="element">
-								<f:facet name="header">
-									<h:outputText value="#{element.date}">
-										<f:convertDateTime pattern="yyyy.MM" />
-									</h:outputText>
-								</f:facet>
-								<h:outputText value="#{element.number}" />
-							</p:columns>
-						</p:dataTable>
+
 
 						<p:spacer height="20" />
 
-						<p:chart type="line" model="#{reportController.adminClientNumberLineChart}" style="height:300px;" />
+						<p:chart id="userNumberChart" type="line" model="#{reportController.adminUserNumberLineChart}" style="height:300px;" />
+					</h:form>
+				</p:tab>
 
-					</p:tab>
+				<!-- ######################################Number of clients################################################################## -->
 
-					<!-- ######################################################################################################################## -->
-				</p:tabView>
-			</p:fieldset>
-		</h:form>
+				<p:tab title="#{out.report_client_report}" id="adminClientNumber">
+					<h:form>
+						<p:panelGrid id="intervalInputClient" styleClass="intervalGrid">
+
+							<p:row>
+								<p:column>
+									<h:outputText value="#{out.report_interval}: " />
+								</p:column>
+								<p:column>
+									<p:selectOneButton value="#{reportController.calibration}">
+										<p:ajax event="change" update="intervalInputAtNumberOfClients" />
+										<f:selectItem itemLabel="#{out.report_year}" itemValue="Year" />
+										<f:selectItem itemLabel="#{out.report_month}" itemValue="Month" />
+									</p:selectOneButton>
+								</p:column>
+								<p:column>
+									<h:panelGroup id="intervalInputAtNumberOfClients">
+										<p:spinner value="#{reportController.yearStart}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthStart}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+										<h:outputText value=" - " />
+
+										<p:spinner value="#{reportController.yearEnd}" size="4" />
+										<p:selectOneMenu value="#{reportController.monthEnd}" disabled="#{reportController.calibration.equals('Year')}" styleClass="monthDropDown">
+											<f:selectItems value="#{reportController.monthsList}" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</p:column>
+
+								<p:column colspan="3">
+									<p:commandButton value="#{out.report_generate}" action="#{reportController.adminClientNumGenerateBtnAction()}" update="clientNumberChart" />
+								</p:column>
+							</p:row>
+
+						</p:panelGrid>
+
+						<p:spacer height="20" />
+
+						<p:chart id="clientNumberChart" type="line" model="#{reportController.adminClientNumberLineChart}" style="height:300px;" />
+					</h:form>
+				</p:tab>
+
+				<!-- ######################################################################################################################## -->
+			</p:tabView>
+		</p:fieldset>
 
 	</ui:define>
 </ui:composition>

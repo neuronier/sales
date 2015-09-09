@@ -6,7 +6,6 @@
 		<h:form>
 			<p:remoteCommand autoRun="true" oncomplete="PF('defaultPasswordWarningDialog').show()" rendered="#{userController.isDefaultPasswordUsed()}"/>
 		</h:form>
-		<h2>Welcome in the Sales Module!</h2>
 		
 		<p:dialog header="#{out.default_pw_warning}!" closeOnEscape="true" widgetVar="defaultPasswordWarningDialog" resizable="false">
 			<div style="text-align:center;">

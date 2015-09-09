@@ -21,5 +21,5 @@ public interface SalesPointDAO extends JpaRepository<SalesPoint, Long>{
 
 	SalesPoint findSalesPointByAddressId(String addressId);
 	
-	SalesPoint findSalesPointBySalePointId(String salePointId) throws Exception;
+	SalesPoint findBySalePointId(String salePointId) throws Exception;
 }
