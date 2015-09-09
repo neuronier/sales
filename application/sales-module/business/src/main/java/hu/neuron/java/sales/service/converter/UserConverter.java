@@ -43,8 +43,9 @@ public class UserConverter {
 		uvo.setPhoneNumber(dto.getPhoneNumber());
 		uvo.setUserId(dto.getUserId());
 		uvo.setUserName(dto.getUserName());
+		uvo.setRegistrationDate(dto.getRegistrationDate());
 		try {
-			uvo.setSalesPoint(spConv.toVO(spDao.findSalesPointBySalePointId(dto.getSalePointId())));
+			uvo.setSalesPoint(spConv.toVO(spDao.findBySalePointId(dto.getSalePointId())));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,6 +65,7 @@ public class UserConverter {
 		ue.setPhoneNumber(vo.getPhoneNumber());
 		ue.setUserId(vo.getUserId());
 		ue.setUserName(vo.getUserName());
+		ue.setRegistrationDate(vo.getRegistrationDate());
 		if(vo.getSalesPoint()!= null){
 			ue.setSalePointId(vo.getSalesPoint().getSalePointId());
 		}

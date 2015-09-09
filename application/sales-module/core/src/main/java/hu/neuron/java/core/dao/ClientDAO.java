@@ -23,6 +23,8 @@ public interface ClientDAO extends JpaRepository<Client, Long> {
 
 	List<Client> findByNameStartsWith(String filter);
 	
+	Client findByUserNameStartsWith(String filter);
+	
 	List<Client> findByRegistrationDateBetween(Date from, Date to);
 	
 	@Query("select COUNT(c) from Client c where c.registrationDate < ?1")

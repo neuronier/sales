@@ -21,7 +21,11 @@ public interface ClientOfferServiceRemote {
 	
 	public int findCountByMonth(int year, int month);
 	
+	public int findCountByInterval(Date from, Date to);
+	
 	public int findIncomeByMonth(int year, int month) throws Exception;
+	
+	public int findIncomeByInterval(Date from, Date to) throws Exception;
 	
 	public int findCountByOfferId(String offerId);
 	
@@ -32,4 +36,6 @@ public interface ClientOfferServiceRemote {
 	public List<ClientOfferVO> findClientOfferByClientId(String clientId) throws Exception;
 	
 	public List<ClientOfferVO> findClientOfferByOfferId(String offerId) throws Exception;
+	
+	public int findIncomeBySalesPointIdInDateInterval(String salesPointId, Date from, Date to) throws Exception;
 }

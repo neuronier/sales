@@ -10,12 +10,9 @@
 	<ui:define name="header">#{out.admin_title}</ui:define>
 
 
-	<ui:define name="content">
-		<h3>#{out.refresh_header}</h3>
-		
+	<ui:define name="content">		
 		<h:form id="form">
-		<p:panel header="#{out.refresh_panel}"
-			footer="#{out.refresh_panel}" style="margin-bottom:20px">
+		<p:fieldset legend="#{out.refresh_panel}" style="margin-bottom:20px">
 				<p:tabView orientation="left" id = "tabView">
 					<p:tab title="#{out.refresh_tab_producttypes}">
 						<h:panelGrid>
@@ -105,7 +102,7 @@
 						</h:panelGrid>
 					</p:tab>
 				</p:tabView>
-		</p:panel>
+		</p:fieldset>
 		
 		</h:form>
 		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

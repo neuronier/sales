@@ -27,7 +27,6 @@ import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 @Remote(ProductTypeWebClient.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Interceptors(SpringBeanAutowiringInterceptor.class)
-
 public class ProductTypeWebClientImpl implements ProductTypeWebClient {
 	
 	@EJB(name="ProductTypeService", mappedName="ProductTypeService")

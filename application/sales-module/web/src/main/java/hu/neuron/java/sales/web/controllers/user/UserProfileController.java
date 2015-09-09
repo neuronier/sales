@@ -10,6 +10,7 @@ import hu.neuron.java.sales.service.vo.SalesPointVO;
 import hu.neuron.java.sales.service.vo.UserVO;
 import hu.neuron.java.sales.web.pdf.BillGenerator;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -71,8 +72,12 @@ public class UserProfileController {
 		try {
 			
 			ClientVO client = clientService.findAll().get(0);
+			
 			SalesPointVO sp = spService.findAll().get(0);
+			sp.setSalePointId(sp.getAddress().getCity()+"/1321");
+			sp.setSalePointPhoneNumber("+36301234554");
 			List<ClientOfferVO> offers = clientOfferService.findClientOfferByClientId(client.getClientId());
+			client.setClientId(client.getUserName()+"/"+new SimpleDateFormat("yyyy/MM/dd").format(client.getRegistrationDate()));
 			pdf = new DefaultStreamedContent(BillGenerator.createBill(client, offers, new Date(), sp), "pdf", "teszt.pdf");
 		} catch (Exception e) {
 			e.printStackTrace();

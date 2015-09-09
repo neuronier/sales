@@ -1,9 +1,5 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"
-	template="/templates/masterLayout.xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" template="/templates/masterLayout.xhtml"
 	xmlns:sec="http://www.springframework.org/security/tags">
 
 	<ui:define name="pageTitle">#{out.customer_title}</ui:define>
@@ -21,67 +17,47 @@
 </style>
 	</ui:define>
 	<ui:define name="content">
-		<table class="dataTableContainer">
-			<tr>
-				<td id="customerDetailsCell"><h:form id="customerForm">
+		<h:form id="customerForm">
 
-						<p:fieldset legend="#{out.customer_management}"
-							style="margin-bottom:20px">
-							<p:dataTable id="customerDT"
-								value="#{customerController.lazyCustomerModel}" var="customer"
-								selectionMode="single"
-								selection="#{customerController.selectedClient}"
-								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-								rowsPerPageTemplate="5,10,15" lazy="true" paginator="true"
-								rows="10" resizableColumns="true">
+			<p:fieldset legend="#{out.customer_management}" style="margin-bottom:20px">
+				<p:dataTable id="customerDT" value="#{customerController.lazyCustomerModel}" var="customer" selectionMode="single"
+					selection="#{customerController.selectedClient}"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" rows="10" resizableColumns="true">
 
-								<p:ajax event="rowSelect"
-									update=":customerForm:customerDT,:customerForm:btnPanel"
-									listener="#{customerController.onRowSelected}"></p:ajax>
+					<p:ajax event="rowSelect" update=":customerForm:customerDT,:customerForm:btnPanel" listener="#{customerController.onRowSelected}"></p:ajax>
 
-								<p:column headerText="#{out.recipes_table_name}"
-									sortBy="#{customer.name}">
-									<h:outputText value="#{customer.name}"></h:outputText>
-								</p:column>
-								<p:column headerText="#{out.login_username}">
-									<h:outputText value="#{customer.userName}"></h:outputText>
-								</p:column>
-								<p:column headerText="E-mail">
-									<h:outputText value="#{customer.emailAddress}"></h:outputText>
-								</p:column>
-								<p:column headerText="#{out.user_phone_number}">
-									<h:outputText value="#{customer.phoneNumber}"></h:outputText>
-								</p:column>
-								<p:column headerText="#{out.userform_recdate}"
-									sortBy="{customer.registrationDate}">
-									<h:outputText value="#{customer.registrationDate}"></h:outputText>
-								</p:column>
+					<p:column headerText="#{out.recipes_table_name}" sortBy="#{customer.name}">
+						<h:outputText value="#{customer.name}"></h:outputText>
+					</p:column>
+					<p:column headerText="#{out.login_username}">
+						<h:outputText value="#{customer.userName}"></h:outputText>
+					</p:column>
+					<p:column headerText="E-mail">
+						<h:outputText value="#{customer.emailAddress}"></h:outputText>
+					</p:column>
+					<p:column headerText="#{out.user_phone_number}">
+						<h:outputText value="#{customer.phoneNumber}"></h:outputText>
+					</p:column>
+					<p:column headerText="#{out.userform_recdate}" sortBy="{customer.registrationDate}">
+						<h:outputText value="#{customer.registrationDate}"></h:outputText>
+					</p:column>
 
 
-							</p:dataTable>
-							<p:panelGrid id="btnPanel" columns="2">
-								<p:commandButton id="editCustomer"
-									value="#{out.recipes_table_EditButton}"
-									update=":customerForm:customerDT,:customerForm:btnPanel,:customerForm,:editCustomerDialogForm"
-									disabled="#{customerController.selectedClient == null}"
-									oncomplete="PF('editCustomerDialog').show()"></p:commandButton>
-								<p:commandButton id="removeCustomer"
-									value="#{out.recipes_table_deleteButton}"
-									disabled="#{customerController.selectedClient == null}"
-									actionListener="#{customerController.removeCustomer}"
-									update=":customerForm:customerDT,:customerForm:btnPanel">
-									<p:confirm header="#{out.confirm}"
-										message="#{out.customer_confirmdelcustomer}"
-										icon="ui-icon-alert" />
-								</p:commandButton>
-							</p:panelGrid>
-						</p:fieldset>
-					</h:form></td>
-			</tr>
-		</table>
+				</p:dataTable>
+				<p:panelGrid id="btnPanel" columns="2">
+					<p:commandButton id="editCustomer" value="#{out.recipes_table_EditButton}"
+						update=":customerForm:customerDT,:customerForm:btnPanel,:customerForm,:editCustomerDialogForm"
+						disabled="#{customerController.selectedClient == null}" oncomplete="PF('editCustomerDialog').show()"></p:commandButton>
+					<p:commandButton id="removeCustomer" value="#{out.recipes_table_deleteButton}" disabled="#{customerController.selectedClient == null}"
+						actionListener="#{customerController.removeCustomer}" update=":customerForm:customerDT,:customerForm:btnPanel">
+						<p:confirm header="#{out.confirm}" message="#{out.customer_confirmdelcustomer}" icon="ui-icon-alert" />
+					</p:commandButton>
+				</p:panelGrid>
+			</p:fieldset>
+		</h:form>
 
-		<p:dialog widgetVar="editCustomerDialog" header="#{out.customer_data}"
-			resizable="false" modal="true" appendTo="@(body)">
+		<p:dialog widgetVar="editCustomerDialog" header="#{out.customer_data}" resizable="false" modal="true" appendTo="@(body)">
 			<h:form id="editCustomerDialogForm">
 				<p:panelGrid columns="2">
 					<p:outputLabel value="#{out.user_name}: " />
@@ -91,17 +67,13 @@
 					<p:inputText value="#{customerController.selectedClient.userName}" />
 
 					<p:outputLabel value="#{out.user_email}: " />
-					<p:inputText
-						value="#{customerController.selectedClient.emailAddress}"
-						validatorMessage="#{out.user_invalid_email_format}">
-						<f:validateRegex
-							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+					<p:inputText value="#{customerController.selectedClient.emailAddress}" validatorMessage="#{out.user_invalid_email_format}">
+						<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 					</p:inputText>
 
 					<p:outputLabel value="#{out.user_phone_number}: " />
 					<p:column>
-						<p:inputText id="phoneNumber"
-							value="#{customerController.selectedClient.phoneNumber}"
+						<p:inputText id="phoneNumber" value="#{customerController.selectedClient.phoneNumber}"
 							validatorMessage="#{out.user_invalid_phone_number_format}">
 							<f:validateRegex pattern="^\+(\d{8,13})$" />
 						</p:inputText>
@@ -109,20 +81,15 @@
 					</p:column>
 				</p:panelGrid>
 
-				<p:commandButton value="#{out.user_save}"
-					actionListener="#{customerController.editCustomer}"
-					update=":customerForm" oncomplete="PF('editCustomerDialog').hide()" />
+				<p:commandButton value="#{out.user_save}" actionListener="#{customerController.editCustomer}" update=":customerForm"
+					oncomplete="PF('editCustomerDialog').hide()" />
 			</h:form>
 		</p:dialog>
 
 		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 			<div style="display: block; margin: 0px auto;">
-				<p:commandButton value="Yes" type="button"
-					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
-					style="margin-left:20%;  float: left;" />
-				<p:commandButton value="No" type="button"
-					styleClass="ui-confirmdialog-no" icon="ui-icon-close"
-					style="margin-right:20%;  float: right;" />
+				<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="margin-left:20%;  float: left;" />
+				<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" style="margin-right:20%;  float: right;" />
 			</div>
 		</p:confirmDialog>
 

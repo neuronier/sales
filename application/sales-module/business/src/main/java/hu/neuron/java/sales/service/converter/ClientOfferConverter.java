@@ -45,6 +45,7 @@ public class ClientOfferConverter {
 		}
 		co.setQuantity(dto.getQuantity());
 		co.setId(dto.getId());
+		co.setSalesPointId(dto.getSalesPointId());
 		
 		return co;
 	}
@@ -60,6 +61,7 @@ public class ClientOfferConverter {
 		co.setId(vo.getId());
 		co.setOfferId(vo.getOffer().getOfferId());
 		co.setQuantity(vo.getQuantity());
+		co.setSalesPointId(vo.getSalesPointId());
 		return co;
 	}
 

@@ -98,7 +98,7 @@ public class SalesPointServiceImpl implements SalesPointServiceRemote,
 	@Override
 	public SalesPointVO findSalesPointBySalePointId(String salePointId)
 			throws Exception {
-		return spConverter.toVO(salesDao.findSalesPointBySalePointId(salePointId));
+		return spConverter.toVO(salesDao.findBySalePointId(salePointId));
 	}
 
 }

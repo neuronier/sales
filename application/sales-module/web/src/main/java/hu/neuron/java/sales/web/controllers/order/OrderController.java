@@ -1,9 +1,11 @@
 package hu.neuron.java.sales.web.controllers.order;
 
+import hu.neuron.java.sales.service.InventoryWebClient;
 import hu.neuron.java.sales.service.OrderServiceRemote;
 import hu.neuron.java.sales.service.ProductTypeServiceRemote;
 import hu.neuron.java.sales.service.SalesPointServiceRemote;
 import hu.neuron.java.sales.service.UserServiceRemote;
+import hu.neuron.java.sales.service.vo.InventoryVO;
 import hu.neuron.java.sales.service.vo.OrderVO;
 import hu.neuron.java.sales.service.vo.ProductTypeVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
@@ -49,6 +51,9 @@ public class OrderController implements Serializable {
 	@EJB(name = "UserService", mappedName = "UserService")
 	UserServiceRemote userService;
 
+	@EJB(name = "InventoryWebClient", mappedName = "InventoryWebClient")
+	InventoryWebClient in;
+
 	private OrderVO newOrder;
 
 	private OrderVO selectedOrder;
@@ -82,6 +87,10 @@ public class OrderController implements Serializable {
 	private List<String> salePoints;
 
 	private String selectedSalePointName;
+
+	private final String new_order_status = "Új";
+
+	private List<InventoryVO> inventory;
 
 	@PostConstruct
 	public void init() {
@@ -141,7 +150,7 @@ public class OrderController implements Serializable {
 
 		vos = salePointService.findAll();
 		salePoints = new ArrayList<String>();
-		selectedSalePointName = "";
+		selectedSalePointName = null;
 
 		for (SalesPointVO salesPointVO : vos) {
 			salePoints.add(salesPointVO.getName());
@@ -181,7 +190,7 @@ public class OrderController implements Serializable {
 	}
 
 	public void addNewOrder() {
-		newOrder.setStatus("New");
+		newOrder.setStatus(new_order_status);
 		newOrder.setDate(new Date());
 
 		newOrder.setWarehouse(getWarehouse());
@@ -393,7 +402,7 @@ public class OrderController implements Serializable {
 
 	public void disableEditDeleteOrder() {
 
-		if (selectedOrder.getStatus().equals("New")) {
+		if (selectedOrder.getStatus().equals(new_order_status)) {
 			setDisableEditDeleteOrderValue(false);
 		}
 		// else if (selectedOrder.getWarehouse().getWarehouseName()
@@ -407,14 +416,23 @@ public class OrderController implements Serializable {
 	}
 
 	public void handleToggle(ToggleEvent event) {
-
-		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-				"Toggled", "Visibility:" + event.getVisibility());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
-	// FEJLESZTES ALATT
 	public void loadWarehouseButtonAction(ActionEvent actionEvent) {
+		SalesPointVO vo = new SalesPointVO();
+		inventory = new ArrayList<InventoryVO>();
+		try {
+			if (selectedSalePointName != null) {
+				vo = salePointService
+						.findSalePointByName(selectedSalePointName);
+
+				inventory = in.refreshInventory(vo.getWarehouse()
+						.getWarehouseId());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void disableAddOrder() {
@@ -564,5 +582,13 @@ public class OrderController implements Serializable {
 
 	public void setDisableCreateOrder(boolean disableCreateOrder) {
 		this.disableCreateOrder = disableCreateOrder;
+	}
+
+	public List<InventoryVO> getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(List<InventoryVO> inventory) {
+		this.inventory = inventory;
 	}
 }

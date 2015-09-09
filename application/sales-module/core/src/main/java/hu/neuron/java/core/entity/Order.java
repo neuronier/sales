@@ -12,16 +12,16 @@ public class Order extends Base {
 	private static final long serialVersionUID = 1L;
 
 	private String orderId;
-	
+
 	private String warehouseId;
  
 	private String name;
 
 	private String status;
-	
+
 	private Date date;
-	
-	public Order(){
+
+	public Order() {
 		super();
 		Long systime = System.currentTimeMillis();
 		setOrderId("ORDER_" + systime.toString());
