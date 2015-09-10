@@ -77,10 +77,10 @@
 			<h:form id="addNewUserDialogForm">
 				<p:panelGrid columns="2">
 					<p:outputLabel for="name" value="#{out.user_name}:" />
-					<p:inputText id="name" value="#{userController.newUser.name}" required="true" />
+					<p:inputText id="name" value="#{userController.newUser.name}" required="true"  requiredMessage="#{out.user_name_required}" />
 
 					<p:outputLabel for="userName" value="#{out.user_user_name}:" />
-					<p:inputText id="userName" value="#{userController.newUser.userName}" required="true" validatorMessage="#{out.user_username_already_in_use}">
+					<p:inputText id="userName" value="#{userController.newUser.userName}" required="true" requiredMessage="#{out.user_username_required}" validatorMessage="#{out.user_username_already_in_use}">
 						<f:validator binding="#{uniqueUsernameValidator}" />
 					</p:inputText>
 
