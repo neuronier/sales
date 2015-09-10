@@ -34,22 +34,28 @@
 							style="margin-bottom:20px" toggleable="true" toggleSpeed="500"
 							collapsed="true">
 							<p:ajax event="toggle" listener="#{orderController.handleToggle}"
-								update="salespoint" />
+								update="warehouseForm" />
 
 							<p:panelGrid columns="2" cellpadding="2">
-								<p:selectOneMenu id="salespoint"
-									value="#{orderController.selectedSalePointName}" effect="fold"
-									required="true">
-									<f:selectItems value="#{orderController.salePoints}" />
+								<p:selectOneMenu id="salespoint" size="45"
+									value="#{orderController.selectedSalePointName}" effect="fold" ajax="true">
+									<f:selectItems value="#{orderController.salePoints}" size="45"/>
 								</p:selectOneMenu>
-								<p:commandLink id="accept" update="warehouseForm:warehouseDT"
-									actionListener="#{orderController.loadWarehouseButtonAction}"
-									ajax="true" align="center">
-									<h:outputText value="Submit" />
-								</p:commandLink>
+								<p:commandButton id="accept" value="#{out.order_getwh}"
+									update="warehouseForm:warehouseDT"
+									actionListener="#{orderController.loadWarehouseButtonAction}">
+								</p:commandButton>
 							</p:panelGrid>
 
-							<p:dataTable id="warehouseDT"></p:dataTable>
+							<p:dataTable id="warehouseDT"
+								value="#{orderController.inventory}" var="inv">
+								<p:column headerText="#{out.order_product}">
+									<h:outputText value="#{inv.name}" />
+								</p:column>
+								<p:column headerText="#{out.orders_quantity}">
+									<h:outputText value="#{inv.q}" />
+								</p:column>
+							</p:dataTable>
 						</p:fieldset>
 					</h:form></td>
 			</tr>
@@ -58,7 +64,7 @@
 				<td id="orderDetailsCell"><h:form id="orderForm">
 						<p:fieldset legend="#{out.orders_details_dialog_head}"
 							style="margin-bottom:20px">
-							<p:dataTable id="orderDT" scrollable="true" scrollHeight="400"
+							<p:dataTable id="orderDT" 
 								value="#{orderController.lazyOrderModul}" var="order"
 								selectionMode="single"
 								selection="#{orderController.selectedOrder}"
@@ -116,7 +122,7 @@
 
 		<p:dialog widgetVar="addNewOrderDialog"
 			header="#{out.orders_create_dialog_head}" resizable="false"
-			width="700" modal="true" appendTo="@(body)">
+			width="705" modal="true" appendTo="@(body)">
 			<h:form id="addNewOrderDialogForm">
 				<p:panelGrid columns="2" cellpadding="2">
 					<p:outputLabel value="#{out.orders_products}" />
@@ -124,7 +130,7 @@
 						<p:autoComplete id="product"
 							value="#{orderController.selectedProductTypeName}"
 							completeMethod="#{orderController.completeTextProduct}" size="45" />
-						<p:inputText value="#{orderController.quantity}" size="2" />
+						<p:spinner value="#{orderController.quantity}" size="2" />
 						<p:commandButton id="addProduct" value="#{out.orders_add}"
 							actionListener="#{orderController.addToList}"
 							update="addNewOrderDialogForm:addedProducts,:addNewOrderDialogForm" />
@@ -166,7 +172,7 @@
 		</p:dialog>
 
 		<p:dialog widgetVar="editOrderDialog"
-			header="#{out.orders_edit_dialog_head}" resizable="false" width="700"
+			header="#{out.orders_edit_dialog_head}" resizable="false" width="705"
 			modal="true" appendTo="@(body)">
 			<h:form id="editOrderDialogForm">
 				<p:panelGrid columns="2" cellpadding="2">
@@ -175,7 +181,7 @@
 						<p:autoComplete id="product2"
 							value="#{orderController.selectedProductTypeName}"
 							completeMethod="#{orderController.completeTextProduct}" size="45" />
-						<p:inputText value="#{orderController.quantity}" size="2" />
+						<p:spinner value="#{orderController.quantity}" size="2" />
 						<p:commandButton id="addProduct2" value="#{out.orders_add}"
 							actionListener="#{orderController.addToList}"
 							update="editOrderDialogForm:addedProducts2,:editOrderDialogForm" />

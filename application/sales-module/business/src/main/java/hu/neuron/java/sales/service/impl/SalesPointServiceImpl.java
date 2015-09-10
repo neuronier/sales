@@ -25,7 +25,7 @@ import org.springframework.ejb.interceptor.SpringBeanAutowiringInterceptor;
 
 @Stateless(mappedName = "SalesPointService", name = "SalesPointService")
 @Remote(SalesPointServiceRemote.class)
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 @Interceptors(SpringBeanAutowiringInterceptor.class)
 public class SalesPointServiceImpl implements SalesPointServiceRemote,
 		Serializable {
