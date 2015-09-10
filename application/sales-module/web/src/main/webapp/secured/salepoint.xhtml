@@ -21,7 +21,7 @@
 		<p:fieldset legend="#{out.salespoint_header}">
 		<h:form id="form"
 			style="max-width: 85%; margin-top: 45px; margin-left: auto; margin-right: auto;">
-			<p:dataTable var="salesPoint"
+			<p:dataTable var="salesPoint" 
 				value="#{salesPointController.lazySalesPointModel}" paginator="true"
 				rows="10"
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
@@ -31,7 +31,7 @@
 
 				<p:ajax event="rowSelect"
 					listener="#{salesPointController.onRowSelect}"
-					update=":form:removeButton,:form:updateButton,:updateSalesPointDialog" />
+					update=":form:removeButton,:form:updateButton,:updateSalesPointDialog,:form:employeeButton" />
 				
 				<p:column headerText="#{out.salepointname}"
 					sortBy="#{salesPoint.name}" filterBy="#{salesPoint.name}">
@@ -69,12 +69,18 @@
 					style="margin: 0 10px 0 10px;" />
 
 				<p:commandButton value="#{out.salepoint_remove}" id="removeButton"
-					update="form:salesPointTable,form:removeButton,form:updateButton"
+					update="form:salesPointTable,form:removeButton,form:updateButton,form:employeeButton"
 					disabled="#{salesPointController.selectedSalesPoint == null}"
 					actionListener="#{salesPointController.removeSalesPoint}" >
 					<p:confirm header="#{out.confirm}" message="#{out.confirmdelwarehouse}"
 					icon="ui-icon-alert" />	
 				</p:commandButton>
+				
+				<p:commandButton value="#{out.employees}" type="button"
+					id="employeeButton"
+					disabled="#{salesPointController.selectedSalesPoint == null}"
+					onclick="PF('manageEmployees').show();"
+					style="margin: 0 0 0 10px;" />
 			</div>
 
 		</h:form>
@@ -82,15 +88,13 @@
 		<p:dialog id="adder" header="#{out.popupnewsalepoint}"
 			widgetVar="createSalesPoint" hideEffect="slide"
 			mheight="100" modal="true" appendTo="@(body)" style="max-width:80%;">
-			<p:ajax event="close" update=":f1:pg1,:form:salesPointTable,:form:updateButton,:form:removeButton"
+			<p:ajax event="close" update=":f1:pg1,:form:salesPointTable,:form:updateButton,:form:removeButton,form:employeeButton"
 				resetValues="true" listener="#{salesPointController.clearSelection}" />
 			<h:form id="f1">
-				 <p:wizard flowListener="#{salesPointWizard.onFlowProcess}">
-					<p:tab id="details" title="#{out.details}">
 					<p:panelGrid columns="2" id="pg1">
 						<h:outputLabel for="salesPointName" value="#{out.salepointname}"
 							style="font-weight:bold; display: inline-block; min-width:110px;" />
-						<p:inputText id="salesPointName" required="true"
+						<p:inputText id="salesPointName" required="true" title="EZAAZ" validatorMessage="KELL"
 							value="#{salesPointController.salesPointName}" />
 					
 						<h:outputLabel for="city" value="#{out.city}"
@@ -139,29 +143,8 @@
 							</p:column>
 						</p:selectOneMenu>
 					</p:panelGrid>
-					</p:tab>
-					
-					<p:tab id="users" title="#{out.users}">
-					<p:pickList id="UserPickList" value="#{userPickListView.users}" var="user" effect="bounce"
-		                itemValue="#{user}" itemLabel="#{user.name}" responsive="true"
-		                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" 
-		                converter="userConverter"  >
- 
-				        <f:facet name="sourceCaption">#{out.user_salespoint_assignment_source}</f:facet>
-				        <f:facet name="targetCaption">#{out.user_salespoint_assignment_target}</f:facet>
-				 
-				        <p:column style="width:50%">
-				            <h:outputText value="#{user.salesPoint.name eq null ? 'Nowhere' : user.salesPoint.name}" />
-				        </p:column>
-				 
-				        <p:column style="width:50%;">
-				            <h:outputText value="#{user.name}" />
-				        </p:column>
-				    </p:pickList>
-					</p:tab>
-					
-				</p:wizard>
-				<p:commandButton value="Save" id="save"
+
+				<p:commandButton value="#{out.profile_save}" id="save"
 					actionListener="#{salesPointController.saveNewSalesPoint}"
 					update=":form:salesPointTable" 
 					icon="ui-icon-disk" oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('createSalesPoint').hide()};"
@@ -174,11 +157,9 @@
 			widgetVar="updateSalesPoint"  id="updateSalesPointDialog"
 			hideEffect="slide" mheight="100" modal="true" appendTo="@(body)"
 			style="max-width:80%;">
-			<p:ajax event="close" update=":f2:pg2,:form:salesPointTable,:form:updateButton,:form:removeButton"
+			<p:ajax event="close" update=":f2:pg2,:form:salesPointTable,:form:updateButton,:form:removeButton,form:employeeButton"
 				resetValues="true" listener="#{salesPointController.clearSelection}" />
 			<h:form id="f2">
-			 <p:wizard flowListener="#{salesPointWizard.onFlowProcess}">
-					<p:tab id="details" title="#{out.details}">
 						<p:panelGrid columns="2" id="pg2">
 							<h:outputLabel for="updSalesPointName" value="#{out.salepointname}"
 								style="font-weight:bold; display: inline-block; min-width:110px;" />
@@ -231,9 +212,23 @@
 								</p:column>
 							</p:selectOneMenu>
 						</p:panelGrid>
-						</p:tab>
-					
-					<p:tab id="users" title="#{out.users}">
+
+					<p:commandButton value="#{out.update}" id="update"
+						actionListener="#{salesPointController.updateSalesPoint}"
+						update=":form:salesPointTable,:form:updateButton,:form:removeButton"
+						icon="ui-icon-disk" 
+						oncomplete="if (args &amp;&amp; !args.validationFailed) PF('updateSalesPoint').hide();"
+						style="margin: 10px auto 0 auto; display:block;" />
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="#{out.employees}"
+			widgetVar="manageEmployees"  id="employeeDialog"
+			hideEffect="slide" mheight="100" modal="true" appendTo="@(body)"
+			style="max-width:80%;">
+			<p:ajax event="close" update=":f3,:form:salesPointTable,:form:updateButton,:form:removeButton, form:employeeButton"
+				resetValues="true" listener="#{salesPointController.clearSelection}" />
+			<h:form id="f3">
 					<p:pickList id="UserPickList" value="#{userPickListView.users}" var="user" effect="bounce"
 		                itemValue="#{user}" itemLabel="#{user.name}" responsive="true"
 		                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" 
@@ -250,22 +245,20 @@
 				            <h:outputText value="#{user.name}" />
 				        </p:column>
 				    </p:pickList>
-					</p:tab>
-					
-				</p:wizard>
-					<p:commandButton value="Update" id="update"
-						actionListener="#{salesPointController.updateSalesPoint}"
-						update=":form:salesPointTable,:form:updateButton,:form:removeButton"
+
+					<p:commandButton value="#{out.save}" id="updateEmployees"
+						actionListener="#{salesPointController.employees}"
+						update=":f3,:form:salesPointTable,:form:updateButton,:form:removeButton"
 						icon="ui-icon-disk" 
-						oncomplete="if (args &amp;&amp; !args.validationFailed) PF('updateSalesPoint').hide();"
+						oncomplete="if (args &amp;&amp; !args.validationFailed) PF('manageEmployees').hide();"
 						style="margin: 10px auto 0 auto; display:block;" />
 			</h:form>
 		</p:dialog>
 		
 	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 		<div style="display: block; margin: 0px auto;">
-	        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="margin-left:20%;  float: left;" />
-	        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" style="margin-right:20%;  float: right;" />
+	        <p:commandButton value="#{out.yes}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="margin-left:20%;  float: left;" />
+	        <p:commandButton value="#{out.no}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" style="margin-right:20%;  float: right;" />
         </div>
     </p:confirmDialog>
 		

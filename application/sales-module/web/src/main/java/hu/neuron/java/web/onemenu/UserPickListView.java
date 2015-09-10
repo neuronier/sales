@@ -9,9 +9,11 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.DualListModel;
  
+@ViewScoped
 @ManagedBean
 public class UserPickListView {
        
@@ -42,6 +44,7 @@ public class UserPickListView {
     	if(SalesPointController.getStaticSelectedSalesPoint() != null){
     		salesPointId = SalesPointController.getStaticSelectedSalesPoint().getSalePointId();
     		distributeUsers();
+    		System.out.println(SalesPointController.getStaticSelectedSalesPoint().getName());
     		users.setSource(userSourceList);
         	users.setTarget(userTargetList);
     	} else {

@@ -21,21 +21,11 @@
 			<div class="ui-grid-row">
 				<div class="ui-grid-col-6">
 					<p:fieldset legend="#{out.offer_panel}">
-
-						<h:panelGrid columns="3" cellpadding="5">
-							<p:outputLabel value="#{out.quick_offers}" for="quickOffers" />
-							<p:autoComplete id="quickOffers" minQueryLength="3" effect="fade"
-								value="#{customerAutoCompleteView.customerName}"
-								completeMethod="#{customerAutoCompleteView.completeText}" />
-							<p:commandButton update=":selectForm:selectedTable" 
-								value="#{out.add}" />
-						</h:panelGrid>
-
 						<h:form>
 							<p:remoteCommand name="selectionHandler"
 								actionListener="#{sellController.addToSelectedOffers}"
 								update=" :selectForm:selectedTable" />
-							<p:outputLabel value="Available Offers:" for="availableTable"
+							<p:outputLabel value="#{out.sell_available}:" for="availableTable"
 								style="margin-left:7px;" />
 							<p:dataTable var="availableOffer" paginatorPosition="top"
 								value="#{sellController.lazySellModel}"
@@ -46,19 +36,19 @@
 
 								<f:facet name="header">
 									<p:outputPanel>
-										<h:outputText value="Select the offers You want to sell" />
+										<h:outputText value="#{out.select_want}" />
 									</p:outputPanel>
 								</f:facet>
 
 								<p:column sortBy="#{availableOffer.name}"
-									filterBy="#{availableOffer.name}" headerText="Name">
+									filterBy="#{availableOffer.name}" headerText="#{out.name}">
 									<h:outputText value="#{availableOffer.name}" />
 								</p:column>
 
 								<p:column sortBy="#{availableOffer.offerPrice}"
-									filterBy="#{availableOffer.offerPrice}" headerText="Price">
+									filterBy="#{availableOffer.offerPrice}" headerText="#{out.price}">
 									<h:outputText value="#{availableOffer.offerPrice}">
-										<f:convertNumber currencySymbol="$" type="currency" />
+										<f:convertNumber type="currency" currencySymbol="$" />
 									</h:outputText>
 								</p:column>
 
@@ -76,7 +66,7 @@
 						</h:form>
 						<p:separator style="height:5px;" />
 						<h:form id="selectForm">
-							<p:outputLabel value="Selected Offers:" for="selectedTable"
+							<p:outputLabel value="#{out.sell_selected}:" for="selectedTable"
 								style="margin-left:7px;" />
 							<p:dataTable id="selectedTable" var="offerWebVO"
 								value="#{sellController.selectedOffers}" selectionMode="single"
@@ -84,16 +74,16 @@
 								rowKey="#{offerWebVO.offerId}" style="margin-top: 10px;"
 								editable="true" editMode="cell">
 								<f:facet name="header">
-						            The offers that are going to be sold
+						            #{out.sell_selected_table}
 						        </f:facet>
 						        <p:ajax event="cellEdit" update=":selectForm:selectedTable"/>
-						        <p:column headerText="Name">
+						        <p:column headerText="#{out.name}">
 						            <h:outputText value="#{offerWebVO.offerName}" />
 						        </p:column>
-						        <p:column headerText="Price">
+						        <p:column headerText="#{out.price}">
 						            <h:outputText value="#{offerWebVO.offerPrice}" />
 						        </p:column>
-						        <p:column headerText="Quantity">
+						        <p:column headerText="#{out.quantity}">
 						        	<p:cellEditor>
 						        		<f:facet name="output"><h:outputText id="outputQuantity" 
 						        				 value="#{offerWebVO.quantity}"/>
@@ -107,7 +97,7 @@
 						        </p:column>
 						        <p:columnGroup type="footer">
 						            <p:row>
-						                <p:column colspan="2" style="text-align:right" footerText="Total:" />
+						                <p:column colspan="2" style="text-align:right" footerText="#{out.total}:" />
 						                <p:column id="sumCol" footerText="#{sellController.total}" />
 						            </p:row>
 						        </p:columnGroup>
@@ -157,7 +147,7 @@
 											</p:inputText>
 										</div>
 										<div class="ui-grid-col-6">
-											<p:outputLabel value="Username:" for="userNameInput"
+											<p:outputLabel value="#{out.username}:" for="userNameInput"
 												style="display: inline-block; min-width:110px;" />
 											<p:inputText id="userNameInput" disabled="#{sellController.disabled}" 
 												size="25" required="#{sellController.required}"

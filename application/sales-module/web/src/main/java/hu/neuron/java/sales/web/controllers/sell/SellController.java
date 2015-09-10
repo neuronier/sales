@@ -73,7 +73,7 @@ public class SellController implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
-						"Idejön valami"));
+						"Item Selected"));
 	}
 
 	public LazySellModel getLazySellModel() {
@@ -144,14 +144,22 @@ public class SellController implements Serializable {
 					e.printStackTrace();
 				}
 			}
+		
+			selectedOffers.clear();
+			customerBean.setSelectedClient(null);
+			customerBean.setCustomerName(null);
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							LocalizationsUtils.getText("success", context),
+							LocalizationsUtils.getText("processed_sale", context));
+			context.addMessage(null, msg);			
+		} else {
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							LocalizationsUtils.getText("error", context),
+							LocalizationsUtils.getText("sale_error", context));
+			context.addMessage(null, msg);
 		}
-		selectedOffers.clear();
-		customerBean.setSelectedClient(null);
-		customerBean.setCustomerName(null);
-		FacesContext.getCurrentInstance().addMessage(
-				null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Success",
-						"The system processed the sale"));
 	}
 
 	public Long getTotal() {

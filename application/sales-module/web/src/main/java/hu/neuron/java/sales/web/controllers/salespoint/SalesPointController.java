@@ -115,12 +115,6 @@ public class SalesPointController implements Serializable {
 		} else {
 			salesPointVO.setWarehouse(warehouseCheck);
 		}
-		
-		List<UserVO> targetUsers = UserPickListView.getStaticUsers().getTarget();
-		for(UserVO u : targetUsers){
-			u.setSalesPoint(salesPointVO);
-			userService.updateUser(u);
-		}
 
 		salesPointService.saveSalePoint(salesPointVO);
 		CitySelectOneMenuView.updateCityList();
@@ -222,21 +216,6 @@ public class SalesPointController implements Serializable {
 				}
 			}
 			
-			List<UserVO> targetUsers = UserPickListView.getStaticUsers().getTarget();
-			for(UserVO u : targetUsers){
-				u.setSalesPoint(selectedSalesPoint);
-				userService.updateUser(u);
-			}
-			
-			List<UserVO> sourceUsers = UserPickListView.getStaticUsers().getSource();
-			for(UserVO u : sourceUsers){
-				if(u.getSalesPoint() != null && u.getSalesPoint().getSalePointId().
-						equals(selectedSalesPoint.getSalePointId())){
-							u.setSalesPoint(null);
-							userService.updateUser(u);
-				}
-			}
-
 			CitySelectOneMenuView.setStaticCity(null);
 			WarehouseSelectOneMenuView.setStaticWarehouseName(null);
 			selectedSalesPoint.setName(updateSalesPointName);
@@ -262,6 +241,24 @@ public class SalesPointController implements Serializable {
 							"Update: "));
 			selectedSalesPoint = null;
 		}
+	}
+	
+	public void employees(){
+		List<UserVO> targetUsers = UserPickListView.getStaticUsers().getTarget();
+		for(UserVO u : targetUsers){
+			u.setSalesPoint(selectedSalesPoint);
+			userService.updateUser(u);
+		}
+		
+		List<UserVO> sourceUsers = UserPickListView.getStaticUsers().getSource();
+		for(UserVO u : sourceUsers){
+			if(u.getSalesPoint() != null && u.getSalesPoint().getSalePointId().
+					equals(selectedSalesPoint.getSalePointId())){
+						u.setSalesPoint(null);
+						userService.updateUser(u);
+			}
+		}
+
 	}
 	
 	public void clearSelection(CloseEvent event){ 
