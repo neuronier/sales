@@ -8,22 +8,26 @@ import hu.neuron.java.sales.service.vo.AddressVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
 import hu.neuron.java.sales.service.vo.UserVO;
 import hu.neuron.java.sales.service.vo.WarehouseVO;
+import hu.neuron.java.sales.web.LocalizationsUtils;
 import hu.neuron.java.web.onemenu.CitySelectOneMenuView;
-import hu.neuron.java.web.onemenu.UserPickListView;
+import hu.neuron.java.web.onemenu.UserListService;
 import hu.neuron.java.web.onemenu.WarehouseSelectOneMenuView;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DualListModel;
 
 @ViewScoped
 @ManagedBean(name = "salesPointController")
@@ -64,13 +68,27 @@ public class SalesPointController implements Serializable {
 	
 	@EJB(name = "UserService", mappedName = "UserService")
 	private UserServiceRemote userService;
+	
+	@ManagedProperty("#{userListService}")
+    private UserListService uls;
 
 	private LazySalesPointModel lazySalesPointModel;
+	
+	private DualListModel<UserVO> users;
+	
+    private List<UserVO> allUserList;
+    
+    private List<UserVO> userSourceList;
+    
+    private List<UserVO> userTargetList;
 
 	@PostConstruct
 	public void init() {
-		setLazySalesPointModel(new LazySalesPointModel(salesPointService,
-				addressService));
+		setLazySalesPointModel(new LazySalesPointModel(salesPointService, addressService));
+		setAllUserList(userService.getUserList());
+        userSourceList = new LinkedList<>();
+        userTargetList = new LinkedList<>();
+        users = new DualListModel<UserVO>(userSourceList,userTargetList);
 	}
 
 	public void saveNewSalesPoint() {
@@ -132,6 +150,11 @@ public class SalesPointController implements Serializable {
 
 	public void onRowSelect(SelectEvent event) {
 		selectedSalesPoint = (SalesPointVO) event.getObject();
+		if(selectedSalesPoint != null){
+			System.out.println("Rowselect, salepoint: " + selectedSalesPoint.getName());
+		} else {
+			System.out.println("Rowselect de NULL válaszott");
+		}
 		AddressVO adr = selectedSalesPoint.getAddress();
 		WarehouseVO wrh = selectedSalesPoint.getWarehouse();
 		if (adr != null) {
@@ -244,21 +267,18 @@ public class SalesPointController implements Serializable {
 	}
 	
 	public void employees(){
-		List<UserVO> targetUsers = UserPickListView.getStaticUsers().getTarget();
-		for(UserVO u : targetUsers){
+		for(UserVO u : users.getTarget()){
 			u.setSalesPoint(selectedSalesPoint);
 			userService.updateUser(u);
 		}
 		
-		List<UserVO> sourceUsers = UserPickListView.getStaticUsers().getSource();
-		for(UserVO u : sourceUsers){
+		for(UserVO u : users.getSource()){
 			if(u.getSalesPoint() != null && u.getSalesPoint().getSalePointId().
 					equals(selectedSalesPoint.getSalePointId())){
 						u.setSalesPoint(null);
 						userService.updateUser(u);
 			}
 		}
-
 	}
 	
 	public void clearSelection(CloseEvent event){ 
@@ -270,6 +290,46 @@ public class SalesPointController implements Serializable {
 		updateHouseNumber = null;
 		updatePhoneNumber = null;
 		updateZipCode = null;
+	}
+	
+	public void updateUserList(){
+    	allUserList = userService.getUserList();
+    	if(selectedSalesPoint != null){
+    		System.out.println("kiválaszott salepoint NEM NULL");
+    		distributeUsers();
+    		users.setSource(userSourceList);
+        	users.setTarget(userTargetList);
+    	} else {
+    		System.out.println("kiválaszott salepoint NULL");
+    		users.setSource(allUserList);
+    		userTargetList.clear();
+    		users.setTarget(userTargetList);
+    	}
+    }
+	
+	private void distributeUsers(){
+		System.out.println("distribute kezdődött");
+		userTargetList.clear();
+		userSourceList.clear();
+		for(UserVO user : allUserList){
+        	if(user.getSalesPoint() != null && selectedSalesPoint != null &&
+        			user.getSalesPoint().getSalePointId().equals(selectedSalesPoint.getSalePointId())){
+        		userTargetList.add(user);
+        		System.out.println("target listába került");
+        	}
+        	else{
+        		userSourceList.add(user);	
+        	}
+        }
+	}
+	
+	public String workplace(UserVO user){
+		if(user.getSalesPoint() != null){
+			return user.getSalesPoint().getName();
+		}
+		
+		FacesContext context = FacesContext.getCurrentInstance();		
+		return LocalizationsUtils.getText("nowhere", context);
 	}
 
 	public LazySalesPointModel getLazySalesPointModel() {
@@ -371,6 +431,46 @@ public class SalesPointController implements Serializable {
 	public static SalesPointVO getStaticSelectedSalesPoint(){
 		return selectedSalesPoint;
 	}
-	
-	
+
+	public DualListModel<UserVO> getUsers() {
+		updateUserList();
+		return users;
+	}
+
+	public void setUsers(DualListModel<UserVO> users) {
+		this.users = users;
+	}
+
+	public List<UserVO> getAllUserList() {
+		return allUserList;
+	}
+
+	public void setAllUserList(List<UserVO> allUserList) {
+		this.allUserList = allUserList;
+	}
+
+	public List<UserVO> getUserSourceList() {
+		return userSourceList;
+	}
+
+	public void setUserSourceList(List<UserVO> userSourceList) {
+		this.userSourceList = userSourceList;
+	}
+
+	public List<UserVO> getUserTargetList() {
+		return userTargetList;
+	}
+
+	public void setUserTargetList(List<UserVO> userTargetList) {
+		this.userTargetList = userTargetList;
+	}
+
+	public UserListService getUls() {
+		return uls;
+	}
+
+	public void setUls(UserListService uls) {
+		this.uls = uls;
+	}
+
 }

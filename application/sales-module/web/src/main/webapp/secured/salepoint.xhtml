@@ -225,11 +225,13 @@
 		<p:dialog header="#{out.employees}"
 			widgetVar="manageEmployees"  id="employeeDialog"
 			hideEffect="slide" mheight="100" modal="true" appendTo="@(body)"
-			style="max-width:80%;">
-			<p:ajax event="close" update=":f3,:form:salesPointTable,:form:updateButton,:form:removeButton, form:employeeButton"
+			style="max-width:80%;" onShow="updateUserLists();">
+			<p:ajax event="close" update=":form:salesPointTable,:form:updateButton,:form:removeButton,form:employeeButton"
 				resetValues="true" listener="#{salesPointController.clearSelection}" />
 			<h:form id="f3">
-					<p:pickList id="UserPickList" value="#{userPickListView.users}" var="user" effect="bounce"
+			<p:remoteCommand name="updateUserLists" actionListener="#{salesPointController.updateUserList}"
+				update=":f3" />
+					<p:pickList id="UserPickList" value="#{salesPointController.users}" var="user" effect="drop"
 		                itemValue="#{user}" itemLabel="#{user.name}" responsive="true"
 		                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" 
 		                converter="userConverter">
@@ -238,7 +240,7 @@
 				        <f:facet name="targetCaption">#{out.user_salespoint_assignment_target}</f:facet>
 				 
 				        <p:column style="width:50%">
-				            <h:outputText value="#{user.salesPoint.name eq null ? 'Nowhere' : user.salesPoint.name}" />
+				            <h:outputText value="#{salesPointController.workplace(user)}" />
 				        </p:column>
 				 
 				        <p:column style="width:50%;">
