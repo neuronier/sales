@@ -27,7 +27,8 @@
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 				rowsPerPageTemplate="5,10,15" selectionMode="single"
 				selection="#{salesPointController.selectedSalesPoint}"
-				id="salesPointTable" lazy="true">
+				id="salesPointTable" lazy="true"
+				emptyMessage="#{out.table_empty}">
 
 				<p:ajax event="rowSelect"
 					listener="#{salesPointController.onRowSelect}"
@@ -94,7 +95,7 @@
 					<p:panelGrid columns="2" id="pg1">
 						<h:outputLabel for="salesPointName" value="#{out.salepointname}"
 							style="font-weight:bold; display: inline-block; min-width:110px;" />
-						<p:inputText id="salesPointName" required="true" title="EZAAZ" validatorMessage="KELL"
+						<p:inputText id="salesPointName" required="true"
 							value="#{salesPointController.salesPointName}" />
 					
 						<h:outputLabel for="city" value="#{out.city}"
