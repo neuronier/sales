@@ -66,13 +66,19 @@
 						</h:form>
 						<p:separator style="height:5px;" />
 						<h:form id="selectForm">
+				
+						
 							<p:outputLabel value="#{out.sell_selected}:" for="selectedTable"
 								style="margin-left:7px;" />
 							<p:dataTable id="selectedTable" var="offerWebVO"
 								value="#{sellController.selectedOffers}" selectionMode="single"
 								selection="#{sellController.selectedWebOffer}"
 								rowKey="#{offerWebVO.offerId}" style="margin-top: 10px;"
-								editable="true" editMode="cell">
+								editable="true" editMode="cell"
+								emptyMessage="#{out.table_empty}">
+								
+								<p:ajax event="rowSelect" update="removeButton" />
+								
 								<f:facet name="header">
 						            #{out.sell_selected_table}
 						        </f:facet>
@@ -102,7 +108,10 @@
 						            </p:row>
 						        </p:columnGroup>
 						        <f:facet name="footer">
-						            <p:commandButton update=":selectForm:selectedTable" value="#{out.sell_offer_remove}" />
+						            <p:commandButton id="removeButton"
+						            update=":selectForm:selectedTable" value="#{out.sell_offer_remove}" 
+						            disabled="#{sellController.selectedWebOffer == null}"
+						            actionListener="#{sellController.removeSelectedOffer}"/>
 						        </f:facet>
 						    </p:dataTable>
 					    </h:form>

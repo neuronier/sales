@@ -253,4 +253,9 @@ public class SellController implements Serializable {
 	public void setRegisterPressed(boolean registerPressed) {
 		this.registerPressedOnce = registerPressed;
 	}
+	
+	public void removeSelectedOffer(){
+		selectedOffers.remove(selectedWebOffer);
+		selectedWebOffer=null;
+	}
 }
