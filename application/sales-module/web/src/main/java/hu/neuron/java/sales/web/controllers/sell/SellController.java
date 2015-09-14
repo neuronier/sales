@@ -3,12 +3,15 @@ package hu.neuron.java.sales.web.controllers.sell;
 import hu.neuron.java.sales.service.ClientOfferServiceRemote;
 import hu.neuron.java.sales.service.ClientServiceRemote;
 import hu.neuron.java.sales.service.OfferServiceRemote;
+import hu.neuron.java.sales.service.SalesPointServiceRemote;
 import hu.neuron.java.sales.service.vo.ClientOfferVO;
 import hu.neuron.java.sales.service.vo.ClientVO;
 import hu.neuron.java.sales.service.vo.OfferVO;
 import hu.neuron.java.sales.web.LocalizationsUtils;
+import hu.neuron.java.sales.web.pdf.BillGenerator;
 import hu.neuron.java.web.autocomplete.CustomerAutoCompleteView;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
@@ -22,8 +25,13 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.itextpdf.text.DocumentException;
 
 @ViewScoped
 @ManagedBean(name = "sellController")
@@ -46,6 +54,8 @@ public class SellController implements Serializable {
 	private boolean registerPressedOnce;
 
 	private LazySellModel lazySellModel;
+	
+	private StreamedContent pdf;
 
 	@EJB(name = "OfferService", mappedName = "OfferService")
 	private OfferServiceRemote offerService;
@@ -55,6 +65,9 @@ public class SellController implements Serializable {
 
 	@EJB(name = "ClientService", mappedName = "ClientService")
 	ClientServiceRemote clientService;
+	
+	@EJB(name = "SalesPointService", mappedName = "SalesPointService")
+	private SalesPointServiceRemote salesPointService;
 
 	@ManagedProperty(value = "#{customerAutoCompleteView}")
 	private CustomerAutoCompleteView customerBean;
@@ -131,6 +144,7 @@ public class SellController implements Serializable {
 		Date now = new Date(System.currentTimeMillis());
 		if (customerBean.getSelectedClient() != null
 				&& selectedOffers.size() > 0) {
+			List<ClientOfferVO> offers = new LinkedList<>();
 			for (OfferWebVO owv : selectedOffers) {
 				ClientOfferVO purchase = new ClientOfferVO();
 				purchase.setClient(customerBean.getSelectedClient());
@@ -138,13 +152,24 @@ public class SellController implements Serializable {
 				purchase.setQuantity(owv.getQuantity());
 				purchase.setDate(now);
 				purchase.createId();
+				//purchase.setSalesPointId(salesPointId); TODO
+				offers.add(purchase);
 				try {
 					clientOfferService.saveClientOffer(purchase);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-		
+			try {
+				pdf = new DefaultStreamedContent(BillGenerator.createBill(customerBean.getSelectedClient(),
+						offers, now, salesPointService.findAll().get(0)), "pdf", "szamla.pdf");// TODO
+			} catch (DocumentException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			RequestContext requestContext = RequestContext.getCurrentInstance();  
+			requestContext.execute("PF('receiptDialog').show();");
 			selectedOffers.clear();
 			customerBean.setSelectedClient(null);
 			customerBean.setCustomerName(null);
@@ -184,7 +209,7 @@ public class SellController implements Serializable {
 
 	public void registerClient() {
 		
-		CharSequence defaultPassword = "welcome1";	//TODO
+		CharSequence defaultPassword = "welcome1";
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		String encPassword = bCryptPasswordEncoder.encode(defaultPassword);
 
@@ -257,5 +282,13 @@ public class SellController implements Serializable {
 	public void removeSelectedOffer(){
 		selectedOffers.remove(selectedWebOffer);
 		selectedWebOffer=null;
+	}
+
+	public StreamedContent getPdf() {
+		return pdf;
+	}
+
+	public void setPdf(StreamedContent pdf) {
+		this.pdf = pdf;
 	}
 }

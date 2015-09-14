@@ -96,14 +96,16 @@
 						<h:outputLabel for="salesPointName" value="#{out.salepointname}"
 							style="font-weight:bold; display: inline-block; min-width:110px;" />
 						<p:inputText id="salesPointName" required="true"
-							value="#{salesPointController.salesPointName}" />
+							value="#{salesPointController.salesPointName}"
+							requiredMessage="#{out.salespoint_name_required}" />
 					
 						<h:outputLabel for="city" value="#{out.city}"
 							style="font-weight:bold; display: inline-block; min-width:110px;" />
 						<p:selectOneMenu id="city" value="#{citySelectOneMenuView.city}"
 							converter="cityConverter" panelStyle="width:180px" effect="fade"
-							var="c" style="width:160px" filter="true"
-							filterMatchMode="startsWith" editable="true">
+							var="c" style="width:160px" filter="true" required="true"
+							filterMatchMode="startsWith" editable="true"
+							requiredMessage="#{out.salespoint_city_required}">
 							<f:selectItems value="#{citySelectOneMenuView.cities}" var="city"
 								itemLabel="#{city}" itemValue="#{city}" />
 							<p:column>
@@ -114,29 +116,34 @@
 						<h:outputLabel for="streetName" value="#{out.streetname}"
 							style="font-weight:bold; display: inline-block; min-width:110px;" />
 						<p:inputText id="streetName" required="true"
-							value="#{salesPointController.streetName}" />
+							value="#{salesPointController.streetName}"
+							requiredMessage="#{out.salespoint_street_required}" />
 					
 						<h:outputLabel for="houseNumber" value="#{out.housenumber}"
 							style="font-weight:bold; display: inline-block; min-width:110px;" />
 						<p:inputText id="houseNumber" required="true"
-							value="#{salesPointController.houseNumber}" />
+							value="#{salesPointController.houseNumber}"
+							requiredMessage="#{out.salespoint_house_required}" />
 					
 						<h:outputLabel for="zipCode" value="#{out.zipcode}"
 							style="font-weight:bold; display: inline-block; min-width:110px;" />
 						<p:inputText id="zipCode" required="true"
-							value="#{salesPointController.zipCode}" />
+							value="#{salesPointController.zipCode}"
+							requiredMessage="#{out.salespoint_zip_required}" />
 					
 						<h:outputLabel for="phoneNumber" value="#{out.phonenumber}"
 							style="font-weight:bold; display: inline-block; min-width:110px;" />
 						<p:inputText id="phoneNumber" required="true"
-							value="#{salesPointController.phoneNumber}" />
+							value="#{salesPointController.phoneNumber}"
+							requiredMessage="#{out.salespoint_phone_required}" />
 				
 						<h:outputLabel for="warehouse" value="#{out.warehouse}"
 							style="font-weight:bold; display: inline-block; min-width:110px;" />
 						<p:selectOneMenu id="warehouse" value="#{warehouseSelectOneMenuView.warehouse}"
 							converter="warehouseConverter" panelStyle="width:180px" effect="fade"
-							var="w" style="width:160px" filter="true" 
-							filterMatchMode="startsWith">
+							var="w" style="width:160px" filter="true" requried="true"
+							filterMatchMode="startsWith"
+							requiredMessage="#{out.salespoint_warehouse_required}">
 							<f:selectItems value="#{warehouseSelectOneMenuView.warehouses}" var="warehouse"
 									itemLabel="#{warehouse.warehouseName}" itemValue="#{warehouse}" />
 								<p:column>
@@ -164,14 +171,16 @@
 							<h:outputLabel for="updSalesPointName" value="#{out.salepointname}"
 								style="font-weight:bold; display: inline-block; min-width:110px;" />
 							<p:inputText id="updSalesPointName" required="true"
-								value="#{salesPointController.updateSalesPointName}" />
+								value="#{salesPointController.updateSalesPointName}"
+								requiredMessage="#{out.salespoint_name_required}" />
 			
 							<h:outputLabel for="updCity" value="#{out.city}"
 								style="font-weight:bold; display: inline-block; min-width:110px;" />
 							<p:selectOneMenu id="updCity" value="#{citySelectOneMenuView.city}"
 								converter="cityConverter" panelStyle="width:180px" effect="fade"
-								var="c" style="width:160px" filter="true"
-								filterMatchMode="startsWith" editable="true">
+								var="c" style="width:160px" filter="true" required="true"
+								filterMatchMode="startsWith" editable="true"
+								requiredMessage="#{out.salespoint_city_required}">
 								<f:selectItems value="#{citySelectOneMenuView.cities}" var="city"
 									itemLabel="#{city}" itemValue="#{city}" />
 								<p:column>
@@ -182,29 +191,34 @@
 							<h:outputLabel for="updStreetName" value="#{out.streetname}"
 								style="font-weight:bold; display: inline-block; min-width:110px;" />
 							<p:inputText id="updStreetName" required="true"
-								value="#{salesPointController.updateStreetName}" />
+								value="#{salesPointController.updateStreetName}"
+								requiredMessage="#{out.salespoint_street_required}" />
 								
 							<h:outputLabel for="updHouseNumber" value="#{out.housenumber}"
 								style="font-weight:bold; display: inline-block; min-width:110px;" />
 							<p:inputText id="updHouseNumber" required="true"
-								value="#{salesPointController.updateHouseNumber}" />
+								value="#{salesPointController.updateHouseNumber}"
+								requiredMessage="#{out.salespoint_house_required}" />
 								
 							<h:outputLabel for="updZipCode" value="#{out.zipcode}"
 								style="font-weight:bold; display: inline-block; min-width:110px;" />
 							<p:inputText id="updZipCode" required="true"
-								value="#{salesPointController.updateZipCode}" />
+								value="#{salesPointController.updateZipCode}"
+								requiredMessage="#{out.salespoint_zip_required}" />
 								
 							<h:outputLabel for="updPhoneNumber" value="#{out.phonenumber}"
 								style="font-weight:bold; display: inline-block; min-width:110px;" />
 							<p:inputText id="updPhoneNumber" required="true"
-								value="#{salesPointController.updatePhoneNumber}" />
+								value="#{salesPointController.updatePhoneNumber}"
+								requiredMessage="#{out.salespoint_phone_required}" />
 								
 							<h:outputLabel for="updWarehouse" value="#{out.warehouse}"
 								style="font-weight:bold; display: inline-block; min-width:110px;" />
 							<p:selectOneMenu id="updWarehouse" value="#{warehouseSelectOneMenuView.warehouse}"
 								converter="warehouseConverter" panelStyle="width:180px" effect="fade"
-								var="uw" style="width:160px" filter="true" 
-								filterMatchMode="startsWith">
+								var="uw" style="width:160px" filter="true" required="true"
+								filterMatchMode="startsWith"
+								requiredMessage="#{out.salespoint_warehouse_required}">
 								<f:selectItems value="#{warehouseSelectOneMenuView.warehouses}" var="updWarehouse"
 									itemLabel="#{updWarehouse.warehouseName}" itemValue="#{updWarehouse}" />
 								<p:column>
