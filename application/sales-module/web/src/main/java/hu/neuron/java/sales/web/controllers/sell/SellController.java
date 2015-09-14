@@ -169,7 +169,7 @@ public class SellController implements Serializable {
 				e.printStackTrace();
 			}
 			RequestContext requestContext = RequestContext.getCurrentInstance();  
-			requestContext.execute("PF('receiptDialog').show();");
+			requestContext.execute("document.getElementsByClassName('filedownload')[0].click()");
 			selectedOffers.clear();
 			customerBean.setSelectedClient(null);
 			customerBean.setCustomerName(null);
