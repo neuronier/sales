@@ -133,15 +133,15 @@
 				
 						<h:outputLabel for="warehouse" value="#{out.warehouse}"
 							style="font-weight:bold; display: inline-block; min-width:110px;" />
-						<p:selectOneMenu id="warehouse" value="#{warehouseSelectOneMenuView.warehouseName}"
+						<p:selectOneMenu id="warehouse" value="#{warehouseSelectOneMenuView.warehouse}"
 							converter="warehouseConverter" panelStyle="width:180px" effect="fade"
-							var="w" style="width:160px" filter="true"
+							var="w" style="width:160px" filter="true" 
 							filterMatchMode="startsWith">
 							<f:selectItems value="#{warehouseSelectOneMenuView.warehouses}" var="warehouse"
-								itemLabel="#{warehouse}" itemValue="#{warehouse}" />
-							<p:column>
-								<h:outputText value="#{w}" />
-							</p:column>
+									itemLabel="#{warehouse.warehouseName}" itemValue="#{warehouse}" />
+								<p:column>
+									<h:outputText value="#{w.warehouseName}" />
+								</p:column>
 						</p:selectOneMenu>
 					</p:panelGrid>
 
@@ -150,7 +150,6 @@
 					update=":form:salesPointTable" 
 					icon="ui-icon-disk" oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('createSalesPoint').hide()};"
 					style="margin: 10px auto 0 auto; display:block;" />
-
 			</h:form>
 		</p:dialog>
 
@@ -202,14 +201,14 @@
 								
 							<h:outputLabel for="updWarehouse" value="#{out.warehouse}"
 								style="font-weight:bold; display: inline-block; min-width:110px;" />
-							<p:selectOneMenu id="updWarehouse" value="#{warehouseSelectOneMenuView.warehouseName}"
+							<p:selectOneMenu id="updWarehouse" value="#{warehouseSelectOneMenuView.warehouse}"
 								converter="warehouseConverter" panelStyle="width:180px" effect="fade"
-								var="w" style="width:160px" filter="true" 
+								var="uw" style="width:160px" filter="true" 
 								filterMatchMode="startsWith">
-								<f:selectItems value="#{warehouseSelectOneMenuView.warehouses}" var="warehouse"
-									itemLabel="#{warehouse}" itemValue="#{warehouse}" />
+								<f:selectItems value="#{warehouseSelectOneMenuView.warehouses}" var="updWarehouse"
+									itemLabel="#{updWarehouse.warehouseName}" itemValue="#{updWarehouse}" />
 								<p:column>
-									<h:outputText value="#{w}" />
+									<h:outputText value="#{uw.warehouseName}" />
 								</p:column>
 							</p:selectOneMenu>
 						</p:panelGrid>

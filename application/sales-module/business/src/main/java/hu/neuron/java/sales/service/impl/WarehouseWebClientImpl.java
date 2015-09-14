@@ -57,8 +57,8 @@ public class WarehouseWebClientImpl implements WarehouseWebClient {
 			warehouse.setWarehouseId(warehouseWebVO.getWarehouseId());
 			if(warehouseService.findWarehouseByWarehouseName(warehouse.getWarehouseName()) == null){
 				warehouseService.saveWarehouse(warehouse);
+				warehouseList.add(warehouse);
 			}
-			warehouseList.add(warehouse);
 		}
 		return warehouseList;
 	}
