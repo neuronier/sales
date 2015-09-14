@@ -6,17 +6,16 @@ public class OfferProductTypeVO implements Serializable {
 
 	private static final long serialVersionUID = 8594623139796912889L;
 
-	private String name;
+	private String offerId;
+
+	private String productTypeId;
 
 	private int quantity;
+	
+	private Long id;
+	
+	public OfferProductTypeVO(){}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public int getQuantity() {
 		return quantity;
@@ -26,15 +25,39 @@ public class OfferProductTypeVO implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public OfferProductTypeVO(String name, int quantity) {
-		super();
-		this.name = name;
-		this.quantity = quantity;
+	public String getOfferId() {
+		return offerId;
 	}
+
+
+	public void setOfferId(String offerId) {
+		this.offerId = offerId;
+	}
+
+
+	public String getProductTypeId() {
+		return productTypeId;
+	}
+
+
+	public void setProductTypeId(String productTypeId) {
+		this.productTypeId = productTypeId;
+	}
+
 
 	@Override
 	public String toString() {
-		return "OfferProductTypeVO [name=" + name + ", quantity=" + quantity
+		return "OfferProductTypeVO [quantity=" + quantity
 				+ "]";
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

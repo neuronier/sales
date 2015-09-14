@@ -325,6 +325,10 @@ public class SalesPointController implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();		
 		return LocalizationsUtils.getText("nowhere", context);
 	}
+	
+	public void refreshWarehouses(){
+		warehouseBean.updateWarehouseList();
+	}
 
 	public LazySalesPointModel getLazySalesPointModel() {
 		return lazySalesPointModel;

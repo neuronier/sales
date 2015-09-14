@@ -38,7 +38,7 @@ public class ProductTypeWebClientImpl implements ProductTypeWebClient {
 		List<ProductTypeVO> productTypeList = new ArrayList<ProductTypeVO>();
 		try {
 			wsdl = new URL(
-					"http://flyertest.neuron.hu/warehouseApp/WareWebServiceImplService?wsdl");
+					"http://javatraining.neuron.hu/warehouseApp/WareWebServiceImplService?wsdl");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}

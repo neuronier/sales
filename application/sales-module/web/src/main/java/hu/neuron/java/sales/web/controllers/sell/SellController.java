@@ -2,17 +2,24 @@ package hu.neuron.java.sales.web.controllers.sell;
 
 import hu.neuron.java.sales.service.ClientOfferServiceRemote;
 import hu.neuron.java.sales.service.ClientServiceRemote;
+import hu.neuron.java.sales.service.OfferProductTypeServiceRemote;
 import hu.neuron.java.sales.service.OfferServiceRemote;
+import hu.neuron.java.sales.service.ProductTypeServiceRemote;
 import hu.neuron.java.sales.service.SalesPointServiceRemote;
+import hu.neuron.java.sales.service.UserServiceRemote;
 import hu.neuron.java.sales.service.vo.ClientOfferVO;
 import hu.neuron.java.sales.service.vo.ClientVO;
 import hu.neuron.java.sales.service.vo.OfferVO;
 import hu.neuron.java.sales.web.LocalizationsUtils;
 import hu.neuron.java.sales.web.pdf.BillGenerator;
+import hu.neuron.java.warehouse.whweb.web.service.WareWebService;
+import hu.neuron.java.warehouse.whweb.web.service.WareWebServiceImplService;
 import hu.neuron.java.web.autocomplete.CustomerAutoCompleteView;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +31,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.xml.namespace.QName;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -68,17 +76,41 @@ public class SellController implements Serializable {
 	
 	@EJB(name = "SalesPointService", mappedName = "SalesPointService")
 	private SalesPointServiceRemote salesPointService;
+	
+	@EJB(name = "UserService", mappedName = "UserService")
+	private UserServiceRemote userService;
+	
+	@EJB(mappedName = "OfferProductTypeService",name = "OfferProductTypeService")
+	private OfferProductTypeServiceRemote offProdTypeService;
+	
+	@EJB(mappedName = "ProductTypeService", name = "ProductTypeService")
+	private ProductTypeServiceRemote productTypeService;
 
 	@ManagedProperty(value = "#{customerAutoCompleteView}")
 	private CustomerAutoCompleteView customerBean;
+	
+	private WareWebService warehouseWebService;
 
 	@PostConstruct
 	public void init() {
-		setLazySellModel(new LazySellModel(offerService));
 		selectedOffers = new LinkedList<>();
 		disabled = true;
 		required = false;
 		registerPressedOnce = false;
+		URL wsdl = null;
+		try {
+			wsdl = new URL(
+					"http://javatraining.neuron.hu/warehouseApp/WareWebServiceImplService?wsdl");
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		QName qName = new QName(
+				"http://service.web.whWeb.warehouse.java.neuron.hu/",
+				"WareWebServiceImplService");
+		WareWebServiceImplService exampleImplService = new WareWebServiceImplService(wsdl, qName);
+		setWarehouseWebService(exampleImplService.getWareWebServiceImplPort());
+		setLazySellModel(new LazySellModel(offerService, userService, 
+				offProdTypeService, warehouseWebService,productTypeService));
 	}
 
 	public void onRowSelect(SelectEvent event) {
@@ -290,5 +322,13 @@ public class SellController implements Serializable {
 
 	public void setPdf(StreamedContent pdf) {
 		this.pdf = pdf;
+	}
+
+	public WareWebService getWarehouseWebService() {
+		return warehouseWebService;
+	}
+
+	public void setWarehouseWebService(WareWebService warehouseWebService) {
+		this.warehouseWebService = warehouseWebService;
 	}
 }

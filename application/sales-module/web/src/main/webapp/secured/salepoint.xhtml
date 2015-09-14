@@ -40,7 +40,7 @@
 				</p:column>
 	
 				<p:column headerText="#{out.salepointcoladdress}" 
-				 	sortBy="#{salesPoint.address}" filterBy="#{salesPoint.address}">
+				 	filterBy="#{salesPoint.address}">
 						<h:outputText value="#{salesPoint.address.zipCode} "/>
 						<h:outputText value="#{salesPoint.address.city}&lt;br/&gt;" escape="false"/>
 						<h:outputText value="#{salesPoint.address.street} "/>
@@ -87,10 +87,11 @@
 		</h:form>
 		</p:fieldset>
 		<p:dialog id="adder" header="#{out.popupnewsalepoint}"
-			widgetVar="createSalesPoint" hideEffect="slide"
+			widgetVar="createSalesPoint" hideEffect="slide" onShow="#{salesPointController.refreshWarehouses()}"
 			mheight="100" modal="true" appendTo="@(body)" style="max-width:80%;">
 			<p:ajax event="close" update=":f1:pg1,:form:salesPointTable,:form:updateButton,:form:removeButton,form:employeeButton"
 				resetValues="true" listener="#{salesPointController.clearSelection}" />
+
 			<h:form id="f1">
 					<p:panelGrid columns="2" id="pg1">
 						<h:outputLabel for="salesPointName" value="#{out.salepointname}"
@@ -160,7 +161,7 @@
 			</h:form>
 		</p:dialog>
 
-		<p:dialog header="#{out.popupmodifysalepoint}"
+		<p:dialog header="#{out.popupmodifysalepoint}" onShow="#{salesPointController.refreshWarehouses()}"
 			widgetVar="updateSalesPoint"  id="updateSalesPointDialog"
 			hideEffect="slide" mheight="100" modal="true" appendTo="@(body)"
 			style="max-width:80%;">
