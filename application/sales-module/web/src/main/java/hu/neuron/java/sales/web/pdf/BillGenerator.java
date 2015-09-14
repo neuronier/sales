@@ -93,10 +93,6 @@ public class BillGenerator implements Serializable {
 		cell = new PdfPCell(new Phrase("Telefon: " + client.getPhoneNumber()));
 		table.addCell(cell);
 
-		cell = new PdfPCell(new Phrase("Cím: " + client.getAddress()));
-		cell.setColspan(2);
-		table.addCell(cell);
-
 		return table;
 	}
 
