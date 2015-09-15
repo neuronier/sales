@@ -66,7 +66,9 @@
 						<p:commandButton value="#{out.user_edit}" action="#{userController.editUserBtnAction}" update=":editUserDialogForm"
 							onclick="PF('editUserDialog').show()" disabled="#{userController.selectedUser == null}" />
 						<p:commandButton value="#{out.user_remove}" actionListener="#{userController.removeUser}" update="userDT"
-							disabled="#{userController.selectedUser == null}" />
+							disabled="#{userController.selectedUser == null}">
+							<p:confirm header="#{out.confirm}" message="#{out.user_remove_confirmation_message}" icon="ui-icon-alert" />
+						</p:commandButton>
 					</sec:authorize>
 				</p:panelGrid>
 
@@ -77,10 +79,11 @@
 			<h:form id="addNewUserDialogForm">
 				<p:panelGrid columns="2">
 					<p:outputLabel for="name" value="#{out.user_name}:" />
-					<p:inputText id="name" value="#{userController.newUser.name}" required="true"  requiredMessage="#{out.user_name_required}" />
+					<p:inputText id="name" value="#{userController.newUser.name}" required="true" requiredMessage="#{out.user_name_required}" />
 
 					<p:outputLabel for="userName" value="#{out.user_user_name}:" />
-					<p:inputText id="userName" value="#{userController.newUser.userName}" required="true" requiredMessage="#{out.user_username_required}" validatorMessage="#{out.user_username_already_in_use}">
+					<p:inputText id="userName" value="#{userController.newUser.userName}" required="true" requiredMessage="#{out.user_username_required}"
+						validatorMessage="#{out.user_username_already_in_use}">
 						<f:validator binding="#{uniqueUsernameValidator}" />
 					</p:inputText>
 
@@ -134,7 +137,8 @@
 					</p:column>
 
 					<p:outputLabel value="#{out.user_roles}: " />
-					<p:pickList id="pickList" value="#{userController.roleList}" var="roles" itemLabel="#{userController.getLocalizedRole(roles)}" itemValue="#{roles}">
+					<p:pickList id="pickList" value="#{userController.roleList}" var="roles" itemLabel="#{userController.getLocalizedRole(roles)}"
+						itemValue="#{roles}">
 						<f:facet name="sourceCaption">#{out.user_available}</f:facet>
 						<f:facet name="targetCaption">#{out.user_assigned}</f:facet>
 					</p:pickList>
@@ -145,6 +149,10 @@
 			</h:form>
 		</p:dialog>
 
+		<p:confirmDialog global="true">
+			<p:commandButton value="#{out.user_confirmation_yes}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="#{out.user_confirmation_no}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
 
 
 	</ui:define>

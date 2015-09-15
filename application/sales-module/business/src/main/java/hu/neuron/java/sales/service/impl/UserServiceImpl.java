@@ -121,6 +121,7 @@ public class UserServiceImpl implements UserServiceRemote, Serializable {
 
 	@Override
 	public void removeUser(UserVO user) throws Exception {
+		userRoleDao.delete(userRoleDao.findUserRolesByUserId(user.getUserId()));
 		userDao.delete(userDao.findUserByUserId(user.getUserId()));
 
 	}
