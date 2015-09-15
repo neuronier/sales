@@ -76,7 +76,7 @@
 				</p:dataTable>
 
 				<p:editor id="editor" widgetVar="editorWidget" value="#{issueManagementController.comment}"
-					controls="bold italic underline color bullets numbering" required="true" requiredMessage="Üres üzenet nem küldhető el."/>
+					controls="bold italic underline color bullets numbering" required="true" requiredMessage="#{out.issue_empty_message_warning}"/>
 
 				<p:commandButton value="#{out.issue_send}" action="#{issueManagementController.sendMessage()}" update=":issueThreadViewerDialogForm"
 					style="margin-top:15px; margin-right:10px;" />
