@@ -59,8 +59,14 @@ public class LazyUserModel extends LazyDataModel<UserVO> {
 		}
 
 		int dir = sortOrder.equals(SortOrder.ASCENDING) ? 1 : 2;
-		visibleUserList = userService.getUserList(first / pageSize, pageSize, sortField, dir, filter, filterColumnName);
-
+		int page = first / pageSize;
+		visibleUserList = userService.getUserList(page, pageSize, sortField, dir, filter, filterColumnName);
+		
+		if(visibleUserList.size() == 0 && page > 0) {
+			page -= 1;
+			visibleUserList = userService.getUserList(page, pageSize, sortField, dir, filter, filterColumnName);
+		}
+		
 		int dataSize = userService.getUserCount();
 
 		this.setRowCount(dataSize);

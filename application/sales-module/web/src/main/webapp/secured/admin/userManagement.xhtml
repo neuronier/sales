@@ -65,7 +65,7 @@
 							oncomplete="PF('addNewUserDialog').show()" />
 						<p:commandButton value="#{out.user_edit}" action="#{userController.editUserBtnAction}" update=":editUserDialogForm"
 							onclick="PF('editUserDialog').show()" disabled="#{userController.selectedUser == null}" />
-						<p:commandButton value="#{out.user_remove}" actionListener="#{userController.removeUser}" update="userDT"
+						<p:commandButton value="#{out.user_remove}" actionListener="#{userController.removeUser}" update="userDT, btnPanel"
 							disabled="#{userController.selectedUser == null}">
 							<p:confirm header="#{out.confirm}" message="#{out.user_remove_confirmation_message}" icon="ui-icon-alert" />
 						</p:commandButton>
