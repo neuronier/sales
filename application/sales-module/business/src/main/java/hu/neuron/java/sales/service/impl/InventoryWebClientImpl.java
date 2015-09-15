@@ -34,7 +34,7 @@ public class InventoryWebClientImpl implements InventoryWebClient {
 
 		try {
 			wsdl = new URL(
-					"http://flyertest.neuron.hu/warehouseApp/WareWebServiceImplService?wsdl");
+					"http://javatraining.neuron.hu/warehouseApp/WareWebServiceImplService?wsdl");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}

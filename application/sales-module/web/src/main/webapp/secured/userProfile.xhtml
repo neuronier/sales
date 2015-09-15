@@ -55,12 +55,5 @@
 				<p:commandButton value="#{out.user_profile_save}" actionListener="#{userProfileController.saveChanges}" style="margin-top: 20px;"/>
 			</p:fieldset>
 		</h:form>
-
-		<h:form>
-			<p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
-				<p:fileDownload value="#{userProfileController.pdf}" />
-			</p:commandButton>
-		</h:form>
-
 	</ui:define>
 </ui:composition>

@@ -18,7 +18,7 @@ public class CustomerAutoCompleteView {
 
 	private String customerName;
 	
-	private static ClientVO selectedClient;
+	private ClientVO selectedClient;
 
 	public CustomerAutoCompleteView() {
 		super();
@@ -47,7 +47,6 @@ public class CustomerAutoCompleteView {
 		}
 		setSelectedClient(client);
 	}
-
 	
 	public String getCustomerName() {
 		return customerName;
@@ -62,7 +61,7 @@ public class CustomerAutoCompleteView {
 	}
 
 	public void setSelectedClient(ClientVO selectedClient) {
-		CustomerAutoCompleteView.selectedClient = selectedClient;
+		this.selectedClient = selectedClient;
 	}
 
 }

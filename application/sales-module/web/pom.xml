@@ -26,7 +26,21 @@
 
 
 	<dependencies>
-
+		<dependency>
+			<groupId>hu.neuron.java.warehouse</groupId>
+			<artifactId>ware-webservice</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>hu.neuron.java.warehouse</groupId>
+			<artifactId>warehouse-webservice</artifactId>
+			<version>1.0</version>
+		</dependency>
+			<dependency>
+			<groupId>hu.neuron.ier.webshop</groupId>
+			<artifactId>WebshopClientWebService</artifactId>
+			<version>1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>

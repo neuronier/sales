@@ -41,7 +41,6 @@ public class SalesPointConverter {
 		rv.setId(entity.getId());
 		rv.setSalePointId(entity.getSalePointId());
 		rv.setName(entity.getName());
-		//TODO HIÁNYZIK AZ ENTITYBŐL A SALE POINT USEREK TÁROLÁSA
 		try {
 			rv.setWarehouse(whConverter.toVO(warehouseDao.findWarehouseByWarehouseId(entity.getWarehouseId())));
 		} catch (Exception e) {

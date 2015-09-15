@@ -93,4 +93,9 @@ public class ProductTypeServiceImpl implements ProductTypeServiceRemote,
 		return (int) productTypeDao.count();
 	}
 
+	@Override
+	public ProductTypeVO findProductTypeByProductTypeId(String productTypeId) throws Exception {
+		return ptConverter.toVO(productTypeDao.findProductTypeEntityByProductTypeId(productTypeId));
+	}
+
 }

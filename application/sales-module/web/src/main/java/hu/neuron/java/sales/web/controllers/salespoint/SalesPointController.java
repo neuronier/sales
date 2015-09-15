@@ -8,22 +8,26 @@ import hu.neuron.java.sales.service.vo.AddressVO;
 import hu.neuron.java.sales.service.vo.SalesPointVO;
 import hu.neuron.java.sales.service.vo.UserVO;
 import hu.neuron.java.sales.service.vo.WarehouseVO;
+import hu.neuron.java.sales.web.LocalizationsUtils;
 import hu.neuron.java.web.onemenu.CitySelectOneMenuView;
-import hu.neuron.java.web.onemenu.UserPickListView;
+import hu.neuron.java.web.onemenu.UserListService;
 import hu.neuron.java.web.onemenu.WarehouseSelectOneMenuView;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DualListModel;
 
 @ViewScoped
 @ManagedBean(name = "salesPointController")
@@ -64,14 +68,51 @@ public class SalesPointController implements Serializable {
 	
 	@EJB(name = "UserService", mappedName = "UserService")
 	private UserServiceRemote userService;
+	
+	@ManagedProperty("#{userListService}")
+    private UserListService userListBean;
+	
+	@ManagedProperty("#{warehouseSelectOneMenuView}")
+	private WarehouseSelectOneMenuView warehouseBean;
 
 	private LazySalesPointModel lazySalesPointModel;
+	
+	private DualListModel<UserVO> users;
+	
+    private List<UserVO> allUserList;
+    
+    private List<UserVO> userSourceList;
+    
+    private List<UserVO> userTargetList;
 
 	@PostConstruct
 	public void init() {
-		setLazySalesPointModel(new LazySalesPointModel(salesPointService,
-				addressService));
+		setLazySalesPointModel(new LazySalesPointModel(salesPointService, addressService));
+		setAllUserList(userService.getUserList());
+        userSourceList = new LinkedList<>();
+        userTargetList = new LinkedList<>();
+        users = new DualListModel<UserVO>(userSourceList,userTargetList);
 	}
+	
+	public void onRowSelect(SelectEvent event) {
+		selectedSalesPoint = (SalesPointVO) event.getObject();
+		AddressVO adr = selectedSalesPoint.getAddress();
+		WarehouseVO wrh = selectedSalesPoint.getWarehouse();
+		if (adr != null) {
+			CitySelectOneMenuView.setStaticCity(adr.getCity());
+			updateStreetName = adr.getStreet();
+			updateHouseNumber = adr.getHouseNumber();
+			updateZipCode = adr.getZipCode();
+		}
+		if (wrh != null) {
+			warehouseBean.getWarehouses().remove(warehouseBean.getWarehouses().indexOf(wrh));
+			warehouseBean.getWarehouses().add(0, wrh);
+			warehouseBean.setWarehouse(wrh);
+		}
+		updateSalesPointName = selectedSalesPoint.getName();
+		updatePhoneNumber = selectedSalesPoint.getSalePointPhoneNumber();
+	}
+
 
 	public void saveNewSalesPoint() {
 		SalesPointVO salesPointVO = new SalesPointVO(true);
@@ -100,62 +141,34 @@ public class SalesPointController implements Serializable {
 		WarehouseVO warehouseCheck = null;
 		try {
 			warehouseCheck = warehouseService
-					.findWarehouseByWarehouseName(WarehouseSelectOneMenuView
-							.getStaticWarehouseName());
+					.findWarehouseByWarehouseName(warehouseBean.getWarehouse().getWarehouseName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if (warehouseCheck == null) {
 			warehouseCheck = new WarehouseVO();
-			warehouseCheck.setWarehouseName(WarehouseSelectOneMenuView
-					.getStaticWarehouseName());
+			warehouseCheck.setWarehouseName(warehouseBean.getWarehouse().getWarehouseName());
 			warehouseCheck.generateWarehouseId();
 			warehouseService.saveWarehouse(warehouseCheck);
 			salesPointVO.setWarehouse(warehouseCheck);
 		} else {
 			salesPointVO.setWarehouse(warehouseCheck);
 		}
-		
-		List<UserVO> targetUsers = UserPickListView.getStaticUsers().getTarget();
-		for(UserVO u : targetUsers){
-			u.setSalesPoint(salesPointVO);
-			userService.updateUser(u);
-		}
 
 		salesPointService.saveSalePoint(salesPointVO);
 		CitySelectOneMenuView.updateCityList();
-		WarehouseSelectOneMenuView.updateWarehouseList();
+		warehouseBean.updateWarehouseList();
 		selectedSalesPoint = null;
 		salesPointName = null;
 		CitySelectOneMenuView.setStaticCity(null);
-		WarehouseSelectOneMenuView.setStaticWarehouseName(null);
+		warehouseBean.setWarehouse(null);
 		streetName = null;
 		houseNumber = null;
 		houseNumber = null;
 		zipCode = null;
 		phoneNumber = null;
 	}
-
-	public void onRowSelect(SelectEvent event) {
-		selectedSalesPoint = (SalesPointVO) event.getObject();
-		AddressVO adr = selectedSalesPoint.getAddress();
-		WarehouseVO wrh = selectedSalesPoint.getWarehouse();
-		if (adr != null) {
-			CitySelectOneMenuView.setStaticCity(adr.getCity());
-			updateStreetName = adr.getStreet();
-			updateHouseNumber = adr.getHouseNumber();
-			updateZipCode = adr.getZipCode();
-		}
-		if (wrh != null) {
-			WarehouseSelectOneMenuView.setStaticWarehouseName(wrh.getWarehouseName());
-		}
-		updateSalesPointName = selectedSalesPoint.getName();
-		updatePhoneNumber = selectedSalesPoint.getSalePointPhoneNumber();
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
-						selectedSalesPoint.getName()));
-	}
-
+	
 	public void removeSalesPoint() {
 		try {
 			AddressVO addr = selectedSalesPoint.getAddress();
@@ -170,18 +183,21 @@ public class SalesPointController implements Serializable {
 					userService.updateUser(user);
 				}
 			}
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
-							"Deleted: " + selectedSalesPoint.getName()));
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							LocalizationsUtils.getText("info", context),
+							LocalizationsUtils.getText("salespoint_deleted", context) + " "
+									+ selectedSalesPoint.getName());
+			context.addMessage(null, msg);
 			selectedSalesPoint = null;
 			CitySelectOneMenuView.setStaticCity(null);
-			WarehouseSelectOneMenuView.setStaticWarehouseName(null);
+			warehouseBean.setWarehouse(null);
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
-							"Deleted: "));
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							LocalizationsUtils.getText("error", context),
+							LocalizationsUtils.getText("salespoint_delete_error", context));
+			context.addMessage(null, msg);
 			e.printStackTrace();
 		}
 	}
@@ -201,48 +217,32 @@ public class SalesPointController implements Serializable {
 			WarehouseVO warehouseCheck = null;
 			try {
 				warehouseCheck = warehouseService
-						.findWarehouseByWarehouseName(WarehouseSelectOneMenuView
-								.getStaticWarehouseName());
+						.findWarehouseByWarehouseName(warehouseBean
+								.getWarehouse().getWarehouseName());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if (warehouseCheck == null) {
 				warehouseCheck = new WarehouseVO();
-				warehouseCheck.setWarehouseName(WarehouseSelectOneMenuView
-						.getStaticWarehouseName());
+				warehouseCheck.setWarehouseName(warehouseBean
+						.getWarehouse().getWarehouseName());
 				warehouseCheck.generateWarehouseId();
 				warehouseService.saveWarehouse(warehouseCheck);
 				selectedSalesPoint.setWarehouse(warehouseCheck);
 			} else {
 				selectedSalesPoint.setWarehouse(warehouseCheck);
-				if(!warehouseCheck.getWarehouseName().equals(WarehouseSelectOneMenuView
-						.getStaticWarehouseName())){
+				if(!warehouseCheck.getWarehouseName().equals(warehouseBean
+						.getWarehouse())){
 					warehouseService.updateWarehouse(warehouseCheck);
 				}
 			}
 			
-			List<UserVO> targetUsers = UserPickListView.getStaticUsers().getTarget();
-			for(UserVO u : targetUsers){
-				u.setSalesPoint(selectedSalesPoint);
-				userService.updateUser(u);
-			}
-			
-			List<UserVO> sourceUsers = UserPickListView.getStaticUsers().getSource();
-			for(UserVO u : sourceUsers){
-				if(u.getSalesPoint() != null && u.getSalesPoint().getSalePointId().
-						equals(selectedSalesPoint.getSalePointId())){
-							u.setSalesPoint(null);
-							userService.updateUser(u);
-				}
-			}
-
 			CitySelectOneMenuView.setStaticCity(null);
-			WarehouseSelectOneMenuView.setStaticWarehouseName(null);
+			warehouseBean.setWarehouse(null);
 			selectedSalesPoint.setName(updateSalesPointName);
 			selectedSalesPoint.setSalePointPhoneNumber(updatePhoneNumber);
 			salesPointService.saveSalePoint(selectedSalesPoint);
-			WarehouseSelectOneMenuView.updateWarehouseList();
+			warehouseBean.updateWarehouseList();
 
 			FacesContext.getCurrentInstance().addMessage(
 					null,
@@ -264,15 +264,70 @@ public class SalesPointController implements Serializable {
 		}
 	}
 	
+	public void employees(){
+		for(UserVO u : users.getTarget()){
+			u.setSalesPoint(selectedSalesPoint);
+			userService.updateUser(u);
+		}
+		
+		for(UserVO u : users.getSource()){
+			if(u.getSalesPoint() != null && u.getSalesPoint().getSalePointId().
+					equals(selectedSalesPoint.getSalePointId())){
+						u.setSalesPoint(null);
+						userService.updateUser(u);
+			}
+		}
+	}
+	
 	public void clearSelection(CloseEvent event){ 
 		selectedSalesPoint = null;
 		CitySelectOneMenuView.setStaticCity(null);
-		WarehouseSelectOneMenuView.setStaticWarehouseName(null);
+		warehouseBean.setWarehouse(null);
 		updateSalesPointName = null;
 		updateStreetName = null;
 		updateHouseNumber = null;
 		updatePhoneNumber = null;
 		updateZipCode = null;
+	}
+	
+	public void updateUserList(){
+    	allUserList = userService.getUserList();
+    	if(selectedSalesPoint != null){
+    		distributeUsers();
+    		users.setSource(userSourceList);
+        	users.setTarget(userTargetList);
+    	} else {
+    		users.setSource(allUserList);
+    		userTargetList.clear();
+    		users.setTarget(userTargetList);
+    	}
+    }
+	
+	private void distributeUsers(){
+		userTargetList.clear();
+		userSourceList.clear();
+		for(UserVO user : allUserList){
+        	if(user.getSalesPoint() != null && selectedSalesPoint != null &&
+        			user.getSalesPoint().getSalePointId().equals(selectedSalesPoint.getSalePointId())){
+        		userTargetList.add(user);
+        	}
+        	else{
+        		userSourceList.add(user);	
+        	}
+        }
+	}
+	
+	public String workplace(UserVO user){
+		if(user.getSalesPoint() != null){
+			return user.getSalesPoint().getName();
+		}
+		
+		FacesContext context = FacesContext.getCurrentInstance();		
+		return LocalizationsUtils.getText("nowhere", context);
+	}
+	
+	public void refreshWarehouses(){
+		warehouseBean.updateWarehouseList();
 	}
 
 	public LazySalesPointModel getLazySalesPointModel() {
@@ -374,6 +429,56 @@ public class SalesPointController implements Serializable {
 	public static SalesPointVO getStaticSelectedSalesPoint(){
 		return selectedSalesPoint;
 	}
+
+	public DualListModel<UserVO> getUsers() {
+		updateUserList();
+		return users;
+	}
+
+	public void setUsers(DualListModel<UserVO> users) {
+		this.users = users;
+	}
+
+	public List<UserVO> getAllUserList() {
+		return allUserList;
+	}
+
+	public void setAllUserList(List<UserVO> allUserList) {
+		this.allUserList = allUserList;
+	}
+
+	public List<UserVO> getUserSourceList() {
+		return userSourceList;
+	}
+
+	public void setUserSourceList(List<UserVO> userSourceList) {
+		this.userSourceList = userSourceList;
+	}
+
+	public List<UserVO> getUserTargetList() {
+		return userTargetList;
+	}
+
+	public void setUserTargetList(List<UserVO> userTargetList) {
+		this.userTargetList = userTargetList;
+	}
+
+	public UserListService getUserListBean() {
+		return userListBean;
+	}
+
+	public void setUserListBean(UserListService uls) {
+		this.userListBean = uls;
+	}
+
+	public WarehouseSelectOneMenuView getWarehouseBean() {
+		return warehouseBean;
+	}
+
+	public void setWarehouseBean(WarehouseSelectOneMenuView warehouseBean) {
+		this.warehouseBean = warehouseBean;
+	}
 	
 	
+
 }

@@ -3,7 +3,6 @@ package hu.neuron.java.web.onemenu;
 import hu.neuron.java.sales.service.WarehouseServiceRemote;
 import hu.neuron.java.sales.service.vo.WarehouseVO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -15,29 +14,22 @@ import javax.faces.bean.ManagedBean;
 @ApplicationScoped
 public class WarehouseService {
 
-	private List<String> warehouses;
+	private List<WarehouseVO> warehouses;
 
 	@EJB(mappedName = "WarehouseService", name = "WarehouseService")
 	WarehouseServiceRemote whService;
 
 	@PostConstruct
 	public void init() {
-		List<WarehouseVO> vos = whService.findAll();
-		warehouses = new ArrayList<>(vos.size());
-		for(WarehouseVO vo : vos){
-			warehouses.add(vo.getWarehouseName());
-		}
+		warehouses = whService.findAll();
 	}
 
-	public List<String> getWarehouses() {	
+	public List<WarehouseVO> getWarehouses() {	
 		return warehouses;
 	}
 
 	public void updateWarehouseList() {
-		List<WarehouseVO> vos = whService.findAll();
 		warehouses.clear();
-		for(WarehouseVO vo : vos){
-			warehouses.add(vo.getWarehouseName());
-		}
+		warehouses = whService.findAll();
 	}
 }

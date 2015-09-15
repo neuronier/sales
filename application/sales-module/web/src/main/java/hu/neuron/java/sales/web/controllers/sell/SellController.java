@@ -2,14 +2,24 @@ package hu.neuron.java.sales.web.controllers.sell;
 
 import hu.neuron.java.sales.service.ClientOfferServiceRemote;
 import hu.neuron.java.sales.service.ClientServiceRemote;
+import hu.neuron.java.sales.service.OfferProductTypeServiceRemote;
 import hu.neuron.java.sales.service.OfferServiceRemote;
+import hu.neuron.java.sales.service.ProductTypeServiceRemote;
+import hu.neuron.java.sales.service.SalesPointServiceRemote;
+import hu.neuron.java.sales.service.UserServiceRemote;
 import hu.neuron.java.sales.service.vo.ClientOfferVO;
 import hu.neuron.java.sales.service.vo.ClientVO;
 import hu.neuron.java.sales.service.vo.OfferVO;
 import hu.neuron.java.sales.web.LocalizationsUtils;
+import hu.neuron.java.sales.web.pdf.BillGenerator;
+import hu.neuron.java.warehouse.whweb.web.service.WareWebService;
+import hu.neuron.java.warehouse.whweb.web.service.WareWebServiceImplService;
 import hu.neuron.java.web.autocomplete.CustomerAutoCompleteView;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,9 +31,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.xml.namespace.QName;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.itextpdf.text.DocumentException;
 
 @ViewScoped
 @ManagedBean(name = "sellController")
@@ -46,6 +62,8 @@ public class SellController implements Serializable {
 	private boolean registerPressedOnce;
 
 	private LazySellModel lazySellModel;
+	
+	private StreamedContent pdf;
 
 	@EJB(name = "OfferService", mappedName = "OfferService")
 	private OfferServiceRemote offerService;
@@ -55,17 +73,44 @@ public class SellController implements Serializable {
 
 	@EJB(name = "ClientService", mappedName = "ClientService")
 	ClientServiceRemote clientService;
+	
+	@EJB(name = "SalesPointService", mappedName = "SalesPointService")
+	private SalesPointServiceRemote salesPointService;
+	
+	@EJB(name = "UserService", mappedName = "UserService")
+	private UserServiceRemote userService;
+	
+	@EJB(mappedName = "OfferProductTypeService",name = "OfferProductTypeService")
+	private OfferProductTypeServiceRemote offProdTypeService;
+	
+	@EJB(mappedName = "ProductTypeService", name = "ProductTypeService")
+	private ProductTypeServiceRemote productTypeService;
 
 	@ManagedProperty(value = "#{customerAutoCompleteView}")
 	private CustomerAutoCompleteView customerBean;
+	
+	private WareWebService warehouseWebService;
 
 	@PostConstruct
 	public void init() {
-		setLazySellModel(new LazySellModel(offerService));
 		selectedOffers = new LinkedList<>();
 		disabled = true;
 		required = false;
 		registerPressedOnce = false;
+		URL wsdl = null;
+		try {
+			wsdl = new URL(
+					"http://javatraining.neuron.hu/warehouseApp/WareWebServiceImplService?wsdl");
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		QName qName = new QName(
+				"http://service.web.whWeb.warehouse.java.neuron.hu/",
+				"WareWebServiceImplService");
+		WareWebServiceImplService exampleImplService = new WareWebServiceImplService(wsdl, qName);
+		setWarehouseWebService(exampleImplService.getWareWebServiceImplPort());
+		setLazySellModel(new LazySellModel(offerService, userService, 
+				offProdTypeService, warehouseWebService,productTypeService));
 	}
 
 	public void onRowSelect(SelectEvent event) {
@@ -73,7 +118,7 @@ public class SellController implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Info",
-						"Idejön valami"));
+						"Item Selected"));
 	}
 
 	public LazySellModel getLazySellModel() {
@@ -131,6 +176,7 @@ public class SellController implements Serializable {
 		Date now = new Date(System.currentTimeMillis());
 		if (customerBean.getSelectedClient() != null
 				&& selectedOffers.size() > 0) {
+			List<ClientOfferVO> offers = new LinkedList<>();
 			for (OfferWebVO owv : selectedOffers) {
 				ClientOfferVO purchase = new ClientOfferVO();
 				purchase.setClient(customerBean.getSelectedClient());
@@ -138,20 +184,39 @@ public class SellController implements Serializable {
 				purchase.setQuantity(owv.getQuantity());
 				purchase.setDate(now);
 				purchase.createId();
+				//purchase.setSalesPointId(salesPointId); TODO
+				offers.add(purchase);
 				try {
 					clientOfferService.saveClientOffer(purchase);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
+			try {
+				pdf = new DefaultStreamedContent(BillGenerator.createBill(customerBean.getSelectedClient(),
+						offers, now, salesPointService.findAll().get(0)), "pdf", "szamla.pdf");// TODO
+			} catch (DocumentException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			RequestContext requestContext = RequestContext.getCurrentInstance();  
+			requestContext.execute("document.getElementsByClassName('filedownload')[0].click()");
+			selectedOffers.clear();
+			customerBean.setSelectedClient(null);
+			customerBean.setCustomerName(null);
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							LocalizationsUtils.getText("success", context),
+							LocalizationsUtils.getText("processed_sale", context));
+			context.addMessage(null, msg);			
+		} else {
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							LocalizationsUtils.getText("error", context),
+							LocalizationsUtils.getText("sale_error", context));
+			context.addMessage(null, msg);
 		}
-		selectedOffers.clear();
-		customerBean.setSelectedClient(null);
-		customerBean.setCustomerName(null);
-		FacesContext.getCurrentInstance().addMessage(
-				null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Success",
-						"The system processed the sale"));
 	}
 
 	public Long getTotal() {
@@ -176,7 +241,7 @@ public class SellController implements Serializable {
 
 	public void registerClient() {
 		
-		CharSequence defaultPassword = "welcome1";	//TODO
+		CharSequence defaultPassword = "welcome1";
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		String encPassword = bCryptPasswordEncoder.encode(defaultPassword);
 
@@ -244,5 +309,26 @@ public class SellController implements Serializable {
 
 	public void setRegisterPressed(boolean registerPressed) {
 		this.registerPressedOnce = registerPressed;
+	}
+	
+	public void removeSelectedOffer(){
+		selectedOffers.remove(selectedWebOffer);
+		selectedWebOffer=null;
+	}
+
+	public StreamedContent getPdf() {
+		return pdf;
+	}
+
+	public void setPdf(StreamedContent pdf) {
+		this.pdf = pdf;
+	}
+
+	public WareWebService getWarehouseWebService() {
+		return warehouseWebService;
+	}
+
+	public void setWarehouseWebService(WareWebService warehouseWebService) {
+		this.warehouseWebService = warehouseWebService;
 	}
 }

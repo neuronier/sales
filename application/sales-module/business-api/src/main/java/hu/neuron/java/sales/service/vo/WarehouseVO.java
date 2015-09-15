@@ -3,7 +3,7 @@ package hu.neuron.java.sales.service.vo;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class WarehouseVO implements Serializable{
+public class WarehouseVO implements Serializable, Comparable<WarehouseVO>{
 
 	private static final long serialVersionUID = -2286310106108872003L;
 	
@@ -47,4 +47,38 @@ public class WarehouseVO implements Serializable{
 		this.warehouseId = UUID.randomUUID().toString();
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((warehouseId == null) ? 0 : warehouseId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		WarehouseVO other = (WarehouseVO) obj;
+		if (warehouseId == null) {
+			if (other.warehouseId != null)
+				return false;
+		} else if (!warehouseId.equals(other.warehouseId))
+			return false;
+		return true;
+	}
+
+
+	@Override
+	public int compareTo(WarehouseVO o) {
+		
+		return warehouseName.compareTo(o.warehouseName);
+	}
+
+	
 }
