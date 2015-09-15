@@ -67,8 +67,6 @@
 						</h:form>
 						<p:separator style="height:5px;" />
 						<h:form id="selectForm">
-				
-						
 							<p:outputLabel value="#{out.sell_selected}:" for="selectedTable"
 								style="margin-left:7px;" />
 							<p:dataTable id="selectedTable" var="offerWebVO"
@@ -211,8 +209,8 @@
 									<h:form id="saleForm">
 										<h4 style="display: inline; margin-right: 5px;">#{out.sell_finish_text}</h4>
 										<p:commandButton
-											update=":selectForm:selectedTable,:customerForm,:customerForm:quickClient,
-											:saleForm" value="#{out.sell_finish_button}" 
+											update=":selectForm:selectedTable,:customerForm,:saleForm"
+											value="#{out.sell_finish_button}" 
 											actionListener="#{sellController.sell}">
 										</p:commandButton>
 										<p:commandButton style="display:none;" 
