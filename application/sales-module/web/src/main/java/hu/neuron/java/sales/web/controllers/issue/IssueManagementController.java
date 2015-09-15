@@ -70,6 +70,8 @@ public class IssueManagementController {
 		issueMessage.setThreadId(selectedIssueThread.getThreadId());
 		issueMessage.setDate(new Date());
 		issueMessage.setOwner(user.getUsername());
+		
+		
 		issueMessageService.saveIssueMessage(issueMessage);
 		
 		IssueThreadVO thread = issueThreadService.findByThreadId(selectedIssueThread.getThreadId());
