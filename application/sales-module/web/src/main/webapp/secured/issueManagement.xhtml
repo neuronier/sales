@@ -8,7 +8,7 @@
 	</ui:define>
 
 	<ui:define name="content">
-		<h:form>
+		<h:form id="threadListForm">
 			<p:fieldset legend="#{out.issue_issue_management}">
 				<p:dataTable id="issueThreadDT" value="#{issueManagementController.lazyIssueThreadModel}" var="issueThread" widgetVar="issueTable"
 					currentPageReportTemplate="({currentPage} / {totalPages})"
@@ -51,6 +51,7 @@
 		</h:form>
 
 		<p:dialog widgetVar="issueThreadViewerDialog" width="80%" resizable="false">
+			<p:ajax event="close" update=":threadListForm:issueThreadDT" />
 			<h:form id="issueThreadViewerDialogForm">
 				<p:dataTable value="#{issueManagementController.issueMessageList}" var="issueMsg" scrollable="true" scrollHeight="300" style="width:100%"
 					emptyMessage="#{out.empty_message}">
@@ -76,7 +77,7 @@
 				</p:dataTable>
 
 				<p:editor id="editor" widgetVar="editorWidget" value="#{issueManagementController.comment}"
-					controls="bold italic underline color bullets numbering" required="true" requiredMessage="#{out.issue_empty_message_warning}"/>
+					controls="bold italic underline color bullets numbering" required="true" requiredMessage="#{out.issue_empty_message_warning}" />
 
 				<p:commandButton value="#{out.issue_send}" action="#{issueManagementController.sendMessage()}" update=":issueThreadViewerDialogForm"
 					style="margin-top:15px; margin-right:10px;" />
