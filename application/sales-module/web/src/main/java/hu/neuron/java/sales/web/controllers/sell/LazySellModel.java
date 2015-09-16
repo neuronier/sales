@@ -50,15 +50,18 @@ public class LazySellModel extends LazyDataModel<OfferVO> {
 	
 	private String prevFilter, prevSort;
 	
+	private SellController sellController;
+	
 	public LazySellModel(OfferServiceRemote offerService, UserServiceRemote userService,
 			OfferProductTypeServiceRemote offProdTypeService, WareWebService warehouseWebService,
-			ProductTypeServiceRemote productTypeService){
+			ProductTypeServiceRemote productTypeService,SellController sellController){
 		super();
 		this.offerService = offerService;
 		this.userService = userService;
 		this.offProdTypeService = offProdTypeService;
 		this.warehouseWebService = warehouseWebService;
 		this.productTypeService = productTypeService;
+		this.sellController = sellController;
 		
 		nameComparator = new Comparator<OfferVO>(){
 				@Override
@@ -96,8 +99,9 @@ public class LazySellModel extends LazyDataModel<OfferVO> {
 		}
 		return offerVO.getOfferId();
 	}
-
-	@Override
+				
+				//TODO azthiszem most jó lesz az egy sorral lentebbi dolog de MÉG NEM TESZELTEM
+	@Override	//TODO ha csökken a termékszám újra kell generálni az available List-et
 	public List<OfferVO> load(int first, int pageSize, String sortField,
 			SortOrder sortOrder, Map<String, Object> filters) {
 		
@@ -114,7 +118,7 @@ public class LazySellModel extends LazyDataModel<OfferVO> {
 	
 		dir = sortOrder.equals(SortOrder.ASCENDING) ? 1 : 2;
 		
-		if(availableOfferList == null || allOfferSize != offerService.getRowNumber()){
+		if(availableOfferList == null || allOfferSize != offerService.getRowNumber() || sellController.isSold()){
 			LinkedList<OfferVO> tmpList = new LinkedList<>(); 
 			allOffers = offerService.findAll();
 			allOfferSize = allOffers.size();
@@ -162,6 +166,7 @@ public class LazySellModel extends LazyDataModel<OfferVO> {
 			}
 			availableOfferList = new ArrayList<>(tmpList.size());
 			availableOfferList.addAll(tmpList);
+			sellController.setSold(false);
 		}
 		
 		if(sortField.equals("name")){
@@ -209,7 +214,6 @@ public class LazySellModel extends LazyDataModel<OfferVO> {
 					} else {
 						returnList = filterList.subList(first, first+pageSize);
 					}
-				
 				}
 		}
 		else{

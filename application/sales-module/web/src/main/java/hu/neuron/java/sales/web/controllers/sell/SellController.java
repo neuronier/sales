@@ -9,7 +9,10 @@ import hu.neuron.java.sales.service.SalesPointServiceRemote;
 import hu.neuron.java.sales.service.UserServiceRemote;
 import hu.neuron.java.sales.service.vo.ClientOfferVO;
 import hu.neuron.java.sales.service.vo.ClientVO;
+import hu.neuron.java.sales.service.vo.OfferProductTypeVO;
 import hu.neuron.java.sales.service.vo.OfferVO;
+import hu.neuron.java.sales.service.vo.ProductTypeVO;
+import hu.neuron.java.sales.service.vo.UserVO;
 import hu.neuron.java.sales.web.LocalizationsUtils;
 import hu.neuron.java.sales.web.pdf.BillGenerator;
 import hu.neuron.java.warehouse.whweb.web.service.WareWebService;
@@ -37,6 +40,8 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.itextpdf.text.DocumentException;
@@ -60,6 +65,8 @@ public class SellController implements Serializable {
 	private boolean required;
 	
 	private boolean registerPressedOnce;
+	
+	private boolean sold;
 
 	private LazySellModel lazySellModel;
 	
@@ -90,6 +97,8 @@ public class SellController implements Serializable {
 	private CustomerAutoCompleteView customerBean;
 	
 	private WareWebService warehouseWebService;
+	
+	private UserVO currentUser;
 
 	@PostConstruct
 	public void init() {
@@ -97,6 +106,7 @@ public class SellController implements Serializable {
 		disabled = true;
 		required = false;
 		registerPressedOnce = false;
+		sold = false;
 		URL wsdl = null;
 		try {
 			wsdl = new URL(
@@ -108,9 +118,16 @@ public class SellController implements Serializable {
 				"http://service.web.whWeb.warehouse.java.neuron.hu/",
 				"WareWebServiceImplService");
 		WareWebServiceImplService exampleImplService = new WareWebServiceImplService(wsdl, qName);
-		setWarehouseWebService(exampleImplService.getWareWebServiceImplPort());
+		warehouseWebService = exampleImplService.getWareWebServiceImplPort();
 		setLazySellModel(new LazySellModel(offerService, userService, 
-				offProdTypeService, warehouseWebService,productTypeService));
+				offProdTypeService, warehouseWebService,productTypeService, this));
+		
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		try {
+			currentUser = userService.findUserByUserName(user.getUsername());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void onRowSelect(SelectEvent event) {
@@ -184,8 +201,29 @@ public class SellController implements Serializable {
 				purchase.setQuantity(owv.getQuantity());
 				purchase.setDate(now);
 				purchase.createId();
-				//purchase.setSalesPointId(salesPointId); TODO
+				purchase.setSalesPointId(currentUser.getSalesPoint().getSalePointId());
 				offers.add(purchase);
+				List<OfferProductTypeVO> optList = null;
+				try {
+					optList = offProdTypeService.findOfferProductTypeByOfferId(owv.getOfferId());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if(optList != null){
+					for(OfferProductTypeVO opt : optList){
+						ProductTypeVO prod;
+						try {
+							prod = productTypeService.	//Can throw Exception
+									findProductTypeByProductTypeId(opt.getProductTypeId());
+							//Can throw it's own Exception if the service call fails
+							warehouseWebService.decreaseNumberOfWares( 
+									currentUser.getSalesPoint().getWarehouse().getWarehouseId(),
+									prod.getName(), (int)(owv.getQuantity() * opt.getQuantity()));
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
 				try {
 					clientOfferService.saveClientOffer(purchase);
 				} catch (Exception e) {
@@ -194,7 +232,7 @@ public class SellController implements Serializable {
 			}
 			try {
 				pdf = new DefaultStreamedContent(BillGenerator.createBill(customerBean.getSelectedClient(),
-						offers, now, salesPointService.findAll().get(0)), "pdf", "szamla.pdf");// TODO
+						offers, now, currentUser.getSalesPoint()), "pdf", "szamla.pdf");// TODO
 			} catch (DocumentException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -209,7 +247,8 @@ public class SellController implements Serializable {
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 							LocalizationsUtils.getText("success", context),
 							LocalizationsUtils.getText("processed_sale", context));
-			context.addMessage(null, msg);			
+			context.addMessage(null, msg);
+			sold = true;
 		} else {
 			FacesContext context = FacesContext.getCurrentInstance();
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -330,5 +369,21 @@ public class SellController implements Serializable {
 
 	public void setWarehouseWebService(WareWebService warehouseWebService) {
 		this.warehouseWebService = warehouseWebService;
+	}
+
+	public boolean isSold() {
+		return sold;
+	}
+
+	public void setSold(boolean sold) {
+		this.sold = sold;
+	}
+
+	public UserVO getCurrentUser() {
+		return currentUser;
+	}
+
+	public void setCurrentUser(UserVO currentUser) {
+		this.currentUser = currentUser;
 	}
 }
