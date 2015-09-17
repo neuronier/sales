@@ -40,7 +40,7 @@ public class ClientWebClientImpl implements ClientWebClient {
 		List<ClientVO> clientList = new ArrayList<ClientVO>();
 		try {
 			wsdl = new URL(
-					"http://flyertest.neuron.hu/webshopApp/WebshopClientWebService?wsdl");
+					"http://javatraining.neuron.hu/webshopApp/WebshopClientWebService?wsdl");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}

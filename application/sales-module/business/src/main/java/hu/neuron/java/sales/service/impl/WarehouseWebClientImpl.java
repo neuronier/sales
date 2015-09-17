@@ -37,7 +37,7 @@ public class WarehouseWebClientImpl implements WarehouseWebClient {
 		List<WarehouseVO> warehouseList = new ArrayList<WarehouseVO>();
 		try {
 			wsdl = new URL( 
-					"http://flyertest.neuron.hu/warehouseApp/WarehouseWebServiceImplService?wsdl");
+					"http://javatraining.neuron.hu/warehouseApp/WarehouseWebServiceImplService?wsdl");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
