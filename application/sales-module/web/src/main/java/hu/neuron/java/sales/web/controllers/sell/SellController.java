@@ -110,7 +110,7 @@ public class SellController implements Serializable {
 		URL wsdl = null;
 		try {
 			wsdl = new URL(
-					"http://javatraining.neuron.hu/warehouseApp/WareWebServiceImplService?wsdl");
+					"http://flyertest.neuron.hu/warehouseApp/WareWebServiceImplService?wsdl");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
