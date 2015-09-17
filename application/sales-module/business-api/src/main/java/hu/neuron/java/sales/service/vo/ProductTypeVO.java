@@ -1,6 +1,7 @@
 package hu.neuron.java.sales.service.vo;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class ProductTypeVO implements Serializable {
 
@@ -13,8 +14,7 @@ public class ProductTypeVO implements Serializable {
 	private String productTypeId;
 
 	public ProductTypeVO() {
-		Long systime = System.currentTimeMillis();
-		setProductTypeId("PRODUCTTYPE_" + systime.toString());
+		this.productTypeId = UUID.randomUUID().toString();
 	}
 
 	public String getProductTypeId() {
